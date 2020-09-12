@@ -1,8 +1,6 @@
 # hubble-micro inception deck 
 
-[README](README.md)
-
-<details>
+<details open>
 <summary>Why are we here?</summary>
 
 The mission of hyper63 is to take a different approach to software, this approach
@@ -12,7 +10,7 @@ generalizing common services.
 
 </details>  
 
-<details>
+<details open>
 <summary>Elevator Pitch</summary>
 
 hubble is a backend as a service platform that generalizes common services using a
