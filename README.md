@@ -18,7 +18,7 @@ Current Status: Organization and Design Phase
 
 [Click Here](design.md)
 
-## Governance
+## Contributing
 
 Want to get involved read the following to find out how.
 
