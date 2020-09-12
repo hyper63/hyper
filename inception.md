@@ -1,6 +1,6 @@
 # hubble-micro inception deck 
 
-[README](readme.md)
+[README](README.md)
 
 <details>
 <summary>Why are we here?</summary>
