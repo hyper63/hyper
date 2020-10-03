@@ -1,4 +1,4 @@
-# hubble-micro inception deck 
+# atlas inception deck 
 
 <details open>
 <summary>Why are we here?</summary>
@@ -13,18 +13,18 @@ generalizing common services.
 <details open>
 <summary>Elevator Pitch</summary>
 
-hubble is a backend as a service platform that generalizes common services using a
+atlas is a backend as a service platform that generalizes common services using a
 ports and adapter model. Developers can swap out different implementations of common
-services for their preferred backend stack. `hubble-micro` is a standalone container
+services for their preferred backend stack. `atlas` is a standalone container
 specifically built for micro-services.  
 
-hubble-micro is the fastest way to get going on your micro-service, it gives you common
+atlas is the fastest way to get going on your micro-service, it gives you common
 services for data, cache, files and notifications.
 
 ```
 For developers
 who build micro-services
-the hubble-micro container
+the atlas container
 is a backend-as-a-service container
 that provides common services for data, cache, files, and notifications
 Unlike tools like AWS Amplify or Firebase
@@ -37,14 +37,12 @@ our product can run anywhere on any cloud
 <details>
 <summary>Product Box </summary>
 
-![hubble-micro](hubble-micro-poster.png)
-
 </details>
 
 <details>
 <summary>Not in scope</summary>
 
-What is not in scope for hubble-micro in this release?
+What is not in scope for atlas in this release?
 
 * no capability to connect to services sources outside of the service boundary
 * no managed services for this release

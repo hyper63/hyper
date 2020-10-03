@@ -11,8 +11,8 @@ The following is a set of guidelines for contributing to Hubble and its packages
 [I don't want to read this whole thing, I just have a question!!!](#i-dont-want-to-read-this-whole-thing-i-just-have-a-question)
 
 [What should I know before I get started?](#what-should-i-know-before-i-get-started)
-  * [Hubble Projct](#hubble-project)
-  * [Hubble Design Decisions](#design-decisions)
+  * [Atlas](#atlas-project)
+  * [Atlas Design Decisions](#design-decisions)
 
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
@@ -41,9 +41,9 @@ We are a small project right now, just file an issue with your question tag, we 
 
 ## What should I know before I get started?
 
-### Hubble Project 
+### Atlas 
 
-Hubble is a small open source project, just getting started. Currently, it is made up of a single repository, with a goal to grow in the future. When you initially consider contributing to hubble you might be unsure about where to contribute. This section should help with that.
+Atlas is a small open source project, just getting started. Currently, it is made up of a single repository, with a goal to grow in the future. When you initially consider contributing to atlas you might be unsure about where to contribute. This section should help with that.
 
 We want to make it easy for anyone to contribute whether you are a developer, designer, tester or techinical writer. The project is broken down into the following folders:
 
@@ -62,18 +62,18 @@ All design decision go through a requst for change process, this process require
 
 This section guides you through submitting a bug report for Hubble. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer: :computer:, and find related reports :mag_right:.
 
-Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](https://github.com/hyper63/hubble/blob/master/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](https://github.com/hyper63/atlas/blob/master/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
 #### Before Submitting A Bug Report
 
 * **Check the [FAQs](faq.md)** for a list of common questions and problems.
-* **Perform a [cursory search](https://github.com/search?q=+is%3Aissue+user%3hubble)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
+* **Perform a [cursory search](https://github.com/search?q=+is%3Aissue+user%3atlas)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue and provide the following information by filling in [the template](https://github.com/hyper63/hubble/blob/main/.github/ISSUE_TEMPLATE/bug_report.md).
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue and provide the following information by filling in [the template](https://github.com/hyper63/atlas/blob/main/.github/ISSUE_TEMPLATE/bug_report.md).
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -90,7 +90,7 @@ Explain the problem and include additional details to help maintainers reproduce
 Provide more context by answering these questions:
 
 * **Did the problem start happening recently** (e.g. after updating to a new version of Hubble) or was this always a problem?
-* If the problem started happening recently, **can you reproduce the problem in an older version of Hubble?** What's the most recent version in which the problem doesn't happen? You can download older versions of Hubble from [the releases page](https://github.com/hyper63/hubble/releases).
+* If the problem started happening recently, **can you reproduce the problem in an older version of Hubble?** What's the most recent version in which the problem doesn't happen? You can download older versions of Hubble from [the releases page](https://github.com/hyper63/atlas/releases).
 * **Can you reliably reproduce the issue?** If not, provide details about how often the problem happens and under which conditions it normally happens.
 * If the problem is related to working with files (e.g. opening and editing files), **does the problem happen for all files and projects or only some?** Does the problem happen only when working with local or remote files (e.g. on network drives), with files of a specific type (e.g. only JavaScript or Python files), with large files or files with very long lines, or with files in a specific encoding? Is there anything else special about the files you are using?
 

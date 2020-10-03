@@ -1,4 +1,4 @@
-# hubble-micro
+# Atlas Design Document 
 
 A backend as a service for micro-services
 
@@ -7,7 +7,7 @@ manages its own data. Two micro-services should not share a data store.
 Instead each service is responsible for its own private data store,
 which others cannot access directly.
 
-hubble is a backend as a service solution that encourages separation between
+atlas is a backend as a service solution that encourages separation between
 common services and business logic of your application. This separation is
 a function of a domain centric architecture or clean architecture. As products
 grow in complexity over time with strong pressure to ship features in a time
@@ -16,17 +16,17 @@ architectural layers is extremely likely.
 
 > Hubble's goal is to encourage business rules to settle in a core area leveraging solid principles to keep the business logic highly maintainable as the product grows over time.
 
-This product takes the concepts of hubble and applys them to a micro-service, with 
+This product takes the concepts of atlas and applys them to a micro-service, with 
 a micro-service you will have the following layers:
 
 * interface/api
 * business rules
 * services
 
-What hubble-micro wants to do is to generalize the services your micro-service may need 
+What atlas wants to do is to generalize the services your micro-service may need 
 so that you can keep your business rules cleanly separated as well as leveraging the ports
 and adapter design so that your backend services can be replacable without having to modify
-business rules. hubble-micro is a docker container that gives you data, cache, files and notifications out of the box, without having to make any decisions, you simply `docker run` and you have your backend end service up and running!
+business rules. atlas is a docker container that gives you data, cache, files and notifications out of the box, without having to make any decisions, you simply `docker run` and you have your backend end service up and running!
 
 [Inception Deck](inception.md)
 
@@ -35,7 +35,7 @@ business rules. hubble-micro is a docker container that gives you data, cache, f
 > Docker is required 
 
 ``` sh
-docker run -it -p 8443:8443 -p 9090:9090 -v hubble:/var/hubble --name hubble hyper63/hubble-micro:lts
+docker run -it -p 8443:8443 -p 9090:9090 -v atlas:/var/atlas --name atlas hyper63/atlas:lts
 ```
 
 ## API
@@ -308,7 +308,7 @@ DELETE /micro/services/buckets/:name/:id
 
 ### Notifications API (hooks)
 
-The notification api is an api that can notify subscribers when a hubble service 
+The notification api is an api that can notify subscribers when a atlas service 
 event was triggered, using a registered endpoint.
 
 Each hook will require a scope of what the hook wants to watch, examples
@@ -351,6 +351,6 @@ get hook info
 GET /micro/services/hooks/:name
 ```
 
-> One note, the `micro` prefix in the url is a `tenant`, since the micro version of hubble is 
-single tenant it is defaulted to `micro`, but in future planned products, like `hubble-cloud` the schema will be identical, but the `micro` would be replaced by the tenant name.
+> One note, the `micro` prefix in the url is a `tenant`, since the micro version of atlas is 
+single tenant it is defaulted to `micro`, but in future planned products, like `atlas-cloud` the schema will be identical, but the `micro` would be replaced by the tenant name.
 
