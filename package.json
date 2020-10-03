@@ -1,0 +1,23 @@
+{
+  "name": "hubble",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:hyper63/atlas.git",
+  "author": "Tom Wilson <twilson63@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.10.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "tape": "^5.0.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^4.1.1"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo TODO"
+  }
+}
