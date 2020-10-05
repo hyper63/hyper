@@ -12,12 +12,13 @@
     "tape": "^5.0.1"
   },
   "dependencies": {
+    "crocks": "^0.12.4",
     "express": "^4.17.1",
     "helmet": "^4.1.1"
   },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo TODO"
+    "test": "tape src/**/*_test.js"
   }
 }
