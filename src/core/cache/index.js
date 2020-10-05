@@ -33,21 +33,21 @@ module.exports = ({ cache }) => {
    * @returns {Promise<object>}
    */
   function updateDoc(store, key, value) {
-    return Promise.resolve({ ok: true });
+    doc.update(store, key, value).runWith(cache);
   }
 
   /**
    *
    */
   function getDoc(store, key) {
-    return Promise.resolve({});
+    doc.get(store, key).runWith(cache);
   }
 
   /**
    *
    */
   function deleteDoc(store, key) {
-    return Promise.resolve({ ok: true });
+    doc.delete(store, key).runWith(cache);
   }
 
   /**
