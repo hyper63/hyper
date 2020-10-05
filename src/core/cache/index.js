@@ -32,16 +32,13 @@ module.exports = ({ cache }) => {
    * @param {object} value
    * @returns {Promise<object>}
    */
-  function updateDoc(store, key, value) {
+  const updateDoc = (store, key, value) =>
     doc.update(store, key, value).runWith(cache);
-  }
 
   /**
    *
    */
-  function getDoc(store, key) {
-    doc.get(store, key).runWith(cache);
-  }
+  const getDoc = (store, key) => doc.get(store, key).runWith(cache);
 
   /**
    *

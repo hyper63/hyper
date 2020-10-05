@@ -16,4 +16,9 @@ const services = require("./services");
 const core = require("./core");
 const env = {};
 // bind services and environment to core
-module.exports = core(services, env);
+module.exports = () => {
+  const initializedServices = {
+    cache: services.cache(env),
+  };
+  return core(initializedServices);
+};

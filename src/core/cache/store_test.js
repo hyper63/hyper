@@ -3,11 +3,11 @@ const store = require("./store");
 const Async = require("crocks/Async");
 
 const mockService = {
-  create: (name) =>
+  createStore: (name) =>
     Async.of({
       ok: true,
     }),
-  destroy: (name) => Async.of({ ok: true }),
+  destroyStore: (name) => Async.of({ ok: true }),
 };
 
 test("create cache store", (t) => {

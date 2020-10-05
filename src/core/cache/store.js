@@ -6,12 +6,12 @@ module.exports = {
   create: (name) =>
     of(name)
       .chain(Do(validateName, INVALID_NAME))
-      .chain(apply("create"))
+      .chain(apply("createStore"))
       .chain(Do(validateResult, INVALID_RESULT)),
   delete: (name) =>
     of(name)
       .chain(Do(validateName, INVALID_NAME))
-      .chain(apply("destroy"))
+      .chain(apply("destroyStore"))
       .chain(Do(validateResult, INVALID_RESULT)),
 };
 
