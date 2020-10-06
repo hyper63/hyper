@@ -1,6 +1,6 @@
 # Code of Conduct
 
-All participants of hubble project are expected to abide by our Code of Conduct, both online and during in-person events that are hosted and/or associated with hubble project.
+All participants of atlas project are expected to abide by our Code of Conduct, both online and during in-person events that are hosted and/or associated with hubble project.
 
 ## The Pledge
 
@@ -27,7 +27,7 @@ Examples of unacceptable behaviour by participants include:
 * Assuming or promoting any kind of inequality including but not limited to: age, body size, disability, ethnicity, gender identity and expression, nationality and race, personal appearance, religion, or sexual identity and orientation
 * Other conduct which you know could reasonably be considered inappropriate in a professional setting.
 * Enforcement
-* Violations of the Code of Conduct may be reported by sending an email to twilson63@hey.com. All reports will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. Further details of specific enforcement policies may be posted separately.
+* Violations of the Code of Conduct may be reported by sending an email to tom@hyper63.com. All reports will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. Further details of specific enforcement policies may be posted separately.
 
 We hold the right and responsibility to remove comments or other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any members for other behaviours that they deem inappropriate, threatening, offensive, or harmful.
 
