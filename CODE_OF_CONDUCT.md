@@ -1,6 +1,6 @@
 # Code of Conduct
 
-All participants of hubble project are expected to abide by our Code of Conduct, both online and during in-person events that are hosted and/or associated with hubble project.
+All participants of atlas project are expected to abide by our Code of Conduct, both online and during in-person events that are hosted and/or associated with hubble project.
 
 ## The Pledge
 
