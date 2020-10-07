@@ -47,7 +47,7 @@ pipeline {
         }
         stage("cleanup") {
           steps {
-            sh "docker rmi $registry:v0$BUILD_NUMBER"
+            sh "docker rmi $registry:v0.$BUILD_NUMBER"
           }
         }
       }
