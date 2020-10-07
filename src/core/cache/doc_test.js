@@ -4,7 +4,7 @@ const Async = require("crocks/Async");
 
 const mockService = {
   createDoc: ({ store, key, doc, ttl }) => Async.of({ ok: true }),
-  getDoc: ({ store, key }) => Async.of({ hello: "world" }),
+  getDoc: ({ store, key }) => Async.of({ ok: true, doc: { hello: "world" } }),
   updateDoc: ({ store, key, doc }) => Async.of({ ok: true }),
   deleteDoc: ({ store, key }) => Async.of({ ok: true }),
 };
