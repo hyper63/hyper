@@ -20,11 +20,17 @@ module.exports = (env = { url: "redis://127.0.0.1:6379" }) => {
     createDoc: ({ store, key, value, ttl }) =>
       set(createKey(store, key), JSON.stringify(value)).map(() => ({
         ok: true,
+        doc: value,
       })),
     getDoc: ({ store, key }) =>
-      get(createKey(store, key)).map((v) => JSON.parse(v)),
+      get(createKey(store, key)).map((v) => {
+        if (!v) {
+          return { ok: false, msg: "document not found" };
+        }
+        return { ok: true, doc: JSON.parse(v) };
+      }),
     updateDoc: ({ store, key, value, ttl }) =>
-      set(createKey(store, key), JSON.stringify(value)).map(() => ({
+      set(createKey(store, key), JSON.stringify(value)).map((v) => ({
         ok: true,
       })),
     deleteDoc: ({ store, key }) =>

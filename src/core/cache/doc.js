@@ -1,4 +1,5 @@
 const { Do, of, apply } = require("../utils");
+const hasProp = require("crocks/predicates/hasProp");
 const INVALID_KEY = "key is not valid";
 const INVALID_RESULT = "result is not valid";
 
@@ -21,7 +22,7 @@ module.exports = {
   delete: (store, key) =>
     of({ store, key })
       .chain(Do(validateKey, INVALID_KEY))
-      .chain(apply("destroyDoc"))
+      .chain(apply("deleteDoc"))
       .chain(Do(validateResult, INVALID_RESULT)),
 };
 
@@ -32,5 +33,9 @@ function validateKey(name) {
 }
 
 function validateResult(result) {
-  return true;
+  if (result && hasProp("ok", result)) {
+    return true;
+  }
+  console.log({ result });
+  return false;
 }

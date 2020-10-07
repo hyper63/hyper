@@ -14,7 +14,7 @@ exports.deleteStore = ({ params, cache }, res) =>
 
 // POST /cache/:name/:key?ttl=1hr
 exports.createDocument = ({ params, query, body, cache }, res) =>
-  fork(res, 201, cache.createDoc(params.name, body.key, body.doc, query.ttl));
+  fork(res, 201, cache.createDoc(params.name, body.key, body.value, query.ttl));
 
 // GET /cache/:name/:key
 exports.getDocument = ({ params, cache }, res) =>

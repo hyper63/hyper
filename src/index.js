@@ -24,7 +24,7 @@ app.delete("/micro/cache/:name", bindCore, cache.deleteStore);
 app.post("/micro/cache/:name", express.json(), bindCore, cache.createDocument);
 app.get("/micro/cache/:name/:key", bindCore, cache.getDocument);
 app.put(
-  "/micro/cache/:hame/:key",
+  "/micro/cache/:name/:key",
   express.json(),
   bindCore,
   cache.updateDocument

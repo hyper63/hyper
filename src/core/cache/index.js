@@ -43,9 +43,7 @@ module.exports = ({ cache }) => {
   /**
    *
    */
-  function deleteDoc(store, key) {
-    doc.delete(store, key).runWith(cache);
-  }
+  const deleteDoc = (store, key) => doc.delete(store, key).runWith(cache);
 
   /**
    * @param {string} store
