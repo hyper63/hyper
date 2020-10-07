@@ -22,7 +22,7 @@ pipeline {
       }
     }
     stage("docker") {
-      agent { docker { image 'docker:dind' }}
+      agent none
       stages {
         stage("build") {
           steps {
