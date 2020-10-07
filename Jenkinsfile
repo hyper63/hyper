@@ -25,10 +25,14 @@ pipeline {
       agent { docker { image 'docker:dind' }}
       stages {
         stage("build") {
-          sh 'docker build -t hyper63/atlas:v0 .'
+          steps {
+            sh 'docker build -t hyper63/atlas:v0 .'
+          }
         }
         stage("deploy") {
-          sh 'echo deploy-to-dockerhub'
+          steps {
+            sh 'echo deploy-to-dockerhub'
+          }
         }
       }
     }
