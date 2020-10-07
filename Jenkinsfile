@@ -22,16 +22,15 @@ pipeline {
       }
     }
     stage("docker") {
-      agent none
+      agent any
+      environment {
+        registry = 'hyper63/atlas'
+        registryCredential = 'dockerhub'
+      } 
       stages {
         stage("build") {
           steps {
-            sh 'docker build -t hyper63/atlas:v0 .'
-          }
-        }
-        stage("deploy") {
-          steps {
-            sh 'echo deploy-to-dockerhub'
+            docker.build registry + ":$BUILD_NUMBER"
           }
         }
       }
