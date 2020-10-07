@@ -4,6 +4,7 @@ const app = require("../../src");
 const fetch = require("node-fetch");
 
 test("create cache document", async (t) => {
+  t.plan(1);
   const server = testServer(app);
   const result = await (
     await fetch(server.url + "/micro/cache/foo?ttl=1m", {
