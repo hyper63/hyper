@@ -26,13 +26,28 @@ pipeline {
       environment {
         registry = 'hyper63/atlas'
         registryCredential = 'dockerhub'
+        dockerImage = ''
       } 
       stages {
         stage("build") {
           steps {
             script {
-              docker.build registry + ":$BUILD_NUMBER"
+              docker.build registry + ":v0.$BUILD_NUMBER"
             }
+          }
+        }
+        stage("deploy") {
+          steps {
+            script {
+              docker.withRegistry('', registryCredential) {
+                dockerImage.push()
+              }
+            }
+          }
+        }
+        stage("cleanup") {
+          steps {
+            sh "docker rmi $registry:v0$BUILD_NUMBER"
           }
         }
       }
