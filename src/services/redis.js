@@ -15,7 +15,10 @@ module.exports = (env = { url: "redis://127.0.0.1:6379" }) => {
   // todo add ttl support
 
   return {
-    createStore: noop,
+    createStore: (name) =>
+      set(createKey("store", name), "active").map(() => ({
+        ok: true,
+      })),
     destroyStore: noop,
     createDoc: ({ store, key, value, ttl }) =>
       set(createKey(store, key), JSON.stringify(value)).map(() => ({
