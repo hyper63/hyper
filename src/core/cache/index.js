@@ -45,6 +45,8 @@ module.exports = ({ cache }) => {
    */
   const deleteDoc = (store, key) => doc.delete(store, key).runWith(cache);
 
+  const queryStore = (name, pattern) =>
+    store.query(name, pattern).runWith(cache);
   /**
    * @param {string} store
    * @param {Array<string>} keys
@@ -71,6 +73,7 @@ module.exports = ({ cache }) => {
     updateDoc,
     getDoc,
     deleteDoc,
+    queryStore,
     getDocs,
     getDocsByRange,
   };

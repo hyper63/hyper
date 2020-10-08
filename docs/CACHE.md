@@ -36,19 +36,19 @@ All values must be valid json
 Create cache store
 
 ```
-PUT /cache/:name
+PUT /micro/cache/:name
 ```
 
 Delete cache store
 
 ```
-DELETE /cache/:name
+DELETE /micro/cache/:name
 ```
 
 Add key/value to cache
 
 ```
-POST /cache/:name
+POST /micro/cache/:name
 content-type: application/json
 
 {
@@ -61,13 +61,13 @@ content-type: application/json
 Get a value from key
 
 ```
-GET /cache/:name/:key
+GET /micro/cache/:name/:key
 ```
 
 Update a value for a key
 
 ```
-PUT /cache/:name/:key
+PUT /micro/cache/:name/:key
 
 {
   "HELLO": "MARS"
@@ -77,19 +77,25 @@ PUT /cache/:name/:key
 Delete a key
 
 ```
-DELETE /cache/:name/:key
+DELETE /micro/cache/:name/:key
+```
+
+Query store
+
+```
+POST /micro/cache/:name/_query?pattern=*
 ```
 
 List keys
 
 ```
-GET /cache/:name?keys=["1", "2", "3"]
+GET /micro/cache/:name?keys=["1", "2", "3"]
 ```
 
 List a range of keys
 
 ```
-GET /cache/:name?start="1"&end="3"
+GET /micro/cache/:name?start="1"&end="3"
 ```
 
 ## Adapter specification
@@ -104,7 +110,7 @@ module.exports = (env) => ({
   getDoc: ({ store, key }) => null,
   updateDoc: ({ store, key, value }) => null,
   deleteDoc: ({ store, key }) => null,
-  listDocs: ({ keys, start, end }) => null,
+  listDocs: ({ store, pattern }) => null,
   close: () => null,
 });
 ```

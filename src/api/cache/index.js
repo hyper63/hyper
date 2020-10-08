@@ -27,3 +27,7 @@ exports.updateDocument = ({ cache, params, body }, res) =>
 // DELETE /cache/:name/:key
 exports.deleteDocument = ({ cache, params }, res) =>
   fork(res, 200, cache.deleteDoc(params.name, params.key));
+
+// POST /cache/:name/_query
+exports.queryStore = ({ cache, params, query }, res) =>
+  fork(res, 200, cache.queryStore(params.name, query.pattern));

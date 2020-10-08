@@ -13,6 +13,12 @@ module.exports = {
       .chain(Do(validateName, INVALID_NAME))
       .chain(apply("destroyStore"))
       .chain(Do(validateResult, INVALID_RESULT)),
+  query: (name, pattern) =>
+    of(name)
+      .chain(Do(validateName, INVALID_NAME))
+      .map((name) => ({ store: name, pattern }))
+      .chain(apply("listDocs"))
+      .chain(Do(validateResult, INVALID_RESULT)),
 };
 
 // validators predicate functions
