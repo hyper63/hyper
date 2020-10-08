@@ -1,29 +1,29 @@
-const { Do, of, apply } = require("../utils");
+const { is, of, apply } = require("../utils");
 const INVALID_NAME = "name is not valid";
 const INVALID_RESULT = "result is not valid";
 
 module.exports = {
   create: (name) =>
     of(name)
-      .chain(Do(validateName, INVALID_NAME))
+      .chain(is(validName, INVALID_NAME))
       .chain(apply("createStore"))
-      .chain(Do(validateResult, INVALID_RESULT)),
+      .chain(is(validResult, INVALID_RESULT)),
   delete: (name) =>
     of(name)
-      .chain(Do(validateName, INVALID_NAME))
+      .chain(is(validName, INVALID_NAME))
       .chain(apply("destroyStore"))
-      .chain(Do(validateResult, INVALID_RESULT)),
+      .chain(is(validResult, INVALID_RESULT)),
   query: (name, pattern) =>
     of(name)
-      .chain(Do(validateName, INVALID_NAME))
+      .chain(is(validName, INVALID_NAME))
       .map((name) => ({ store: name, pattern }))
       .chain(apply("listDocs"))
-      .chain(Do(validateResult, INVALID_RESULT)),
+      .chain(is(validResult, INVALID_RESULT)),
 };
 
 // validators predicate functions
 
-function validateName(name) {
+function validName(name) {
   // verify that the name does not contains spaces
   // verify that the name does not contain slashes
   // verify that the name contains URI friendly characters
@@ -32,7 +32,7 @@ function validateName(name) {
   return true;
 }
 
-function validateResult(result) {
+function validResult(result) {
   // return Left({ ok: false, msg: 'result is invalid'})
   return true;
 }

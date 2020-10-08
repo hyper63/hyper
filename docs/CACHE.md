@@ -53,8 +53,8 @@ content-type: application/json
 
 {
   "key": "KEY",
-  "value": {"HELLO": "WORLD"}
-  "ttl": "1 hr"
+  "value": {"HELLO": "WORLD"},
+  "ttl": "2d"
 }
 ```
 
@@ -67,7 +67,7 @@ GET /micro/cache/:name/:key
 Update a value for a key
 
 ```
-PUT /micro/cache/:name/:key
+PUT /micro/cache/:name/:key?ttl=1h
 
 {
   "HELLO": "MARS"
@@ -86,16 +86,16 @@ Query store
 POST /micro/cache/:name/_query?pattern=*
 ```
 
-List keys
+List keys for a store
 
 ```
-GET /micro/cache/:name?keys=["1", "2", "3"]
+GET /micro/cache/:name
 ```
 
-List a range of keys
+List keys by pattern
 
 ```
-GET /micro/cache/:name?start="1"&end="3"
+GET /micro/cache/:name?pattern=foo* // all keys start with foo
 ```
 
 ## Adapter specification
@@ -111,7 +111,6 @@ module.exports = (env) => ({
   updateDoc: ({ store, key, value }) => null,
   deleteDoc: ({ store, key }) => null,
   listDocs: ({ store, pattern }) => null,
-  close: () => null,
 });
 ```
 

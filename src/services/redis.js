@@ -12,6 +12,7 @@ module.exports = (env = { url: "redis://127.0.0.1:6379" }) => {
   const del = Async.fromNode(client.del.bind(client));
   const keys = Async.fromNode(client.keys.bind(client));
   const scan = Async.fromNode(client.scan.bind(client));
+  const expire = Async.fromNode(client.expire.bind(client));
 
   const createKey = (store, key) => `${store}_${key}`;
   // todo add ttl support
@@ -29,11 +30,19 @@ module.exports = (env = { url: "redis://127.0.0.1:6379" }) => {
           ok: true,
           keys,
         })),
-    createDoc: ({ store, key, value, ttl }) =>
-      set(createKey(store, key), JSON.stringify(value)).map(() => ({
-        ok: true,
-        doc: value,
-      })),
+    createDoc: ({ store, key, value, ttl = 0 }) =>
+      set(createKey(store, key), JSON.stringify(value))
+        .chain((result) => {
+          console.log({ ttl });
+          if (ttl > 0) {
+            return expire(createKey(store, key), ttl);
+          }
+          return Async.of(result);
+        })
+        .map(() => ({
+          ok: true,
+          doc: value,
+        })),
     getDoc: ({ store, key }) =>
       get(createKey(store, key)).map((v) => {
         if (!v) {
@@ -41,10 +50,17 @@ module.exports = (env = { url: "redis://127.0.0.1:6379" }) => {
         }
         return { ok: true, doc: JSON.parse(v) };
       }),
-    updateDoc: ({ store, key, value, ttl }) =>
-      set(createKey(store, key), JSON.stringify(value)).map((v) => ({
-        ok: true,
-      })),
+    updateDoc: ({ store, key, value, ttl = 0 }) =>
+      set(createKey(store, key), JSON.stringify(value))
+        .chain((result) => {
+          if (ttl > 0) {
+            return expire(createKey(store, key), ttl);
+          }
+          return Async.of(result);
+        })
+        .map((v) => ({
+          ok: true,
+        })),
     deleteDoc: ({ store, key }) =>
       del(createKey(store, key)).map(() => ({ ok: true })),
     listDocs: ({ store, pattern = "*" }) =>
