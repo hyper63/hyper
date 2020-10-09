@@ -6,7 +6,7 @@ Current Status: Organization and Design Phase
 
 ## OpenAPI Specification
 
-[View OpenAPI Spec](https://petstore.swagger.io/?url=https://gitcdn.xyz/repo/hyper63/atlas/staging/swagger.yml)
+[View OpenAPI Spec](https://petstore.swagger.io/?url=https://gitcdn.xyz/repo/hyper63/atlas/main/swagger.yml)
 
 ## Inception Document
 
