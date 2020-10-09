@@ -13,17 +13,21 @@ exports.deleteStore = ({ params, cache }, res) =>
   fork(res, 200, cache.deleteStore(params.name));
 
 // POST /cache/:name/:key?ttl=1hr
-exports.createDocument = ({ params, query, body, cache }, res) =>
-  fork(res, 201, cache.createDoc(params.name, body.key, body.value, query.ttl));
+exports.createDocument = ({ params, body, cache }, res) =>
+  fork(res, 201, cache.createDoc(params.name, body.key, body.value, body.ttl));
 
 // GET /cache/:name/:key
 exports.getDocument = ({ params, cache }, res) =>
   fork(res, 200, cache.getDoc(params.name, params.key));
 
 // PUT /cache/:name/:key
-exports.updateDocument = ({ cache, params, body }, res) =>
-  fork(res, 200, cache.updateDoc(params.name, params.key, body));
+exports.updateDocument = ({ cache, params, body, query }, res) =>
+  fork(res, 200, cache.updateDoc(params.name, params.key, body, query.ttl));
 
 // DELETE /cache/:name/:key
 exports.deleteDocument = ({ cache, params }, res) =>
   fork(res, 200, cache.deleteDoc(params.name, params.key));
+
+// POST /cache/:name/_query
+exports.queryStore = ({ cache, params, query }, res) =>
+  fork(res, 200, cache.queryStore(params.name, query.pattern));

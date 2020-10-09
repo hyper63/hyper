@@ -4,10 +4,34 @@
 
 The atlas cache api allows the application to create cache stores and read/write json documents to those stores by providing a key for each json document and an optional ttl or time to live period for the cached document. A cache can be very useful to provide fast access to specific data if the data has not changed recently. Leveraging a cache can provide a significant boost in terms of scale and performance for an application.
 
-## Usage
+## How it works
+
+Atlas runs as a web service usually on port 6363, and to access the cache module you will use the url path:
+
+`/micro/cache`
+
+Your server application can access the REST interface using an httpClient. A simple way to test the interface is to use `curl`
 
 ```sh
-docker run ...
+curl localhost:6363/micro/cache
+```
+
+You will get back a json response:
+
+```json
+{ "name": "Atlas Cache", "version": "1.0", "status": "unstable" }
+```
+
+For more commands, see the api section below.
+
+## Usage
+
+> NOTE: you will need docker installed: https://www.docker.com/
+
+Install an run hyper63 atlas micro
+
+```sh
+docker run -d -v data:/data -p 6363:6363 --name atlas hyper63/atlas:unstable
 ```
 
 ## Testing
@@ -16,80 +40,118 @@ docker run ...
 yarn test:cache
 ```
 
-## Requirements
-
-To create a cache api, I need to be able to
-
-- create a cache store
-- add a key and value to a cache store, with a TTL option
-- get a value from a key
-- update a value to a key resetting TTL
-- remove a key value pair
-- get a specific list of values by their keys
-- get a set of keys by range searches of partial key values
-
-All keys must be strings - with no spaces, no slashes, and uri safe
-All values must be valid json
-
 ## API
 
 Create cache store
 
+> Creating a cache store gives you a logical namespace to store data in for your cache,
+> this request creates the store or returns and error if it already exists.
+
+Request
+
 ```
-PUT /cache/:name
+PUT /micro/cache/:name
+```
+
+Successful Response
+
+```json
+{
+  "ok": true
+}
+```
+
+Already exists Error Response
+
+```json
+{
+  "ok": false,
+  "msg": "Store already exists"
+}
+```
+
+General Error Response
+
+```json
+{
+  "ok": false,
+  "msg": "request error"
+}
 ```
 
 Delete cache store
 
 ```
-DELETE /cache/:name
+
+DELETE /micro/cache/:name
+
 ```
 
 Add key/value to cache
 
 ```
-POST /cache/:name
+
+POST /micro/cache/:name
 content-type: application/json
 
 {
-  "key": "KEY",
-  "value": {"HELLO": "WORLD"}
-  "ttl": "1 hr"
+"key": "KEY",
+"value": {"HELLO": "WORLD"},
+"ttl": "2d"
 }
+
 ```
 
 Get a value from key
 
 ```
-GET /cache/:name/:key
+
+GET /micro/cache/:name/:key
+
 ```
 
 Update a value for a key
 
 ```
-PUT /cache/:name/:key
+
+PUT /micro/cache/:name/:key?ttl=1h
 
 {
-  "HELLO": "MARS"
+"HELLO": "MARS"
 }
+
 ```
 
 Delete a key
 
 ```
-DELETE /cache/:name/:key
-```
 
-List keys
+DELETE /micro/cache/:name/:key
 
 ```
-GET /cache/:name?keys=["1", "2", "3"]
-```
 
-List a range of keys
+Query store
 
 ```
-GET /cache/:name?start="1"&end="3"
+
+POST /micro/cache/:name/\_query?pattern=\*
+
+```
+
+List keys for a store
+
+```
+
+GET /micro/cache/:name
+
+```
+
+List keys by pattern
+
+```
+
+GET /micro/cache/:name?pattern=foo\* // all keys start with foo
+
 ```
 
 ## Adapter specification
@@ -104,8 +166,7 @@ module.exports = (env) => ({
   getDoc: ({ store, key }) => null,
   updateDoc: ({ store, key, value }) => null,
   deleteDoc: ({ store, key }) => null,
-  listDocs: ({ keys, start, end }) => null,
-  close: () => null,
+  listDocs: ({ store, pattern }) => null,
 });
 ```
 

@@ -23,7 +23,7 @@ module.exports = ({ cache }) => {
    * @param {string} [ttl] - short hand for time to live 30m, 1hr, 1d
    * @returns {Async}
    */
-  const createDoc = (store, key, value, ttl = "10m") =>
+  const createDoc = (store, key, value, ttl) =>
     doc.create(store, key, value, ttl).runWith(cache);
 
   /**
@@ -32,8 +32,8 @@ module.exports = ({ cache }) => {
    * @param {object} value
    * @returns {Promise<object>}
    */
-  const updateDoc = (store, key, value) =>
-    doc.update(store, key, value).runWith(cache);
+  const updateDoc = (store, key, value, ttl) =>
+    doc.update(store, key, value, ttl).runWith(cache);
 
   /**
    *
@@ -45,6 +45,8 @@ module.exports = ({ cache }) => {
    */
   const deleteDoc = (store, key) => doc.delete(store, key).runWith(cache);
 
+  const queryStore = (name, pattern) =>
+    store.query(name, pattern).runWith(cache);
   /**
    * @param {string} store
    * @param {Array<string>} keys
@@ -71,6 +73,7 @@ module.exports = ({ cache }) => {
     updateDoc,
     getDoc,
     deleteDoc,
+    queryStore,
     getDocs,
     getDocsByRange,
   };

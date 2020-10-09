@@ -8,6 +8,7 @@ const mockService = {
       ok: true,
     }),
   destroyStore: (name) => Async.of({ ok: true }),
+  listDocs: (name) => Async.of({ ok: true }),
 };
 
 test("create cache store", (t) => {
@@ -34,4 +35,17 @@ test("destroy cache store", (t) => {
   }
 
   store.delete("Hello").runWith(mockService).fork(handleError, handleSuccess);
+});
+
+test("query cache store", (t) => {
+  t.plan(1);
+
+  function handleError() {
+    t.ok(false);
+  }
+  function handleSuccess() {
+    t.ok(true);
+  }
+
+  store.query("Hello").runWith(mockService).fork(handleError, handleSuccess);
 });

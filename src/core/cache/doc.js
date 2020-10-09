@@ -1,38 +1,75 @@
-const { Do, of, apply } = require("../utils");
+const ms = require("ms");
+const { lensProp, over } = require("ramda");
+const { is, of, apply } = require("../utils");
 const hasProp = require("crocks/predicates/hasProp");
 const INVALID_KEY = "key is not valid";
 const INVALID_RESULT = "result is not valid";
+const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? ms(ttl) : null));
+
+/**
+ * @param {string} store
+ * @param {string} key
+ * @param {Object} value
+ * @param {string} ttl
+ * @returns {AsyncReader}
+ */
+const create = (store, key, value, ttl) =>
+  of({ store, key, value, ttl })
+    .map(convertTTL)
+    .chain(is(validKey, INVALID_KEY))
+    .chain(apply("createDoc"))
+    .chain(is(validResult, INVALID_RESULT));
+
+/**
+ * @param {string} store
+ * @param {string} key
+ * @returns {AsyncReader}
+ */
+const get = (store, key) =>
+  of({ store, key })
+    .chain(is(validKey, INVALID_KEY))
+    .chain(apply("getDoc"))
+    .chain(is(validResult, INVALID_RESULT));
+
+/**
+ * @param {string} store
+ * @param {string} key
+ * @param {Object} value
+ * @param {string} ttl
+ * @returns {AsyncReader}
+ */
+const update = (store, key, value, ttl) =>
+  of({ store, key, value, ttl })
+    .map(convertTTL)
+    .chain(is(validKey, INVALID_KEY))
+    .chain(apply("updateDoc"))
+    .chain(is(validResult, INVALID_RESULT));
+
+/**
+ * @param {string} store
+ * @param {string} key
+ * @returns {AsyncReader}
+ */
+const del = (store, key) =>
+  of({ store, key })
+    .chain(is(validKey, INVALID_KEY))
+    .chain(apply("deleteDoc"))
+    .chain(is(validResult, INVALID_RESULT));
 
 module.exports = {
-  create: (store, key, value, ttl) =>
-    of({ store, key, value, ttl })
-      .chain(Do(validateKey, INVALID_KEY))
-      .chain(apply("createDoc"))
-      .chain(Do(validateResult, INVALID_RESULT)),
-  get: (store, key) =>
-    of({ store, key })
-      .chain(Do(validateKey, INVALID_KEY))
-      .chain(apply("getDoc"))
-      .chain(Do(validateResult, INVALID_RESULT)),
-  update: (store, key, value) =>
-    of({ store, key, value })
-      .chain(Do(validateKey, INVALID_KEY))
-      .chain(apply("updateDoc"))
-      .chain(Do(validateResult, INVALID_RESULT)),
-  delete: (store, key) =>
-    of({ store, key })
-      .chain(Do(validateKey, INVALID_KEY))
-      .chain(apply("deleteDoc"))
-      .chain(Do(validateResult, INVALID_RESULT)),
+  create,
+  get,
+  update,
+  delete: del,
 };
 
 // validators predicate functions
 
-function validateKey(name) {
+function validKey(name) {
   return true;
 }
 
-function validateResult(result) {
+function validResult(result) {
   if (result && hasProp("ok", result)) {
     return true;
   }
