@@ -20,7 +20,7 @@ info:
     with docker
 
 
-    ``` sh
+    ```
     docker run -d -v data:/data -p 6363:6363 --name atlas hyper63/atlas
     ```
 
