@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const helmet = require("helmet");
 const core = require("./bind")();
 
@@ -14,7 +15,7 @@ const bindCore = (req, res, next) => {
 };
 
 app.use(helmet());
-
+app.use(cors({ credentials: true }));
 //app.use("/micro/data", require("./api/data"));
 
 // cache api
