@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Atlas Micro
+  description: Atlas Micro is a backend runtime for micro-services
+  contact:
+    url: https://hyper63.com
+    email: tom@hyper63.com
+    name: Tom Wilson
+  license:
+    name: Apache License 2.0
+    url: https://github.com/hyper63/atlas/blob/main/LICENSE
+  version: '1.0'
+  termsOfService: https://hyper63.com/termsofuse.text
+servers: 
+  - description: Development Server
+    url: http://localhost:6363
+paths:
+  /:
+    get:
+      description: server health response
+      responses:
+        '200':
+          description: successful health response
+          content:
+            application/json:
+              schema:
+                properties:
+                  name:
+                    description: name of service
+                    type: string
+  /cache:
+    get:
+      description: cache module information
+      responses:
+        '200':
+          description: cache module info
+          content:
+            application/json:
+              schema:
+                properties:
+                  name:
+                    description: name of module
+                    type: string
+                  version:
+                    description: module version
+                    type: string
+                  stores:
+                    description: list of active stores
+                    type: array
+                  status:
+                    description: stability of module
+                    type: string
+                    enum: 
+                      - stable
+                      - unstable
+                    default: unstable
+  /cache/{name}:
+    put:
+      description: create cache store
+      parameters: 
+      - name: name
+        in: path
+        description: name of cache store
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successfully created store
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        '500':
+          description: could not create store
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+    delete:
+      description: delete cache store
+      parameters: 
+        - name: name
+          in: path
+          description: name of cache store
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully deleted store
+    post:
+      description: create new cache document
+      parameters: 
+        - name: name
+          in: path
+          description: name of cache store
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: cache document
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                key:
+                  type: string
+                value:
+                  type: object
+                ttl:
+                  type: string
+      responses:
+        '200':
+          description: successfully create cache doc
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  doc:
+                    type: object
+        '500':
+          description: internal error occured
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  msg:
+                    type: string
+  /cache/{name}/_query:
+    get:
+      description: query cache with key match pattern
+      parameters: 
+        - name: name
+          in: path
+          description: name of cache store
+          required: true
+          schema:
+            type: string
+        - name: pattern
+          in: query
+          description: pattern to match keys
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully responde with list of docs
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: 
+                    type: boolean
+                    default: true
+                  docs:
+                    type: array
+        '500':
+          description: error occured with query
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: 
+                    type: boolean
+                    default: false
+                  msg:
+                    type: string
+
+  /cache/{name}/{key}:
+    get:
+      description: get cache key from store
+      parameters: 
+      - name: name
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: key
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  doc:
+                    type: object
+        '500':
+          description: error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  msg:
+                    type: string
+    put:
+      description: update cache document
+      parameters: 
+      - name: name
+        in: path
+        schema: 
+          type: string
+        required: true
+      - name: key
+        in: path 
+        schema: 
+          type: string
+        description: cache document
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                key:
+                  type: string
+                value:
+                  type: object
+                ttl:
+                  type: string
+      responses:
+        '200':
+          description: successfully create cache doc
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  doc:
+                    type: object
+        '500':
+          description: internal error occured
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  msg:
+                    type: string
+    delete:
+      description: remove cache document
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successfully create cache doc
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  doc:
+                    type: object
+        '500':
+          description: internal error occured
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  msg:
+                    type: string          
+                
