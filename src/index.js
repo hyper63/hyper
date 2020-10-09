@@ -18,19 +18,15 @@ app.use(helmet());
 //app.use("/micro/data", require("./api/data"));
 
 // cache api
-app.get("/micro/cache", cache.index);
-app.put("/micro/cache/:name", bindCore, cache.createStore);
-app.delete("/micro/cache/:name", bindCore, cache.deleteStore);
-app.post("/micro/cache/:name/_query", bindCore, cache.queryStore);
-app.post("/micro/cache/:name", express.json(), bindCore, cache.createDocument);
-app.get("/micro/cache/:name/:key", bindCore, cache.getDocument);
-app.put(
-  "/micro/cache/:name/:key",
-  express.json(),
-  bindCore,
-  cache.updateDocument
-);
-app.delete("/micro/cache/:name/:key", bindCore, cache.deleteDocument);
+app.get("/cache", cache.index);
+app.put("/cache/:name", bindCore, cache.createStore);
+app.delete("/cache/:name", bindCore, cache.deleteStore);
+app.get("/cache/:name/_query", bindCore, cache.queryStore);
+app.post("/cache/:name/_query", bindCore, cache.queryStore);
+app.post("/cache/:name", express.json(), bindCore, cache.createDocument);
+app.get("/cache/:name/:key", bindCore, cache.getDocument);
+app.put("/cache/:name/:key", express.json(), bindCore, cache.updateDocument);
+app.delete("/cache/:name/:key", bindCore, cache.deleteDocument);
 
 //app.use("/micro/storage", require("./api/storage"));
 //app.use("/micro/hooks", require("./api/hooks"));
