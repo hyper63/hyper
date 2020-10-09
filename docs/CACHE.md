@@ -50,7 +50,7 @@ Create cache store
 Request
 
 ```
-PUT /micro/cache/:name
+PUT /cache/:name
 ```
 
 Successful Response
@@ -83,7 +83,7 @@ Delete cache store
 
 ```
 
-DELETE /micro/cache/:name
+DELETE /cache/:name
 
 ```
 
@@ -91,7 +91,7 @@ Add key/value to cache
 
 ```
 
-POST /micro/cache/:name
+POST /cache/:name
 content-type: application/json
 
 {
@@ -106,7 +106,7 @@ Get a value from key
 
 ```
 
-GET /micro/cache/:name/:key
+GET /cache/:name/:key
 
 ```
 
@@ -114,7 +114,7 @@ Update a value for a key
 
 ```
 
-PUT /micro/cache/:name/:key?ttl=1h
+PUT /cache/:name/:key?ttl=1h
 
 {
 "HELLO": "MARS"
@@ -126,7 +126,7 @@ Delete a key
 
 ```
 
-DELETE /micro/cache/:name/:key
+DELETE /cache/:name/:key
 
 ```
 
@@ -134,15 +134,7 @@ Query store
 
 ```
 
-POST /micro/cache/:name/\_query?pattern=\*
-
-```
-
-List keys for a store
-
-```
-
-GET /micro/cache/:name
+POST /cache/:name/\_query?pattern=\*
 
 ```
 
@@ -150,7 +142,7 @@ List keys by pattern
 
 ```
 
-GET /micro/cache/:name?pattern=foo\* // all keys start with foo
+GET /micro/cache/:name?pattern=foo* // all keys start with foo
 
 ```
 

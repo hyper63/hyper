@@ -90,7 +90,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        "201":
           description: successfully created store
           content:
             application/json:
@@ -142,7 +142,7 @@ paths:
                 ttl:
                   type: string
       responses:
-        "200":
+        "201":
           description: successfully create cache doc
           content:
             application/json:
