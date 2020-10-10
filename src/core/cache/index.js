@@ -1,4 +1,3 @@
-const Async = require("crocks/Async");
 const store = require("./store");
 const doc = require("./doc");
 
@@ -30,41 +29,32 @@ module.exports = ({ cache }) => {
    * @param {string} store
    * @param {string} key
    * @param {object} value
-   * @returns {Promise<object>}
+   * @returns {Async}
    */
   const updateDoc = (store, key, value, ttl) =>
     doc.update(store, key, value, ttl).runWith(cache);
 
   /**
-   *
+   * @param {string} store
+   * @param {string} key
+   * @returns {Async}
    */
   const getDoc = (store, key) => doc.get(store, key).runWith(cache);
 
   /**
-   *
+   * @param {string} name
+   * @param {string} key
+   * @returns {Async}
    */
   const deleteDoc = (store, key) => doc.delete(store, key).runWith(cache);
 
+  /**
+   * @param {string} name
+   * @param {string} pattern
+   * @returns {Async}
+   */
   const queryStore = (name, pattern) =>
     store.query(name, pattern).runWith(cache);
-  /**
-   * @param {string} store
-   * @param {Array<string>} keys
-   * @returns {Object}
-   *
-   */
-  function getDocs(store, keys) {
-    return Promise.resolve({ docs: [] });
-  }
-
-  /**
-   * @param {string} store
-   * @param {string} start
-   * @param {string} end
-   */
-  function getDocsByRange(store, start, end) {
-    return Promise.resolve({ docs: [] });
-  }
 
   return {
     createStore,
@@ -74,21 +64,5 @@ module.exports = ({ cache }) => {
     getDoc,
     deleteDoc,
     queryStore,
-    getDocs,
-    getDocsByRange,
   };
 };
-
-// validators
-
-function validateName(name) {
-  // verify that the name does not contains spaces
-  // verify that the name does not contain slashes
-  // verify that the name contains URI friendly characters
-  // should return a Either Right or Left
-  return false;
-}
-
-function validateResult(result) {
-  return false;
-}

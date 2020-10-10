@@ -7,16 +7,27 @@ const app = express();
 const port = process.env.PORT || 6363;
 
 const cache = require("./api/cache");
+const data = require("./api/data");
 
 // middleware to inject core modules into request object
 const bindCore = (req, res, next) => {
   req.cache = core.cache;
+  req.data = core.data;
   next();
 };
 
 app.use(helmet());
 app.use(cors({ credentials: true }));
-//app.use("/micro/data", require("./api/data"));
+
+// data api
+app.get("/data", data.index);
+app.put("/data/:db", bindCore, data.createDb);
+app.delete("/data/:db", bindCore, data.removeDb);
+app.post("/data/:db", bindCore, data.createDocument);
+app.get("/data/:db/:id", bindCore, data.getDocument);
+app.put("/data/:db/:id", bindCore, data.updateDocument);
+app.delete("/data/:db/:id", bindCore, data.deleteDocument);
+app.post("/data/:db/_query", bindCore, data.queryDb);
 
 // cache api
 app.get("/cache", cache.index);

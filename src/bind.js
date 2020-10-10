@@ -14,11 +14,21 @@
  */
 const services = require("./services");
 const core = require("./core");
-const env = {};
+const env = {
+  cache: {
+    url: "redis://127.0.0.1:6379",
+  },
+  data: {
+    db: "http://localhost:5984",
+    user: "admin",
+    password: "password",
+  },
+};
 // bind services and environment to core
 module.exports = () => {
   const initializedServices = {
-    cache: services.cache(env),
+    cache: services.cache(env.cache),
+    data: services.data(env.data),
   };
   return core(initializedServices);
 };
