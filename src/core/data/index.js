@@ -26,7 +26,7 @@ module.exports = ({ data }) => {
    * @param {string} id
    * @returns {Async}
    */
-  const getDocument = (db, id) => doc.get(db, doc).runWith(data);
+  const getDocument = (db, id) => doc.get(db, id).runWith(data);
 
   /**
    * @param {string} db

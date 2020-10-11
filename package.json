@@ -30,7 +30,7 @@
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon src/index.js",
-    "test:unit": "tape src/**/*_test.js",
+    "test:unit": "tape src/core/**/*_test.js",
     "test:integration": "tape test/**/*_test.js",
     "test": "run-p test:unit"
   }

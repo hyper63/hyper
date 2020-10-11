@@ -11,22 +11,15 @@ const mockDb = {
   },
 };
 
-test("create database", (t) => {
+const fork = (m) => (t) => {
   t.plan(1);
-  db.create("foo")
-    .runWith(mockDb)
-    .fork(
-      () => t.ok(false),
-      () => t.ok(true)
-    );
-});
+  return m.fork(
+    () => t.ok(false),
+    () => t.ok(true)
+  );
+};
 
-test("remove database", (t) => {
-  t.plan(1);
-  db.remove("foo")
-    .runWith(mockDb)
-    .fork(
-      () => t.ok(false),
-      () => t.ok(true)
-    );
-});
+test("create database", fork(db.create("foo").runWith(mockDb)));
+test("remove database", fork(db.remove("foo").runWith(mockDb)));
+//test("query database");
+//test("index database");

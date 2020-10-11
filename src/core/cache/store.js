@@ -29,10 +29,10 @@ const del = (name) =>
  */
 const query = (name, pattern) =>
   of(name)
-    .chain(is(validName, INVALID_NAME))
+    .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
     .chain(apply("listDocs"))
-    .chain(is(validResult, INVALID_RESULT));
+    .chain(is(validResult, INVALID_RESULT_MSG));
 
 module.exports = {
   create,
