@@ -20,8 +20,51 @@ info:
     with docker
 
 
+    create a new directory:
+
+
     ```
-    docker run -d -v data:/data -p 6363:6363 --name atlas hyper63/atlas
+    mkdir atlas
+    cd atlas
+    ```
+
+
+    create a `docker-compose.yml` file
+
+
+    ```yaml
+    version: "3.8"
+    services:
+      web:
+        image: "hyper63/atlas:unstable"
+        ports:
+          - "6363:6363"
+      redis:
+        image: "redis:alpine"
+        volumes:
+          - ".:/data"
+      couchdb:
+        image: "couchdb"
+        environment:
+          COUCHDB_USER: "admin"
+          COUCHDB_PASSWORD: "password"
+        volumes:
+          - ".:/opt/couchdb/data"
+    ```
+
+
+    launch using `docker-compose`
+
+
+    ```
+
+    docker-compose up -d
+
+    docker exec -it atlas_couchdb_1 \
+      curl -X POST -H "Content-Type: application/json" \ 
+      localhost:5984/_cluster_setup \
+      -d '{"action":"enable_single_node", "bind_address":"0.0.0.0"}' \
+      -u 'admin:password'
     ```
 
 
@@ -323,4 +366,272 @@ paths:
                     type: boolean
                     default: false
                   msg:
+                    type: string
+  /data:
+    get:
+      description: data module information
+      responses:
+        200:
+          description: data module info
+          content:
+            application/json:
+              schema:
+                properties:
+                  name:
+                    description: module name
+                    type: string
+        500:
+          description: service not available
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+  /data/{name}:
+    put:
+      description: create database
+      parameters:
+        - name: name
+          in: path
+          description: name of database
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: successfully created database
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+    delete:
+      description: remove database
+      parameters:
+        - name: name
+          in: path
+          description: name of database
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successfully removed database
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        500:
+          description: could not remove database
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+    post:
+      description: create document
+      parameters:
+        - name: name
+          in: path
+          description: name of database
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: json body that requires submitting
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        201:
+          description: successfully created document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  id:
+                    type: string
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+  /data/{name}/_query:
+    post:
+      description: query database
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: name of database
+          schema:
+            type: string
+      requestBody:
+        description: json query document
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        201:
+          description: successful result
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  docs:
+                    type: array
+        500:
+          description: error trying to run query
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+
+  /data/{name}/{id}:
+    get:
+      description: get document
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: database name
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: document id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: get document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  document:
+                    type: object
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+    put:
+      description: update document
+      parameters:
+        - name: name
+          in: path
+          description: database name
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: document id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: json body that requires submitting
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        201:
+          description: update document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  id:
+                    type: string
+        500:
+          description: error updating document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+    delete:
+      description: delete document
+      parameters:
+        - name: name
+          in: path
+          description: database name
+          required: true
+          schema:
+            type: string
+        - name: id
+          description: document id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: deleted document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  id:
+                    type: string
+        500:
+          description: error trying to delete document
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  id:
                     type: string
