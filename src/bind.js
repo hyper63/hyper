@@ -1,3 +1,4 @@
+require("dotenv").config();
 /**
  * The core is where all the business logic
  * will be for the project
@@ -14,14 +15,27 @@
  */
 const services = require("./services");
 const core = require("./core");
+
+const couchUrl = new URL(
+  process.env.COUCH || "http://admin:password@couchdb:5984"
+);
+const minioUrl = new URL(
+  process.env.MINIO || "http://minio:minio123@minio:9000"
+);
 const env = {
   cache: {
-    url: "redis://redis:6379",
+    url: process.env.REDIS || "redis://redis:6379",
   },
   data: {
-    db: "http://couchdb:5984",
-    user: "admin",
-    password: "password",
+    db: `${couchUrl.protocol}//${couchUrl.host}`,
+    user: couchUrl.username,
+    password: couchUrl.password,
+  },
+  storage: {
+    endpoint: minioUrl.hostname,
+    port: minioUrl.port,
+    accessKey: minioUrl.username,
+    secretKey: minioUrl.password,
   },
 };
 // bind services and environment to core

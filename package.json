@@ -7,6 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
+    "dotenv": "^8.2.0",
     "eslint": "^7.10.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",
@@ -21,6 +22,7 @@
     "cuid": "^2.1.8",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
+    "minio": "^7.0.16",
     "ms": "^2.1.2",
     "ramda": "^0.27.1",
     "redis": "^3.0.2"
