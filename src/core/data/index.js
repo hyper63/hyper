@@ -19,7 +19,8 @@ module.exports = ({ data }) => {
    * @param {Object} doc
    * @returns {Async}
    */
-  const createDocument = (db, doc) => doc.create(db, doc).runWith(data);
+  const createDocument = (db, document) =>
+    doc.create(db, document).runWith(data);
 
   /**
    * @param {string} db
@@ -34,7 +35,8 @@ module.exports = ({ data }) => {
    * @param {Object} doc
    * @returns {Async}
    */
-  const updateDocument = (db, id, doc) => doc.update(db, id, doc).runWith(data);
+  const updateDocument = (db, id, document) =>
+    doc.update(db, id, document).runWith(data);
 
   /**
    * @param {string} db

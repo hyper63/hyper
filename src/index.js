@@ -23,9 +23,9 @@ app.use(cors({ credentials: true }));
 app.get("/data", data.index);
 app.put("/data/:db", bindCore, data.createDb);
 app.delete("/data/:db", bindCore, data.removeDb);
-app.post("/data/:db", bindCore, data.createDocument);
+app.post("/data/:db", express.json(), bindCore, data.createDocument);
 app.get("/data/:db/:id", bindCore, data.getDocument);
-app.put("/data/:db/:id", bindCore, data.updateDocument);
+app.put("/data/:db/:id", express.json(), bindCore, data.updateDocument);
 app.delete("/data/:db/:id", bindCore, data.deleteDocument);
 app.post("/data/:db/_query", bindCore, data.queryDb);
 

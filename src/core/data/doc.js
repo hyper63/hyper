@@ -1,9 +1,12 @@
 const { is, of, apply } = require("../utils");
+const cuid = require("cuid");
 const INVALID_ID_MSG = "doc id is not valid";
 const INVALID_RESPONSE = "response is not valid";
 
-const create = (db, id, doc) =>
-  of({ db, id, doc })
+const createGUID = (id) => (id ? id : cuid());
+
+const create = (db, doc) =>
+  of({ db, id: createGUID(doc.id), doc })
     .chain(apply("createDocument"))
     .chain(is(validResponse, INVALID_RESPONSE));
 

@@ -27,15 +27,11 @@ const fork = (m) => (t) => {
 
 test(
   "create document",
-  fork(
-    doc.create({ db: "foo", id: "1", doc: { hello: "world" } }).runWith(mock)
-  )
+  fork(doc.create("foo", { hello: "world" }).runWith(mock))
 );
-test("get document", fork(doc.get({ db: "foo", id: "1" }).runWith(mock)));
+test("get document", fork(doc.get("foo", "1").runWith(mock)));
 test(
   "update document",
-  fork(
-    doc.update({ db: "foo", id: "1", doc: { goodbye: "moon" } }).runWith(mock)
-  )
+  fork(doc.update("foo", "1", { id: "1", goodbye: "moon" }).runWith(mock))
 );
-test("remove document", fork(doc.remove({ db: "foo", id: "1" }).runWith(mock)));
+test("remove document", fork(doc.remove("foo", "1").runWith(mock)));
