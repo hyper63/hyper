@@ -27,7 +27,6 @@
   },
   "scripts": {
     "build": "docker build -t hyper63/atlas:v0 .",
-    "start:redis": "pm2 start \"redis-server /etc/redis/redis.conf\"",
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon src/index.js",

@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "6363:6363"
+  redis:
+    image: "redis:alpine"
+  couchdb:
+    image: "couchdb"
+    environment:
+      COUCHDB_USER: "admin"
+      COUCHDB_PASSWORD: "password"
