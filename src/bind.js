@@ -32,10 +32,11 @@ const env = {
     password: couchUrl.password,
   },
   storage: {
-    endpoint: minioUrl.hostname,
-    port: minioUrl.port,
+    endPoint: minioUrl.hostname,
+    port: Number(minioUrl.port),
     accessKey: minioUrl.username,
     secretKey: minioUrl.password,
+    useSSL: false,
   },
 };
 // bind services and environment to core
@@ -43,6 +44,7 @@ module.exports = () => {
   const initializedServices = {
     cache: services.cache(env.cache),
     data: services.data(env.data),
+    storage: services.storage(env.storage),
   };
   return core(initializedServices);
 };

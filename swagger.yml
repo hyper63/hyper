@@ -635,3 +635,100 @@ paths:
                     type: boolean
                   id:
                     type: string
+  /storage:
+    get:
+      description: storage module healthcheck
+      responses:
+        200:
+          description: healthcheck json
+          content:
+            application/json:
+              schema:
+                type: object
+  /storage/{name}:
+    put:
+      description: make storage bucket
+      responses:
+        201:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        500:
+          description: error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+    delete:
+      description: remove storage bucket - all items must be removed
+      responses:
+        201:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        500:
+          description: error
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+
+    post:
+      description: upload file to storage
+      requestBody:
+        description: placeholder
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  description: form-data file buffer
+                  type: object
+                path:
+                  description: path to store file
+                  type: string
+      responses:
+        201:
+          description: successful upload
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+        500:
+          description: error with upload
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+  /storage/{name}/_list:
+    get:
+      description: list items in storage bucket
+  /storage/{name}/{object}:
+    get:
+      description: download file from storage
+    delete:
+      description: delete file from storage

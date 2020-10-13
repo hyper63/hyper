@@ -39,44 +39,39 @@ const listBuckets = (client) => () =>
   }));
 
 /**
- * @param {string} bucketName
- * @param {string} objectName
- * @param {Stream} stream
+ * @param {Object}
  * @returns {Async}
  */
-const putObject = (client) => (bucketName, objectName, stream) =>
-  asyncify(client, "putObject")(bucketName, objectName, stream).map(
-    (result) => {
-      console.log(result);
-      return { ok: true };
-    }
-  );
+const putObject = (client) => ({ bucket, object, stream }) =>
+  asyncify(client, "putObject")(bucket, object, stream).map((result) => {
+    console.log(result);
+    return { ok: true };
+  });
 /**
- * @param {string} bucketName
+ * @param {Object}
  * @param {string} objectName
  * @returns {Async}
  */
-const removeObject = (client) => (bucketName, objectName) =>
-  asyncify(client, "removeObject")(bucketName, objectName).map((result) => {
+const removeObject = (client) => ({ bucket, object }) =>
+  asyncify(client, "removeObject")(bucket, object).map((result) => {
     console.log(result);
     return { ok: true };
   });
 
 /**
- * @param {string} bucketName
- * @param {string} objectName
+ * @param {Object}
  * @returns {Async}
  */
-const getObject = (client) => (bucketName, objectName) =>
-  asyncify(client, "getObject")(bucketName, objectName);
+const getObject = (client) => ({ bucket, object }) =>
+  asyncify(client, "getObject")(bucket, object);
 
 /**
  * @param {string} bucketName
  * @param {string} prefix
  * @returns {Async}
  */
-const listObjects = (client) => (bucketName, prefix = "") =>
-  Async.of(client.listObjects(bucketName, prefix))
+const listObjects = (client) => ({ bucket, prefix = "" }) =>
+  Async.of(client.listObjects(bucket, prefix))
     .chain((s) => {
       return Async.fromPromise(
         () =>

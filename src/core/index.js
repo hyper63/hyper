@@ -1,5 +1,6 @@
 const cacheCore = require("./cache");
 const dataCore = require("./data");
+const storageCore = require("./storage");
 
 /**
  * main core module
@@ -11,10 +12,12 @@ const dataCore = require("./data");
 module.exports = (services) => {
   const cache = cacheCore(services);
   const data = dataCore(services);
+  const storage = storageCore(services);
   // consider reader monad to
   // add config and services
   return {
     cache,
     data,
+    storage,
   };
 };

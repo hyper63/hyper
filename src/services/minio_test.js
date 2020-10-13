@@ -28,12 +28,17 @@ const fork = (m) => (t) => {
 
 test("make bucket successfully", fork(svc.makeBucket("test")));
 test("list buckets", fork(svc.listBuckets()));
-test("put object", fork(svc.putObject("test", "hubble-banner.png", s)));
-test("list objects", fork(svc.listObjects("test")));
+test(
+  "put object",
+  fork(
+    svc.putObject({ bucket: "test", object: "hubble-banner.png", stream: s })
+  )
+);
+test("list objects", fork(svc.listObjects({ bucket: "test" })));
 test("get object", (t) => {
   let size = 0;
   t.plan(1);
-  svc.getObject("test", "hubble-banner.png").fork(
+  svc.getObject({ bucket: "test", object: "hubble-banner.png" }).fork(
     () => t.ok(false),
     (s) => {
       s.on("data", (chunk) => {
@@ -48,6 +53,6 @@ test("get object", (t) => {
 });
 test(
   "remove object successfully",
-  fork(svc.removeObject("test", "hubble-banner.png"))
+  fork(svc.removeObject({ bucket: "test", object: "hubble-banner.png" }))
 );
 test("remove bucket successfully", fork(svc.removeBucket("test")));

@@ -44,6 +44,42 @@ docker-compose up -d
 docker exec -it atlas_couchdb_1 curl -X POST -H "Content-Type: application/json" localhost:5984/_cluster_setup -d '{"action":"enable_single_node", "bind_address":"0.0.0.0"}' -u 'admin:password'
 ```
 
+## Developer Usage
+
+Requirements
+
+- Docker Desktop or (docker and docker-compose)
+- NodeJS
+- yarn (npm install -g yarn)
+
+Once you have cloned the repository, you will want to create an `.env` file. This file will contain basic defaults for the data, cache, and storage services.
+
+```
+COUCHDB=http://admin:password@localhost:5984
+REDIS=redis://localhost:6379
+MINIO=http://minio:minio123@localhost:9000
+```
+
+Next you will run docker-compose in the project directory
+
+> This will launch redis, couchdb, and minio for local use.
+
+```sh
+docker-compose up -d
+```
+
+Install dependencies
+
+```sh
+yarn
+```
+
+Start development server
+
+```sh
+yarn dev
+```
+
 ## OpenAPI Specification
 
 [View OpenAPI Spec](https://petstore.swagger.io/?url=https://gitcdn.xyz/repo/hyper63/atlas/main/swagger.yml)
