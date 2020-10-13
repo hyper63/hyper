@@ -1,0 +1,85 @@
+{
+  "name": "elderjs-template",
+  "version": "1.0.0",
+  "description": "This is a project template for [Elder.js](https://elderguide.com/tech/elderjs/) apps. The template lives at https://github.com/elderjs/template and the Elder.js source is here: https://github.com/elderjs/elderjs",
+  "main": "./src/build.js",
+  "scripts": {
+    "start": "npm run build:rollup && npm run dev:server",
+    "build": "node ./src/cleanPublic.js && npm run build:rollup && npm run build:html",
+    "build:rollup": "rollup -c",
+    "build:html": "node ./src/build.js",
+    "dev:rollup": "rollup  -c -w --no-watch.clearScreen",
+    "dev:server": "nodemon",
+    "eslint": "eslint --ext .js .",
+    "eslint:fix": "eslint --fix --ext .js .",
+    "prettier:svelte": "prettier --write --plugin-search-dir=. ./**/*.svelte"
+  },
+  "type": "commonjs",
+  "engines": {
+    "node": ">= 12.0.0"
+  },
+  "dependencies": {
+    "@elderjs/elderjs": "^1.0.4",
+    "@elderjs/plugin-browser-reload": "^0.1.6",
+    "@elderjs/plugin-markdown": "^0.1.6",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "del": "^5.1.0",
+    "dotenv": "^8.2.0",
+    "fs-extra": "^9.0.1",
+    "glob": "^7.1.6",
+    "gray-matter": "^4.0.2",
+    "markdown-js": "^0.0.4",
+    "polka": "^0.5.2",
+    "remark": "^12.0.1",
+    "remark-html": "^12.0.0",
+    "sirv": "^1.0.5",
+    "svelte": "^3.24.0",
+    "svelte-preprocess": "^4.0.9",
+    "intersection-observer": "^0.11.0",
+    "systemjs": "^6.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
+    "autoprefixer": "^9.8.6",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "prettier-plugin-svelte": "^1.2.1",
+    "rollup": "^2.21.0"
+  },
+  "author": "Nick Reese",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "elderjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elderjs/template.git"
+  },
+  "keywords": [
+    "svelte",
+    "elderjs",
+    "ssr",
+    "static",
+    "site",
+    "generator",
+    "seo",
+    "ssg",
+    "template",
+    "partial",
+    "hydration"
+  ],
+  "bugs": {
+    "url": "https://github.com/Elderjs/template/issues"
+  },
+  "homepage": "https://github.com/Elderjs/template#readme"
+}
