@@ -28,38 +28,38 @@ docker-compose.yml
 
 ```yaml
 version: "3.8"
-  services:
-    web:
-      image: "hyper63/atlas:unstable"
+services:
+  web:
+    image: "hyper63/atlas:unstable"
+    environment:
+      REDIS: redis://redis:6379
+      COUCH: http://admin:password@couchdb:5984
+      MINIO: http://minio:minio123@minio:9000
+    ports:
+      - "6363:6363"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - ".:/data"
+  couchdb:
+    image: "couchdb"
+    environment:
+      COUCHDB_USER: "admin"
+      COUCHDB_PASSWORD: "password"
+    volumes:
+      - ".:/opt/couchdb/data"
+  minio:
+      image: minio/minio
       environment:
-        REDIS: redis://redis:6379
-        COUCH: http://admin:password@couchdb:5984
-        MINIO: http://minio:minio123@minio:9000
+        MINIO_ACCESS_KEY: minio
+        MINIO_SECRET_KEY: minio123
+      volumes:
+        - "./data:/data"
       ports:
-        - "6363:6363"
-      depends_on:
-        - redis
-    redis:
-      image: "redis:alpine"
-      volumes:
-        - ".:/data"
-    couchdb:
-      image: "couchdb"
-      environment:
-        COUCHDB_USER: "admin"
-        COUCHDB_PASSWORD: "password"
-      volumes:
-        - ".:/opt/couchdb/data"
-    minio:
-        image: minio/minio
-        environment:
-          MINIO_ACCESS_KEY: minio
-          MINIO_SECRET_KEY: minio123
-        volumes:
-          - "./data:/data"
-        ports:
-          - "9000:9000"
-        command: server /data
+        - "9000:9000"
+      command: server /data
 ```
 
 Couple of notes about this docker-compose file, it is creating four docker containers, atlas, redis, couch, and minio. It is setting the docker volumes to store all persistent data in the current directory that you have placed the docker-compose file. You can change this by modifying the left side of the colon under each volumes entry. For minio and couchdb you will need a key and secret or user and password. It is important that these are configured the same for both the minio/couch containers and the atlas container in the environment section.
