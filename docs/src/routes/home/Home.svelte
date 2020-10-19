@@ -4,18 +4,15 @@
 
 <header>
   <Nav active="Home" />
-  <h1>Atlas <u>Toolkit</u></h1>
-  <p>A collection of tools for your <mark>micro-services.</mark></p>
-  <p>Atlas is your side-kick to anti-fragile micro-services.</p>
+  <h1><u>Atlas Toolkit</u> Documentation</h1>
+  <p class="slug">A collection of tools for building micro-services that scale. Each tool acts as
+    a powerful abstraction for common functionality. They can be utilized independently or in conjunction for
+    a truly anti-fragile architecture.
+  </p>
   <p><a href="/getting-started"><i>Getting Started</i></a> <a href="/guides"><b>Guides</b></a></p>
 </header>
 <main>
-  <hr />
   <section>
-    <header>
-      <h2>Atlas Tools</h2>
-      <p>Atlas Toolkit gives you the tools you need to create scalable micro-services in a cloud-native environment</p>
-    </header>
     <aside>
       <h3>Data</h3>
       <p>Structured document api, with the power to organize and query json documents.</p>
@@ -29,7 +26,7 @@
     </aside>
     <aside>
       <h3>Storage</h3>
-      <p>Unstructure object api, storing and retrieving files</p>
+      <p>Unstructured object api, storing and retrieving files</p>
       <br />
       <a href="/guides/storage"><b>Guide</b></a>
     </aside>
@@ -38,7 +35,7 @@
   <section>
     <header>
       <h2>Coming Soon</h2>
-      <p>We are not stopping with the basics, atlas tools is <mark>constantly</mark> adding tools to the kit.</p>
+      <p>We are not stopping with the basics, Atlas tools is <mark>constantly</mark> adding tools to the kit.</p>
     </header>
     <aside>
       <h3>Webhooks <sup>In Development</sup></h3>
@@ -54,3 +51,10 @@
     </aside>
   </section>
 </main>
+<style>
+  .slug {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+</style>

@@ -17,7 +17,7 @@
 </style>
 
 <nav>
-  <a href="/"> <img src="/hyper63-logo.svg" alt="logo" /> </a>
+  <a href="/"> <img src="/atlas-logo.svg" style="border-radius: 100%;" alt="logo" /> </a>
   <ul>
     <li>
       {@html isActive('Home', '/')}

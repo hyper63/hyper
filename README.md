@@ -1,12 +1,14 @@
 # Atlas
 
-A microservice persistence layer, focused on providing a general abstraction layer for microservices and small applications to create products that are designed with quality attributes as a core decision factor. By creating a clear abstraction boundary between your business logic and your persistence layer, you are baking in flexibility into your microservice design.
+A service backend, focused on providing a generic interface for microservices and applications. 
 
-Current Status: Organization and Design Phase
+Current Status: Design and Development Phase
+
+## OpenAPI Specification
+
+[View OpenAPI Spec](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/hyper63/atlas/main/swagger.yml)
 
 ## Usage - (experimental mode only)
-
-The current standalone usage is a bit cumbersome, but we will be working to improve this over time.
 
 You will need to have Docker Desktop installed on your machine or docker and docker-compose
 
@@ -80,9 +82,6 @@ Start development server
 yarn dev
 ```
 
-## OpenAPI Specification
-
-[View OpenAPI Spec](https://petstore.swagger.io/?url=https://gitcdn.xyz/repo/hyper63/atlas/main/swagger.yml)
 
 ## Inception Document
 
