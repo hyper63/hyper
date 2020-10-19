@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  # web:
+  #   build: .
+  #   ports:
+  #     - "6363:6363"
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - "./data:/data"
+    ports:
+      - "6379:6379"
+  couchdb:
+    image: "couchdb"
+    environment:
+      COUCHDB_USER: "admin"
+      COUCHDB_PASSWORD: "password"
+    volumes:
+      - "./data:/opt/couchdb/data"
+    ports:
+      - "5984:5984"
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - "./data:/data"
+    ports:
+      - "9000:9000"
+    command: server /data

@@ -1,0 +1,6 @@
+services:
+  - type: web
+    env: static
+    name: docs
+    buildCommand: cd docs && yarn build
+    staticPublishPath: ./docs/public

@@ -7,6 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
+    "dotenv": "^8.2.0",
     "eslint": "^7.10.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",
@@ -15,21 +16,25 @@
     "tape": "^5.0.1"
   },
   "dependencies": {
+    "@zeit/fetch-retry": "^5.0.0",
     "cors": "^2.8.5",
     "crocks": "^0.12.4",
+    "cuid": "^2.1.8",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
+    "mime": "^2.4.6",
+    "minio": "^7.0.16",
     "ms": "^2.1.2",
+    "multer": "^1.4.2",
     "ramda": "^0.27.1",
     "redis": "^3.0.2"
   },
   "scripts": {
     "build": "docker build -t hyper63/atlas:v0 .",
-    "start:redis": "pm2 start \"redis-server /etc/redis/redis.conf\"",
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon src/index.js",
-    "test:unit": "tape src/**/*_test.js",
+    "test:unit": "tape src/core/**/*_test.js",
     "test:integration": "tape test/**/*_test.js",
     "test": "run-p test:unit"
   }
