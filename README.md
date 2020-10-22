@@ -1,6 +1,6 @@
-# Atlas
+# hyper63
 
-A service backend, focused on providing a generic interface for microservices and applications. 
+A service gateway, focused on providing a generic interface for microservices and applications. 
 
 Current Status: Design and Development Phase
 
