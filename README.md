@@ -6,7 +6,7 @@ Current Status: Design and Development Phase
 
 ## OpenAPI Specification
 
-[View OpenAPI Spec](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/hyper63/atlas/main/swagger.yml)
+[View OpenAPI Spec](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/hyper63/hyper63/main/swagger.yml)
 
 ## Usage - (experimental mode only)
 
