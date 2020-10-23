@@ -1,12 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Atlas Micro
+  title: hyper63 
   description: >
     ![logo](https://hyper63.com/favicon-96x96.png)
 
-    # Welcome to Atlas Micro
+    # Welcome to hyper63 
 
-    Atlas Micro provides a restful api to common application services specifically for micro-service architectures
+    A service-gateway
+
+    hyper63 provides a restful api to common application services implemented with adapters 
 
       * cache [implemented]
       * data [wip]
@@ -15,7 +17,7 @@ info:
 
     ## Getting started
 
-    Atlas Micro is currently stored on hub.docker.com
+    hyper63 is currently stored on hub.docker.com
     you can quickly get started playing with atlas
     with docker
 
