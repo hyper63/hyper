@@ -1,8 +1,9 @@
 {
-  "name": "hubble",
+  "name": "hyper63",
+  "description": "service gateway",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:hyper63/atlas.git",
+  "main": "src/index.js",
+  "repository": "git@github.com:hyper63/hyper63.git",
   "author": "Tom Wilson <twilson63@gmail.com>",
   "license": "MIT",
   "devDependencies": {
@@ -30,7 +31,7 @@
     "redis": "^3.0.2"
   },
   "scripts": {
-    "build": "docker build -t hyper63/atlas:v0 .",
+    "build": "docker build -t hyper63/hyper63:dev .",
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon src/index.js",

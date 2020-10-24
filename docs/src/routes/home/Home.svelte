@@ -4,10 +4,9 @@
 
 <header>
   <Nav active="Home" />
-  <h1><u>Atlas Toolkit</u> Documentation</h1>
-  <p class="slug">A collection of tools for building micro-services that scale. Each tool acts as
-    a powerful abstraction for common functionality. They can be utilized independently or in conjunction for
-    a truly anti-fragile architecture.
+  <h1><u>hyper63</u> Documentation</h1>
+  <p class="slug">
+    A service gateway that can be used to create future-proof applications
   </p>
   <p><a href="/getting-started"><i>Getting Started</i></a> <a href="/guides"><b>Guides</b></a></p>
 </header>
@@ -35,19 +34,19 @@
   <section>
     <header>
       <h2>Coming Soon</h2>
-      <p>We are not stopping with the basics, Atlas tools is <mark>constantly</mark> adding tools to the kit.</p>
+      <p>We are not stopping with the basics, hyper63 is <mark>constantly</mark> adding services to the gateway.</p>
     </header>
     <aside>
       <h3>Webhooks <sup>In Development</sup></h3>
-      <p>Hook into Atlas Tool events</p>
+      <p>Hook into hyper63 events</p>
     </aside>
     <aside>
       <h3>Search <sup>In Design</sup></h3>
-      <p>Create your own search stores</p>
+      <p>Create your own search indexes</p>
     </aside>
     <aside>
       <h3>Queues <sup>In Design</sup></h3>
-      <p>Use the pub/sub pattern with your micro-service</p>
+      <p>Use the pub/sub pattern with your application</p>
     </aside>
   </section>
 </main>

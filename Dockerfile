@@ -1,7 +1,7 @@
 FROM node:12
 
 # Install Project
-WORKDIR /usr/src/atlas
+WORKDIR /usr/src/hyper63
 
 COPY package.json ./
 COPY yarn.lock ./

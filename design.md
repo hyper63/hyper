@@ -1,72 +1,65 @@
-# Atlas Design Document 
+# hyper63 Design Document
 
-A backend as a service for micro-services
+A service gateway for creating future proof applications.
 
-With a micro-service architecture a basic principle is that each service 
-manages its own data. Two micro-services should not share a data store. 
-Instead each service is responsible for its own private data store,
-which others cannot access directly.
-
-atlas is a backend as a service solution that encourages separation between
+hyper63 is a service gateway that encourages separation between
 common services and business logic of your application. This separation is
-a function of a domain centric architecture or clean architecture. As products
-grow in complexity over time with strong pressure to ship features in a time
-sensitive way, the likely hood that business rules get spread between 
-architectural layers is extremely likely. 
+a function of a clean architecture leveraging the ports and adapters pattern.
+As products grow in complexity over time with strong pressure to ship features
+in a time sensitive way, the likely hood that business rules get spread between
+architectural layers is extremely likely.
 
-> Hubble's goal is to encourage business rules to settle in a core area leveraging solid principles to keep the business logic highly maintainable as the product grows over time.
+> hyper63's goal is to encourage business rules to settle in a core area leveraging solid principles to keep the business logic highly maintainable as the product grows over time.
 
-This product takes the concepts of atlas and applys them to a micro-service, with 
-a micro-service you will have the following layers:
+- interface/api
+- business rules
+- services
 
-* interface/api
-* business rules
-* services
-
-What atlas wants to do is to generalize the services your micro-service may need 
+What hyper63 wants to do is to generalize the services your application may need
 so that you can keep your business rules cleanly separated as well as leveraging the ports
 and adapter design so that your backend services can be replacable without having to modify
-business rules. atlas is a docker container that gives you data, cache, files and notifications out of the box, without having to make any decisions, you simply `docker run` and you have your backend end service up and running!
+business rules. hyper63 is a docker container that gives you data, cache, storage, search and webhooks out of the box, without having to make any decisions, you simply `docker-compose up` and you have your backend end service up and running!
 
 [Inception Deck](inception.md)
 
 ## Usage
 
-> Docker is required 
+> Docker is required
 
-``` sh
+```sh
 docker run -it -p 8443:8443 -p 9090:9090 -v atlas:/var/atlas --name atlas hyper63/atlas:lts
 ```
 
 ## API
 
-Currently, the services for micro are 
+Currently, the services for micro are
 
-* data - structured data storage
-* cache - temporal storage
-* buckets/files - unstructured data storage
-* notifications/hooks - system event notifications
+- data - structured data storage
+- cache - temporal storage
+- storage - unstructured data storage
+- search - text based search
+- hooks - system event notifications
 
 ### Basic API patterns
 
 All apis use this basic pattern:
 
-> designing the api to support multiple services currenlty only supporting data, cache, files, hooks.
+> designing the api to support multiple services currenlty only supporting data, cache, storage, search, hooks.
 
 ```
-/micro/services/:name
+/:service/:name
 ```
 
 For example, if you want to access the data service:
 
 ```
-GET /micro/services/data
+GET /data/products
 ```
 
 and if you want to access the cache service:
 
 ```
-GET /micro/services/cache
+GET /cache/products
 ```
 
 All commands will start with an underscore
@@ -78,7 +71,7 @@ queries a customer data store
 Example Request:
 
 ```
-POST /micro/services/data/customers/_query HTTP/1.1
+POST /data/customers/_query HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Content-Length: XXX
@@ -127,8 +120,8 @@ list all services
 Example Request:
 
 ```
-GET /micro/services/_list HTTP/1.1
-HOST: localhost:6030
+GET /_list HTTP/1.1
+HOST: localhost:6363
 Accept: */*
 ```
 
@@ -145,7 +138,8 @@ Transfer-Encoding: chunked
 [
   "data",
   "cache",
-  "buckets",
+  "storage",
+  "search",
   "hooks"
 ]
 ```
@@ -155,19 +149,19 @@ Transfer-Encoding: chunked
 list data stores
 
 ```
-GET /micro/services/data/_list
+GET /data/_list
 ```
 
 create a new data store
 
 ```
-PUT /micro/services/data/:name
+PUT /data/:name
 ```
 
 remove data store
 
 ```
-DELETE /micro/services/data/:name
+DELETE /data/:name
 ```
 
 list documents from data store
@@ -175,43 +169,43 @@ list documents from data store
 > query parameters: (limit, start, end, keys)
 
 ```
-GET /micro/services/data/:name/_list
+GET /data/:name/_list
 ```
 
 create new document
 
 ```
-POST /micro/services/data/:name
+POST /data/:name
 ```
 
 get document
 
 ```
-GET /micro/services/data/:name/:id
+GET /data/:name/:id
 ```
 
 update document
 
 ```
-PUT /micro/services/data/:name/:id
+PUT /data/:name/:id
 ```
 
 patch document
 
 ```
-PATCH /micro/services/data/:name/:id
+PATCH /data/:name/:id
 ```
 
 query documents
 
 ```
-POST /micro/services/data/:name/_query
+POST /data/:name/_query
 ```
 
 create a query index
 
 ```
-POST /micro/services/data/:name/_index
+POST /data/:name/_index
 ```
 
 ### Cache API
@@ -219,19 +213,19 @@ POST /micro/services/data/:name/_index
 list stores
 
 ```
-GET /micro/services/cache/_list
+GET /cache/_list
 ```
 
 create store
 
 ```
-PUT /micro/services/cache/:name
+PUT /cache/:name
 ```
 
 remove store
 
 ```
-DELETE /micro/services/cache/:name
+DELETE /cache/:name
 ```
 
 list cache documents
@@ -239,7 +233,7 @@ list cache documents
 > query params - (limit, start, keys, sort)
 
 ```
-GET /micro/services/cache/_list
+GET /cache/_list
 ```
 
 create/update cache doc
@@ -247,13 +241,13 @@ create/update cache doc
 > query params (ttl - time to live)
 
 ```
-PUT /micro/services/cache/:name/:key
+PUT /cache/:name/:key
 ```
 
 remove cache doc
 
 ```
-DELETE /micro/services/cache/:name/:key
+DELETE /cache/:name/:key
 ```
 
 ### Bucket API
@@ -261,54 +255,54 @@ DELETE /micro/services/cache/:name/:key
 list buckets
 
 ```
-GET /micro/services/buckets/_list
+GET /storage/_list
 ```
 
 create bucket
 
 ```
-PUT /micro/services/buckets/:name
+PUT /storage/:name
 ```
 
 get bucket info
 
 ```
-GET /micro/services/buckets/:name
+GET /storage/:name
 ```
 
 remove bucket
 
 ```
-DELETE /micro/services/buckets/:name
+DELETE /storage/:name
 ```
 
 list files in bucket
 
 ```
-GET /micro/services/buckets/:name/_list
+GET /storage/:name/_list
 ```
 
 put file
 
 ```
-PUT /micro/services/buckets/:name/:id
+PUT /storage/:name/:id
 ```
 
 get file
 
 ```
-GET /micro/services/buckets/:name/:id
+GET /storage/:name/:id
 ```
 
 remove file
 
 ```
-DELETE /micro/services/buckets/:name/:id
+DELETE /storage/:name/:id
 ```
 
 ### Notifications API (hooks)
 
-The notification api is an api that can notify subscribers when a atlas service 
+The notification api is an api that can notify subscribers when a atlas service
 event was triggered, using a registered endpoint.
 
 Each hook will require a scope of what the hook wants to watch, examples
@@ -328,19 +322,19 @@ actions are (read,write,delete)
 list hooks
 
 ```
-GET /micro/services/hooks/_list
+GET /hooks/_list
 ```
 
 register hook
 
 ```
-PUT /micro/services/hooks/:name
+PUT /hooks/:name
 ```
 
 unregister hook
 
 ```
-DELETE /micro/services/hooks/:name
+DELETE /hooks/:name
 ```
 
 get hook info
@@ -348,9 +342,5 @@ get hook info
 > returns hook document
 
 ```
-GET /micro/services/hooks/:name
+GET /hooks/:name
 ```
-
-> One note, the `micro` prefix in the url is a `tenant`, since the micro version of atlas is 
-single tenant it is defaulted to `micro`, but in future planned products, like `atlas-cloud` the schema will be identical, but the `micro` would be replaced by the tenant name.
-

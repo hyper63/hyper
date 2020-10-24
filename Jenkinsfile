@@ -24,7 +24,7 @@ pipeline {
     stage("staging") {
       agent any
       environment {
-        registry = 'hyper63/atlas'
+        registry = 'hyper63/hyper63'
         registryCredential = 'dockerhub'
         dockerImage = ''
       }
@@ -32,6 +32,11 @@ pipeline {
         branch 'staging'
       }
       stages {
+        stage("docs") {
+          steps {
+            sh 'echo TODO'
+          }
+        }
         stage('build') {
           steps {
             script {
@@ -58,7 +63,7 @@ pipeline {
     stage("docker") {
       agent any
       environment {
-        registry = 'hyper63/atlas'
+        registry = 'hyper63/hyper63'
         registryCredential = 'dockerhub'
         dockerImage = ''
       } 
@@ -66,6 +71,11 @@ pipeline {
         branch 'main'
       }
       stages {
+        stage("docs") {
+          steps {
+            sh 'echo TODO'
+          }
+        }
         stage("build") {
           steps {
             script {
