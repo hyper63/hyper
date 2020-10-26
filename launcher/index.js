@@ -15,7 +15,7 @@ sh.mkdir('~/.hyper63')
 const config = `version: "3.8"
 services:
   web:
-    image: "hyper63/atlas:unstable"
+    image: "hyper63/hyper63:unstable"
     environment:
       REDIS: redis://redis:6379
       COUCH: http://admin:password@couchdb:5984
