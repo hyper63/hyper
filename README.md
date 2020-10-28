@@ -12,57 +12,16 @@ Current Status: Design and Development Phase
 
 You will need to have Docker Desktop installed on your machine or docker and docker-compose
 
-create a new directory:
-
 ```sh
-mkdir atlas
-cd atlas
+npx hyper63
 ```
 
-create a `docker-compose.yml` file
+To stop hyper63 services
 
-```yaml
-version: "3.8"
-services:
-  web:
-    image: "hyper63/atlas:unstable"
-    environment:
-      REDIS: redis://redis:6379
-      COUCH: http://admin:password@couchdb:5984
-      MINIO: http://minio:minio123@minio:9000
-    ports:
-      - "6363:6363"
-    depends_on:
-      - redis
-  redis:
-    image: "redis:alpine"
-    volumes:
-      - ".:/data"
-  couchdb:
-    image: "couchdb"
-    environment:
-      COUCHDB_USER: "admin"
-      COUCHDB_PASSWORD: "password"
-    volumes:
-      - ".:/opt/couchdb/data"
-  minio:
-      image: minio/minio
-      environment:
-        MINIO_ACCESS_KEY: minio
-        MINIO_SECRET_KEY: minio123
-      volumes:
-        - "./data:/data"
-      ports:
-        - "9000:9000"
-      command: server /data
-
+``` sh
+npx hyper63 stop
 ```
 
-```sh
-docker-compose up -d
-
-docker exec -it atlas_couchdb_1 curl -X POST -H "Content-Type: application/json" localhost:5984/_cluster_setup -d '{"action":"enable_single_node", "bind_address":"0.0.0.0"}' -u 'admin:password'
-```
 
 ## Developer Usage
 
@@ -118,3 +77,7 @@ yarn dev
 Want to get involved read the following to find out how.
 
 This is an opensource project, which welcomes all contributions and all development will occur in the open for interested parties to follow and comment. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) and the [Contributing](contributing.md) documentation to fully understand the requirements and restrictions to be a part of this community.
+
+## Launcher
+
+The launcher project creates a npm package that installs hyper63 on a local machine.

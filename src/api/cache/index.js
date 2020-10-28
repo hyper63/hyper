@@ -2,7 +2,7 @@ const { fork } = require("../utils");
 
 // GET /cache
 exports.index = (req, res) =>
-  res.send({ name: "Atlas Cache", version: "1.0", status: "unstable" });
+  res.send({ name: "hyper63 Cache", version: "1.0", status: "unstable" });
 
 // PUT /cache/:name
 exports.createStore = ({ params, cache }, res) =>

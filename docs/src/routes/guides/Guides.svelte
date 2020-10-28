@@ -4,11 +4,11 @@
 
 <header>
   <Nav active="Guides" />
-  <h1><u>Atlas Toolkit</u> Guides</h1>
-  <p class="slug">Below is a guide for each tool in the Atlas toolkit, the guide, will explain the tools purpose, 
+  <h1><u>hyper63</u> Guides</h1>
+  <p class="slug">Below is a guide for each service in the hyper63, the guide, will explain the tools purpose, 
     why you would want to use it, and an example of how it can be used.
   </p>
-  <a href="/getting-started"><i>Getting Started with Atlas Toolkit</i></a>
+  <a href="/getting-started"><i>Getting Started with hyper63</i></a>
 </header>
 <main>
   <section>

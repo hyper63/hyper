@@ -17,13 +17,13 @@
 </style>
 
 <nav>
-  <a href="/"> <img src="/atlas-logo.svg" style="border-radius: 100%;" alt="logo" /> </a>
+  <a href="/"> <img src="/hyper63-logo.svg" style="border-radius: 100%;" alt="logo" /> </a>
   <ul>
     <li>
       {@html isActive('Home', '/')}
     </li>
     <li>
-      {@html isActive('Why Atlas?', '/why')}
+      {@html isActive('Why?', '/why')}
     </li>
     <li>
       {@html isActive('Guides', '/guides')}
@@ -31,6 +31,5 @@
     <li>
       {@html isActive('API', '/api')}
     </li>
-    <li><a href="https://hyper63.com">hyper63</a></li>
   </ul>
 </nav>

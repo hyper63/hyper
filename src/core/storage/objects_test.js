@@ -34,7 +34,7 @@ test(
       .put(
         "test",
         "test.png",
-        fs.createReadStream(path.resolve("./hubble-banner.png"))
+        fs.createReadStream(path.resolve("./hyper63-logo.png"))
       )
       .runWith(mock)
   )

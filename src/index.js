@@ -54,11 +54,11 @@ app.delete("/storage/:name/*", bindCore, storage.removeObject);
 
 //app.use("/micro/hooks", require("./api/hooks"));
 
-app.get("/", (req, res) => res.send({ name: "Atlas" }));
+app.get("/", (req, res) => res.send({ name: "hyper63" }));
 
 if (!module.parent) {
   app.listen(port);
-  console.log(`Atlas is running on port ${port}`);
+  console.log(`hyper63 is running on port ${port}`);
 }
 
 module.exports = app;

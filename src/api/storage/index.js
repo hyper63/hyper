@@ -4,7 +4,7 @@ const mime = require("mime");
 
 // GET /storage
 exports.index = (req, res) =>
-  res.send({ name: "Atlas Storage", version: "1.0", status: "unstable" });
+  res.send({ name: "hyper63 Storage", version: "1.0", status: "unstable" });
 
 // PUT /storage/:name - make bucket
 exports.makeBucket = ({ params, storage }, res) =>
