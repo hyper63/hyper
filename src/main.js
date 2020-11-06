@@ -1,58 +1,29 @@
-import express from 'express'
-import cors from 'cors'
-import helmet from 'helmet'
-import multer from 'multer'
-import bind from './bind'
+import { loadPorts } from './ports'
+import { initAdapters } from './utils/plugins'
+import { compose, prop, omit } from 'ramda'
 
-const upload = multer({dest: '/tmp/hyper63/uploads'})
+async function main () {
+  const config = await import(process.cwd() + '/hyper63.config')
+  // TODO: validate config
 
-const app = express()
-const port = process.env.PORT || 6363
+  const services = compose(
+    loadPorts,
+    initAdapters,
+    prop('adapters')
+  )(config)
 
-const cache = require('./api/cache')
-const data = require('./api/data')
-const storage = require('./api/storage')
+  // IDEA: maybe app can be either express, serverless, or graphql implementations
+  // IDEA: could app be a port type? 
+  //   return services.app(without('app', services))
+  //   then each app implementation would simply be an another adapter
+  //   like hyper63-adapter-express
+  //        hyper63-adapter-graphql
+  //        hyper63-adapter-architect
 
-const bindCore = (req, res, next) => {
-  req.cache = core.cache,
-  req.data = core.data,
-  req.storage = core.storage
-  next()
+  // initialize app with services
+  const app = services.app(omit(['app'], services))
+  // return app
+  return app
 }
 
-app.use(helmet())
-app.use(cors({credentials: true}))
-
-// data api
-app.get("/data", data.index);
-app.put("/data/:db", bindCore, data.createDb);
-app.delete("/data/:db", bindCore, data.removeDb);
-app.post("/data/:db", express.json(), bindCore, data.createDocument);
-app.get("/data/:db/:id", bindCore, data.getDocument);
-app.put("/data/:db/:id", express.json(), bindCore, data.updateDocument);
-app.delete("/data/:db/:id", bindCore, data.deleteDocument);
-app.post("/data/:db/_query", bindCore, data.queryDb);
-
-// cache api
-app.get("/cache", cache.index);
-app.put("/cache/:name", bindCore, cache.createStore);
-app.delete("/cache/:name", bindCore, cache.deleteStore);
-app.get("/cache/:name/_query", bindCore, cache.queryStore);
-app.post("/cache/:name/_query", bindCore, cache.queryStore);
-app.post("/cache/:name", express.json(), bindCore, cache.createDocument);
-app.get("/cache/:name/:key", bindCore, cache.getDocument);
-app.put("/cache/:name/:key", express.json(), bindCore, cache.updateDocument);
-app.delete("/cache/:name/:key", bindCore, cache.deleteDocument);
-
-// storage api
-app.get("/storage", storage.index);
-app.put("/storage/:name", bindCore, storage.makeBucket);
-app.delete("/storage/:name", bindCore, storage.removeBucket);
-app.post("/storage/:name", upload.single("file"), bindCore, storage.putObject);
-app.get("/storage/:name/*", bindCore, storage.getObject);
-app.delete("/storage/:name/*", bindCore, storage.removeObject);
-
-
-app.get('/', (req, res) => res.send({name: 'hyper63'}))
-
-export default app
+main()

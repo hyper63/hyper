@@ -1,5 +1,5 @@
 require("dotenv").config();
 require = require('esm')(module)
-app = require('./src/main').default
+require('./src/main').default
 
-app.listen(3000)
+//app.listen(3000)
