@@ -1,4 +1,3 @@
-require("dotenv").config();
 /**
  * The core is where all the business logic
  * will be for the project
@@ -13,8 +12,8 @@ require("dotenv").config();
  * the business rules to have no direct
  * dependencies to any implementation details
  */
-const services = require("./services");
-const core = require("./core");
+import services from './services'
+import core from './core'
 
 const couchUrl = new URL(
   process.env.COUCH || "http://admin:password@couchdb:5984"
@@ -40,7 +39,7 @@ const env = {
   },
 };
 // bind services and environment to core
-module.exports = () => {
+export default () => {
   const initializedServices = {
     cache: services.cache(env.cache),
     data: services.data(env.data),

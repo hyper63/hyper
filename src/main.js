@@ -1,31 +1,27 @@
 import express from 'express'
+import cors from 'cors'
+import helmet from 'helmet'
+import multer from 'multer'
+import bind from './bind'
+
+const upload = multer({dest: '/tmp/hyper63/uploads'})
 
 const app = express()
-/*
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const multer = require("multer");
-const upload = multer({ dest: "/tmp/atlas/uploads" });
-const core = require("./bind")();
+const port = process.env.PORT || 6363
 
-const app = express();
-const port = process.env.PORT || 6363;
+const cache = require('./api/cache')
+const data = require('./api/data')
+const storage = require('./api/storage')
 
-const cache = require("./api/cache");
-const data = require("./api/data");
-const storage = require("./api/storage");
-
-// middleware to inject core modules into request object
 const bindCore = (req, res, next) => {
-  req.cache = core.cache;
-  req.data = core.data;
-  req.storage = core.storage;
-  next();
-};
+  req.cache = core.cache,
+  req.data = core.data,
+  req.storage = core.storage
+  next()
+}
 
-app.use(helmet());
-app.use(cors({ credentials: true }));
+app.use(helmet())
+app.use(cors({credentials: true}))
 
 // data api
 app.get("/data", data.index);
@@ -56,14 +52,7 @@ app.post("/storage/:name", upload.single("file"), bindCore, storage.putObject);
 app.get("/storage/:name/*", bindCore, storage.getObject);
 app.delete("/storage/:name/*", bindCore, storage.removeObject);
 
-//app.use("/micro/hooks", require("./api/hooks"));
 
-app.get("/", (req, res) => res.send({ name: "hyper63" }));
-*/
+app.get('/', (req, res) => res.send({name: 'hyper63'}))
 
-//if (!module.parent) {
-  app.listen(port);
-  console.log(`hyper63 is running on port ${port}`);
-//}
-
-export default app;
+export default app
