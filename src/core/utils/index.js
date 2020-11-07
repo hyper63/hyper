@@ -22,7 +22,11 @@ export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg))
  * pipeline as the arguments
  */
 export const apply = (method) => (data) =>
-  ask((svc) => svc[method](data)).chain(lift);
+  ask((svc) => {
+    const async = Async.fromPromise(svc[method])
+    return async(data)
+  }).chain(lift);
+  
 
 /**
  * constructor for an AsyncReader monad
