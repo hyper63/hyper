@@ -1,7 +1,7 @@
-const store = require("./store");
-const doc = require("./doc");
+import * as store from './store'
+import * as doc from './doc'
 
-module.exports = ({ cache }) => {
+export default ({ cache }) => {
   /**
    * @param {string} name
    * @returns {Async}
@@ -13,7 +13,7 @@ module.exports = ({ cache }) => {
    * @param {string} name
    * @returns {Async}
    */
-  const deleteStore = (name) => store.delete(name).runWith(cache);
+  const deleteStore = (name) => store.del(name).runWith(cache);
 
   /**
    * @param {string} store
@@ -46,7 +46,7 @@ module.exports = ({ cache }) => {
    * @param {string} key
    * @returns {Async}
    */
-  const deleteDoc = (store, key) => doc.delete(store, key).runWith(cache);
+  const deleteDoc = (store, key) => doc.del(store, key).runWith(cache);
 
   /**
    * @param {string} name
@@ -56,7 +56,7 @@ module.exports = ({ cache }) => {
   const queryStore = (name, pattern) =>
     store.query(name, pattern).runWith(cache);
 
-  return {
+  return Object.freeze({
     createStore,
     deleteStore,
     createDoc,
@@ -64,5 +64,5 @@ module.exports = ({ cache }) => {
     getDoc,
     deleteDoc,
     queryStore,
-  };
+  });
 };

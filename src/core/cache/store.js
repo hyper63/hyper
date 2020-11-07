@@ -1,4 +1,5 @@
-const { is, of, apply } = require("../utils");
+import { is, of, apply } from '../utils'
+
 const INVALID_NAME_MSG = "name is not valid";
 const INVALID_RESULT_MSG = "result is not valid";
 
@@ -6,7 +7,7 @@ const INVALID_RESULT_MSG = "result is not valid";
  * @param {string} name
  * @returns {AsyncReader}
  */
-const create = (name) =>
+export const create = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply("createStore"))
@@ -16,7 +17,7 @@ const create = (name) =>
  * @param {string} name
  * @returns {AsyncReader}
  */
-const del = (name) =>
+export const del = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply("destroyStore"))
@@ -27,18 +28,12 @@ const del = (name) =>
  * @param {string} pattern
  * @returns {AsyncReader}
  */
-const query = (name, pattern) =>
+export const query = (name, pattern) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
     .chain(apply("listDocs"))
     .chain(is(validResult, INVALID_RESULT_MSG));
-
-module.exports = {
-  create,
-  delete: del,
-  query,
-};
 
 // validators predicate functions
 

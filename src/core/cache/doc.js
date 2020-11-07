@@ -1,7 +1,8 @@
-const ms = require("ms");
-const { lensProp, over } = require("ramda");
-const { is, of, apply } = require("../utils");
-const hasProp = require("crocks/predicates/hasProp");
+import ms from 'ms'
+import { lensProp, over } from 'ramda'
+import { is, of, apply } from '../utils'
+import { hasProp } from 'crocks/predicates'
+
 const INVALID_KEY = "key is not valid";
 const INVALID_RESULT = "result is not valid";
 const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? ms(ttl) : null));
@@ -13,7 +14,7 @@ const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? ms(ttl) : null));
  * @param {string} ttl
  * @returns {AsyncReader}
  */
-const create = (store, key, value, ttl) =>
+export const create = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
     .chain(is(validKey, INVALID_KEY))
@@ -25,7 +26,7 @@ const create = (store, key, value, ttl) =>
  * @param {string} key
  * @returns {AsyncReader}
  */
-const get = (store, key) =>
+export const get = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("getDoc"))
@@ -38,7 +39,7 @@ const get = (store, key) =>
  * @param {string} ttl
  * @returns {AsyncReader}
  */
-const update = (store, key, value, ttl) =>
+export const update = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
     .chain(is(validKey, INVALID_KEY))
@@ -50,18 +51,11 @@ const update = (store, key, value, ttl) =>
  * @param {string} key
  * @returns {AsyncReader}
  */
-const del = (store, key) =>
+export const del = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("deleteDoc"))
     .chain(is(validResult, INVALID_RESULT));
-
-module.exports = {
-  create,
-  get,
-  update,
-  delete: del,
-};
 
 // validators predicate functions
 

@@ -1,6 +1,6 @@
-const test = require("tape");
-const buckets = require("./buckets");
-const { Resolved } = require("crocks/Async");
+import { default as test } from 'tape'
+import * as buckets from './buckets'
+import { Resolved } from 'crocks/Async'
 
 const mock = {
   makeBucket(name) {

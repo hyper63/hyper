@@ -1,6 +1,6 @@
-const test = require("tape");
-const doc = require("./doc");
-const Async = require("crocks/Async");
+import { default as test } from 'tape'
+import * as doc from './doc'
+import { Async } from 'crocks'
 
 const mockService = {
   createDoc: ({ store, key, doc, ttl }) => Async.of({ ok: true }),

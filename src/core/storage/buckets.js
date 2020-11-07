@@ -1,4 +1,5 @@
-const { is, of, apply } = require("../utils");
+import { is, of, apply } from '../utils'
+
 const INVALID_BUCKET_MSG = "bucket name is not valid";
 const INVALID_RESPONSE = "response is not valid";
 
@@ -6,7 +7,7 @@ const INVALID_RESPONSE = "response is not valid";
  * @param {string} name
  * @returns {AsyncReader}
  */
-const make = (name) =>
+export const make = (name) =>
   of(name)
     //.chain(is(validDbName, INVALID_DB_MSG))
     .chain(apply("makeBucket"));
@@ -16,15 +17,9 @@ const make = (name) =>
  * @param {string} name
  * @returns {AsyncReader}
  */
-const remove = (name) => of(name).chain(apply("removeBucket"));
+export const remove = (name) => of(name).chain(apply("removeBucket"));
 
 /**
  * @returns {AsyncReader}
  */
-const list = () => of().chain(apply("listBuckets"));
-
-module.exports = {
-  make,
-  remove,
-  list,
-};
+export const list = () => of().chain(apply("listBuckets"));

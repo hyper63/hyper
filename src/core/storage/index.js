@@ -1,7 +1,8 @@
-const buckets = require("./buckets");
-const objects = require("./objects");
+import * as buckets from './buckets'
+import * as objects from './objects'
 
-module.exports = ({ storage }) => {
+
+export default ({ storage }) => {
   /**
    * @param {string} name
    * @returns {Async}

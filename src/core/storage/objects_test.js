@@ -1,8 +1,8 @@
-const test = require("tape");
-const objects = require("./objects");
-const { Resolved } = require("crocks/Async");
-const fs = require("fs");
-const path = require("path");
+import { default as test } from 'tape'
+import * as objects from './objects'
+import { Resolved } from 'crocks/Async'
+import fs from 'path'
+import path from 'path'
 
 const mock = {
   putObject({ bucket, object, stream }) {
