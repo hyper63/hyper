@@ -9,7 +9,7 @@ export function RedisCacheAdapter (config) {
    * @param {object} env
    */
   function load() {
-    return config
+    return { url: config.REDIS }
   }
 
   /**
