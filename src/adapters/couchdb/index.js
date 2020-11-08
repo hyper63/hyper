@@ -1,12 +1,5 @@
 import { default as createAdapter } from './adapter'
-import createFetch from '@vercel/fetch'
-import * as fetch from 'node-fetch'
-import { Async } from 'crocks'
-import { composeK } from 'crocks/helpers'
-import { propEq, ifElse } from 'ramda'
-
-
-const fetch = createFetch(fetch)
+import { asyncFetch, createHeaders, handleResponse} from './async_fetch'
 
 /**
  * @param {object} config
@@ -32,16 +25,8 @@ export function CouchDataAdapter (config) {
     return function () {
       // parse url
       const config = new URL(env.url)
-      const asyncFetch = Async.fromPromise(fetch)
-      const headers = {
-        'Content-Type': 'application/json',
-        authorization: `Basic ${Buffer.from(config.username + ':' + config.password).toString('base64')}`
-      }
-      const toJSON = (result) => Async.fromPromise(result.json.bind(result))(result);
-      const toJSONReject = composeK(Async.Rejected, toJSON);
-      const handleResponse = (code) =>
-        ifElse(propEq("status", code), toJSON, toJSONReject);
-
+      const headers = createHeaders(config.username, config.password)
+      
       return createAdapter({ config, asyncFetch, headers, handleResponse })
     }
   }

@@ -2,8 +2,8 @@ import { Async } from 'crocks'
 
 export default ({asyncFetch, config, handleResponse, headers }) => {
   const retrieveDocument = ({ db, id }) =>
-    asyncFetch(`${config.db}/${db}/${id}`, {
-      headers: createHeaders(config.user, config.password),
+    asyncFetch(`${config.origin}/${db}/${id}`, {
+      headers,
     }).chain(handleResponse(200))
       .toPromise()
   
@@ -22,9 +22,9 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
     createDocument: ({ db, id, doc }) =>
       Async.of({ ...doc, _id: id })
         .chain((doc) =>
-          asyncFetch(`${config.db}/${db}`, {
+          asyncFetch(`${config.origin}/${db}`, {
             method: "POST",
-            headers: createHeaders(config.user, config.password),
+            headers,
             body: JSON.stringify(doc),
           })
         )
@@ -33,9 +33,9 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
     updateDocument: ({ db, id, doc }) =>
       retrieveDocument(config)({ db, id })
         .chain((old) =>
-          asyncFetch(`${config.db}/${db}/${id}?rev=${old._rev}`, {
+          asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
             method: "PUT",
-            headers: createHeaders(config.user, config.password),
+            headers,
             body: JSON.stringify(doc),
           })
         )
@@ -43,9 +43,9 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
     removeDocument: ({ db, id }) =>
       retrieveDocument(config)({ db, id })
         .chain((old) =>
-          asyncFetch(`${config.db}/${db}/${id}?rev=${old._rev}`, {
+          asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
             method: "DELETE",
-            headers: createHeaders(config.user, config.password),
+            headers,
           })
         )
         .chain(handleResponse(200)).toPromise(),
