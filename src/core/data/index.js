@@ -1,7 +1,7 @@
-const db = require("./db");
-const doc = require("./doc");
+import * as db from './db'
+import * as doc from './doc'
 
-module.exports = ({ data }) => {
+export default ({ data }) => {
   /**
    * @param {string} name
    * @returns {Async}

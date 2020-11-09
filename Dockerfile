@@ -1,8 +1,10 @@
-FROM node:12
+FROM node:14
 
 # Install Project
 WORKDIR /usr/src/hyper63
 
+COPY hyper63.config.js ./
+COPY index.js ./
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn

@@ -1,0 +1,19 @@
+{
+  "name": "@hyper63/adapter-redis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "crocks": "^0.12.4",
+    "ramda": "^0.27.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "redis-mock": "^0.54.0",
+    "tape": "^5.0.1"
+  },
+  "scripts": {
+    "test": "tape -r esm *_test.js"
+  }
+}

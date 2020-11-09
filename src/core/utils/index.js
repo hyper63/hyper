@@ -3,7 +3,9 @@ const ReaderT = require("crocks/Reader/ReaderT");
 const compose = require("crocks/helpers/compose");
 const Either = require("crocks/Either");
 const eitherToAsync = require("crocks/Async/eitherToAsync");
-const { of, ask, lift } = ReaderT(Async);
+const ReaderAsync = ReaderT(Async)
+const { ask, lift } = ReaderAsync
+
 
 const { Left, Right } = Either;
 
@@ -15,16 +17,21 @@ const doValidate = (pred, msg) => (value) =>
  * if the predicate function fails then returns an object with an error message
  * if the predicate function passes then the value is passed down the chain
  */
-exports.is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg));
+export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg));
 /**
  * uses the reader monad to get the environment, in this case a service
  * module and invokes a method on that module passing the data from the
  * pipeline as the arguments
  */
-exports.apply = (method) => (data) =>
-  ask((svc) => svc[method](data)).chain(lift);
+export const apply = (method) => (data) =>
+  ask((svc) => {
+    const async = Async.fromPromise(svc[method])
+    return async(data)
+  }).chain(lift);
+  
 
 /**
  * constructor for an AsyncReader monad
  */
-exports.of = of;
+export const of = ReaderAsync.of;
+

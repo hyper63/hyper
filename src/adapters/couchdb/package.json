@@ -1,0 +1,12 @@
+{
+  "name": "@hyper63/adapter-couchdb",
+  "dependencies": {
+    "@vercel/fetch": "^6.1.0",
+    "crocks": "^0.12.4",
+    "node-fetch": "^2.6.1",
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "fetch-mock": "^9.10.7"
+  }
+}
