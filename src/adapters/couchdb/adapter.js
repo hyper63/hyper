@@ -1,18 +1,26 @@
 import { Async } from 'crocks'
+import { omit } from 'ramda'
 
 export default ({asyncFetch, config, handleResponse, headers }) => {
   const retrieveDocument = ({ db, id }) =>
     asyncFetch(`${config.origin}/${db}/${id}`, {
       headers,
     }).chain(handleResponse(200))
-      .toPromise()
+      
+      
   
   return ({
-    createDatabase: (name) => asyncFetch(`${config.origin}/${name}`, {
+    createDatabase: (name) => {
+      console.log('create database', `${config.origin}/${name}`)
+      console.log(headers)
+      return asyncFetch(`${config.origin}/${name}`, {
       method: 'PUT',
       headers
-    }).chain(handleResponse(201))
-      .toPromise(),
+    })
+      .chain(handleResponse(201))
+      .toPromise()
+      
+    },
     
     removeDatabase: (name) => asyncFetch(`${config.origin}/${name}`, {
       method: 'DELETE',
@@ -28,10 +36,11 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
             body: JSON.stringify(doc),
           })
         )
-        .chain(handleResponse(201)).toPromise(),
-    retrieveDocument,
+        .chain(handleResponse(201))
+        .toPromise(),
+    retrieveDocument: ({db, id}) => retrieveDocument({db, id}).map(omit(['_id', '_rev'])).toPromise(),
     updateDocument: ({ db, id, doc }) =>
-      retrieveDocument(config)({ db, id })
+      retrieveDocument({ db, id })
         .chain((old) =>
           asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
             method: "PUT",
@@ -39,9 +48,11 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
             body: JSON.stringify(doc),
           })
         )
-        .chain(handleResponse(201)).toPromise(),
+        .chain(handleResponse(201))
+        .map(omit(['rev']))
+        .toPromise(),
     removeDocument: ({ db, id }) =>
-      retrieveDocument(config)({ db, id })
+      retrieveDocument({ db, id })
         .chain((old) =>
           asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
             method: "DELETE",

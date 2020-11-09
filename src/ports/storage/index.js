@@ -6,13 +6,50 @@ import * as z from 'zod'
  */
 export default function (adapter) {
   const Port = z.object({ 
-    makeBucket: z.function(),
-    removeBucket: z.function(),
-    listBuckets: z.function(),
-    putObject: z.function(),
-    removeObject: z.function(),
-    getObject: z.function(),
+    makeBucket: z.function()
+      .args(z.string())
+      .returns(z.promise(z.object({
+        ok: z.boolean(),
+        msg: z.string().optional()
+      }))),
+    removeBucket: z.function()
+      .args(z.string())
+      .returns(z.promise(z.object({
+        ok: z.boolean(),
+        msg: z.string().optional()
+      }))),
+    listBuckets: z.function()
+      .args(z.void())
+      .returns(z.promise(z.object({
+        ok: z.boolean(),
+        buckets: z.array(z.string())
+      }))),
+    putObject: z.function()
+      .args(z.object({
+        bucket: z.string(),
+        object: z.string(),
+        stream: z.any()
+      }))
+      .returns(z.promise(z.object({ok: z.boolean()})))
+      ,
+    removeObject: z.function()
+      .args(z.object({
+        bucket: z.string(),
+        object: z.string()
+      }))
+      .returns(z.promise(z.object({ok: z.boolean()}))),
+    getObject: z.function()
+      .args(z.object({
+        bucket: z.string(),
+        object: z.string()
+      }))
+      .returns(z.promise(z.any())),
     listObjects: z.function()
+      .args(z.object({
+        bucket: z.string(),
+        prefix: z.string().optional()
+      }))
+      .returns(z.promise(z.any()))
  })
  const instance = Port.parse(adapter)
  instance.makeBucket = Port.shape.makeBucket.validate(instance.makeBucket)

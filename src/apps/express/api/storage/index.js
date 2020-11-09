@@ -1,6 +1,6 @@
-const { fork } = require("../utils");
-const fs = require("fs");
-const mime = require("mime");
+import { fork } from "../utils";
+import fs from "fs";
+import mime from "mime";
 
 // GET /storage
 exports.index = (req, res) =>

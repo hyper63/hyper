@@ -49,8 +49,8 @@ export default function (adapter) {
       z.promise(
         z.object({
           ok: z.boolean(),
-          doc: z.object().optional(),
-          error: z.string().optional()
+          doc: z.any().optional(),
+          msg: z.string().optional()
         })
       )
     ),
@@ -91,7 +91,9 @@ export default function (adapter) {
       z.promise(
         z.object({
           ok: z.boolean(),
-          docs: z.array()
+          docs: z.array(
+            z.any()
+          )
         })
       )
     )

@@ -1,12 +1,12 @@
-import createFetch from '@vercel/fetch'
-import * as nodeFetch from 'node-fetch'
+import createFetch from '@vercel/fetch-retry'
+import nodeFetch from 'node-fetch'
 import { Async } from 'crocks'
 import {ifElse, propEq} from 'ramda'
 import { composeK } from 'crocks/helpers'
 
 const fetch = createFetch(nodeFetch)
-
 export const asyncFetch = Async.fromPromise(fetch)
+//export const asyncFetch = Async.fromPromise(nodeFetch)
 export const createHeaders = (username, password) => ({
   'Content-Type': 'application/json',
   authorization: `Basic ${Buffer.from(username + ':' + password).toString('base64')}`

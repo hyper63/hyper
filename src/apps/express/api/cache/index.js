@@ -1,4 +1,4 @@
-const { fork } = require("../utils");
+import { fork } from "../utils";
 
 // GET /cache
 exports.index = (req, res) =>

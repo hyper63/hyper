@@ -12,14 +12,28 @@ export default (client) => ({
       "makeBucket"
     )(name).map(() => ({
       ok: true,
-    })).toPromise(),
+    })).toPromise()
+      .catch(err => {
+        return {
+          ok: false,
+          msg: err.code
+        }
+      })
+    ,
   removeBucket: (name) =>
     asyncify(
       client,
       "removeBucket"
     )(name).map(() => ({
       ok: true,
-    })).toPromise(),
+    })).toPromise()
+       .catch(err => {
+         return {
+           ok: false,
+           msg: err.code
+         }
+       })
+    ,
   listBuckets: () =>
     asyncify(client, "listBuckets")().map((buckets) => ({
       ok: true,

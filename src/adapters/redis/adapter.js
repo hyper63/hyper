@@ -114,7 +114,7 @@ export default function (client) {
           keys.map((key) =>
             get(key).map((v) => ({
               key: key.replace(`${store}_`, ""),
-              doc: JSON.parse(v),
+              value: JSON.parse(v),
             }))
           )
         )

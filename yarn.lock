@@ -61,6 +61,14 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@vercel/fetch-retry@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@vercel/fetch-retry/-/fetch-retry-5.0.3.tgz#cce5d23f6e64f6f525c24e2ac7c78f65d6c5b1f4"
+  integrity sha512-DIIoBY92r+sQ6iHSf5WjKiYvkdsDIMPWKYATlE0KcUAj2RV6SZK9UWpUzBRKsofXqedOqpVjrI0IE6AWL7JRtg==
+  dependencies:
+    async-retry "^1.3.1"
+    debug "^3.1.0"
+
 "@zeit/fetch-retry@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@zeit/fetch-retry/-/fetch-retry-5.0.0.tgz#0c2f05a8ba380930a2c96570acb1ea900b885fd1"
@@ -2592,7 +2600,7 @@ xtend@^4.0.0:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
-zod@^1.11.10:
-  version "1.11.10"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-1.11.10.tgz#dbc4e70e2d0622ce58f8162d76ea2606d821cf4a"
-  integrity sha512-wtoLthqFeFawiQWMVtjpL9DwggpXHNlygYlSitjTtZeagb04ODIECj5iYGu28+K3ht4lVmrBTfX6M7G9d1Eo6Q==
+zod@^2.0.0-beta.20:
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.20.tgz#3d78b2681982bd6a66dcfc65c57b54392aa4d07e"
+  integrity sha512-9CrKzCFzxZE500BcquhOq64q0R6AMfl8r4nD+XxKzzkMFwtx9ssSBD3isU4r64TJ+J8IgJ9rrM1J/VVHJIX4iA==
