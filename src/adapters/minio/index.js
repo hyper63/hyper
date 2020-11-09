@@ -1,5 +1,4 @@
 import { default as createAdapter } from './adapter'
-import { Async } from 'crocks'
 import Minio from 'minio'
 
 const fetch = createFetch(fetch)
