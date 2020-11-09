@@ -1,6 +1,6 @@
 # hyper63
 
-A service gateway, focused on providing a generic interface for microservices and applications. 
+A service gateway, focused on providing a generic interface for microservices and applications.
 
 Current Status: Design and Development Phase
 
@@ -18,10 +18,9 @@ npx hyper63
 
 To stop hyper63 services
 
-``` sh
+```sh
 npx hyper63 stop
 ```
-
 
 ## Developer Usage
 
@@ -59,7 +58,6 @@ Start development server
 yarn dev
 ```
 
-
 ## Inception Document
 
 > An inception document is a 10 question document to describe the holistic view of the project initiative and create the high level why, what and how.
@@ -74,10 +72,18 @@ yarn dev
 
 ## Contributing
 
+Options to contribute:
+
+- Write an adapter - create an adapter for a given port
+- Write an client - create a client for your favorite language
+- Write an app interface - create your own interface to the hyper63 service gateway
+- Documentation - update the documentation to be concise and clear
+- Examples - create an example implementation.
+
 Want to get involved read the following to find out how.
 
 This is an opensource project, which welcomes all contributions and all development will occur in the open for interested parties to follow and comment. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) and the [Contributing](contributing.md) documentation to fully understand the requirements and restrictions to be a part of this community.
 
 ## Launcher
 
-The launcher project creates a npm package that installs hyper63 on a local machine.
+The launcher project creates a npm package that installs hyper63 on a local machine with adapter defaults of redis, couchdb, and minio.
