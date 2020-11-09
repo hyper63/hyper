@@ -1,0 +1,17 @@
+{
+  "name": "@hyper63/adapter-minio",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "crocks": "^0.12.4",
+    "minio": "^7.0.16"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "tape": "^5.0.1"
+  },
+  "scripts": {
+    "test": "tape -r esm *_test.js"
+  }
+}

@@ -1,13 +1,12 @@
-const test = require("tape");
-const db = require("./db");
-const { Resolved } = require("crocks/Async");
+import { default as test } from 'tape'
+import * as db from './db'
 
 const mockDb = {
   createDatabase(name) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   removeDatabase(name) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
 };
 

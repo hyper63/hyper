@@ -11,16 +11,18 @@
     "dotenv": "^8.2.0",
     "eslint": "^7.10.0",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "tape": "^5.0.1"
   },
   "dependencies": {
+    "@vercel/fetch-retry": "^5.0.3",
     "@zeit/fetch-retry": "^5.0.0",
     "cors": "^2.8.5",
     "crocks": "^0.12.4",
     "cuid": "^2.1.8",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
     "mime": "^2.4.6",
@@ -28,15 +30,16 @@
     "ms": "^2.1.2",
     "multer": "^1.4.2",
     "ramda": "^0.27.1",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "zod": "^2.0.0-beta.20"
   },
   "scripts": {
     "build": "docker build -t hyper63/hyper63:dev .",
     "start:server": "node index.js",
     "start": "run-s start:*",
-    "dev": "nodemon src/index.js",
-    "test:unit": "tape src/core/**/*_test.js",
-    "test:integration": "tape test/**/*_test.js",
+    "dev": "nodemon index.js",
+    "test:unit": "tape -r esm src/core/**/*_test.js",
+    "test:integration": "tape -r esm test/**/*_test.js",
     "test": "run-p test:unit"
   }
 }
