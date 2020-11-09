@@ -10,17 +10,14 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
       
   
   return ({
-    createDatabase: (name) => {
-      console.log('create database', `${config.origin}/${name}`)
-      console.log(headers)
-      return asyncFetch(`${config.origin}/${name}`, {
+    createDatabase: (name) => asyncFetch(`${config.origin}/${name}`, {
       method: 'PUT',
       headers
     })
       .chain(handleResponse(201))
       .toPromise()
       
-    },
+    ,
     
     removeDatabase: (name) => asyncFetch(`${config.origin}/${name}`, {
       method: 'DELETE',
