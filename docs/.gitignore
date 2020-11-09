@@ -1,6 +1,5 @@
-/___ELDER___/
-/node_modules/
-/public/
-/build/
 .DS_Store
-
+/node_modules/
+/src/node_modules/@sapper/
+yarn-error.log
+/__sapper__/
