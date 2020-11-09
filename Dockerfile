@@ -8,7 +8,7 @@ COPY index.js ./
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn
-COPY src ./
+COPY src ./src
 
 EXPOSE 6363
 
