@@ -1,19 +1,18 @@
 import { default as test } from 'tape'
-import * as db from './db'
-import { Resolved } from 'crocks/Async'
+import * as doc from './doc'
 
 const mock = {
   createDocument({ db, id, doc }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   retrieveDocument({ db, id }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   updateDocument({ db, id, doc }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   removeDocument({ db, id }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
 };
 

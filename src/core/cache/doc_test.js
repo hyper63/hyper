@@ -1,12 +1,11 @@
 import { default as test } from 'tape'
 import * as doc from './doc'
-import { Async } from 'crocks'
 
 const mockService = {
-  createDoc: ({ store, key, doc, ttl }) => Async.of({ ok: true }),
-  getDoc: ({ store, key }) => Async.of({ ok: true, doc: { hello: "world" } }),
-  updateDoc: ({ store, key, doc }) => Async.of({ ok: true }),
-  deleteDoc: ({ store, key }) => Async.of({ ok: true }),
+  createDoc: ({ store, key, doc, ttl }) => Promise.resolve({ ok: true }),
+  getDoc: ({ store, key }) => Promise.resolve({ ok: true, doc: { hello: "world" } }),
+  updateDoc: ({ store, key, doc }) => Promise.resolve({ ok: true }),
+  deleteDoc: ({ store, key }) => Promise.resolve({ ok: true }),
 };
 
 const fork = (m) => (t) => {

@@ -4,12 +4,12 @@ import redis from 'redis'
  * @param {object} config
  * @returns {object}
  */
-export function RedisCacheAdapter (config) {
+export default function RedisCacheAdapter (config) {
   /**
    * @param {object} env
    */
   function load() {
-    return { url: config.REDIS }
+    return config
   }
 
   /**

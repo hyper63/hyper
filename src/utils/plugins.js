@@ -47,7 +47,6 @@ function linkPlugins (plugins, adapterConfig) {
 
 function initAdapter (portAdapter) {
   const { plugins } = portAdapter
-
   return compose(
     adapterConfig => linkPlugins(plugins, adapterConfig),
     loadAdapterConfig

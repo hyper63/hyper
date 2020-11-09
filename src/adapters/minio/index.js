@@ -1,18 +1,16 @@
 import { default as createAdapter } from './adapter'
-import Minio from 'minio'
-
-const fetch = createFetch(fetch)
+import * as Minio from 'minio'
 
 /**
  * @param {object} config
  * @returns {object}
  */
-export function MinioStorageAdapter (config) {
+export default function MinioStorageAdapter (config) {
   /**
    * @param {object} env
    */
   function load() {
-    return { url: config.MINIO } 
+    return config 
   }
 
   /**
@@ -31,8 +29,8 @@ export function MinioStorageAdapter (config) {
         endPoint: config.hostname,
         accessKey: config.username,
         secretKey: config.password,
-        secure: config.protocol === 'https:',
-        port: config.port
+        useSSL: config.protocol === 'https:',
+        port: Number(config.port)
       })
       return createAdapter(client)
     }

@@ -3,7 +3,9 @@ const ReaderT = require("crocks/Reader/ReaderT");
 const compose = require("crocks/helpers/compose");
 const Either = require("crocks/Either");
 const eitherToAsync = require("crocks/Async/eitherToAsync");
-const { of, ask, lift } = ReaderT(Async);
+const ReaderAsync = ReaderT(Async)
+const { ask, lift } = ReaderAsync
+
 
 const { Left, Right } = Either;
 
@@ -31,4 +33,5 @@ export const apply = (method) => (data) =>
 /**
  * constructor for an AsyncReader monad
  */
-export const of = of;
+export const of = ReaderAsync.of;
+

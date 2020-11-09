@@ -1,16 +1,15 @@
 import { default as test } from 'tape'
 import * as buckets from './buckets'
-import { Resolved } from 'crocks/Async'
 
 const mock = {
   makeBucket(name) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   removeBucket(name) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   listBuckets() {
-    return Resolved({ ok: true, buckets: ["one", "two", "three"] });
+    return Promise.resolve({ ok: true, buckets: ["one", "two", "three"] });
   },
 };
 

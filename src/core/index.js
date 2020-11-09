@@ -11,9 +11,9 @@ import { default as storageCore } from './storage'
  */
 export default function (services) {
   return Object.freeze({
-    cache: cacheCore(services),
-    data: dataCore(services),
-    storage: storageCore(services)
+    cache: services.cache ? cacheCore(services) : null,
+    data: services.data ? dataCore(services) : null,
+    storage: services.storage ? storageCore(services) : null
   })
 }
 

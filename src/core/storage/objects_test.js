@@ -1,21 +1,20 @@
 import { default as test } from 'tape'
 import * as objects from './objects'
-import { Resolved } from 'crocks/Async'
-import fs from 'path'
+import fs from 'fs'
 import path from 'path'
 
 const mock = {
   putObject({ bucket, object, stream }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   getObject({ bucket, object }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   removeObject({ bucket, object }) {
-    return Resolved({ ok: true });
+    return Promise.resolve({ ok: true });
   },
   listObjects({ bucket, prefix }) {
-    return Resolved({ ok: true, objects: ["one.txt", "two.txt", "three.txt"] });
+    return Promise.resolve({ ok: true, objects: ["one.txt", "two.txt", "three.txt"] });
   },
 };
 

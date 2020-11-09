@@ -11,7 +11,8 @@ export default function (services) {
   const cache = require("./api/cache");
   const data = require("./api/data");
   const storage = require("./api/storage");
-  
+  const port = process.env.PORT || 6363;
+
   // middleware to inject core modules into request object
   const bindCore = (req, res, next) => {
     req.cache = services.cache;
@@ -56,5 +57,7 @@ export default function (services) {
   
   app.get("/", (req, res) => res.send({ name: "hyper63" }));
   
+  app.listen(port)
+  console.log('hyper63 service listening on port ', port)
   return app
 }

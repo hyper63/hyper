@@ -1,14 +1,13 @@
 import { default as test } from 'tape'
 import * as store from './store'
-import { Async } from 'crocks'
 
 const mockService = {
   createStore: (name) =>
-    Async.of({
+    Promise.resolve({
       ok: true,
     }),
-  destroyStore: (name) => Async.of({ ok: true }),
-  listDocs: (name) => Async.of({ ok: true }),
+  destroyStore: (name) => Promise.resolve({ ok: true }),
+  listDocs: (name) => Promise.resolve({ ok: true }),
 };
 
 test("create cache store", (t) => {
@@ -34,7 +33,7 @@ test("destroy cache store", (t) => {
     t.ok(true);
   }
 
-  store.delete("Hello").runWith(mockService).fork(handleError, handleSuccess);
+  store.del("Hello").runWith(mockService).fork(handleError, handleSuccess);
 });
 
 test("query cache store", (t) => {

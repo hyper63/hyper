@@ -4,7 +4,7 @@ import * as z from 'zod'
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-export default function (adapter, env = {}) {
+export default function (adapter) {
   const Port = z.object({ 
     makeBucket: z.function(),
     removeBucket: z.function(),
@@ -14,7 +14,7 @@ export default function (adapter, env = {}) {
     getObject: z.function(),
     listObjects: z.function()
  })
- const instance = Port(adapter(env))
+ const instance = Port.parse(adapter)
  instance.makeBucket = Port.shape.makeBucket.validate(instance.makeBucket)
  instance.removeBucket = Port.shape.removeBucket.validate(instance.removeBucket)
  instance.listBuckets = Port.shape.listBuckets.validate(instance.listBuckets)

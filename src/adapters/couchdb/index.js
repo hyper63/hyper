@@ -5,12 +5,12 @@ import { asyncFetch, createHeaders, handleResponse} from './async_fetch'
  * @param {object} config
  * @returns {object}
  */
-export function CouchDataAdapter (config) {
+export default function CouchDataAdapter (config) {
   /**
    * @param {object} env
    */
   function load() {
-    return { url: config.COUCHDB } 
+    return config
   }
 
   /**

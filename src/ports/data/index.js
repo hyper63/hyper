@@ -4,7 +4,7 @@ import * as z from 'zod'
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-export default function (adapter, env = {}) {
+export default function (adapter) {
   const Port = z.object({ 
     createDatabase: z.function(),
     removeDatabase: z.function(),
@@ -16,7 +16,7 @@ export default function (adapter, env = {}) {
     // TODO: queryDocuments
     // TODO: createIndex 
  })
- const instance = Port(adapter(env))
+ const instance = Port.parse(adapter)
  instance.createDatabase = Port.shape.createDatabase.validate(instance.createDatabase)
  instance.removeDatabase = Port.shape.removeDatabase.validate(instance.removeDatabase)
  instance.createDocument = Port.shape.createDocument.validate(instance.createDocument)

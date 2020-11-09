@@ -4,7 +4,7 @@ import * as z from 'zod'
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-export default function (adapter, env = {}) {
+export default function (adapter) {
   const cachePort = z.object({ 
     createStore: z.function()
       .args(z.string())
@@ -96,7 +96,7 @@ export default function (adapter, env = {}) {
       )
     )
   })  
-  let instance = cachePort.parse(adapter(env))
+  let instance = cachePort.parse(adapter)
   instance.createStore = cachePort.shape.createStore.validate(instance.createStore)
   instance.destroyStore = cachePort.shape.destroyStore.validate(instance.destroyStore)
   instance.createDoc = cachePort.shape.createDoc.validate(instance.createDoc)
