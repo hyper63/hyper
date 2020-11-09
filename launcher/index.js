@@ -20,7 +20,7 @@ services:
     image: "hyper63/hyper63:unstable"
     environment:
       REDIS: redis://redis:6379
-      COUCH: http://admin:password@couchdb:5984
+      COUCHDB: http://admin:password@couchdb:5984
       MINIO: http://admin:password@minio:9000
     ports:
       - "6363:6363"
