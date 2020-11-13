@@ -30,7 +30,7 @@ A hyper63 plugin must have the following attributes:
 
 | Name | Type                  | Description                                                                                                                                                                                                                                   |
 | ---- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id   | [string]              | Unique naem of the adapter/plugin                                                                                                                                                                                                             |
+| id   | [string]              | Unique name of the adapter/plugin                                                                                                                                                                                                             |
 | port | [string]              | Name of the hyper63 port the adapter/plugin is implementing                                                                                                                                                                                   |
 | load | function              | The load function manages any processing that needs to be done <br /> during the loading stage of the plugin, <br /> the returned result of the load function will be passed to the <br /> link function as configuration data                |
 | link | higher order function | The link function is where the adapter/plugin returns the implemenation details <br/> for a given port. After all plugins are linked, all of the specified methods <br /> for a given port should be implemented. If not an error will occur. |
@@ -48,6 +48,34 @@ export default function (pluginConfig) {
   };
 }
 ```
+
+When you create a hyper63 config file, you want to specify a set of plugins for each port that
+makes up an adapter implementation.
+
+```js
+import redis from "@hyper63/adapter-redis";
+import trace from "@hyper63/plugin-trace";
+
+export default {
+  adapters: [
+    { port: "cache", plugins: [trace(), redis({ url: process.env.REDIS })] },
+  ],
+};
+```
+
+In this example config file, we are using the redis adapter and trace plugin to
+combine to create an adapter for the cache port. When hyper63 initializes it will
+dynamically import these modules and compose them together to create and instanciate
+adapters for each defined port. Then pass these instanciated adapters to the app as
+service objects.
+
+## Searching for implemented adapters
+
+https://www.npmjs.com/search?q=keywords:@hyper63
+
+## Create your own adapter, read this simple tutorial to get you started.
+
+TODO: create tutorial for creating adapters
 
 [Documentation](/documentation) | [Home](/)
 

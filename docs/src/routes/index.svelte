@@ -28,7 +28,8 @@
 
 <h1>hyper63</h1>
 
-<p><strong>A cloud agnostic service gateway.</strong></p>
+<p><strong>A application service gateway.</strong></p>
+<p>Build applications quickly by focusing on presentation and business logic, use hyper63 as a gateway to backend services for persistence, caching, searching and storage. </p>
 
 
 <a href="/documentation">View Documentation</a>
