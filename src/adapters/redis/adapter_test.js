@@ -64,6 +64,6 @@ test('list redis docs', async t => {
   })
   t.ok(result.ok)
   t.equal(result.docs.length, 1)
-  t.deepEqual(result.docs[0].doc, doc)
+  t.deepEqual(result.docs[0].value, doc)
   t.end()
 })
