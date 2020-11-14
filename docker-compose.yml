@@ -29,3 +29,12 @@ services:
     ports:
       - "9000:9000"
     command: server /data
+  elasticsearch:
+    image: elasticsearch:7.9.3
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node

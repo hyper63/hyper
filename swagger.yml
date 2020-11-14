@@ -869,9 +869,8 @@ paths:
       responses:
         200:
           description: deleted search index
-  /search/{name}/_index:
     post:
-      description: indexes json object
+      description: index search document
       tags: [search]
       parameters:
       - in: path
@@ -880,10 +879,75 @@ paths:
         schema:
           type: string
       responses:
+        201:
+          description: successfully indexed document
+          
+  /search/{name}/{key}:
+    get:
+      description: get index document
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
+        200:
+          description: successfully got document
+    put:
+      description: update index document
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
         200:
           description: success
-      
-  /search/{name}/_search:
+    delete:
+      description: remove index document
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
+        200:
+          description: success remove document
+  /search/{name}/_bulk:
+    post:
+      description: batch create index docs
+      tags: [search]
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        201:
+          description: success
+  /search/{name}/_query:
     get:
       description: search index
       tags: [search]

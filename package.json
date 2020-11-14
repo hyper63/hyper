@@ -1,5 +1,5 @@
 {
-  "name": "hyper63",
+  "name": "@hyper63/monorepo",
   "description": "service gateway",
   "version": "1.0.0",
   "main": "src/index.js",
