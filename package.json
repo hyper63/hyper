@@ -38,7 +38,7 @@
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon index.js",
-    "test:unit": "tape -r esm src/core/**/*_test.js",
+    "test:unit": "tape -r esm src/**/**/*_test.js",
     "test:integration": "tape -r esm test/**/*_test.js",
     "test": "run-p test:unit"
   }
