@@ -11,6 +11,8 @@ export default function (services) {
   const cache = require("./api/cache");
   const data = require("./api/data");
   const storage = require("./api/storage");
+  const search = require('./api/search')
+
   const port = process.env.PORT || 6363;
 
   // middleware to inject core modules into request object
@@ -18,6 +20,7 @@ export default function (services) {
     req.cache = services.cache;
     req.data = services.data;
     req.storage = services.storage;
+    req.search = services.search;
     next();
   };
   
@@ -52,7 +55,17 @@ export default function (services) {
   app.post("/storage/:name", upload.single("file"), bindCore, storage.putObject);
   app.get("/storage/:name/*", bindCore, storage.getObject);
   app.delete("/storage/:name/*", bindCore, storage.removeObject);
-  
+ 
+  // search api
+  app.get('/search', search.index)
+  app.put('/search/:index', express.json(), bindCore, search.createIndex)
+  app.delete('/search/:index', bindCore, search.deleteIndex)
+  app.post('/search/:index', express.json(), bindCore, search.indexDoc)
+  app.get('/search/:index/:key', bindCore, search.getDoc)
+  app.put('/search/:index/:key', express.json(), bindCore, search.updateDoc)
+  app.delete('/search/:index/:key', bindCore, search.removeDoc)
+  app.post('/search/:index/_query', express.json(), bindCore, search.query)
+
   //app.use("/micro/hooks", require("./api/hooks"));
   
   app.get("/", (req, res) => res.send({ name: "hyper63" }));

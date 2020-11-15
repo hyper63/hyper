@@ -16,7 +16,6 @@ async function main () {
     initAdapters,
     prop('adapters')
   )(config)
-   
   // return app
   return config.app(services)
 }
