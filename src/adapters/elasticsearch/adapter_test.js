@@ -69,6 +69,7 @@ test('get document', async t => {
     index: 'movies', 
     key: '1'
   })
-  t.equal(result.hello, 'world')
+  
+  t.equal(result.doc.hello, 'world')
   t.end()
 })
