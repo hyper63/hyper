@@ -22,6 +22,7 @@ services:
       REDIS: redis://redis:6379
       COUCHDB: http://admin:password@couchdb:5984
       MINIO: http://admin:password@minio:9000
+      ES: http://elasticsearch:9200
     ports:
       - "6363:6363"
     depends_on:
@@ -38,15 +39,19 @@ services:
     volumes:
       - ".:/opt/couchdb/data"
   minio:
-      image: minio/minio
-      environment:
-        MINIO_ACCESS_KEY: admin
-        MINIO_SECRET_KEY: password
-      volumes:
-        - "./data:/data"
-      ports:
-        - "9000:9000"
-      command: server /data
+    image: minio/minio
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: password
+    volumes:
+      - "./data:/data"
+    command: server /data
+  elasticsearch:
+    image: elasticsearch:7.9.3 
+    volumes:
+    - "./data:/usr/share/elasticsearch/data"
+    environment:
+      discovery.type: single-node
 `;
 
   fs.writeFileSync(`${process.env.HOME}/.hyper63/docker-compose.yml`, config);
