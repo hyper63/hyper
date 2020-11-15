@@ -1,3 +1,6 @@
+import { Async } from 'crocks'
+import { pluck } from 'ramda'
+
 export default function ({config, asyncFetch, headers, handleResponse}) {
   /**
    * @typedef {Object} CreateIndexObject
@@ -41,7 +44,14 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
     method: 'PUT',
     headers,
     body: JSON.stringify(doc)
-  }).chain(handleResponse(201))
+  })
+    .chain(result => {
+      if (result.status < 400) {
+        return Async.fromPromise(result.json.bind(result))(result)
+      } 
+      return Async.Rejected({ok: false})
+    })
+    .map(r => ({ok: true}))
     .toPromise()
 
 
@@ -53,9 +63,11 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
    * @param {DocumentInfo}
    * @returns {Promise<Object>}
    */
-  const getDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
+  const getDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}/_source`, {
     headers
-  }).chain(handleResponse(200)).toPromise()
+  }).chain(handleResponse(200))
+    .map(result => ({ok: true, doc: result}))
+    .toPromise()
 
 
   /**
@@ -66,7 +78,9 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
     method: 'PUT',
     headers,
     body: JSON.stringify(doc)
-  }).chain(handleResponse(200)).toPromise()
+  }).chain(handleResponse(200))
+    .map(r => ({ok: true}))
+    .toPromise()
 
   /**
    * @param {DocumentInfo}
@@ -75,7 +89,9 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
   const removeDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
     method: 'DELETE',
     headers
-  }).chain(handleResponse(200)).toPromise()
+  }).chain(handleResponse(200))
+    .map(r => ({ok: true}))
+    .toPromise()
    
   /**
    * @typedef {Object} DocumentQuery
@@ -86,10 +102,16 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
    * @returns {Promise<Object>}
    */
   const query = ({index, q}) => asyncFetch(`${config.origin}/${index}/_search`, {
-    method: 'GET',
+    method: 'POST',
     headers,
     body: JSON.stringify(q)
-  }).chain(handleResponse(200)).toPromise()
+  }).chain(handleResponse(200))
+    .map(r => {
+      console.log(r)
+      return r
+    })
+    .map(r => ({ok: true, matches: pluck('_source', r.hits.hits)}))
+  .toPromise()
   
   return Object.freeze({
     createIndex,

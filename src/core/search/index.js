@@ -1,7 +1,7 @@
 import { of, apply } from '../utils'
 
 export default ({ search }) => ({
-  createIndex: (index, mapping={}) => of({index, mapping})
+  createIndex: (index, mappings={}) => of({index, mappings})
     .chain(apply("createIndex")).runWith(search),
   deleteIndex: (index) => of(index)
     .chain(apply("deleteIndex")).runWith(search),

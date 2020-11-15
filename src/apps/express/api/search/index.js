@@ -14,7 +14,7 @@ exports.deleteIndex = ({ params, search }, res) =>
 
 // POST /search/:index
 exports.indexDoc = ({ params, body, search }, res) =>
-  fork(res, 201, search.createDoc(params.index, body.key, body.doc));
+  fork(res, 201, search.indexDoc(params.index, body.key, body.doc));
 
 // GET /search/:index/:key
 exports.getDoc = ({ params, search }, res) =>
@@ -22,11 +22,11 @@ exports.getDoc = ({ params, search }, res) =>
 
 // PUT /search/:index/:key
 exports.updateDoc = ({ search, params, body }, res) =>
-  fork(res, 200, search.updateDoc(params.name, params.key, body));
+  fork(res, 200, search.updateDoc(params.index, params.key, body));
 
 // DELETE /search/:index/:key
 exports.removeDoc = ({ search, params }, res) =>
-  fork(res, 200, search.deleteDoc(params.index, params.key));
+  fork(res, 200, search.removeDoc(params.index, params.key));
 
 // POST /search/:index/_query
 exports.query = ({ search, params, body }, res) =>

@@ -20,6 +20,7 @@ export default function (services) {
     req.cache = services.cache;
     req.data = services.data;
     req.storage = services.storage;
+    req.search = services.search;
     next();
   };
   
@@ -57,13 +58,13 @@ export default function (services) {
  
   // search api
   app.get('/search', search.index)
-  app.put('/search/:index', bindCore, search.createIndex)
+  app.put('/search/:index', express.json(), bindCore, search.createIndex)
   app.delete('/search/:index', bindCore, search.deleteIndex)
-  app.post('/search/:index', bindCore, search.indexDoc)
+  app.post('/search/:index', express.json(), bindCore, search.indexDoc)
   app.get('/search/:index/:key', bindCore, search.getDoc)
-  app.put('/search/:index/:key', bindCore, search.updateDoc)
+  app.put('/search/:index/:key', express.json(), bindCore, search.updateDoc)
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
-  app.post('/search/:index/_query', bindCore, search.query)
+  app.post('/search/:index/_query', express.json(), bindCore, search.query)
 
   //app.use("/micro/hooks", require("./api/hooks"));
   

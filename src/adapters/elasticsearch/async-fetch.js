@@ -12,7 +12,9 @@ export const createHeaders = (username, password) => ({
   authorization: `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 })
 const toJSON = (result) => Async.fromPromise(result.json.bind(result))(result);
-const toJSONReject = composeK(Async.Rejected, toJSON);
+const toJSONReject = composeK(Async.Rejected,
+  r => Async.Resolved({ok: false})
+  , toJSON);
 export const handleResponse = (code) =>
   ifElse(propEq("status", code), toJSON, toJSONReject);
 

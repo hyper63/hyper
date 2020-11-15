@@ -4,7 +4,10 @@ export default function (adapter, env) {
   const Port = z.object({
     // add port methods
     createIndex: z.function()
-      .args(z.string(),z.any())
+      .args(z.object({
+        index: z.string(),
+        mappings: z.any()
+      }))
       .returns(z.promise(z.object({
         ok: z.boolean(),
         msg: z.string().optional()
