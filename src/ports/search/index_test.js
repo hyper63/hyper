@@ -4,7 +4,7 @@ import searchPort from './index'
 test('port search ok', t => {
   t.plan(1)
   const search = searchPort({
-    createIndex: (index, mappings) => Promise.resolve({ok: true}),
+    createIndex: ({index, mappings}) => Promise.resolve({ok: true}),
     deleteIndex: (index) => Promise.resolve({ok: true}),
     indexDoc: ({index, key, doc}) => Promise.resolve({ok: true}),
     getDoc: ({index, key}) => Promise.resolve({ok: true}),
@@ -13,7 +13,7 @@ test('port search ok', t => {
     query: ({index, q}) => Promise.resolve({ok: true, matches: []})
   })
   Promise.all([
-    search.createIndex('foo', {}),
+    search.createIndex({ index: 'foo', mappings: {}}),
     search.deleteIndex('foo'),
     search.indexDoc({ index: 'foo', key: 'bar', doc: { hello: 'world'}}),
     search.getDoc({ index: 'foo', key: 'bar'}),
