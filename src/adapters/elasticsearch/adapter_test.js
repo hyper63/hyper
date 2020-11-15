@@ -25,7 +25,7 @@ const fetch = fetchMock.sandbox()
     body: { ok: true },
     headers
   })
-  .get(`${ES}/movies/_doc/1`, {
+  .get(`${ES}/movies/_doc/1/_source`, {
     status: 200,
     body: { _id: '1', hello: 'world'},
     headers
