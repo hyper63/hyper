@@ -1028,7 +1028,12 @@ paths:
           
   /search/{name}/{key}:
     get:
-      description: get index document
+      description: >
+        # Get Search Document
+        
+        This request will return the search document
+        in the specified search index and key.
+        
       tags: [search]
       parameters:
       - in: path
@@ -1045,7 +1050,15 @@ paths:
         200:
           description: successfully got document
     put:
-      description: update index document
+      description: >
+        # Update search index
+        
+        Over time a search data for a document may change and
+        you will want to update a specific document with new
+        search criteria, using this `PUT` request, you can 
+        update the document with search.
+        
+        
       tags: [search]
       parameters:
       - in: path
@@ -1080,7 +1093,19 @@ paths:
           description: success remove document
   /search/{name}/_bulk:
     post:
-      description: batch create index docs
+      description: >
+        # Batch Search Documents
+        
+        You may have a large list of documents you want to 
+        search in your application, like movies or addresses
+        
+        This request endpoint lets you send a json array of 
+        search documents and the search service will bulk load
+        the documents into the search index.
+        
+        This endpoint is currently not operational, but should
+        be created soon.
+        
       tags: [search]
       parameters:
       - in: path
@@ -1093,7 +1118,58 @@ paths:
           description: success
   /search/{name}/_query:
     get:
-      description: search index
+      description: >
+        # Query an index
+        
+        Querying documents on a given index is the core
+        feature of the search service, using this endpoint
+        you can create a query json document to retrieve
+        documents quickly in the search index.
+        
+        ### Search all Docs
+        
+        ```
+        
+        {
+          "query": {
+            "match_all": {}
+          }
+        }
+        
+        ```
+        
+        ### Search title which contains foo
+        
+        ```
+        
+        {
+          "query": {
+            "match": {
+              "title": "foo"
+            }
+          }
+        }
+        
+        ```
+        
+        ### Filter by a term
+        
+        ```
+        
+        {
+          "query": {
+            "filter": {
+              "term": {
+                "status": "active"
+              } 
+            }
+          }
+        }
+        
+        ```
+        
+        Use filter to return docs that have a status of active
+        
       tags: [search]
       parameters:
       - in: path
