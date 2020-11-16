@@ -25,8 +25,16 @@ export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg))
  */
 export const apply = (method) => (data) =>
   ask((svc) => {
-    const async = Async.fromPromise(svc[method])
-    return async(data)
+    //const async = Async.fromPromise(svc[method])
+    return Async(function(reject, resolve) {
+      // NOTE: maybe consider using an Either here?
+      try {
+        return svc[method](data).then(resolve)
+      } catch (e) {
+        return reject({ok: false, msg: e.errors.map(x => x.code).join(',')})
+      }
+    })
+    //return async(data)
   }).chain(lift);
   
 

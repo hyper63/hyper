@@ -1,4 +1,6 @@
 import * as z from 'zod'
+import { Either } from 'crocks'
+const { Left, Right } = Either
 
 export default function (adapter, env) {
   const Port = z.object({
@@ -44,6 +46,7 @@ export default function (adapter, env) {
       }))
       .returns(z.promise(z.object({
         ok: z.boolean(),
+        key: z.string(),
         doc: z.any()
       }))),
     removeDoc: z.function()
@@ -67,6 +70,7 @@ export default function (adapter, env) {
   })
 
   const instance = Port.parse(adapter)
+
   instance.createIndex = Port.shape.createIndex.validate(instance.createIndex)
   instance.deleteIndex = Port.shape.deleteIndex.validate(instance.deleteIndex)
   instance.indexDoc = Port.shape.indexDoc.validate(instance.indexDoc)
@@ -77,4 +81,14 @@ export default function (adapter, env) {
   instance.query = Port.shape.query.validate(instance.query)
 
   return instance
+}
+
+function tryCatch(fn) {
+  return function (...val) {
+    try {
+      return Right(fn(...val))
+    } catch (e) {
+      return Left(e)
+    }
+  }
 }

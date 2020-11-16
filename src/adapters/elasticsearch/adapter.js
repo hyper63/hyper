@@ -17,7 +17,13 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
         method: 'PUT',
         body: JSON.stringify(mappings)
       }
-    ).chain(handleResponse(201))
+    )
+     .chain(response => response.status < 400 
+        ? Async.fromPromise(response.json.bind(response))()
+        : Async.Rejected({ok: false })
+     ) 
+     .map(r => ({ok: true}))
+     //.chain(handleResponse(201))
      .toPromise()
   }
 
@@ -66,7 +72,8 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
   const getDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}/_source`, {
     headers
   }).chain(handleResponse(200))
-    .map(result => ({ok: true, doc: result}))
+    .map(result => { console.log(result); return result })
+    .map(result => ({ok: true, key, doc: result}))
     .toPromise()
 
 
@@ -107,7 +114,6 @@ export default function ({config, asyncFetch, headers, handleResponse}) {
     body: JSON.stringify(q)
   }).chain(handleResponse(200))
     .map(r => {
-      console.log(r)
       return r
     })
     .map(r => ({ok: true, matches: pluck('_source', r.hits.hits)}))
