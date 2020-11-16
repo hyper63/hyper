@@ -1,6 +1,7 @@
 import { default as cacheCore } from './cache'
 import { default as dataCore } from './data'
 import { default as storageCore } from './storage'
+import { default as searchCore } from './search'
 
 /**
  * main core module
@@ -13,7 +14,8 @@ export default function (services) {
   return Object.freeze({
     cache: services.cache ? cacheCore(services) : null,
     data: services.data ? dataCore(services) : null,
-    storage: services.storage ? storageCore(services) : null
+    storage: services.storage ? storageCore(services) : null,
+    search: services.search ? searchCore(services) : null
   })
 }
 

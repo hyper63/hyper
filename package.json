@@ -1,5 +1,5 @@
 {
-  "name": "hyper63",
+  "name": "@hyper63/monorepo",
   "description": "service gateway",
   "version": "1.0.0",
   "main": "src/index.js",
@@ -10,10 +10,12 @@
     "@twilson63/test-server": "^1.0.1",
     "dotenv": "^8.2.0",
     "eslint": "^7.10.0",
+    "fetch-mock": "^9.10.7",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
+    "redis-mock": "^0.54.0",
     "tape": "^5.0.1"
   },
   "dependencies": {
@@ -38,7 +40,7 @@
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon index.js",
-    "test:unit": "tape -r esm src/core/**/*_test.js",
+    "test:unit": "tape -r esm src/**/**/*_test.js",
     "test:integration": "tape -r esm test/**/*_test.js",
     "test": "run-p test:unit"
   }

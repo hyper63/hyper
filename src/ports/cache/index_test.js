@@ -2,8 +2,7 @@ import { default as test } from 'tape'
 import cachePort from './index'
 
 test('port cache ok', t => {
-  const goodCache = cachePort(() => {
-    return {
+  const goodCache = cachePort({
       createStore(name) {
         return Promise.resolve({ok: true })
       },
@@ -31,7 +30,7 @@ test('port cache ok', t => {
         return Promise.resolve({ok: true, docs: []})
       }
     }
-  })
+  )
   Promise.all([
     goodCache.createStore('foo'),
     goodCache.destroyStore('foo'),

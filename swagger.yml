@@ -8,85 +8,25 @@ info:
 
     A service-gateway
 
-    hyper63 provides a restful api to common application services implemented with adapters 
+    hyper63 provides api abstractions to some of the core application building blocks. Using the ports and 
+    adapters architecture, hyper63's approach empowers you
+    to use the service for each port you prefer.
 
       * cache [implemented]
       * data [wip]
       * storage [wip]
+      * search [wip]
       * hooks [wip]
 
     ## Getting started
 
-    hyper63 is currently stored on hub.docker.com
-    you can quickly get started playing with atlas
-    with docker
-
-
-    create a new directory:
-
-
     ```
-    mkdir atlas
-    cd atlas
+    npx hyper63
     ```
-
-
-    create a `docker-compose.yml` file
-
-
-    ```yaml
-    version: "3.8"
-    services:
-      web:
-        image: "hyper63/atlas:unstable"
-        environment:
-          REDIS: redis://redis:6379
-          COUCH: http://admin:password@couchdb:5984
-          MINIO: http://minio:minio123@minio:9000
-        ports:
-          - "6363:6363"
-        depends_on:
-          - redis
-      redis:
-        image: "redis:alpine"
-        volumes:
-          - ".:/data"
-      couchdb:
-        image: "couchdb"
-        environment:
-          COUCHDB_USER: "admin"
-          COUCHDB_PASSWORD: "password"
-        volumes:
-          - ".:/opt/couchdb/data"
-      minio:
-          image: minio/minio
-          environment:
-            MINIO_ACCESS_KEY: minio
-            MINIO_SECRET_KEY: minio123
-          volumes:
-            - "./data:/data"
-          ports:
-            - "9000:9000"
-          command: server /data
-    ```
-
-
-    launch using `docker-compose`
-
-
-    ```
-
-    docker-compose up -d
-
-    docker exec -it atlas_couchdb_1 \
-      curl -X POST -H "Content-Type: application/json" \ 
-      localhost:5984/_cluster_setup \
-      -d '{"action":"enable_single_node", "bind_address":"0.0.0.0"}' \
-      -u 'admin:password'
-    ```
-
-
-    [source code](https://github.com/hyper63/atlas)
+    
+         
+    
+    [source code](https://github.com/hyper63/hyper63)
 
   contact:
     url: "https://hyper63.com"
@@ -94,7 +34,7 @@ info:
     name: hyper63
   license:
     name: Apache License 2.0
-    url: "https://github.com/hyper63/atlas/blob/main/LICENSE"
+    url: "https://github.com/hyper63/hyper63/blob/main/LICENSE"
   version: "1.0"
   termsOfService: "https://hyper63.com/termsofuse.text"
 servers:
@@ -103,7 +43,16 @@ servers:
 paths:
   /:
     get:
-      description: server health response
+      description: >
+        # HealthCheck
+        
+        This endpoint returns 200 if the system is 
+        healthy and returns 500 if all of the 
+        pings for each service did not come back successful
+        
+        TODO: In the future this endpoint should list
+        all the configured ports and the adapter information
+        of each port.
       responses:
         "200":
           description: successful health response
@@ -114,11 +63,22 @@ paths:
                   name:
                     description: name of service
                     type: string
+        500:
+          description: one or more of the services are not responding
   /cache:
     get:
-      description: cache module information
+      description: >
+
+        # Cache Information
+        
+        This the endpoint returns the current state
+        of the Cache Service
+        
+        > TODO: return the list of cache stores
+        
+      tags: [cache]
       responses:
-        "200":
+        200:
           description: cache module info
           content:
             application/json:
@@ -140,13 +100,26 @@ paths:
                       - stable
                       - unstable
                     default: unstable
-  "/cache/{name}":
+  /cache/{name}:
     put:
-      description: create cache store
+      description: >
+      
+        # Create Cache Store
+        
+        A cache store is a prefix for a cache so 
+        that all keys can be stored or grouped under
+        a common name. This makes it easy to manage
+        cached data.
+        
+        When creating a cache store you must give it
+        a name and that name can only have alpha-numeric
+        characters and the '-' character. The cache store
+        name will not be case-sensitive.
+      tags: [cache]
       parameters:
         - name: name
           in: path
-          description: name of cache store
+          description: (case insensitive) accepts alphanumeric charcters and dash 
           required: true
           schema:
             type: string
@@ -160,7 +133,13 @@ paths:
                   ok:
                     type: boolean
         "500":
-          description: could not create store
+          description: >
+            getting a 500 is more than likely a name 
+            validation error or the service is not 
+            available. In the event of a name validation
+            error, be sure to check the message to 
+            determine what is invalid about your 
+            cache name.
           content:
             application/json:
               schema:
@@ -168,8 +147,18 @@ paths:
                   ok:
                     type: boolean
                     default: false
+                  msg:
+                    type: string
     delete:
-      description: delete cache store
+      description: >
+        # Delete store
+        
+        This function deletes a cache store and removes all
+        keys that were a part of this store. Once a store
+        is delete it will be impossible to recover the cache
+        data, so make sure you use this function with great
+        care.
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -181,7 +170,22 @@ paths:
         "200":
           description: successfully deleted store
     post:
-      description: create new cache document
+      description: >
+      
+        # Create Cache Document
+        
+        This cache service accepts JSON documents, it is worth
+        noting that a number, string, array are all valid json
+        documents. 
+        
+        When storing a document to the cache, you will want to 
+        give it a key, this is how you will recall your document
+        from the cache. You also have the option to add a `ttl` 
+        property, or time to live, which lets the cache know 
+        how long to keep the value in the cache. The ttl property 
+        takes values like `1m`  one minute, `2h` two hours, `3d` three days.
+        
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -228,6 +232,7 @@ paths:
   "/cache/{name}/_query":
     get:
       description: query cache with key match pattern
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -267,6 +272,7 @@ paths:
   "/cache/{name}/{key}":
     get:
       description: get cache key from store
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -303,6 +309,7 @@ paths:
                     type: string
     put:
       description: update cache document
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -351,6 +358,7 @@ paths:
                     type: string
     delete:
       description: remove cache document
+      tags: [cache]
       parameters:
         - name: name
           in: path
@@ -388,6 +396,7 @@ paths:
   /data:
     get:
       description: data module information
+      tags: [data]
       responses:
         200:
           description: data module info
@@ -409,6 +418,7 @@ paths:
   /data/{name}:
     put:
       description: create database
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -437,6 +447,7 @@ paths:
                     type: string
     delete:
       description: remove database
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -463,6 +474,7 @@ paths:
                     type: boolean
     post:
       description: create document
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -498,9 +510,24 @@ paths:
                     type: boolean
                   msg:
                     type: string
+  /data/{name}/_index:
+    post:
+      description: create secondary index
+      tags: [data]
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: name of database
+          schema:
+            type: string
+      responses:
+        201:
+          description: success
   /data/{name}/_query:
     post:
       description: query database
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -540,6 +567,7 @@ paths:
   /data/{name}/{id}:
     get:
       description: get document
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -576,6 +604,7 @@ paths:
                     type: string
     put:
       description: update document
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -619,6 +648,7 @@ paths:
                     type: string
     delete:
       description: delete document
+      tags: [data]
       parameters:
         - name: name
           in: path
@@ -656,6 +686,7 @@ paths:
   /storage:
     get:
       description: storage module healthcheck
+      tags: [storage]
       responses:
         200:
           description: healthcheck json
@@ -666,6 +697,13 @@ paths:
   /storage/{name}:
     put:
       description: make storage bucket
+      tags: [storage]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
       responses:
         201:
           description: success
@@ -687,6 +725,13 @@ paths:
                     type: string
     delete:
       description: remove storage bucket - all items must be removed
+      tags: [storage]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
       responses:
         201:
           description: success
@@ -709,6 +754,13 @@ paths:
 
     post:
       description: upload file to storage
+      tags: [storage]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
       requestBody:
         description: placeholder
         content:
@@ -745,8 +797,386 @@ paths:
   /storage/{name}/_list:
     get:
       description: list items in storage bucket
+      tags: [storage]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      responses:
+        200:
+          description: get list of items in bucket
   /storage/{name}/{object}:
     get:
       description: download file from storage
+      tags: [storage]
+      parameters:
+      - in: path
+        description: storage bucket name
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        description: object path and name
+        required: true
+        name: object
+        schema:
+          type: string
+      responses:
+        200:
+          description: returns object
     delete:
       description: delete file from storage
+      tags: [storage]
+      parameters:
+      - in: path
+        description: storage bucket name
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        description: object path and name
+        required: true
+        name: object
+        schema:
+          type: string
+      responses:
+        200:
+          description: delete object
+  /search:
+    get:
+      description: >
+        # hyper63 Search Service
+        
+        Welcome to the search service, this api allows you
+        to easily create search index for your application.
+        
+        A search service creates and inverted index of your json
+        documents, so that you can quickly access search results
+        to give your application's business logic fast access to
+        information.
+        
+        ## Search Indexes
+        
+        Search indexes are logical groups of documents you want to 
+        search. For each unique search you will want to create an
+        index, this allows you to manage that group of documents 
+        separately from other groups of documents.
+        
+        * PUT /search/:index - create index
+        
+        * DELETE /search/:index - remove index
+        
+        ## Search Documentsd
+        
+        Search documents are json documents that contain properties that
+        you want to index and search from and the data you want to retrieve
+        from the search results.
+        
+        Using standard crud rest commands your manage your search documents
+        
+        * POST /search/:index - create search doc ({key, doc})  
+        
+        * GET /search/:index/:key - get search doc 
+        
+        * PUT /search/:index/:key - update search doc 
+        
+        * DELETE /search/:index/:key - delete search doc
+        
+        ## Executing Search
+        
+        Now that you have all of your search documents in your index
+        now you can query those documents using a query document
+        
+        * POST /search/:index/_query
+        
+        
+      tags: [search]
+      responses:
+        200:
+          description: success
+          
+  /search/{name}:
+    put:
+      description: >
+        # Create Search Index
+        
+        A search index is a logical group of document types
+        that focus on consistent search results to return to
+        your business logic.
+        
+        
+        Examples:
+        
+          If your app needs to search movies, you may want to 
+          create an index called movies.
+          
+          If you have an app that needs to search for a given
+          set of documents per account and you want to create
+          a highlevel filter for each account, then maybe 
+          create an index per account.
+          
+          With the ability to create indexes you will have
+          the ability to name them in a referencable way.
+          
+          When naming the index be sure not to create name
+          with non numeric characters or spaces. A name can
+          contain a `-` but must not have any spaces or any 
+          other non alphanumeric characters.
+          
+          ### Search Index Mapping
+          
+          By default, the search service will try to take the
+          shape of the json document and determine the types
+          of each property, but sometimes, you need to describe
+          the specific type of the property. A good example is
+          a movie document:
+          
+          
+          ```
+          {
+            "title": "Star Wars",
+            "year": 1978
+          }
+          ```
+          
+          In this document, the search service will think that
+          the year property is a number and will index based
+          on that fact, but your app may want it to be reconized as
+          a date so that you can run queries with date filters.
+          
+          
+          In this case, you will need a mapping document when 
+          creating the index. 
+          
+          ```
+          {
+            "mappings": {
+              "properties": {
+                "year": "date"
+              }
+            }
+          }
+          ```
+          
+          This mapping document lets the search service treat the
+          year property as a date not a number.
+          
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      responses:
+        201:
+          description: created search index
+    delete:
+      description: >
+        # Delete Search Index
+        
+        By deleting a search index it will remove all search 
+        documents and search indexes created.
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      responses:
+        200:
+          description: deleted search index
+    post:
+      description: >
+        # Create Search Document for a given Index
+        
+        Once you have created your index, you can start to add
+        search documents using the POST method with a request 
+        containing a body of the following shape:
+        
+        
+        ```
+        
+        {
+          key: 'unique identifier',
+          doc: 'search document'
+        }
+        
+        ```     
+        
+        
+        You will need to specify the key you want your document to be
+        referenced by and then the search document a json document that
+        you want to search.
+        
+        
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      responses:
+        201:
+          description: successfully indexed document
+          
+  /search/{name}/{key}:
+    get:
+      description: >
+        # Get Search Document
+        
+        This request will return the search document
+        in the specified search index and key.
+        
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
+        200:
+          description: successfully got document
+    put:
+      description: >
+        # Update search index
+        
+        Over time a search data for a document may change and
+        you will want to update a specific document with new
+        search criteria, using this `PUT` request, you can 
+        update the document with search.
+        
+        
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+    delete:
+      description: remove index document
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: key
+        schema:
+          type: string
+      responses:
+        200:
+          description: success remove document
+  /search/{name}/_bulk:
+    post:
+      description: >
+        # Batch Search Documents
+        
+        You may have a large list of documents you want to 
+        search in your application, like movies or addresses
+        
+        This request endpoint lets you send a json array of 
+        search documents and the search service will bulk load
+        the documents into the search index.
+        
+        This endpoint is currently not operational, but should
+        be created soon.
+        
+      tags: [search]
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        201:
+          description: success
+  /search/{name}/_query:
+    get:
+      description: >
+        # Query an index
+        
+        Querying documents on a given index is the core
+        feature of the search service, using this endpoint
+        you can create a query json document to retrieve
+        documents quickly in the search index.
+        
+        ### Search all Docs
+        
+        ```
+        
+        {
+          "query": {
+            "match_all": {}
+          }
+        }
+        
+        ```
+        
+        ### Search title which contains foo
+        
+        ```
+        
+        {
+          "query": {
+            "match": {
+              "title": "foo"
+            }
+          }
+        }
+        
+        ```
+        
+        ### Filter by a term
+        
+        ```
+        
+        {
+          "query": {
+            "filter": {
+              "term": {
+                "status": "active"
+              } 
+            }
+          }
+        }
+        
+        ```
+        
+        Use filter to return docs that have a status of active
+        
+      tags: [search]
+      parameters:
+      - in: path
+        required: true
+        name: name
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
