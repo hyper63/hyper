@@ -7,7 +7,7 @@ test('port search ok', t => {
     createIndex: ({index, mappings}) => Promise.resolve({ok: true}),
     deleteIndex: (index) => Promise.resolve({ok: true}),
     indexDoc: ({index, key, doc}) => Promise.resolve({ok: true}),
-    getDoc: ({index, key}) => Promise.resolve({ok: true}),
+    getDoc: ({index, key}) => Promise.resolve({ok: true, key, doc: { hello: 'world'}}),
     updateDoc: ({index, key, doc}) => Promise.resolve({ok: true}),
     removeDoc: ({index, key}) => Promise.resolve({ok: true}),
     query: ({index, q}) => Promise.resolve({ok: true, matches: []})
@@ -25,7 +25,7 @@ test('port search ok', t => {
     t.ok(true)
     
   }).catch(e => {
-    
+    console.log(e) 
     t.ok(false)
   })
   

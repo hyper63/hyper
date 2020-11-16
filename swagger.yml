@@ -24,6 +24,8 @@ info:
     npx hyper63
     ```
     
+         
+    
     [source code](https://github.com/hyper63/hyper63)
 
   contact:
@@ -844,9 +846,125 @@ paths:
       responses:
         200:
           description: delete object
+  /search:
+    get:
+      description: >
+        # hyper63 Search Service
+        
+        Welcome to the search service, this api allows you
+        to easily create search index for your application.
+        
+        A search service creates and inverted index of your json
+        documents, so that you can quickly access search results
+        to give your application's business logic fast access to
+        information.
+        
+        ## Search Indexes
+        
+        Search indexes are logical groups of documents you want to 
+        search. For each unique search you will want to create an
+        index, this allows you to manage that group of documents 
+        separately from other groups of documents.
+        
+        * PUT /search/:index - create index
+        
+        * DELETE /search/:index - remove index
+        
+        ## Search Documentsd
+        
+        Search documents are json documents that contain properties that
+        you want to index and search from and the data you want to retrieve
+        from the search results.
+        
+        Using standard crud rest commands your manage your search documents
+        
+        * POST /search/:index - create search doc ({key, doc})  
+        
+        * GET /search/:index/:key - get search doc 
+        
+        * PUT /search/:index/:key - update search doc 
+        
+        * DELETE /search/:index/:key - delete search doc
+        
+        ## Executing Search
+        
+        Now that you have all of your search documents in your index
+        now you can query those documents using a query document
+        
+        * POST /search/:index/_query
+        
+        
+      tags: [search]
+      responses:
+        200:
+          description: success
+          
   /search/{name}:
     put:
-      description: create search index
+      description: >
+        # Create Search Index
+        
+        A search index is a logical group of document types
+        that focus on consistent search results to return to
+        your business logic.
+        
+        
+        Examples:
+        
+          If your app needs to search movies, you may want to 
+          create an index called movies.
+          
+          If you have an app that needs to search for a given
+          set of documents per account and you want to create
+          a highlevel filter for each account, then maybe 
+          create an index per account.
+          
+          With the ability to create indexes you will have
+          the ability to name them in a referencable way.
+          
+          When naming the index be sure not to create name
+          with non numeric characters or spaces. A name can
+          contain a `-` but must not have any spaces or any 
+          other non alphanumeric characters.
+          
+          ### Search Index Mapping
+          
+          By default, the search service will try to take the
+          shape of the json document and determine the types
+          of each property, but sometimes, you need to describe
+          the specific type of the property. A good example is
+          a movie document:
+          
+          
+          ```
+          {
+            "title": "Star Wars",
+            "year": 1978
+          }
+          ```
+          
+          In this document, the search service will think that
+          the year property is a number and will index based
+          on that fact, but your app may want it to be reconized as
+          a date so that you can run queries with date filters.
+          
+          
+          In this case, you will need a mapping document when 
+          creating the index. 
+          
+          ```
+          {
+            "mappings": {
+              "properties": {
+                "year": "date"
+              }
+            }
+          }
+          ```
+          
+          This mapping document lets the search service treat the
+          year property as a date not a number.
+          
       tags: [search]
       parameters:
       - in: path
@@ -858,7 +976,11 @@ paths:
         201:
           description: created search index
     delete:
-      description: delete search index
+      description: >
+        # Delete Search Index
+        
+        By deleting a search index it will remove all search 
+        documents and search indexes created.
       tags: [search]
       parameters:
       - in: path
@@ -870,7 +992,29 @@ paths:
         200:
           description: deleted search index
     post:
-      description: index search document
+      description: >
+        # Create Search Document for a given Index
+        
+        Once you have created your index, you can start to add
+        search documents using the POST method with a request 
+        containing a body of the following shape:
+        
+        
+        ```
+        
+        {
+          key: 'unique identifier',
+          doc: 'search document'
+        }
+        
+        ```     
+        
+        
+        You will need to specify the key you want your document to be
+        referenced by and then the search document a json document that
+        you want to search.
+        
+        
       tags: [search]
       parameters:
       - in: path
@@ -884,7 +1028,12 @@ paths:
           
   /search/{name}/{key}:
     get:
-      description: get index document
+      description: >
+        # Get Search Document
+        
+        This request will return the search document
+        in the specified search index and key.
+        
       tags: [search]
       parameters:
       - in: path
@@ -901,7 +1050,15 @@ paths:
         200:
           description: successfully got document
     put:
-      description: update index document
+      description: >
+        # Update search index
+        
+        Over time a search data for a document may change and
+        you will want to update a specific document with new
+        search criteria, using this `PUT` request, you can 
+        update the document with search.
+        
+        
       tags: [search]
       parameters:
       - in: path
@@ -936,7 +1093,19 @@ paths:
           description: success remove document
   /search/{name}/_bulk:
     post:
-      description: batch create index docs
+      description: >
+        # Batch Search Documents
+        
+        You may have a large list of documents you want to 
+        search in your application, like movies or addresses
+        
+        This request endpoint lets you send a json array of 
+        search documents and the search service will bulk load
+        the documents into the search index.
+        
+        This endpoint is currently not operational, but should
+        be created soon.
+        
       tags: [search]
       parameters:
       - in: path
@@ -949,7 +1118,58 @@ paths:
           description: success
   /search/{name}/_query:
     get:
-      description: search index
+      description: >
+        # Query an index
+        
+        Querying documents on a given index is the core
+        feature of the search service, using this endpoint
+        you can create a query json document to retrieve
+        documents quickly in the search index.
+        
+        ### Search all Docs
+        
+        ```
+        
+        {
+          "query": {
+            "match_all": {}
+          }
+        }
+        
+        ```
+        
+        ### Search title which contains foo
+        
+        ```
+        
+        {
+          "query": {
+            "match": {
+              "title": "foo"
+            }
+          }
+        }
+        
+        ```
+        
+        ### Filter by a term
+        
+        ```
+        
+        {
+          "query": {
+            "filter": {
+              "term": {
+                "status": "active"
+              } 
+            }
+          }
+        }
+        
+        ```
+        
+        Use filter to return docs that have a status of active
+        
       tags: [search]
       parameters:
       - in: path
