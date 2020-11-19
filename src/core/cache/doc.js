@@ -1,6 +1,6 @@
 import ms from 'ms'
 import { lensProp, over } from 'ramda'
-import { is, of, apply } from '../utils'
+import { is, of, apply, triggerEvent } from '../utils'
 import { hasProp } from 'crocks/predicates'
 
 const INVALID_KEY = "key is not valid";
@@ -19,6 +19,7 @@ export const create = (store, key, value, ttl) =>
     .map(convertTTL)
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("createDoc"))
+    .chain(triggerEvent('CACHE:CREATE'))
     .chain(is(validResult, INVALID_RESULT));
 
 /**
@@ -30,6 +31,7 @@ export const get = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("getDoc"))
+    .chain(triggerEvent('CACHE:GET'))
     .chain(is(validResult, INVALID_RESULT));
 
 /**
@@ -44,6 +46,7 @@ export const update = (store, key, value, ttl) =>
     .map(convertTTL)
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("updateDoc"))
+    .chain(triggerEvent('CACHE:UPDATE'))
     .chain(is(validResult, INVALID_RESULT));
 
 /**
@@ -55,6 +58,7 @@ export const del = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("deleteDoc"))
+    .chain(triggerEvent('CACHE:DELETE'))
     .chain(is(validResult, INVALID_RESULT));
 
 // validators predicate functions

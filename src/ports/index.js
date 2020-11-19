@@ -7,5 +7,6 @@ export const loadPorts = (adapters) =>  ({
   cache: adapters.cache ? cache(adapters.cache) : null,
   data: adapters.data ? data(adapters.data) : null,
   storage: adapters.storage ? storage(adapters.storage) : null,
-  search: adapters.search ? search(adapters.search) : null
+  search: adapters.search ? search(adapters.search) : null,
+  hooks: adapters.hooks
 })

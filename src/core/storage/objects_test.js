@@ -26,6 +26,10 @@ const fork = (m) => (t) => {
   );
 };
 
+const events = {
+  dispatch: () => null
+}
+
 test(
   "put object",
   fork(
@@ -35,8 +39,8 @@ test(
         "test.png",
         fs.createReadStream(path.resolve("./hyper63-logo.png"))
       )
-      .runWith(mock)
+      .runWith({ svc: mock, events })
   )
 );
-test("remove bucket", fork(objects.remove("beep").runWith(mock)));
-test("list buckets", fork(objects.list().runWith(mock)));
+test("remove bucket", fork(objects.remove("beep").runWith({ svc: mock, events })));
+test("list buckets", fork(objects.list().runWith({svc: mock, events})));

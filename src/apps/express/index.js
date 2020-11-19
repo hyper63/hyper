@@ -21,6 +21,8 @@ export default function (services) {
     req.data = services.data;
     req.storage = services.storage;
     req.search = services.search;
+    req.events = services.events;
+    req.hooks = services.hooks;
     next();
   };
   
@@ -66,8 +68,6 @@ export default function (services) {
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
   app.post('/search/:index/_query', express.json(), bindCore, search.query)
 
-  //app.use("/micro/hooks", require("./api/hooks"));
-  
   app.get("/", (req, res) => res.send({ name: "hyper63" }));
   
   app.listen(port)

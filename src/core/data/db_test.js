@@ -18,7 +18,11 @@ const fork = (m) => (t) => {
   );
 };
 
-test("create database", fork(db.create("foo").runWith(mockDb)));
-test("remove database", fork(db.remove("foo").runWith(mockDb)));
+const events = {
+  dispatch: () => null
+}
+
+test("create database", fork(db.create("foo").runWith({ svc: mockDb, events })));
+test("remove database", fork(db.remove("foo").runWith({ svc: mockDb, events })));
 //test("query database");
 //test("index database");

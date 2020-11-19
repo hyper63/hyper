@@ -24,13 +24,17 @@ const fork = (m) => (t) => {
   );
 };
 
+const events = {
+  dispatch: () => null
+}
+
 test(
   "create document",
-  fork(doc.create("foo", { hello: "world" }).runWith(mock))
+  fork(doc.create("foo", { hello: "world" }).runWith({ svc: mock, events }))
 );
-test("get document", fork(doc.get("foo", "1").runWith(mock)));
+test("get document", fork(doc.get("foo", "1").runWith({ svc: mock, events })));
 test(
   "update document",
-  fork(doc.update("foo", "1", { id: "1", goodbye: "moon" }).runWith(mock))
+  fork(doc.update("foo", "1", { id: "1", goodbye: "moon" }).runWith({ svc: mock, events }))
 );
-test("remove document", fork(doc.remove("foo", "1").runWith(mock)));
+test("remove document", fork(doc.remove("foo", "1").runWith({ svc: mock, events })));

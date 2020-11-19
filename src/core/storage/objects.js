@@ -1,4 +1,4 @@
-import { of, apply } from '../utils'
+import { of, apply, triggerEvent } from '../utils'
 
 
 export const put = (bucket, object, stream) =>
@@ -6,22 +6,26 @@ export const put = (bucket, object, stream) =>
     bucket,
     object,
     stream,
-  }).chain(apply("putObject"));
+  }).chain(apply("putObject"))
+    .chain(triggerEvent('STORAGE:PUT'));
 
 export const get = (bucket, object) =>
   of({
     bucket,
     object,
-  }).chain(apply("getObject"));
+  }).chain(apply("getObject"))
+    .chain(triggerEvent('STORAGE:GET'));
 
 export const remove = (bucket, object) =>
   of({
     bucket,
     object,
-  }).chain(apply("removeObject"));
+  }).chain(apply("removeObject"))
+    .chain(triggerEvent('STORAGE:DELETE'));
 
 export const list = (bucket, prefix) =>
   of({
     bucket,
     prefix,
-  }).chain(apply("listObjects"));
+  }).chain(apply("listObjects"))
+    .chain(triggerEvent('STORAGE:LIST'));
