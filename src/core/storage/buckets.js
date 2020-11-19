@@ -11,15 +11,17 @@ export const make = (name) =>
   of(name)
     //.chain(is(validDbName, INVALID_DB_MSG))
     .chain(apply("makeBucket"))
-    .chain(triggerEvent('STORAGE:MAKE_BUCKET'));
+    .chain(triggerEvent('STORAGE:CREATE_BUCKET'));
 //.chain(is(validResponse, INVALID_RESPONSE));
 
 /**
  * @param {string} name
  * @returns {AsyncReader}
  */
-export const remove = (name) => of(name).chain(apply("removeBucket"))
-  .chain(triggerEvent('STORAGE:REMOVE_BUCKET'));
+export const remove = (name) => 
+  of(name)
+    .chain(apply("removeBucket"))
+    .chain(triggerEvent('STORAGE:DELTE_BUCKET'));
 
 /**
  * @returns {AsyncReader}

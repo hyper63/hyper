@@ -35,7 +35,7 @@ export const query = (name, pattern) =>
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
     .chain(apply("listDocs"))
-    .chain(triggerEvent('CACHE:LIST_DOCS'))
+    .chain(triggerEvent('CACHE:LIST'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 // validators predicate functions
