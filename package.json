@@ -19,6 +19,7 @@
     "tape": "^5.0.1"
   },
   "dependencies": {
+    "@vercel/fetch": "^6.1.0",
     "@vercel/fetch-retry": "^5.0.3",
     "@zeit/fetch-retry": "^5.0.0",
     "cors": "^2.8.5",
