@@ -2,6 +2,7 @@ import { default as cacheCore } from './cache'
 import { default as dataCore } from './data'
 import { default as storageCore } from './storage'
 import { default as searchCore } from './search'
+import { default as hooksCore } from './hooks'
 
 /**
  * main core module
@@ -15,7 +16,9 @@ export default function (services) {
     cache: services.cache ? cacheCore(services) : null,
     data: services.data ? dataCore(services) : null,
     storage: services.storage ? storageCore(services) : null,
-    search: services.search ? searchCore(services) : null
+    search: services.search ? searchCore(services) : null,
+    hooks: hooksCore(services),
+    events: services.events
   })
 }
 

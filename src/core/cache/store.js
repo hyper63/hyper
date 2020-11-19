@@ -1,4 +1,4 @@
-import { is, of, apply } from '../utils'
+import { is, of, apply, triggerEvent } from '../utils'
 
 const INVALID_NAME_MSG = "name is not valid";
 const INVALID_RESULT_MSG = "result is not valid";
@@ -11,8 +11,9 @@ export const create = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply("createStore"))
+    .chain(triggerEvent('CACHE:CREATE_STORE'))
     .chain(is(validResult, INVALID_RESULT_MSG));
-
+    
 /**
  * @param {string} name
  * @returns {AsyncReader}
@@ -21,6 +22,7 @@ export const del = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply("destroyStore"))
+    .chain(triggerEvent('CACHE:DELETE_STORE'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 /**
@@ -33,6 +35,7 @@ export const query = (name, pattern) =>
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
     .chain(apply("listDocs"))
+    .chain(triggerEvent('CACHE:LIST'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 // validators predicate functions

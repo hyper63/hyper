@@ -21,6 +21,10 @@ const fork = (m) => (t) => {
   );
 };
 
-test("make bucket", fork(buckets.make("beep").runWith(mock)));
-test("remove bucket", fork(buckets.remove("beep").runWith(mock)));
-test("list buckets", fork(buckets.list().runWith(mock)));
+const events = {
+  dispatch: () => null
+}
+
+test("make bucket", fork(buckets.make("beep").runWith({ svc: mock, events })));
+test("remove bucket", fork(buckets.remove("beep").runWith({ svc: mock, events })));
+test("list buckets", fork(buckets.list().runWith({ svc: mock, events })));

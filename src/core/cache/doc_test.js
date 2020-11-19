@@ -16,19 +16,23 @@ const fork = (m) => (t) => {
   );
 };
 
+const events = {
+  dispatch: () => null
+}
+
 test(
   "create cache doc",
-  fork(doc.create("store", { hello: "world" }).runWith(mockService))
+  fork(doc.create("store", { hello: "world" }).runWith({svc: mockService, events}))
 );
 
-test("get cache doc", fork(doc.get("store", "KEY_1234").runWith(mockService)));
+test("get cache doc", fork(doc.get("store", "KEY_1234").runWith({svc: mockService, events })));
 
 test(
   "update cache document",
-  fork(doc.update("store", "KEY_1234", { foo: "bar" }).runWith(mockService))
+  fork(doc.update("store", "KEY_1234", { foo: "bar" }).runWith({svc: mockService, events }))
 );
 
 test(
   "delete cache document",
-  fork(doc.update("store", "KEY_1234").runWith(mockService))
+  fork(doc.update("store", "KEY_1234").runWith({svc: mockService, events }))
 );

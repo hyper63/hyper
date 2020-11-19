@@ -2,24 +2,24 @@ import * as buckets from './buckets'
 import * as objects from './objects'
 
 
-export default ({ storage }) => {
+export default ({ storage, events }) => {
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const makeBucket = (name) => buckets.make(name).runWith(storage);
+  const makeBucket = (name) => buckets.make(name).runWith({ svc: storage, events });
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const removeBucket = (name) => buckets.remove(name).runWith(storage);
+  const removeBucket = (name) => buckets.remove(name).runWith({ svc: storage, events });
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const listBuckets = () => buckets.list().runWith(storage);
+  const listBuckets = () => buckets.list().runWith({ svc: storage, events });
 
   /**
    * @param {string} bucketName
@@ -28,7 +28,7 @@ export default ({ storage }) => {
    * @returns {Async}
    */
   const putObject = (bucketName, objectName, stream) =>
-    objects.put(bucketName, objectName, stream).runWith(storage);
+    objects.put(bucketName, objectName, stream).runWith({ svc: storage, events });
 
   /**
    * @param {string} bucketName
@@ -36,7 +36,7 @@ export default ({ storage }) => {
    * @returns {Async}
    */
   const getObject = (bucketName, objectName) =>
-    objects.get(bucketName, objectName).runWith(storage);
+    objects.get(bucketName, objectName).runWith({ svc: storage, events });
 
   /**
    * @param {string} bucketName
@@ -44,7 +44,7 @@ export default ({ storage }) => {
    * @returns {Async}
    */
   const removeObject = (bucketName, objectName) =>
-    objects.remove(bucketName, objectName).runWith(storage);
+    objects.remove(bucketName, objectName).runWith({ svc: storage, events });
 
   /**
    * @param {string} bucketName
@@ -52,7 +52,7 @@ export default ({ storage }) => {
    * @returns {Async}
    */
   const listObjects = (bucketName, prefix) =>
-    objects.list(bucketName, prefix).runWith(storage);
+    objects.list(bucketName, prefix).runWith({ svc: storage, events });
 
   return Object.freeze({
     makeBucket,

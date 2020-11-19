@@ -24,19 +24,32 @@ export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg))
  * pipeline as the arguments
  */
 export const apply = (method) => (data) =>
-  ask((svc) => {
+  ask(({svc}) => {
     //const async = Async.fromPromise(svc[method])
     return Async(function(reject, resolve) {
       // NOTE: maybe consider using an Either here?
       try {
         return svc[method](data).then(resolve)
       } catch (e) {
-        return reject({ok: false, msg: e.errors.map(x => x.code).join(',')})
+        let msg = ''
+        console.log(e)
+        if (e.errors) {
+          msg = e.errors.map(x => x.code).join(',')
+        }
+        return reject({ok: false, msg: ''})
       }
     })
     //return async(data)
   }).chain(lift);
   
+export const triggerEvent = (event) => (data) =>  
+  ask(({events}) => {
+    events.dispatch({
+      type: event,
+      payload: { date: new Date().toISOString() }
+    })
+    return Async.Resolved(data)
+  }).chain(lift)
 
 /**
  * constructor for an AsyncReader monad

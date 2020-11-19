@@ -10,6 +10,10 @@ const mockService = {
   listDocs: (name) => Promise.resolve({ ok: true }),
 };
 
+const events = {
+  dispatch: () => null
+}
+
 test("create cache store", (t) => {
   t.plan(1);
 
@@ -20,7 +24,7 @@ test("create cache store", (t) => {
     t.ok(true);
   }
 
-  store.create("Hello").runWith(mockService).fork(handleError, handleSuccess);
+  store.create("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
 
 test("destroy cache store", (t) => {
@@ -33,7 +37,7 @@ test("destroy cache store", (t) => {
     t.ok(true);
   }
 
-  store.del("Hello").runWith(mockService).fork(handleError, handleSuccess);
+  store.del("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
 
 test("query cache store", (t) => {
@@ -46,5 +50,5 @@ test("query cache store", (t) => {
     t.ok(true);
   }
 
-  store.query("Hello").runWith(mockService).fork(handleError, handleSuccess);
+  store.query("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
