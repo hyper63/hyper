@@ -1,0 +1,17 @@
+{
+  "name": "@hyper63/adapter-fs",
+  "description": "hyper63 storage adapter using file system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "pull-stream": "^3.6.14",
+    "pull-stream-to-stream": "^2.0.0",
+    "stream-to-pull-stream": "^1.7.3",
+    "tape": "^5.0.1",
+    "uuid": "^8.3.1"
+  }
+}

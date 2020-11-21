@@ -1,0 +1,15 @@
+{
+  "name": "@hyper63/adapter-pouchdb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^5.0.1"
+  },
+  "dependencies": {
+    "mkdirp": "^1.0.4",
+    "pouchdb": "^7.2.2",
+    "ramda": "^0.27.1",
+    "rimraf": "^3.0.2"
+  }
+}
