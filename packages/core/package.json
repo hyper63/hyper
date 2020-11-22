@@ -1,0 +1,24 @@
+{
+  "name": "@hyper63/core",
+  "description": "core module of the hyper63 service framework",
+  "scripts": {
+    "test": "tape **/**/*_test.js"
+  },
+  "repository": "https://github.com/hyper63/hyper63",
+  "homepage": "https://github.com/hyper63/hyper63#readme",
+  "license": "Apache-2.0",
+  "version": "1.0.3",
+  "main": "main.js",
+  "dependencies": {
+    "@hyper63/port-cache": "^1.0.0",
+    "@hyper63/port-data": "^1.0.0",
+    "@hyper63/port-search": "^1.0.0",
+    "@hyper63/port-storage": "^1.0.0",
+    "crocks": "^0.12.4",
+    "cuid": "^2.1.8",
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "tape": "^5.0.1"
+  }
+}

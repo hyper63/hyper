@@ -108,6 +108,7 @@ module.exports = function (root) {
   return Object.freeze({
     makeBucket,
     removeBucket,
+    listBuckets: () => null,
     putObject,
     removeObject,
     getObject,

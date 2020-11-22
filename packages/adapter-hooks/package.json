@@ -1,0 +1,20 @@
+{
+  "name": "@hyper63/adapter-hooks",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@vercel/fetch": "^6.1.0",
+    "crocks": "^0.12.4",
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "fetch-mock": "^9.10.7",
+    "tape": "^5.0.1"
+  },
+  "scripts": {
+    "test": "tape *_test.js"
+  },
+  "repository": "https://github.com/hyper63/hyper63",
+  "homepage": "https://github.com/hyper63/hyper63#readme"
+}

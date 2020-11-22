@@ -1,0 +1,48 @@
+Arguments: 
+  /Users/twilson63/.nvm/versions/node/v14.7.0/bin/node /Users/twilson63/.yarn/bin/yarn.js init -y
+
+PATH: 
+  /usr/local/opt/mysql-client@5.7/bin:/usr/local/opt/mysql@5.7/bin:/usr/local/opt/mysql@5.7/bin:/usr/local/opt/mysql-client/bin:/Users/twilson63/.yarn/bin:/Users/twilson63/.config/yarn/global/node_modules/.bin:/Users/twilson63/.nvm/versions/node/v14.7.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/usr/local/opt/mysql-client@5.7/bin:/usr/local/opt/mysql@5.7/bin:/Users/twilson63/Downloads/google-cloud-sdk/bin:/usr/local/opt/mysql-client/bin:/Users/twilson63/.yarn/bin:/Users/twilson63/.config/yarn/global/node_modules/.bin:/Users/twilson63/.nvm/versions/node/v14.7.0/bin
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  14.7.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/twilson63/hyper63/projects/atlas/packages/port-data/package.json: Unexpected string in JSON at position 35
+      at JSON.parse (<anonymous>)
+      at /Users/twilson63/.yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/Users/twilson63/.yarn/lib/cli.js:310:30)
+      at /Users/twilson63/.yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "@hyper63/port-data"
+    "description": "hyper63 service framework port for data adapters",
+    "repository": "https://github.com/hyper63/hyper63",
+    "homepage": "https://github.com/hyper63/hyper63#readme",
+    "scripts": {
+      "test": "tape index_test.js"
+    },
+    "main": "index.js",
+    "version": "1.0.0",
+    "license": "Apache-2.0",
+    "dependencies": {
+      "zod": "^2.0.0-beta.22"
+    },
+    "devDependencies": {
+      "tape": "^5.0.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

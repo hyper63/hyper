@@ -6,6 +6,8 @@ minisearch.
 
 ## How to use
 
+See https://purple-elephants.surge.sh
+
 ## How to configure
 
 ```sh

@@ -1,11 +1,11 @@
-const { identity } = require('ramda')
-const adapter = require('./adapter')()
+const { merge } = require('ramda')
+const adapter = require('./adapter')
 
-module.exports = function memory(config) {
+module.exports = function (config) {
   return ({
     id: 'fs',
     port: 'storage',
-    load: identity,
-    link: _ => _ => adapter
+    load: merge(config),
+    link: ({dir}) => _ => adapter(dir)
   })
 }

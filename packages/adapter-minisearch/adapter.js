@@ -130,6 +130,12 @@ module.exports = function () {
     getDoc,
     updateDoc,
     removeDoc,
-    search
+    query: ({index, q}) => 
+      search({
+        index,
+        query: q.query,
+        options: q.options
+      })
+    
   })
 }

@@ -1,8 +1,11 @@
 {
   "name": "@hyper63/adapter-pouchdb",
-  "version": "1.0.0",
+  "description": "data adapter for hyper63",
+  "repository": "https://github.com/hyper63/hyper63",
+  "homepage": "https://github.com/hyper63/hyper63/packages/adapter-pouchdb#readme",
+  "version": "1.0.3",
   "main": "index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "tape": "^5.0.1"
   },
@@ -11,5 +14,8 @@
     "pouchdb": "^7.2.2",
     "ramda": "^0.27.1",
     "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "test": "tape adapter_test.js"
   }
 }

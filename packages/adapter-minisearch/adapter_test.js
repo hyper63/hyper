@@ -49,9 +49,9 @@ test('minisearch tests', async t => {
   
   t.equal(newDoc.title, 'Search is cool')
 
-  const searchResults = await adapter.search({
+  const searchResults = await adapter.query({
     index: 'default',
-    query: 'Search is cool'
+    q: { query: 'Search is cool' }
   })
   t.equal(searchResults[0].id, '1', 'found doc')
 
