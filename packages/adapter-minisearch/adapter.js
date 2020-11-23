@@ -35,6 +35,10 @@ const MiniSearch = require('minisearch')
   * @property {string} index
   * @property {string} query
   * @property {SearchOptions} [options]
+  * 
+  * @typedef {Object} Response
+  * @property {boolean} ok
+  * @property {string} [msg]
  */
 
 module.exports = function () {
@@ -43,9 +47,11 @@ module.exports = function () {
   
   /**
    * @param {IndexInfo} 
-   * @returns {Promise<object>}
+   * @returns {Promise<Response>}
    */
   function createIndex({name, mappings}) {
+    if (!name) { return Promise.reject({ok: false, msg: 'name is required to create index'})}
+    if (!mappings) { return Promise.reject({ok: false, msg: 'mappings object required, it should have fields property and storedFields property.'})}
     const index = new MiniSearch(mappings)
     const store = new Map()
     indexes.set(name, index)
@@ -55,9 +61,10 @@ module.exports = function () {
 
   /**
    * @param {string} name
-   * @returns {Promise<Object>}
+   * @returns {Promise<Response>}
    */
   function deleteIndex(name) {
+    if (!name) { return Promise.reject({ok: false, msg: 'name is required to create index'})}
     indexes.delete(name)
     datastores.delete(name)
     return Promise.resolve({ok: true})
@@ -65,9 +72,13 @@ module.exports = function () {
 
   /**
    * @param {SearchDoc}
-   * @returns {Promise<object>}
+   * @returns {Promise<Response>}
    */
   function indexDoc({index, key, doc}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!key) { return Promise.reject({ok: false, msg: 'key is required!'})}
+    if (!doc) { return Promise.reject({ok: false, msg: 'doc is required!'})}
+    
     const search = indexes.get(index)
     const store = datastores.get(index)
     search.add(doc)
@@ -77,9 +88,12 @@ module.exports = function () {
 
   /**
    * @param {SearchInfo}
-   * @returns {Promise<Object>}
+   * @returns {Promise<Response>}
    */
   function getDoc({index, key}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!key) { return Promise.reject({ok: false, msg: 'key is required!'})}
+    
     const store = datastores.get(index)
     const doc = store.get(key)
     return Promise.resolve(doc === undefined ? null : doc)
@@ -87,9 +101,13 @@ module.exports = function () {
 
   /**
    * @param {SearchDoc}
-   * @returns {Promise<Object>}
+   * @returns {Promise<Response>}
    */
   function updateDoc({index, key, doc}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!key) { return Promise.reject({ok: false, msg: 'key is required!'})}
+    if (!doc) { return Promise.reject({ok: false, msg: 'doc is required!'})}
+    
     const search = indexes.get(index)
     const store = datastores.get(index)
     const oldDoc = store.get(key)
@@ -101,9 +119,12 @@ module.exports = function () {
   
   /**
    * @param {SearchInfo}
-   * @returns {Promise<Object>}
+   * @returns {Promise<Response>}
    */
   function removeDoc({index, key}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!key) { return Promise.reject({ok: false, msg: 'key is required!'})}
+    
     const search = indexes.get(index)
     const store = datastores.get(index)
     const oldDoc = store.get(key)
@@ -115,9 +136,12 @@ module.exports = function () {
   /**
    * 
    * @param {SearchQuery}
-   * @returns {Promise<array>}  
+   * @returns {Promise<Array>}  
    */
   function search({index, query, options={}}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!query) { return Promise.reject({ok: false, msg: 'query is required!'})}
+    
     const search = indexes.get(index)
     const results = search.search(query, options)
     return Promise.resolve(results)

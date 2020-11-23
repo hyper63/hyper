@@ -9,10 +9,10 @@
   dependencies:
     zod "^2.0.0-beta.22"
 
-"@hyper63/port-data@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@hyper63/port-data/-/port-data-1.0.0.tgz#b18029ba96c216ea74f9a13b0647fec62271bd53"
-  integrity sha512-vzgtd3UvqOXYhylK72idDKwpGHqcy/QipIo5XvCKxUJwDye55YK2qyz3yp7xopyci23CYr1zjKLGqCjt2XVmQw==
+"@hyper63/port-data@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-data/-/port-data-1.0.1.tgz#65438aec944970c136643ab1f1b40c62c86ef947"
+  integrity sha512-GSOUrmfMByKfdYAu5twKQD3EZ7YW7r88Sc5VGYQtn5QB9txx66SE1vYtpumjmIIysGDQpBjgsZaUsG9JhzDxyQ==
   dependencies:
     zod "^2.0.0-beta.22"
 

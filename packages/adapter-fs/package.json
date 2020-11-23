@@ -1,7 +1,7 @@
 {
   "name": "@hyper63/adapter-fs",
   "description": "hyper63 storage adapter using file system",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {

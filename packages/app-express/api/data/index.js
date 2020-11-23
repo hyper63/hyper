@@ -11,6 +11,10 @@ exports.createDb = ({ params, data }, res) =>
 exports.removeDb = ({ params, data }, res) =>
   fork(res, 200, data.destroyDatabase(params.db));
 
+// GET /data/:db
+exports.listDocuments = ({ params, query, data }, res) =>
+  fork(res, 200, data.listDocuments(params.db, query))
+
 // POST /data/:db
 exports.createDocument = ({ params, body, data }, res) =>
   fork(res, 201, data.createDocument(params.db, body));
@@ -30,3 +34,7 @@ exports.deleteDocument = ({ data, params }, res) =>
 // POST /data/:db/_query
 exports.queryDb = ({ data, params, body }, res) =>
   fork(res, 200, data.query(params.db, body));
+
+// POST /data/:db/_index
+exports.indexDb = ({data, params, body}, res) => 
+  fork(res, 201, data.index(params.db, body.name, body.fields));

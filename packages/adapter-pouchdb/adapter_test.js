@@ -1,6 +1,56 @@
 const test = require('tape')
 const adapter = require('./adapter')('./test-data')
 const { v4 } = require('uuid')
+const faker = require('faker')
+const { times } = require('ramda')
+
+
+test('pouchdb find', async t => {
+  const dbName = v4()
+  await adapter.createDatabase(dbName)
+  await adapter.createDocument({
+    db: dbName,
+    id: v4(),
+    doc: {
+      username: 'twilson63',
+      name: 'Tom Wilson'
+    }
+  })
+  await Promise.all(
+    times(() => adapter.createDocument({
+      db: dbName,
+      id: v4(),
+      doc: faker.helpers.createCard()
+    }), 10)
+  )
+
+  const results = await adapter.listDocuments({
+    db: dbName,
+    limit: 5
+  })
+  t.equal(results.docs.length, 5)
+
+  const idx = await adapter.indexDocuments({
+    db: dbName,
+    name: 'username',
+    fields: ['username']
+  })
+
+  const searchResults = await adapter.queryDocuments({
+    db: dbName,
+    query: {
+      selector: {
+        username: 'twilson63'
+      },
+      use_index: 'username'
+    }
+  })
+  
+  await adapter.removeDatabase(dbName)
+  t.ok(searchResults.ok)
+  t.end()
+})
+
 
 test('pouchdb adapter tests', async t => {
   t.plan(5)

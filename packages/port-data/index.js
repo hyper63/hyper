@@ -7,11 +7,13 @@ module.exports = function (adapter) {
   const Port = z.object({ 
     createDatabase: z.function().args(z.string()).returns(z.promise(z.object({ok: z.boolean()}))),
     removeDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean()}))),
-    createDocument: z.function().args(z.object({
-      db: z.string(),
-      id: z.string(),
-      doc: z.object()
-    })).returns(z.promise(z.object({
+    createDocument: z.function()
+      .args(z.object({
+        db: z.string(),
+        id: z.string(),
+        doc: z.any()
+      }))
+      .returns(z.promise(z.object({
       ok: z.boolean(),
       id: z.string()
     }))),
@@ -36,9 +38,43 @@ module.exports = function (adapter) {
         ok: z.boolean(),
         id: z.string()
       }))),
-    // TODO: listDocuments
-    // TODO: queryDocuments
-    // TODO: createIndex 
+    listDocuments: z.function()
+      .args(z.object({
+        db: z.string(),
+        limit: z.string().optional(),
+        startkey: z.string().optional(),
+        endkey: z.string().optional(),
+        keys: z.string().optional(),
+        descending: z.boolean().optional()
+    
+      })).returns(z.promise(z.object({
+        ok: z.boolean(),
+        docs: z.array(z.any())
+      }))),
+    queryDocuments: z.function()
+      .args(z.object({
+        db: z.string(),
+        query: z.object({
+          selector: z.any(),
+          sort: z.array(z.string()).optional(),
+          limit: z.number().optional(),
+          use_index: z.string().optional()
+        })
+      }))
+      .returns(z.promise(z.object({
+        ok: z.boolean(),
+        docs: z.array(z.any())
+      }))),
+    indexDocuments: z.function()
+      .args(z.object({
+        db: z.string(),
+        name: z.string(),
+        fields: z.array(z.string())
+      }))
+      .returns(z.promise(z.object({
+        ok: z.boolean(),
+        msg: z.string().optional()
+      })))
  })
  const instance = Port.parse(adapter)
  instance.createDatabase = Port.shape.createDatabase.validate(instance.createDatabase)
@@ -47,7 +83,9 @@ module.exports = function (adapter) {
  instance.retrieveDocument = Port.shape.retrieveDocument.validate(instance.retrieveDocument)
  instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
  instance.removeDocument = Port.shape.removeDocument.validate(instance.removeDocument)
-  
+ instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
+ instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)
+ instance.indexDocuments = Port.shape.indexDocuments.validate(instance.indexDocuments) 
 
  return instance
 }

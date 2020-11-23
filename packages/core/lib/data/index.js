@@ -57,8 +57,15 @@ module.exports = ({ data, events }) => {
    * @param {object} index
    * @returns {Async}
    */
-  const index = (dbname, index) => db.index(dbname, index).runWith({ svc: data, events });
+  const index = (dbname, name, fields) => db.index(dbname, name, fields).runWith({ svc: data, events });
 
+  /**
+   * @param {string} dbname,
+   * @param {object} options
+   * @returns {Async}
+   */
+  const listDocuments = (dbname, options) => db.list(dbname, options).runWith({ svc: data, events });
+  
   return Object.freeze({
     createDatabase,
     destroyDatabase,
@@ -68,5 +75,6 @@ module.exports = ({ data, events }) => {
     removeDocument,
     query,
     index,
+    listDocuments
   });
 };

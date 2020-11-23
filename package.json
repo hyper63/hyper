@@ -6,6 +6,21 @@
   "repository": "git@github.com:hyper63/hyper63.git",
   "author": "Tom Wilson <twilson63@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/core", 
+    "packages/adapter-memory", 
+    "packages/adapter-pouchdb",
+    "packages/adapter-fs",
+    "packages/adapter-minisearch",
+    "packages/adapter-hooks",
+    "packages/app-express",
+    "packages/port-data",
+    "packages/port-cache",
+    "packages/port-storage",
+    "packages/port-search",
+    "images/dev"
+  ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
     "dotenv": "^8.2.0",

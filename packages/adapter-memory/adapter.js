@@ -61,7 +61,8 @@ module.exports = function adapter () {
     if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
     if (!value) { return Promise.reject({ok: false, msg: 'value is required'})}
 
-    // TODO: implement ttl
+    if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
+    
     stores[store].set(key, value)
     return Promise.resolve({ok: true})
   }

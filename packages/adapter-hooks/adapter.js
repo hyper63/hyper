@@ -11,7 +11,7 @@ module.exports = function ({asyncFetch, hooks}) {
       .of(hooks)
       
       .map(matcher(action.type))
-      .map(v => { console.log(action); return v })
+      .map(v => { console.log(`${action.type}: ${JSON.stringify(action.payload)}`); return v })
       .chain(doNotify(action))
       
       .toPromise()
