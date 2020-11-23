@@ -68,8 +68,16 @@ module.exports = function (services) {
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
   app.post('/search/:index/_query', express.json(), bindCore, search.query)
 
-  app.get("/", (req, res) => res.send({ name: "hyper63" }));
+  app.get("/", (req, res) => {
   
+    res.send({ 
+      name: "hyper63", 
+      services: 
+        Object
+          .keys(services)
+          .filter(k => services[k] !== null ? true : false) 
+    })
+  })
   app.listen(port)
   console.log('hyper63 service listening on port ', port)
   return app
