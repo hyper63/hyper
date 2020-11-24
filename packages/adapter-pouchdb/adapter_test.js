@@ -1,11 +1,12 @@
 const test = require('tape')
-const adapter = require('./adapter')('./test-data')
+const createAdapter = require('./adapter')
 const { v4 } = require('uuid')
 const faker = require('faker')
 const { times } = require('ramda')
 
 
 test('pouchdb find', async t => {
+  const adapter = createAdapter('./test-data')
   const dbName = v4()
   await adapter.createDatabase(dbName)
   await adapter.createDocument({
@@ -54,6 +55,7 @@ test('pouchdb find', async t => {
 
 test('pouchdb adapter tests', async t => {
   t.plan(5)
+  const adapter = createAdapter('./test-data')
   const dbName = v4()
   
   await adapter.createDatabase(dbName)

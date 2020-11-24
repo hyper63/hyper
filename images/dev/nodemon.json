@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "../../packages/app-express",
+    "../../packages/core",
+    "../../packages/adapter-pouchdb"
+  ]
+}

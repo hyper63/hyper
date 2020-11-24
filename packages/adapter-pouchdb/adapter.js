@@ -5,7 +5,7 @@ const rimraf = require('rimraf')
 const path = require('path')
 const fs = require('fs')
 const { Async } = require('crocks')
-const { assoc, compose, omit, pick, pluck, prop, map, merge, lens, over, identity } = require('ramda')
+const { assoc, compose, filter, identity, lens, map, merge, omit, over, pick, pluck, prop, propEq } = require('ramda')
 
 const makedir = Async.fromPromise(mkdirp)
 //const rmdir = Async.fromNode(fs.rmdir)
@@ -13,6 +13,8 @@ const rmrf = Async.fromNode(rimraf)
 
 // add plugins
 pouchdb.plugin(pouchdbFind)
+
+
 
 /**
  * @typedef {Object} DataObject
@@ -30,13 +32,25 @@ pouchdb.plugin(pouchdbFind)
  * 
  */
 
+ const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluck('doc'), prop('rows'))
+
 /**
  * @param {string} root - databases location
  */
 module.exports = function (root) {
   if (!root) { throw new Error('root storage location required!')}
+
+  // create master db to hold docs to databases
+  const sys = pouchdb(`${root}/_system`)
   const databases = new Map()
- 
+  sys.allDocs({include_docs: true})
+    .then(getDbNames)
+    // load databases
+    .then(
+      map(n => databases.set(n, pouchdb(`${root}/${n}`)))
+    )
+    .catch(e => console.log('ERROR: Could not get databases!'))
+  
   /**
    * @param {string} name
    * @returns {Promise<Response>}
@@ -47,6 +61,13 @@ module.exports = function (root) {
       .map(_ => pouchdb(
         path.resolve(`${root}/${name}`)
       ))
+
+      // add to system database
+      .chain(db => 
+        Async.fromPromise(sys.put.bind(sys))({_id: name, type: 'db', name: name})
+          .map(() => db)
+      )
+      // set in Map
       .map(db => {
         databases.set(name, db)
         return {ok: true}
@@ -62,9 +83,14 @@ module.exports = function (root) {
     if (!name) { return Promise.reject({ok: false, msg: 'name is required!'})}
     databases.delete(name)
     return rmrf(
-      path.resolve(`${root}/${name}`),
+      path.resolve(`${root}/${name}*`),
       { recursive: true}
     )
+    .chain(_ => {
+      const get = Async.fromPromise(sys.get)
+      const remove = Async.fromPromise(sys.remove)
+      return get(name).chain(remove)
+    })
     .map(_ => ({ok: true}))
     .toPromise()
   }
