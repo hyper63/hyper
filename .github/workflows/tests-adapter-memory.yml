@@ -1,4 +1,4 @@
-name: test core
+name: test memory adapter
 on:
   push:
     branches-ignore: main
@@ -14,8 +14,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: cd packages/adapter-memory
-      - run: yarn
-      - run: yarn test
+      - run: cd packages/adapter-memory && yarn
+      - run: cd packages/adapter-memory && yarn test
         env:
           CI: true
