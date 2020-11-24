@@ -1,4 +1,3 @@
-import {default as test} from 'tape'
 const test = require('tape')
 const initAdapters = require('./plugins')
 const validate = require('./plugin-schema')

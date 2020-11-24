@@ -1,4 +1,4 @@
-name: test action
+name: test core
 on:
   push:
     branches-ignore: main
@@ -14,6 +14,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: cd packages/adapter-memory
       - run: yarn
       - run: yarn test
         env:

@@ -36,7 +36,7 @@ test(
     objects
       .put(
         "test",
-        "test.png",
+        "README.md",
         fs.createReadStream(path.resolve("../../README.md"))
       )
       .runWith({ svc: mock, events })
