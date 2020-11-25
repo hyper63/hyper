@@ -20,7 +20,8 @@
     "packages/port-cache",
     "packages/port-storage",
     "packages/port-search",
-    "images/dev"
+    "images/dev",
+    "images/graphql"
   ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
