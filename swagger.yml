@@ -641,10 +641,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  ok:
-                    type: boolean
-                  document:
-                    type: object
+                  type: object
         500:
           description: server error
           content:

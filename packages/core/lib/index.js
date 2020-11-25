@@ -17,7 +17,8 @@ module.exports = function (services) {
     storage: services.storage ? storageCore(services) : null,
     search: services.search ? searchCore(services) : null,
     hooks: hooksCore(services),
-    events: services.events
+    events: services.events,
+    middleware: services.middleware
   })
 }
 

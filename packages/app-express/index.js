@@ -2,12 +2,19 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const multer = require('multer')
+const { compose } = require('ramda')
 
 // express app
 module.exports = function (services) {
   const upload = multer({ dest: "/tmp/atlas/uploads" });
   
-  const app = express();
+  let app = express();
+  // enable extensibility to allow
+  // middleware
+  app = services.middleware.length > 0 
+    ? compose(...services.middleware)(app)
+    : app
+
   const cache = require("./api/cache");
   const data = require("./api/data");
   const storage = require("./api/storage");

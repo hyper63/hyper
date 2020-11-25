@@ -1,1 +1,1 @@
-require('@hyper63/core')
+const app = require('@hyper63/core')

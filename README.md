@@ -87,3 +87,25 @@ This is an opensource project, which welcomes all contributions and all developm
 ## Launcher
 
 The launcher project creates a npm package that installs hyper63 on a local machine with adapter defaults of redis, couchdb, and minio.
+
+## Middleware
+
+With the express app, it is possible to include middleware to
+include with the app, using the middleware property of the
+config.js.
+
+```
+const memory = require('@hyper63/adapter-memory')
+const pouchdb = require('@hyper63/adapter-pouchdb')
+const jwt = require('./middleware/jwt')
+const express = require('@hyper63/app-express')
+
+module.exports = {
+  app: express,
+  adapters: [
+    { port: 'cache', plugins: [memory()]},
+    { port: 'data', plugins: [pouchdb({dir: process.env.DATA})]}
+  ],
+  middleware: [jwt]
+}
+```
