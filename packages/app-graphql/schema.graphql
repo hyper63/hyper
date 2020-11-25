@@ -1,0 +1,112 @@
+interface PortResult {
+  ok: Boolean!
+  msg: String
+  type: String!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""Describes metadata about the Hyper63 Server"""
+type RootInfo {
+  name: String!
+  ports: PerPortInfo!
+}
+
+"""Describes PortInfo metadata per port"""
+type PerPortInfo {
+  cache: PortInfo!
+  storage: PortInfo!
+  data: PortInfo!
+  hooks: PortInfo!
+}
+
+"""Describes various metadata about a particular port"""
+type PortInfo {
+  name: String!
+  version: String!
+  status: String!
+}
+
+"""The Hyper63 Cache Type"""
+type Cache {
+  info: PortInfo!
+  name: String!
+  doc(key: String!): CacheResult!
+  docs(pattern: String!): CacheResult!
+}
+
+"""Represents the result of a cache port operation"""
+type CacheResult implements PortResult {
+  ok: Boolean!
+  msg: String
+  type: String!
+  data: JSON
+}
+
+"""The Hyper63 Data Type"""
+type Data {
+  info: PortInfo!
+  name: String!
+  record(id: String!): DataResult!
+  query(data: JSON!): DataResult!
+}
+
+"""Represents the result of a data port operation"""
+type DataResult implements PortResult {
+  ok: Boolean!
+  msg: String
+  type: String!
+  data: JSON
+}
+
+"""The Hyper63 Storage Type"""
+type Storage {
+  info: PortInfo!
+  name: String!
+  object(prefix: String!, name: String!): StorageResult!
+  objects(prefix: String!): StorageResult!
+}
+
+"""Represents the result of a storage port operation"""
+type StorageResult implements PortResult {
+  ok: Boolean!
+  msg: String
+  type: String!
+  object: JSON
+  objects: JSON
+}
+
+type Query {
+  info: RootInfo
+  cache(cache: String!): Cache
+  data(db: String!): Data
+  storage(bucket: String!): Storage
+}
+
+type Mutation {
+  createCacheStore(cache: String!): CacheResult!
+  deleteCacheStore(cache: String!): CacheResult!
+  createCacheDocument(cache: String!, key: String!, value: JSON!, ttl: String!): CacheResult!
+  updateCacheDocument(cache: String!, key: String!, value: JSON!, ttl: String!): CacheResult!
+  deleteCacheDocument(cache: String!, key: String!): CacheResult!
+  createDatabase(db: String!): DataResult!
+  destroyDatabase(db: String!): DataResult!
+  createData(db: String!, data: JSON!): DataResult!
+  updateData(db: String!, id: String!, data: JSON!): DataResult!
+  deleteData(db: String!, id: String!): DataResult!
+  makeStorageBucket(bucket: String!): StorageResult!
+  removeStorageBucket(bucket: String!): StorageResult!
+  putStorageObject(bucket: String!, prefix: String!, file: Upload!, name: String): StorageResult!
+  removeStorageObject(bucket: String!, prefix: String!): StorageResult!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

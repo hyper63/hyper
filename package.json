@@ -15,6 +15,7 @@
     "packages/adapter-minisearch",
     "packages/adapter-hooks",
     "packages/app-express",
+    "packages/app-graphql",
     "packages/port-data",
     "packages/port-cache",
     "packages/port-storage",
