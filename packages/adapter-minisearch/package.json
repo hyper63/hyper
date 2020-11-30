@@ -1,0 +1,19 @@
+{
+  "name": "@hyper63/adapter-minisearch",
+  "version": "1.0.3",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "tape": "^5.0.1"
+  },
+  "dependencies": {
+    "crocks": "^0.12.4",
+    "minisearch": "^3.0.2",
+    "ramda": "^0.27.1"
+  },
+  "scripts": {
+    "test": "tape *_test.js"
+  },
+  "repository": "https://github.com/hyper63/hyper63",
+  "homepage": "https://github.com/hyper63/hyper63#readme"
+}
