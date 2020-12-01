@@ -29,7 +29,8 @@ module.exports = (host, client, secret, app) => {
       get: (id) => $.get(`${host}/data/${app}/${id}`),
       create: (doc) => $.post(`${host}/data/${app}`, doc),
       update: (id, doc) => $.put(`${host}/data/${app}/${id}`, doc),
-      remove: (id) => $.remove(`${host}/data/${app}/${id}`)
+      remove: (id) => $.remove(`${host}/data/${app}/${id}`),
+      index: (idx) => $.post(`${host}/data/${app}/_index`, idx)
     }
   })
 }
