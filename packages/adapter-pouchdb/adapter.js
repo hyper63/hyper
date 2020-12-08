@@ -5,6 +5,8 @@ const rimraf = require('rimraf')
 const path = require('path')
 const fs = require('fs')
 const { Async } = require('crocks')
+const { bichain } = require('crocks/pointfree')
+const allow409 = require('./handle409')
 const { assoc, compose, filter, identity, lens, map, merge, omit, over, pick, pluck, prop, propEq } = require('ramda')
 
 const makedir = Async.fromPromise(mkdirp)
@@ -64,7 +66,13 @@ module.exports = function (root) {
 
       // add to system database
       .chain(db => 
-        Async.fromPromise(sys.put.bind(sys))({_id: name, type: 'db', name: name})
+        // want to capture Reject and return Resolve if error is 409
+
+        bichain(
+          allow409,
+          Async.Resolved,
+          Async.fromPromise(sys.put.bind(sys))({_id: name, type: 'db', name: name})
+        )
           .map(() => db)
       )
       // set in Map
