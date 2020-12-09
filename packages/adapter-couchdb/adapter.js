@@ -1,7 +1,9 @@
-import { Async } from 'crocks'
-import { omit } from 'ramda'
+const { Async } = require('crocks')
+const { compose, omit, map, lens, prop, assoc, over, identity, merge,
+  pluck } = require('ramda')
+const xId = lens(prop('_id'), assoc('id'))
 
-export default ({asyncFetch, config, handleResponse, headers }) => {
+module.exports = ({asyncFetch, config, handleResponse, headers }) => {
   const retrieveDocument = ({ db, id }) =>
     asyncFetch(`${config.origin}/${db}/${id}`, {
       headers,
@@ -10,11 +12,32 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
       
   
   return ({
+    // create database needs to 
+    // create the database 
+    // and create the security document
+    // adding the db-admin and db-user 
+    // to the database
     createDatabase: (name) => asyncFetch(`${config.origin}/${name}`, {
       method: 'PUT',
       headers
     })
       .chain(handleResponse(201))
+      // create security document
+      .chain(() => asyncFetch(`${config.origin}/${name}/_security`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          "admins": {
+            "names": [],
+            "roles": ["db-admins"]
+          },
+          "members": {
+            "names": [],
+            "roles": ["db-users"]
+          }
+        })
+      }))
+      .chain(handleResponse(200))
       .toPromise()
       
     ,
@@ -26,6 +49,9 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
     
     createDocument: ({ db, id, doc }) =>
       Async.of({ ...doc, _id: id })
+        .chain(doc => /^_design/.test(doc._id) 
+          ? Async.Rejected({ok: false, msg: 'user can not create design docs'}) 
+          : Async.Resolved(doc) )
         .chain((doc) =>
           asyncFetch(`${config.origin}/${db}`, {
             method: "POST",
@@ -57,5 +83,66 @@ export default ({asyncFetch, config, handleResponse, headers }) => {
           })
         )
         .chain(handleResponse(200)).toPromise(),
+    queryDocuments: ({db, query}) => {
+      
+      // NOTE: may need to handle replacing _id in a future
+      // state to id?
+      // or it may be easier to just make the unique id _id?
+      // 
+      return asyncFetch(`${config.origin}/${db}/_find`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(query)
+      })
+      .chain(handleResponse(200))
+      .map(({docs}) => ({
+        docs: map(
+          compose(
+            omit(['_id']),
+            over(xId, identity)
+          ), docs)
+      })) 
+      .toPromise()
+    },
+    indexDocuments: ({db, name, fields}) => 
+      asyncFetch(`${config.origin}/${db}/_index`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          index: {
+            fields
+          },
+          ddoc: name
+        })
+      })
+      .chain(handleResponse(200))
+      .map(() => ({ok: true}))
+      .toPromise()
+    ,
+    listDocuments: ({db, limit, startkey, endkey, keys, descending}) => {
+      let options = { include_docs: true }
+      options = limit ? merge({limit}, options) : options
+      options = startkey ? merge({startkey}, options) : options
+      options = endkey ? merge({endkey}, options) : options
+      options = keys ? merge({keys}, options) : options
+      options = descending ? merge({descending}, options) : options
+
+      return asyncFetch(`${config.origin}/${db}/_all_docs`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(options)
+      })
+      .chain(handleResponse(200))
+      .map(result => ({
+        ok: true,
+        docs: map(
+          compose(
+            omit(['_rev', '_id']),
+            over(xId, identity)
+          ), pluck('doc', result.rows)
+        )
+      }))
+      .toPromise()
+    }
   })
 }

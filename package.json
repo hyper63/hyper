@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/core", 
+    "packages/core",
+    "packages/adapter-couchdb", 
     "packages/adapter-memory", 
     "packages/adapter-pouchdb",
     "packages/adapter-fs",
@@ -21,7 +22,8 @@
     "packages/port-storage",
     "packages/port-search",
     "images/dev",
-    "images/graphql"
+    "images/graphql",
+    "images/couchdb"
   ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
