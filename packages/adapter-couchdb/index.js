@@ -1,11 +1,12 @@
-import { default as createAdapter } from './adapter'
-import { asyncFetch, createHeaders, handleResponse} from './async_fetch'
+const createAdapter = require('./adapter')
+const { asyncFetch, createHeaders, handleResponse } = require('./async_fetch')
+
 
 /**
  * @param {object} config
  * @returns {object}
  */
-export default function CouchDataAdapter (config) {
+module.exports = function CouchDataAdapter (config) {
   /**
    * @param {object} env
    */
