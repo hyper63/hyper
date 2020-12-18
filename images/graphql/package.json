@@ -1,0 +1,17 @@
+{
+  "name": "@hyper63/graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@hyper63/adapter-fs": "^1.0.3",
+    "@hyper63/adapter-hooks": "^1.0.1",
+    "@hyper63/adapter-memory": "^1.0.1",
+    "@hyper63/adapter-pouchdb": "^1.0.3",
+    "@hyper63/app-graphql": "^0.1.0",
+    "@hyper63/core": "^1.0.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

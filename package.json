@@ -6,6 +6,25 @@
   "repository": "git@github.com:hyper63/hyper63.git",
   "author": "Tom Wilson <twilson63@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/core",
+    "packages/adapter-couchdb", 
+    "packages/adapter-memory", 
+    "packages/adapter-pouchdb",
+    "packages/adapter-fs",
+    "packages/adapter-minisearch",
+    "packages/adapter-hooks",
+    "packages/app-express",
+    "packages/app-graphql",
+    "packages/port-data",
+    "packages/port-cache",
+    "packages/port-storage",
+    "packages/port-search",
+    "images/dev",
+    "images/graphql",
+    "images/couchdb"
+  ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
     "dotenv": "^8.2.0",
@@ -19,6 +38,7 @@
     "tape": "^5.0.1"
   },
   "dependencies": {
+    "@vercel/fetch": "^6.1.0",
     "@vercel/fetch-retry": "^5.0.3",
     "@zeit/fetch-retry": "^5.0.0",
     "cors": "^2.8.5",
@@ -40,8 +60,8 @@
     "start:server": "node index.js",
     "start": "run-s start:*",
     "dev": "nodemon index.js",
-    "test:unit": "tape -r esm src/**/**/*_test.js",
+    "test:core": "tape packages/core/**/**/*_test.js",
     "test:integration": "tape -r esm test/**/*_test.js",
-    "test": "run-p test:unit"
+    "test": "run-p test:core"
   }
 }
