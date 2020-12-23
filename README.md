@@ -8,7 +8,7 @@ Current Status: Development Phase
 
 ## OpenAPI Specification
 
-[View OpenAPI Spec](https://hyper63.com/api)
+[API Docs](https://api-docs.hyper63.com)
 
 ## Local Usage
 
