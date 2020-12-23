@@ -916,7 +916,11 @@ paths:
         index, this allows you to manage that group of documents 
         separately from other groups of documents.
 
+        creating an index store
+
         * PUT /search/:index - create index
+
+        removing an index store
 
         * DELETE /search/:index - remove index
 
@@ -1003,16 +1007,23 @@ paths:
           
           ```
           {
-            "mappings": {
-              "properties": {
-                "year": "date"
-              }
+            "properties": {
+              "year": "date"
             }
           }
           ```
           
           This mapping document lets the search service treat the
           year property as a date not a number.
+
+          > Using minisearch your mapping object would be slightly different
+
+          ```
+          {
+            "fields": ["title", "year",
+            "storeFields": ["title", "year"]
+          }
+          ```
 
       tags: [search]
       parameters:
@@ -1216,6 +1227,18 @@ paths:
         ```
 
         Use filter to return docs that have a status of active
+
+        ---
+
+        ## Using MiniSearch Adapter
+
+        > If you are using the MiniSearch adapter you don't get all the search options
+
+        ```
+        {
+          "query": "[enter search string here]"
+        }
+        ```
 
       tags: [search]
       parameters:

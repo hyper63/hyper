@@ -3,6 +3,7 @@
     "../../packages/app-express",
     "../../packages/core",
     "../../packages/adapter-pouchdb",
+    "../../packages/adapter-minisearch",
     "."
   ]
 }

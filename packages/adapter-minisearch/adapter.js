@@ -49,13 +49,13 @@ module.exports = function () {
    * @param {IndexInfo} 
    * @returns {Promise<Response>}
    */
-  function createIndex({name, mappings}) {
-    if (!name) { return Promise.reject({ok: false, msg: 'name is required to create index'})}
+  function createIndex({index, mappings}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'name is required to create index'})}
     if (!mappings) { return Promise.reject({ok: false, msg: 'mappings object required, it should have fields property and storedFields property.'})}
-    const index = new MiniSearch(mappings)
+    const sindex = new MiniSearch(mappings)
     const store = new Map()
-    indexes.set(name, index)
-    datastores.set(name, store)
+    indexes.set(index, sindex)
+    datastores.set(index, store)
     return Promise.resolve({ok: true})
   }
 
@@ -144,7 +144,7 @@ module.exports = function () {
     
     const search = indexes.get(index)
     const results = search.search(query, options)
-    return Promise.resolve(results)
+    return Promise.resolve({ ok: true, matches: results})
   }
 
   return Object.freeze({
