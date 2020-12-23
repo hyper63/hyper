@@ -1,74 +1,63 @@
 # hyper63
 
-A service gateway, focused on providing a generic interface for microservices and applications.
+![hyper63 logo](hyper63-logo.png)
 
-Current Status: Design and Development Phase
+A service-framework that reduces redundant implementation code while maintaining full observabiliity for strong continuous delivery pipelines. hyper63 provides api abstractions to some of the core application building blocks. Using the ports and adapters architecture, hyper63's approach empowers you to use the service for each port you prefer.
+
+Current Status: Development Phase
 
 ## OpenAPI Specification
 
-[View OpenAPI Spec](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/hyper63/hyper63/main/swagger.yml)
+[View OpenAPI Spec](https://hyper63.com/api)
 
-## Usage - (experimental mode only)
+## Local Usage
 
-You will need to have Docker Desktop installed on your machine or docker and docker-compose
+To serve hyper63 in your local environment in a terminal type:
 
-```sh
-npx hyper63
+```
+npx @hyper63/dev
 ```
 
-To stop hyper63 services
+> This command will run a hyper63 service on PORT `6363` and store data in `/tmp/hyper63` > [Ctrl/Cmd] - C will stop the service.
 
-```sh
-npx hyper63 stop
+This nano version of hyper63 implements the following ports and adapters:
+
+- DATA - @hyper63/adapter-pouchdb
+- CACHE - @hyper63/adapter-memory
+- STORAGE - @hyper63/adapter-fs
+- SEARCH - @hyper63/adapter-minisearch (in memory)
+
+## Tour of hyper63 API
+
+Using `Insomnia Core` application you can take a visual walkthrough of the hyper63 apis and get a feel for how each one of the apis is implemented.
+
+[API Walkthrough](https://hyper63.com)
+
+## hyper63/client
+
+### NodeJS
+
+We are working on a NodeJS hyper63/client, this client can be used in any NodeJS application:
+
 ```
+import client from '@hyper63/client'
+```
+
+or
+
+```
+const client = require('@hyper63/client')
+```
+
+To find out more: [Click Here](https://hyper63.com)
 
 ## Developer Usage
 
-Requirements
-
-- Docker Desktop or (docker and docker-compose)
-- NodeJS
-- yarn (npm install -g yarn)
-
-Once you have cloned the repository, you will want to create an `.env` file. This file will contain basic defaults for the data, cache, and storage services.
-
 ```
-COUCHDB=http://admin:password@localhost:5984
-REDIS=redis://localhost:6379
-MINIO=http://minio:minio123@localhost:9000
-```
-
-Next you will run docker-compose in the project directory
-
-> This will launch redis, couchdb, and minio for local use.
-
-```sh
-docker-compose up -d
-```
-
-Install dependencies
-
-```sh
 yarn
-```
-
-Start development server
-
-```sh
+cd images/dev
 yarn dev
 ```
-
-## Inception Document
-
-> An inception document is a 10 question document to describe the holistic view of the project initiative and create the high level why, what and how.
-
-[Click Here](inception.md)
-
-## Design Documents
-
-> Works in progress
-
-[Click Here](design.md)
 
 ## Contributing
 
@@ -76,17 +65,13 @@ Options to contribute:
 
 - Write an adapter - create an adapter for a given port
 - Write an client - create a client for your favorite language
-- Write an app interface - create your own interface to the hyper63 service gateway
+- Write an app interface - create your own interface to the hyper63 service framework
 - Documentation - update the documentation to be concise and clear
 - Examples - create an example implementation.
 
 Want to get involved read the following to find out how.
 
 This is an opensource project, which welcomes all contributions and all development will occur in the open for interested parties to follow and comment. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) and the [Contributing](contributing.md) documentation to fully understand the requirements and restrictions to be a part of this community.
-
-## Launcher
-
-The launcher project creates a npm package that installs hyper63 on a local machine with adapter defaults of redis, couchdb, and minio.
 
 ## Middleware
 

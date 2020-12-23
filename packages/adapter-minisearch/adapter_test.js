@@ -4,7 +4,7 @@ const adapter = require('./adapter')()
 test('minisearch tests', async t => {
   t.plan(9)
   const result = await adapter.createIndex({
-    name: 'default', 
+    index: 'default', 
     mappings: {
       fields: ['title', 'body'],
       storeFields: ['title', 'body']
