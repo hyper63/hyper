@@ -20,7 +20,23 @@ info:
 
     ## Getting started
 
-    _coming soon!_
+    To run the dev version of hyper63 in your local environment, make sure you have nodejs v14 or later installed then run:
+    
+    
+    
+        npx @hyper63/dev
+    
+    
+    npx is a cli from npm that will download and run an npm package bin file. If you prefer to install then run you can do the following:
+    
+    
+    
+        npm install --global @hyper63/dev
+        npx @hyper63/dev
+    
+    
+    
+    When hyper63 is running you will be able access the api service from [http://0.0.0.0:6363](http://0.0.0.0:6363)
 
     ## Introduction
     
