@@ -96,12 +96,13 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
       })
       .chain(handleResponse(200))
       .map(({docs}) => ({
+        ok: true,
         docs: map(
           compose(
             omit(['_id']),
             over(xId, identity)
           ), docs)
-      })) 
+      }))
       .toPromise()
     },
     indexDocuments: ({db, name, fields}) => 
@@ -121,12 +122,12 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
     ,
     listDocuments: ({db, limit, startkey, endkey, keys, descending}) => {
       let options = { include_docs: true }
-      options = limit ? merge({limit}, options) : options
+      options = limit ? merge({limit: Number(limit)}, options) : options
       options = startkey ? merge({startkey}, options) : options
       options = endkey ? merge({endkey}, options) : options
       options = keys ? merge({keys}, options) : options
       options = descending ? merge({descending}, options) : options
-
+      
       return asyncFetch(`${config.origin}/${db}/_all_docs`, {
         method: 'POST',
         headers,
