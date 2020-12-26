@@ -11,7 +11,10 @@ const mockService = {
 const fork = (m) => (t) => {
   t.plan(1);
   m.fork(
-    () => t.ok(false),
+    e => {
+      console.log(e)
+      t.ok(false)
+    },
     () => t.ok(true)
   );
 };
@@ -22,17 +25,30 @@ const events = {
 
 test(
   "create cache doc",
-  fork(doc.create("store", { hello: "world" }).runWith({svc: mockService, events}))
+  fork(doc.create("store", "key", { hello: "world" }).runWith({ svc: mockService, events }))
 );
 
-test("get cache doc", fork(doc.get("store", "KEY_1234").runWith({svc: mockService, events })));
+test(
+  "cannot create cache doc with invalid key",
+  t => {
+    t.plan(1)
+    doc.create('store', "Not_Valid", { beep: "boop" })
+      .runWith({ svc: mockService, events })
+      .fork(
+        e => t.ok(true),
+        r => t.ok(false)
+      )
+  }
+)
+
+test("get cache doc", fork(doc.get("store", "key-1234").runWith({ svc: mockService, events })));
 
 test(
   "update cache document",
-  fork(doc.update("store", "KEY_1234", { foo: "bar" }).runWith({svc: mockService, events }))
+  fork(doc.update("store", "key-1234", { foo: "bar" }).runWith({ svc: mockService, events }))
 );
 
 test(
   "delete cache document",
-  fork(doc.update("store", "KEY_1234").runWith({svc: mockService, events }))
+  fork(doc.update("store", "key-1234").runWith({ svc: mockService, events }))
 );

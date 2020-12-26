@@ -51,7 +51,7 @@ function validName(name) {
   // verify that the name does not contain slashes
   // verify that the name contains URI friendly characters
   // should return a true or false
-  return /^[a-zA-Z0-9-]+$/.test(name);
+  return /^[a-z0-9-]+$/.test(name);
 }
 
 /**

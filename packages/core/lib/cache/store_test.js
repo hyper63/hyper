@@ -24,7 +24,7 @@ test("create cache store", (t) => {
     t.ok(true);
   }
 
-  store.create("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
+  store.create("hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
 
 test('should not create store', t => {
@@ -47,7 +47,7 @@ test("destroy cache store", (t) => {
     t.ok(true);
   }
 
-  store.del("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
+  store.del("hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
 
 test("query cache store", (t) => {
@@ -60,5 +60,5 @@ test("query cache store", (t) => {
     t.ok(true);
   }
 
-  store.query("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
+  store.query("hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
