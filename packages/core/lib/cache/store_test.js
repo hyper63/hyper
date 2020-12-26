@@ -27,6 +27,16 @@ test("create cache store", (t) => {
   store.create("Hello").runWith({ svc: mockService, events }).fork(handleError, handleSuccess);
 });
 
+test('should not create store', t => {
+  t.plan(1)
+
+  store.create("_foo").runWith({ svc: mockService, events })
+    .fork(
+      e => t.ok(true),
+      r => t.ok(false)
+    )
+})
+
 test("destroy cache store", (t) => {
   t.plan(1);
 
