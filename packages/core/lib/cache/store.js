@@ -1,4 +1,5 @@
 const { is, of, apply, triggerEvent } = require('../utils')
+const { toLower } = require('ramda')
 
 const INVALID_NAME_MSG = "name is not valid";
 const INVALID_RESULT_MSG = "result is not valid";
@@ -9,11 +10,12 @@ const INVALID_RESULT_MSG = "result is not valid";
  */
 exports.create = (name) =>
   of(name)
+    .map(toLower)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply("createStore"))
     .chain(triggerEvent('CACHE:CREATE_STORE'))
     .chain(is(validResult, INVALID_RESULT_MSG));
-    
+
 /**
  * @param {string} name
  * @returns {AsyncReader}
@@ -48,9 +50,8 @@ function validName(name) {
   // verify that the name does not contains spaces
   // verify that the name does not contain slashes
   // verify that the name contains URI friendly characters
-  // should return a Either Right or Left
-  //return Left({ ok: false, msg: "name not valid"});
-  return true;
+  // should return a true or false
+  return /^[a-zA-Z0-9-]+$/.test(name);
 }
 
 /**
