@@ -18,7 +18,7 @@ To serve hyper63 in your local environment in a terminal type:
 npx @hyper63/dev
 ```
 
-> This command will run a hyper63 service on PORT `6363` and store data in `/tmp/hyper63` > [Ctrl/Cmd] - C will stop the service.
+> This command will run a hyper63 service on PORT `6363` and store data in `${HOME}/.hyper63` > [Ctrl/Cmd] - C will stop the service.
 
 This nano version of hyper63 implements the following ports and adapters:
 
@@ -31,7 +31,7 @@ This nano version of hyper63 implements the following ports and adapters:
 
 Using `Insomnia Core` application you can take a visual walkthrough of the hyper63 apis and get a feel for how each one of the apis is implemented.
 
-[API Walkthrough](https://hyper63.com)
+[API Walkthrough](https://hyper63.com/blog/hyper63/walkthrough)
 
 ## hyper63/client
 
@@ -49,7 +49,7 @@ or
 const client = require('@hyper63/client')
 ```
 
-To find out more: [Click Here](https://hyper63.com)
+To find out more: [Click Here](https://hyper63.com/blog/hyper63-client)
 
 ## Developer Usage
 
