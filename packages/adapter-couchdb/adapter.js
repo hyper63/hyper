@@ -62,10 +62,24 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
         .chain(handleResponse(201))
         .toPromise(),
     retrieveDocument: ({db, id}) => retrieveDocument({db, id}).map(omit(['_id', '_rev'])).toPromise(),
-    updateDocument: ({ db, id, doc }) =>
-      retrieveDocument({ db, id })
+    updateDocument: ({ db, id, doc }) => {
+      // need to retrieve the document if exists
+      // then upsert if possible
+      return asyncFetch(`${config.origin}/${db}/${id}`,{
+        headers
+      })
+      .chain(res => Async.fromPromise(res.json.bind(res))())
+      .map(doc => {
+        return doc.error ? null : doc
+      })
         .chain((old) =>
-          asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
+          old ?
+            asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
+              method: "PUT",
+              headers,
+              body: JSON.stringify(doc),
+            })
+          : asyncFetch(`${config.origin}/${db}/${id}`, {
             method: "PUT",
             headers,
             body: JSON.stringify(doc),
@@ -73,7 +87,8 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
         )
         .chain(handleResponse(201))
         .map(omit(['rev']))
-        .toPromise(),
+        .toPromise()
+      },
     removeDocument: ({ db, id }) =>
       retrieveDocument({ db, id })
         .chain((old) =>

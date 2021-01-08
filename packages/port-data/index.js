@@ -26,10 +26,7 @@ module.exports = function (adapter) {
         db: z.string(),
         id: z.string(),
         doc: z.object()
-      })).returns(z.promise(z.object({
-        ok: z.boolean(),
-        id: z.string()
-      }))),
+      })).returns(z.promise(z.any())),
     removeDocument: z.function()
       .args(z.object({
         db: z.string(),
@@ -81,7 +78,8 @@ module.exports = function (adapter) {
  instance.removeDatabase = Port.shape.removeDatabase.validate(instance.removeDatabase)
  instance.createDocument = Port.shape.createDocument.validate(instance.createDocument)
  instance.retrieveDocument = Port.shape.retrieveDocument.validate(instance.retrieveDocument)
- instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
+ // instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
+ instance.updateDocument = adapter.updateDocument
  instance.removeDocument = Port.shape.removeDocument.validate(instance.removeDocument)
  instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
  instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)

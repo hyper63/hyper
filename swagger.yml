@@ -40,7 +40,8 @@ info:
 
     ## Introduction
     
-    As humans who like to build, explore and create we often suffer from the challenge and burden of maintaining, updating, and managing our past buildings and creations. This leads to challenges like spending almost 50% of your day to day as a developer managing technical debt. hyper63's mission is to create a service boundary between the common services every application needs and the implementation details of those services. This boundary creates an enormous amount of benefits for a high performing development team. By not having to worry about the implementation details of services, the team can focus on solving problems for the business and dealing with the constant changing of product requirements.
+    As humans who like to build, explore and create we often suffer from the challenge and burden of maintaining, updating, and managing our past buildings and creations. This leads to challenges like spending almost 50% of your day to day as a developer managing technical debt. hyper63's mission is to create a service boundary between the common services every application needs and the implementation details of those services. This boundary creates an enormous amount of benefits for a high performing development team. By not having to worry about the implementation details of services, the team can focus on solving problems for the business and dealing with the constant changing of product requirements. [The Developer Coefficient](https://stripe.com/files/reports/the-developer-coefficient.pdf)
+    
     
     In short, hyper63 empowers development teams to create fast continous deployment feedback loops, providing high observability, without having to worry about service implementation details.
     
@@ -71,6 +72,10 @@ info:
     ### Ports and Adapters
     
     The `ports` are parsable schema definitions that ensure that the `adapter` implementations use the correct data shape for each service function. Ports provide the boundaries in which each service is defined and the `adapter` creates the specific implementation bridge for various technologies that can provide this service. For example, the `data` port can be implemented using different technologies and provide the same features. This pattern ensures the future-proofing of a service and creates reliability, scalability and resilience.
+    
+    
+    > For more information about the ports and adapters pattern checkout this article: [https://jmgarridopaz.github.io/content/hexagonalarchitecture.html](https://jmgarridopaz.github.io/content/hexagonalarchitecture.html)
+    
     
     ## More information
 
@@ -130,16 +135,62 @@ paths:
     get:
       description: >
 
-        # Cache Information
+        # Cache API
 
-        This the endpoint returns the current state
-        of the Cache Service
-
-        > TODO: return the list of cache stores
-
+        The cache api is a document create, read, update and delete implementation on top of a cache system. This api gives developers the same ergonomics as a document database store to create and manage cached documents. 
+        
+        
+        ## Data Cache Example
+        
+        
+        Store a document in the cache when you have stored it in the database and when a user asks to access this document, pull the document from the cache if it exists. This will keep the access traffic on your database server very low and give much needed bandwidth to the write and query functionality instead of consuming the server with needless reads. 
+        
+        
+        
+        1. Store/Update Document in Database
+        
+        2. If successful, store document in cache
+        
+        3. API requests document, check cache, if available return document
+        
+        4. If not in cache, return document from database
+        
+        5. API requests to delete document, if in cache remove document
+        
+        6. Delete document from database
+        
+        
+        ## Time to live 
+        
+        
+        You can also use the cache to create temporary TTL (Time to live) data objects, that will only be available for a short time then expire, which can be helpful for managing session on the server side of your application.
+        
+        
+        ## Querying the cache
+        
+        
+        When storing the documents in the cache, you can also query the cache using simple pattern matching, this works great for getting a list of documents and performing pagination. 
+        
+        
+        ### Things to consider
+        
+        
+        1. name your cache store with the type of document, contact, post, comment followed by a `-` then your unique identifier
+        
+        2. when creating your identifier think about the order you want to retrieve your documents in a list, using a time based identififer like a `cuid` can give you sort semantics based on when the document was created, and can easily be reversed.
+        
+        
+        ## Example
+        
+        
+             GET /cache/default/_query?pattern=contact*
+             
+          
+          Returns all of the contact keys in the cache
+        
       tags: [cache]
       responses:
-        200:
+        "200":
           description: cache module info
           content:
             application/json:
@@ -154,6 +205,8 @@ paths:
                   stores:
                     description: list of active stores
                     type: array
+                    items:
+                      type: string
                   status:
                     description: stability of module
                     type: string
@@ -172,10 +225,24 @@ paths:
         a common name. This makes it easy to manage
         cached data.
 
-        When creating a cache store you must give it
-        a name and that name can only have alpha-numeric
-        characters and the '-' character. The cache store
-        name will not be case-sensitive.
+        ## Cache Name Syntax
+        
+        - lowercase alphanumeric string
+        
+        - maximum of 10 characters
+        
+        - dashes allowed; underscores not allowed
+        
+        - must begin with a letter
+        
+        
+        For example, to create a cache named 'default'
+        
+        
+            PUT /cache/default
+        
+        It is also important to note that this function is idempotent and can be invoked several times and if the store is already created then it do nothing.
+
       tags: [cache]
       parameters:
         - name: name
@@ -212,13 +279,21 @@ paths:
                     type: string
     delete:
       description: >
-        # Delete store
+        # Delete Cache Store
 
         This function deletes a cache store and removes all
         keys that were a part of this store. Once a store
         is delete it will be impossible to recover the cache
         data, so make sure you use this function with great
         care.
+        
+        
+        ## Example
+        
+            DELETE /cache/default?confirm=true
+            
+        The confirm query flag is used to make sure that the intention is valid.
+        
       tags: [cache]
       parameters:
         - name: name
@@ -227,17 +302,43 @@ paths:
           required: true
           schema:
             type: string
+        - name: confirm
+          in: query
+          description: flag to confirm deletion
+          required: true
+          schema:
+            type: boolean
       responses:
         "200":
           description: successfully deleted store
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: 
+                    type: boolean
+        "500":
+          description: in order to delete store you must confirm
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: 
+                    type: boolean
+                  msg:
+                    type: string
     post:
       description: >
 
         # Create Cache Document
+        
+        Use this endpoint to create a key value pair in your cache, the key is the unique identifier and the value is the JSON document you would like to store in the cache. You can also include a `ttl` property to specify how long you would like your cache item to exist in the store, if you do not include `ttl` the default is to store the item as long as possible.
+
 
         This cache service accepts JSON documents, it is worth
         noting that a number, string, array are all valid json
         documents. 
+
 
         When storing a document to the cache, you will want to 
         give it a key, this is how you will recall your document
@@ -246,6 +347,31 @@ paths:
         how long to keep the value in the cache. The ttl property 
         takes values like `1m`  one minute, `2h` two hours, `3d` three days.
 
+        ## Key Syntax
+        
+        - lowercase alphanumeric string
+        
+        - maximum of 10 characters
+        
+        - dashes allowed; underscores not allowed
+        
+        - must begin with a letter
+
+        ## Example
+        
+            POST /cache/default
+            Content-Type: application/json
+            
+            {
+              "key": "hello-world",
+              "value": {
+                "name": "Earth",
+                "type": "Planet",
+                "date": "2020-12-24"
+              }
+            }
+            
+        
       tags: [cache]
       parameters:
         - name: name
@@ -292,7 +418,25 @@ paths:
                     type: string
   "/cache/{name}/_query":
     get:
-      description: query cache with key match pattern
+      description: >
+        
+        # Query your cache
+        
+        Using a pattern match string you can request one or more keys from your cache in a batch request. 
+        
+            GET /cache/default/_query?pattern=widget*
+            
+            
+        or
+        
+            GET /cache/default/_query?pattern=*something*
+            
+        
+        ## Syntax
+        
+        1. `*` asterisk is a wildcard that represents one to many characters
+        
+        
       tags: [cache]
       parameters:
         - name: name
@@ -319,6 +463,8 @@ paths:
                     default: true
                   docs:
                     type: array
+                    items:
+                      type: object
         "500":
           description: error occured with query
           content:

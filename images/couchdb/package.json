@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@hyper63/adapter-couchdb": "^0.0.1",
-    "@hyper63/app-express": "^1.0.4",
-    "@hyper63/core": "^1.0.14",
+    "@hyper63/adapter-couchdb": "0.0.6",
+    "@hyper63/app-express": "^1.0.5",
+    "@hyper63/core": "1.1.9",
     "express-jwt": "^6.0.0"
   },
   "devDependencies": {
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "docker build -t hyper63/couchdb-svc:latest ."
+    "build": "docker build -t hyper63/couchdb-svc:2021-13 ."
   },
   "private": true
 }
