@@ -32,7 +32,7 @@ info:
     
     
         npm install --global @hyper63/x
-        npx @hyper63/dev
+        npx @hyper63/x
     
     
     
