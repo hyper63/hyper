@@ -24,14 +24,14 @@ info:
     
     
     
-        npx @hyper63/dev
+        npx @hyper63/x
     
     
     npx is a cli from npm that will download and run an npm package bin file. If you prefer to install then run you can do the following:
     
     
     
-        npm install --global @hyper63/dev
+        npm install --global @hyper63/x
         npx @hyper63/dev
     
     
