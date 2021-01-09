@@ -5,6 +5,7 @@ const graphql = require('@hyper63/app-graphql')
 const memory = require('@hyper63/adapter-memory')
 const pouchdb = require('@hyper63/adapter-pouchdb')
 const fs = require('@hyper63/adapter-fs')
+const hooks = require('@hyper63/adapter-hooks')
 
 module.exports = {
   app: graphql(),

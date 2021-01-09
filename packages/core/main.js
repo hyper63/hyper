@@ -7,9 +7,10 @@ const { compose, prop, assoc, propOr } = require('ramda')
 /**
  * @returns {function} - listen function
  */
- function main () {
+ function main (config) {
   //const config = (await import(process.cwd() + '/hyper63.config')).default
-  const config = require(process.cwd() + '/hyper63.config')
+  config = !config ? require(process.cwd() + '/hyper63.config') : config
+
   // TODO: validate config
   const services = compose(
      // add eventMgr to services
@@ -27,4 +28,4 @@ const { compose, prop, assoc, propOr } = require('ramda')
   return app
 }
 
-module.exports = main()
+module.exports = main
