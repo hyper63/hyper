@@ -1,6 +1,10 @@
 const createRequest = require('./request')
 const qs = require('querystring')
-const fetch = require('node-fetch')
+
+if (!globalThis.fetch) {
+  globalThis.fetch = require('node-fetch')
+}
+
 
 /**
  * @param {string} host = provide the host url for hyper63 service
