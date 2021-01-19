@@ -5,6 +5,7 @@ if (!globalThis.fetch) {
   globalThis.fetch = require('node-fetch')
 }
 
+const fetch = globalThis.fetch
 
 /**
  * @param {string} host = provide the host url for hyper63 service
