@@ -147,6 +147,8 @@ module.exports = function () {
     return Promise.resolve({ ok: true, matches: results})
   }
 
+  
+
   return Object.freeze({
     createIndex,
     deleteIndex,

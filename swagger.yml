@@ -8,6 +8,12 @@ info:
 
     A service-framework that reduces redundant implementation code while maintaining full observabiliity for strong continuous delivery pipelines.
 
+    ## Why hyper63
+    
+    The point of hyper63 is to empower developer teams to focus on the business logic and not the implementation details. There are many clouds, databases, caches, search engines, storage solutions to choose from and the choice may depend on the current constraints, but most likely will need to change over time. hyper63 gives the development team to move forward solving the business logic and leveraging a suite of common services. There are solutions out there that promote backend as a service which basically means that you will be putting all of your business logic in the frontend solution. This is not a very good design and can leave your product married to the backend service. Experts agree the more you can separate your business logic from the implementation details the less technical debt you will have over time. hyper63 makes it easy to keep your services separated from your business logic.
+
+    ## What is hyper63
+
     hyper63 provides api abstractions to some of the core application building blocks. Using the ports and 
     adapters architecture, hyper63's approach empowers you
     to use the service for each port you prefer.
@@ -16,7 +22,7 @@ info:
       * data 
       * storage 
       * search 
-      * hooks*
+      * hooks
 
     ## Getting started
 
@@ -47,9 +53,11 @@ info:
     
     ## API
     
-    hyper63 is a modular system, which means it can have several ways to implement its API gateway as well as its service ports. The most common implementation is as a REST/JSON API, so this document focuses on this gateway implementation.
+    hyper63 is a modular system, which means it can have several ways to implement its API gateway as well as its service ports. The most common implementation is as a `REST/JSON` API, so this document focuses on this gateway implementation.
     
-    The API is made of four core services: [data, cache, storage, search] Each service has a series of api endpoints to perform the basic functionality of the given service. Through out this document we will discuss each service in detail and each endpoint in detail. 
+    The API is made of four core services: data, cache, storage, search 
+
+    Each service has a series of api endpoints to perform the basic functionality of the given service. Through out this document we will discuss each service in detail and each endpoint in detail. 
     
     ## Authentication
 
@@ -59,7 +67,7 @@ info:
     
     ## Architecture
     
-    hyper63 is made of three logical component sections: [core, app, ports]. 
+    hyper63 is made of three logical component sections: core, app, ports 
     
     ### Core
     
@@ -241,7 +249,7 @@ paths:
         
             PUT /cache/default
         
-        It is also important to note that this function is idempotent and can be invoked several times and if the store is already created then it do nothing.
+        It is also important to note that this function is idempotent and can be invoked several times and if the store is already created then it does nothing.
 
       tags: [cache]
       parameters:
@@ -283,9 +291,13 @@ paths:
 
         This function deletes a cache store and removes all
         keys that were a part of this store. Once a store
-        is delete it will be impossible to recover the cache
+        is deleted it will be impossible to recover the cache
         data, so make sure you use this function with great
         care.
+
+        ## Query params
+        
+        * confirm - a boolean query parameter that is required to successfully delete the cache store
         
         
         ## Example
@@ -344,7 +356,7 @@ paths:
         give it a key, this is how you will recall your document
         from the cache. You also have the option to add a `ttl` 
         property, or time to live, which lets the cache know 
-        how long to keep the value in the cache. The ttl property 
+        how long to keep the value in the cache. The `ttl` property 
         takes values like `1m`  one minute, `2h` two hours, `3d` three days.
 
         ## Key Syntax
@@ -368,8 +380,11 @@ paths:
                 "name": "Earth",
                 "type": "Planet",
                 "date": "2020-12-24"
-              }
+              },
+              "ttl": "2d"
             }
+
+        In this example the document will remain in the cache for 2 days from the time it was created.
             
         
       tags: [cache]
@@ -393,6 +408,8 @@ paths:
                   type: object
                 ttl:
                   type: string
+                  description: >
+                    time to live - values: 5m - 5 minutes, 2h - 2 hours, 4d - 4 days
       responses:
         "201":
           description: successfully create cache doc
@@ -436,6 +453,8 @@ paths:
         
         1. `*` asterisk is a wildcard that represents one to many characters
         
+        > NOTE: if you don't pass a wildcard it will return an exact match if available, but you might as well use the GET /cache/default/:key command.
+        
         
       tags: [cache]
       parameters:
@@ -478,7 +497,21 @@ paths:
                     type: string
   "/cache/{name}/{key}":
     get:
-      description: get cache key from store
+      description: >
+        
+        # Get the cached document from the cache
+
+
+        This command will retrieve a document from the cache using its key.
+
+        ## Example
+
+             GET /cache/default/ribbons
+             Content-Type: application/json
+
+             #> {"name": "Ribbons", "type": "dog", "age": 1 } 
+
+
       tags: [cache]
       parameters:
         - name: name
@@ -515,7 +548,22 @@ paths:
                   msg:
                     type: string
     put:
-      description: update cache document
+      description: > 
+
+        # Update a document in the cache 
+
+        This command takes the request body and applies it to the
+        cache based on the key name.
+
+        ## Example
+        
+            PUT /cache/default/ribbons?ttl=2d
+            Content-Type: application/json
+
+            { "name": "ribbons", "type": "dog", "age": 2 }
+
+            #> { "ok": true, "doc": {"name": "ribbons", "type": "dog", "age": 2}} 
+
       tags: [cache]
       parameters:
         - name: name
@@ -563,7 +611,18 @@ paths:
                   msg:
                     type: string
     delete:
-      description: remove cache document
+      description: >
+        # DELETE document from cache
+
+        This command deletes the document from the cache 
+
+        ## Example
+
+            DELETE /cache/default/ribbons
+            Content-Type: application/json
+
+            #> { "ok": true }
+
       tags: [cache]
       parameters:
         - name: name
