@@ -81,9 +81,13 @@ module.exports = function (services) {
   
     res.send({ 
       name: "hyper63", 
+      version: "unstable",
       services: 
         Object
           .keys(services)
+          .filter(k => k !== 'events')
+          .filter(k => k !== 'middleware')
+          .filter(k => k !== 'hooks')
           .filter(k => services[k] !== null ? true : false) 
     })
   })
