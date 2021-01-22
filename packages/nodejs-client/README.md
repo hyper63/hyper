@@ -54,6 +54,7 @@ const client = createClient(
 Async.all([
   client.setup.db(), // sets up database
   client.setup.cache(),
+  client.setup.search({ fields: ["title"], storeFields: ["title"] }),
 ]).fork(console.log.bind(console), console.log.bind(console));
 ```
 
@@ -75,13 +76,10 @@ Async.all([
 - client.cache.query - find keys by pattern
 - client.cache.remove - remove key/value pair
 
-### Storage API
-
-TODO
-
 ### Search API
 
-TODO
+- client.search.create - adds a doc to search index
+- client.search.remove - removes a doc from the search index
 
 ## License
 
