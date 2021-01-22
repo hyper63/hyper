@@ -19,7 +19,8 @@ module.exports = (host, client, secret, app) => {
   return Object.freeze({
     setup: {
       db: () => $.put(`${host}/data/${app}`),
-      cache: () => $.put(`${host}/cache/${app}`)
+      cache: () => $.put(`${host}/cache/${app}`),
+      search: (mappings={}) => $.put(`${host}/search/${app}`, mappings)
     },
     cache: {
       query: pattern => $.get(`${host}/cache/${app}?${qs.stringify({pattern: pattern || '*'})}`),
@@ -36,6 +37,11 @@ module.exports = (host, client, secret, app) => {
       update: (id, doc) => $.put(`${host}/data/${app}/${id}`, doc),
       remove: (id) => $.remove(`${host}/data/${app}/${id}`),
       index: (idx) => $.post(`${host}/data/${app}/_index`, idx)
+    },
+    search: {
+      query: (query) => $.post(`${host}/search/${app}/_query`, query),
+      create: (doc) => $.post(`${host}/search/${app}`, doc),
+      remove: (key) => $.remove(`${host}/search/${app}/${key}`)
     }
   })
 }
