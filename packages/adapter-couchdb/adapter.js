@@ -62,10 +62,24 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
         .chain(handleResponse(201))
         .toPromise(),
     retrieveDocument: ({db, id}) => retrieveDocument({db, id}).map(omit(['_id', '_rev'])).toPromise(),
-    updateDocument: ({ db, id, doc }) =>
-      retrieveDocument({ db, id })
+    updateDocument: ({ db, id, doc }) => {
+      // need to retrieve the document if exists
+      // then upsert if possible
+      return asyncFetch(`${config.origin}/${db}/${id}`,{
+        headers
+      })
+      .chain(res => Async.fromPromise(res.json.bind(res))())
+      .map(doc => {
+        return doc.error ? null : doc
+      })
         .chain((old) =>
-          asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
+          old ?
+            asyncFetch(`${config.origin}/${db}/${id}?rev=${old._rev}`, {
+              method: "PUT",
+              headers,
+              body: JSON.stringify(doc),
+            })
+          : asyncFetch(`${config.origin}/${db}/${id}`, {
             method: "PUT",
             headers,
             body: JSON.stringify(doc),
@@ -73,7 +87,8 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
         )
         .chain(handleResponse(201))
         .map(omit(['rev']))
-        .toPromise(),
+        .toPromise()
+      },
     removeDocument: ({ db, id }) =>
       retrieveDocument({ db, id })
         .chain((old) =>
@@ -96,12 +111,13 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
       })
       .chain(handleResponse(200))
       .map(({docs}) => ({
+        ok: true,
         docs: map(
           compose(
             omit(['_id']),
             over(xId, identity)
           ), docs)
-      })) 
+      }))
       .toPromise()
     },
     indexDocuments: ({db, name, fields}) => 
@@ -121,12 +137,12 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
     ,
     listDocuments: ({db, limit, startkey, endkey, keys, descending}) => {
       let options = { include_docs: true }
-      options = limit ? merge({limit}, options) : options
+      options = limit ? merge({limit: Number(limit)}, options) : options
       options = startkey ? merge({startkey}, options) : options
       options = endkey ? merge({endkey}, options) : options
       options = keys ? merge({keys}, options) : options
       options = descending ? merge({descending}, options) : options
-
+      
       return asyncFetch(`${config.origin}/${db}/_all_docs`, {
         method: 'POST',
         headers,

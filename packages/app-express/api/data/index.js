@@ -1,7 +1,7 @@
 const { fork } = require('../utils')
 // GET /data
 exports.index = (req, res) =>
-  res.send({ name: "hyper63 Data", version: "1.0", status: "unstable" });
+  res.send({ name: "hyper63 Data", version: "1.0.1", status: "unstable" });
 
 // PUT /data/:db
 exports.createDb = ({ params, data }, res) =>

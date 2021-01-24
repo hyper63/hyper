@@ -10,11 +10,11 @@
     "@hyper63/adapter-minisearch": "^1.0.2",
     "@hyper63/adapter-pouchdb": "^1.0.3",
     "@hyper63/app-express": "^1.0.1",
-    "@hyper63/core": "^1.0.3"
+    "@hyper63/core": "^1.2.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
-  }, 
+  },
   "scripts": {
     "start": "node index.js"
   }

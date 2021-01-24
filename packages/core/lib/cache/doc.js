@@ -69,8 +69,8 @@ module.exports = {
 }
 // validators predicate functions
 
-function validKey(name) {
-  return true;
+function validKey(doc) {
+  return /^[a-z0-9-]+$/.test(doc.key);
 }
 
 function validResult(result) {
