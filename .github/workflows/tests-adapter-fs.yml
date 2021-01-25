@@ -2,6 +2,8 @@ name: test fs adapter
 on:
   push:
     branches-ignore: main
+    paths:
+      - "packages/adapter-fs/**"
 jobs:
   build:
     runs-on: ubuntu-latest
