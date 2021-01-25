@@ -2,8 +2,8 @@ name: test redis adapter
 on:
   push:
     branches-ignore: main
-  paths:
-    - "packages/adapter-redis/**"
+    paths:
+      - "packages/adapter-redis/**"
 jobs:
   build:
     runs-on: ubuntu-latest
