@@ -14,7 +14,7 @@ test('pouchdb create same db', async t => {
   t.end()
 })
 test('pouchdb find', async t => {
-  const adapter = createAdapter('./test-data')
+  const adapter = createAdapter('/tmp')
   const dbName = v4()
   await adapter.createDatabase(dbName)
   await adapter.createDocument({
