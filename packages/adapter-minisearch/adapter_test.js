@@ -53,7 +53,8 @@ test('minisearch tests', async t => {
     index: 'default',
     q: { query: 'Search is cool' }
   })
-  t.equal(searchResults[0].id, '1', 'found doc')
+
+  t.equal(searchResults.matches[0].id, '1', 'found doc')
 
   const docDeleteResult = await adapter.removeDoc({
     index: 'default',
