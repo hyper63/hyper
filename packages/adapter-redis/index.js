@@ -1,10 +1,11 @@
-import { default as createAdapter } from './adapter'
-import redis from 'redis'
+const createAdapter = require('./adapter')
+const redis = require('redis')
+
 /**
  * @param {object} config
  * @returns {object}
  */
-export default function RedisCacheAdapter (config) {
+module.exports = function RedisCacheAdapter (config) {
   /**
    * @param {object} env
    */

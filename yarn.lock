@@ -4281,7 +4281,7 @@ zen-observable@^0.8.0:
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
 
-zod@^2.0.0-beta.20, zod@^2.0.0-beta.22:
+zod@^2.0.0-beta.20, zod@^2.0.0-beta.22, zod@^2.0.0-beta.30:
   version "2.0.0-beta.30"
   resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.30.tgz#67ec3305c4a106a7bf9ef72078de72892d485dbe"
   integrity sha512-nwCSRXRy1jt0872mMXT2E6VVHXr2hO7jGEtwc/TDqOBb7gGodwAjsQ6UCS4XJLUmjVvmqLsuPvAIN8oL26weCQ==

@@ -1,6 +1,6 @@
-import { default as test } from 'tape'
-import redis from 'redis-mock'
-import { default as createAdapter } from './adapter'
+const test = require('tape')
+const redis = require('redis-mock')
+const createAdapter = require('./adapter')
 
 const client = redis.createClient()
 const adapter = createAdapter(client)

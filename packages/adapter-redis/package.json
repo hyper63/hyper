@@ -6,7 +6,8 @@
   "dependencies": {
     "crocks": "^0.12.4",
     "ramda": "^0.27.1",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "zod": "^2.0.0-beta.30"
   },
   "devDependencies": {
     "esm": "^3.2.25",
@@ -14,6 +15,6 @@
     "tape": "^5.0.1"
   },
   "scripts": {
-    "test": "tape -r esm *_test.js"
+    "test": "tape *_test.js"
   }
 }
