@@ -2,6 +2,8 @@ name: test core
 on:
   push:
     branches-ignore: main
+    paths:
+      - "packages/core/**"
 jobs:
   build:
     runs-on: ubuntu-latest
