@@ -1,9 +1,10 @@
-import { Async } from 'crocks'
-import { always, append, compose, identity, ifElse, isNil, not } from 'ramda'
+const { Async } = require('crocks')
+const { always, append, compose, identity, ifElse, isNil, not } = require('ramda')
+
 
 const createKey = (store, key) => `${store}_${key}`;
 
-export default function (client) {
+module.exports = function (client) {
   // redis commands
   const get = Async.fromNode(client.get.bind(client));
   const set = Async.fromNode(client.set.bind(client));

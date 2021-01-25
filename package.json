@@ -10,6 +10,7 @@
   "workspaces": [
     "packages/core",
     "packages/adapter-couchdb", 
+    "packages/adapter-redis",
     "packages/adapter-memory", 
     "packages/adapter-pouchdb",
     "packages/adapter-fs",
