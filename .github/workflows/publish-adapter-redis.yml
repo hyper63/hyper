@@ -15,7 +15,7 @@ jobs:
           node-version: "14.x"
           registry-url: "https://registry.npmjs.org"
           scope: "@hyper63"
-      - run: yarn
-      - run: npm publish --access public
+      - run: cd packages/adapter-redis && yarn
+      - run: cd packages/adapter-redis && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
