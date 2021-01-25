@@ -5,7 +5,7 @@ const faker = require('faker')
 const { times } = require('ramda')
 
 test('pouchdb create same db', async t => {
-  const adapter = createAdapter('./test-data')
+  const adapter = createAdapter('/tmp')
   const dbName = v4()
   await adapter.createDatabase(dbName)
   const result = await adapter.createDatabase(dbName).catch(e => e)
