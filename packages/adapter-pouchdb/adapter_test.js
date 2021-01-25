@@ -63,7 +63,7 @@ test('pouchdb find', async t => {
 
 test('pouchdb adapter tests', async t => {
   t.plan(5)
-  const adapter = createAdapter('./test-data')
+  const adapter = createAdapter('/tmp')
   const dbName = v4()
   
   await adapter.createDatabase(dbName)
