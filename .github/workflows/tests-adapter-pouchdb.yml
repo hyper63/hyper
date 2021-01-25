@@ -1,4 +1,4 @@
-name: test pouch adapter
+name: test pouchdb adapter
 on:
   push:
     branches-ignore: main
