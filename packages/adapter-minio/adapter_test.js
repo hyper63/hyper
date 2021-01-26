@@ -1,5 +1,5 @@
-import { default as test } from 'tape'
-import { default as createAdapter } from './adapter'
+const test = require('tape')
+const createAdapter = require('./adapter')
 
 const client = ({
   makeBucket(name) {
