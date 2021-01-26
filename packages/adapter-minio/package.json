@@ -12,6 +12,6 @@
     "tape": "^5.0.1"
   },
   "scripts": {
-    "test": "tape -r esm *_test.js"
+    "test": "tape *_test.js"
   }
 }

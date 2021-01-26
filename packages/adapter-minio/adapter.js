@@ -1,11 +1,11 @@
-import { Async } from 'crocks'
+const { Async } = require('crocks')
 
 const prop = (key) => (obj) => obj[key];
 
 const asyncify = (client, method) =>
   Async.fromPromise(client[method].bind(client));
 
-export default (client) => ({
+module.exports = (client) => ({
   makeBucket: (name) =>
     asyncify(
       client,

@@ -16,6 +16,7 @@
     "packages/adapter-fs",
     "packages/adapter-minisearch",
     "packages/adapter-hooks",
+    "packages/adapter-minio",
     "packages/app-express",
     "packages/app-graphql",
     "packages/port-data",

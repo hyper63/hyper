@@ -1,11 +1,11 @@
-import { default as createAdapter } from './adapter'
-import * as Minio from 'minio'
+const createAdapter = require('./adapter')
+const Minio = require('minio')
 
 /**
  * @param {object} config
  * @returns {object}
  */
-export default function MinioStorageAdapter (config) {
+module.exports = function MinioStorageAdapter (config) {
   /**
    * @param {object} env
    */
