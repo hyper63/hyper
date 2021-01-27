@@ -40,6 +40,7 @@ module.exports = (host, client, secret, app) => {
     },
     search: {
       query: (query) => $.post(`${host}/search/${app}/_query`, query),
+      bulk: (docs) => $.post(`${host}/search/${app}/_bulk`, docs),
       create: (doc) => $.post(`${host}/search/${app}`, doc),
       remove: (key) => $.remove(`${host}/search/${app}/${key}`)
     }
