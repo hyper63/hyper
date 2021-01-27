@@ -76,7 +76,8 @@ module.exports = function (services) {
   app.put('/search/:index/:key', express.json(), bindCore, search.updateDoc)
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
   app.post('/search/:index/_query', express.json(), bindCore, search.query)
-
+  app.post('/search/:index/_bulk', express.json(), bindCore, search.bulk)
+  
   app.get("/", (req, res) => {
   
     res.send({ 
