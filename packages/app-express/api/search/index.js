@@ -33,3 +33,5 @@ exports.query = ({ search, params, body }, res) =>
   fork(res, 200, search.query(params.index, body));
 
 // add bulk or batch
+exports.bulk = ({search, params, body}, res) => 
+  fork(res, 201, search.bulk(params.index, body));
