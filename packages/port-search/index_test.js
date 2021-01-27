@@ -10,6 +10,7 @@ test('port search ok', t => {
     getDoc: ({index, key}) => Promise.resolve({ok: true, key, doc: { hello: 'world'}}),
     updateDoc: ({index, key, doc}) => Promise.resolve({ok: true}),
     removeDoc: ({index, key}) => Promise.resolve({ok: true}),
+    bulk: ({index, docs}) => Promise.resolve({ok: true, results: []}),
     query: ({index, q}) => Promise.resolve({ok: true, matches: []})
   })
   Promise.all([
@@ -19,7 +20,8 @@ test('port search ok', t => {
     search.getDoc({ index: 'foo', key: 'bar'}),
     search.updateDoc({ index: 'foo', key: 'bar', doc: { beep: 'boop'}}),
     search.removeDoc({ index: 'foo', key: 'bar'}),
-    search.query({ index: 'foo', q: {}})
+    search.bulk({index: 'foo', docs: []}),
+    search.query({ index: 'foo', q: { query: 'foo'}})
 
   ]).then(results => {
     t.ok(true)

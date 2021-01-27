@@ -1,0 +1,22 @@
+name: test search port
+on:
+  push:
+    branches-ignore: main
+    paths:
+      - "packages/port-search/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd packages/port-search && yarn
+      - run: cd packages/port-search && yarn test
+        env:
+          CI: true
