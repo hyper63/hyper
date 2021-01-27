@@ -59,10 +59,31 @@ module.exports = function (adapter, env) {
         ok: z.boolean(),
         msg: z.string().optional()
       }))),
+
+    bulk: z.function()
+      .args(z.object({
+        index: z.string(),
+        docs: z.array(
+          z.any()
+        )
+      }))
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean(),
+            results: z.array(z.any())
+          })
+        )
+      )
+    ,
     query: z.function()
       .args(z.object({
         index: z.string(),
-        q: z.any()
+        q: z.object({
+          query: z.string(),
+          fields: z.array(z.string()).optional(),
+          filter: z.any().optional()
+        })
       }))
       .returns(z.promise(z.object({
         ok: z.boolean(),

@@ -1601,11 +1601,18 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        description: query body
+        content:
+          application/json:
+            schema:
+              items:
+                type: object
       responses:
         201:
           description: success
   /search/{name}/_query:
-    get:
+    post:
       description: >
         # Query an index
 
@@ -1619,9 +1626,7 @@ paths:
         ```
 
         {
-          "query": {
-            "match_all": {}
-          }
+          "query": "your query"
         }
 
         ```
@@ -1631,11 +1636,8 @@ paths:
         ```
 
         {
-          "query": {
-            "match": {
-              "title": "foo"
-            }
-          }
+          "query": "foo",
+          "fields": ["title"]
         }
 
         ```
@@ -1645,29 +1647,10 @@ paths:
         ```
 
         {
-          "query": {
-            "filter": {
-              "term": {
-                "status": "active"
-              } 
-            }
-          }
+          "query": "foo",
+          "filter": {"term": "beep" }
         }
 
-        ```
-
-        Use filter to return docs that have a status of active
-
-        ---
-
-        ## Using MiniSearch Adapter
-
-        > If you are using the MiniSearch adapter you don't get all the search options
-
-        ```
-        {
-          "query": "[enter search string here]"
-        }
         ```
 
       tags: [search]
@@ -1677,6 +1660,20 @@ paths:
           name: name
           schema:
             type: string
+      requestBody:
+        description: search criteria
+        content:
+          application/json:
+            schema:
+              properties:
+                query:
+                  type: string
+                fields:
+                  type: array
+                  items:
+                    type: string
+                filter:
+                  type: object
       responses:
         200:
           description: success
