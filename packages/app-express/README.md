@@ -7,3 +7,5 @@ This is a REST App that implements the hyper63 API of services
 - storage
 - search
 - hooks
+
+TODO: Need to add tests!!
