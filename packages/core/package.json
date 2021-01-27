@@ -7,7 +7,7 @@
   "repository": "https://github.com/hyper63/hyper63",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "license": "Apache-2.0",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "main.js",
   "dependencies": {
     "@hyper63/port-cache": "^1.0.0",

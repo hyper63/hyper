@@ -25,6 +25,11 @@ module.exports = ({ search, events }) => ({
     .chain(apply("removeDoc"))
     .chain(triggerEvent('SEARCH:DELETE'))
     .runWith({ svc: search, events }),
+
+  bulk: (index, docs) => of({index, docs})
+    .chain(apply("bulk"))
+    .chain(triggerEvent('SEARCH:BULK'))
+    .runWith({ svc: search, events }),
   query: (index, q={}) => of({index, q})
     .chain(apply("query"))
     .chain(triggerEvent('SEARCH:QUERY'))
