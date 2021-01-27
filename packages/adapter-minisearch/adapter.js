@@ -1,4 +1,5 @@
 const MiniSearch = require('minisearch')
+const { allPass, keys, reduce } = require('ramda')
 // types
 
 
@@ -134,15 +135,43 @@ module.exports = function () {
   }
 
   /**
+   * @param {BulkIndex}
+   * @returns {Promise<ResponseWitResults>}
+   */
+  function bulk({index, docs}) {
+    if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
+    if (!docs) { return Promise.reject({ok: false, msg: 'docs is required!'})}
+    
+    const search = indexes.get(index)
+    search.addAll(docs)
+    return Promise.resolve({ok: true, results: []})
+  }
+
+  function createFilterFn(object) {
+    return allPass(reduce(
+      (acc, k) => {
+        return acc.concat(result => result[k] === object[k])
+      },
+      [],
+      keys(object)
+    ))
+  }
+  /**
    * 
    * @param {SearchQuery}
    * @returns {Promise<Array>}  
    */
-  function search({index, query, options={}}) {
+  function query({index, q: {query, fields, filter}}) {
     if (!index) { return Promise.reject({ok: false, msg: 'index name is required!'})}
     if (!query) { return Promise.reject({ok: false, msg: 'query is required!'})}
     
     const search = indexes.get(index)
+    let options = {}
+    // if fields
+    options = fields ? {...options, fields } : options
+    if (filter) {
+      options = {...options, filter: createFilterFn(filter)}
+    }
     const results = search.search(query, options)
     return Promise.resolve({ ok: true, matches: results})
   }
@@ -156,12 +185,7 @@ module.exports = function () {
     getDoc,
     updateDoc,
     removeDoc,
-    query: ({index, q}) => 
-      search({
-        index,
-        query: q.query,
-        options: q.options
-      })
-    
+    bulk, 
+    query
   })
 }
