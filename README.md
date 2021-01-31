@@ -1,14 +1,32 @@
-# hyper63
+<p align="center">
+  <a href="https://www.hyper63.com">
+    <img alt="Hyper63" src="hyper63-logo.png" width="60" />
+  </a>
+</p>
 
-![hyper63 logo](hyper63-logo.png)
+<h1 align="center">
+  Hyper63
+</h1>
 
-A service-framework that reduces redundant implementation code while maintaining full observabiliity for strong continuous delivery pipelines. hyper63 provides api abstractions to some of the core application building blocks. Using the ports and adapters architecture, hyper63's approach empowers you to use the service for each port you prefer.
+<p align="center">
+  A service-framework that reduces redundant implementation code while maintaining full observabiliity for strong continuous delivery pipelines. hyper63 provides api abstractions to some of the core application building blocks. Using the ports and adapters architecture, hyper63's approach empowers you to use the service for each port you prefer.
+</p>
 
-Current Status: Development Phase
+<p align="center">
+  <a href="https://api-docs.hyper63.com">Docs</a>
+  <span> · </span>
+  <a href="https://github.com/hyper63/hyper63/discussions">Discussions</a>
+  <span> · </span>
+  <a href="https://github.com/hyper63/hyper63/issues">Issues</a>
+  <span> · </span>
+  <a href="https://docs.hyper63.com/changelog">Changelog</a>
+</p>
 
-## OpenAPI Specification
-
-[API Docs](https://api-docs.hyper63.com)
+## Status
+- [x] Development
+- [ ] Alpha
+- [ ] Beta
+- [ ] v1.0
 
 ## Local Usage
 
