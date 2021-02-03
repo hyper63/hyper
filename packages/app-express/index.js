@@ -41,9 +41,9 @@ module.exports = function (services) {
   app.put("/data/:db", bindCore, data.createDb);
   app.delete("/data/:db", bindCore, data.removeDb);
   app.get("/data/:db", bindCore, data.listDocuments);
-  app.post("/data/:db", express.json(), bindCore, data.createDocument);
+  app.post("/data/:db", express.json({limit: '8mb'}), bindCore, data.createDocument);
   app.get("/data/:db/:id", bindCore, data.getDocument);
-  app.put("/data/:db/:id", express.json(), bindCore, data.updateDocument);
+  app.put("/data/:db/:id", express.json({limit: '8mb'}), bindCore, data.updateDocument);
   app.delete("/data/:db/:id", bindCore, data.deleteDocument);
   app.post("/data/:db/_query", express.json(), bindCore, data.queryDb);
   app.post("/data/:db/_index", express.json(), bindCore, data.indexDb);
