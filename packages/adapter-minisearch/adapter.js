@@ -172,6 +172,7 @@ module.exports = function () {
     if (filter) {
       options = {...options, filter: createFilterFn(filter)}
     }
+
     const results = search.search(query, options)
     return Promise.resolve({ ok: true, matches: results})
   }
