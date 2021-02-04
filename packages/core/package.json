@@ -10,6 +10,7 @@
   "version": "1.2.2",
   "main": "main.js",
   "dependencies": {
+    "@hyper63/core": "^1.2.2",
     "@hyper63/port-cache": "^1.0.0",
     "@hyper63/port-data": "1.0.8",
     "@hyper63/port-search": "^1.0.1",
