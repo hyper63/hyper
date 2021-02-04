@@ -27,7 +27,7 @@ module.exports = function (adapter) {
     .args(z.object({
       store: z.string(),
       key: z.string(),
-      value: z.object(),
+      value: z.any(),
       ttl: z.string().optional()
     }))
     .returns(
