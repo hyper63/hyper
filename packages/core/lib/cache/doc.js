@@ -1,11 +1,13 @@
 const ms = require('ms')
-const { lensProp, over } = require('ramda')
+const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = require('ramda')
 const { is, of, apply, triggerEvent } = require('../utils')
 const { hasProp } = require('crocks/predicates')
 
 const INVALID_KEY = "key is not valid";
 const INVALID_RESULT = "result is not valid";
-const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? ms(ttl) : null));
+const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? String(ms(ttl)) : null));
+const removeTTL = ifElse(compose(isNil, prop('ttl')), omit(['ttl']), identity)
+
 
 /**
  * @param {string} store
@@ -17,6 +19,7 @@ const convertTTL = over(lensProp("ttl"), (ttl) => (ttl ? ms(ttl) : null));
 const create = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
+    .map(removeTTL)
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("createDoc"))
     .chain(triggerEvent('CACHE:CREATE'))
