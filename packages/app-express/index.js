@@ -35,7 +35,6 @@ module.exports = function (services) {
   
   app.use(helmet());
   app.use(cors({ credentials: true }));
-  
   // data api
   app.get("/data", data.index);
   app.put("/data/:db", bindCore, data.createDb);
@@ -77,6 +76,12 @@ module.exports = function (services) {
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
   app.post('/search/:index/_query', express.json(), bindCore, search.query)
   app.post('/search/:index/_bulk', express.json(), bindCore, search.bulk)
+
+  app.get('/error', (req, res, next) => {
+    throw new Error('Error Generated from an endpoint')
+
+    //next(Error('Send Error!'))
+  })
   
   app.get("/", (req, res) => {
   
@@ -92,7 +97,22 @@ module.exports = function (services) {
           .filter(k => services[k] !== null ? true : false) 
     })
   })
-  app.listen(port)
-  console.log('hyper63 service listening on port ', port)
+  
+  app.use((err, req, res, next) => {
+    if (err) {
+      console.log(JSON.stringify({
+        type: 'ERROR',
+        date: new Date().toISOString(),
+        payload: err.message
+      }))
+      res.status(500).json({ok: false, msg: err.message})
+    }
+  })
+
+  if(!module.parent) {
+    app.listen(port)
+    console.log('hyper63 service listening on port ', port)
+  }
+
   return app
 }

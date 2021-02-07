@@ -1,0 +1,22 @@
+name: test app-express
+on:
+  push:
+    branches-ignore: main
+    paths:
+      - "packages/app-express/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd packages/app-express && yarn
+      - run: cd packages/app-express && yarn test
+        env:
+          CI: true

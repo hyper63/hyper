@@ -297,7 +297,7 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@twilson63/test-server@^1.0.1":
+"@twilson63/test-server@^1.0.1", "@twilson63/test-server@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@twilson63/test-server/-/test-server-1.0.2.tgz#5c849e022562525043bbe264f70d27839075a24e"
   integrity sha512-fhtmv77eVN7hbEUAcBfvkPXeUTSoQRPFtLSEpWrxYCPz5B4Bn3BI5rafeuQ5aZcqaV9CCNjF7Flq5fLnch/UqQ==
@@ -3856,7 +3856,7 @@ table@^6.0.4:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
-tape@^5.0.1:
+tape@^5.0.1, tape@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/tape/-/tape-5.1.1.tgz#51e6fc7af0c15cf39faa6aac3d0a1d2ca6fd4744"
   integrity sha512-ujhT+ZJPqSGY9Le02mIGBnyWo7Ks05FEGS9PnlqECr3sM3KyV4CSCXAvSBJKMN+t+aZYLKEFUEo0l4wFJMhppQ==

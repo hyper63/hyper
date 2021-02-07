@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/app-express",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
@@ -11,5 +11,13 @@
     "multer": "^1.4.2"
   },
   "repository": "https://github.com/hyper63/hyper63",
-  "homepage": "https://github.com/hyper63/hyper63#readme"
+  "homepage": "https://github.com/hyper63/hyper63#readme",
+  "devDependencies": {
+    "@twilson63/test-server": "^1.0.2",
+    "node-fetch": "^2.6.1",
+    "tape": "^5.1.1"
+  },
+  "scripts": {
+    "test": "tape test/*_test.js"
+  }
 }
