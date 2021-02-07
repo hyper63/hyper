@@ -10,7 +10,7 @@
 
 <p align="center">
   A service framework making development productive and fun.
-  For more information see [Why hyper63](https://youtu.be/i-QLw7VCCMw)
+  For more information see <a href="https://youtu.be/i-QLw7VCCMw">Why hyper63</a>
 </p>
 
 <p align="center">
