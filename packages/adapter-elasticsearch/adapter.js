@@ -1,104 +1,224 @@
-const { Async } = require('crocks')
-const { pluck } = require('ramda')
+
+const { pluck, reduce, always } = require('ramda')
+
+/**
+  * @typedef {Object} Mappings
+  * @property {Array<string>} fields - fields to be used to search
+  * @property {Array<string>} [storeFields] - fields to be return as result
+  * 
+  * 
+  * @typedef {Object} IndexInfo
+  * @property {string} index - index name
+  * @property {Mappings} mappings - index setup
+  * 
+  * @typedef {Object} BulkSearchDoc
+  * @property {boolean} ok
+  * @property {string} [msg]
+  * @property {Array<any>} results
+  * 
+  * @typedef {Object} SearchDoc
+  * @property {string} index
+  * @property {string} key
+  * @property {Object} doc
+  *
+  * @typedef {Object} SearchInfo
+  * @property {string} index
+  * @property {string} key
+  * 
+  * @typedef {Object} SearchOptions
+  * @property {Array<string>} fields
+  * @property {Object} boost
+  * @property {boolean} prefix
+  * 
+  * @typedef {Object} SearchQuery
+  * @property {string} index
+  * @property {string} query
+  * @property {SearchOptions} [options]
+  * 
+  * @typedef {Object} Response
+  * @property {boolean} ok
+  * @property {string} [msg]
+  * 
+  * @typedef {Object} ResponseWithResults
+  * @property {boolean} ok
+  * @property {string} [msg]
+  * @property {Array<any>} results
+  * 
+  * @typedef {Object} ResponseWithMatches
+  * @property {boolean} ok
+  * @property {string} [msg]
+  * @property {Array<any>} matches
+ */
+
+/**
+ * Map hyper63 mappings shape to an Elasticsearch shape
+ *
+ * @param {Array<string>} fieldsToIndex
+ * @param {Array<string>} fieldsToStore
+ */
+function createMappingProperties (fieldsToIndex, fieldsToStore) {
+  return reduce(
+    (acc, storeField) => ({
+      ...acc,
+      // TODO: support nested fields with dot notation?
+      [storeField]: { 
+        index: fieldsToIndex.includes(storeField)
+      }
+    }),
+    {},
+    fieldsToStore
+  )
+}
 
 module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
+
   /**
-   * @typedef {Object} CreateIndexObject
-   * @property {string} index
-   * @property {Object} mappings
-   * 
-   * @param {CreateIndexObject} 
-   * @returns {Promise<Object>}
+   * @param {IndexInfo} 
+   * @returns {Promise<Response>}
    */
-  const createIndex = ({ index, mappings}) => {
+  function createIndex ({ index, mappings }) {
+    // default storeFields to the fields used for full text search
+    if (!mappings.storeFields || !mappings.storeFields.length) {
+      mappings.storeFields = mappings.fields
+    }
+
     return asyncFetch(
       `${config.origin}/${index}`, {
         headers,
         method: 'PUT',
-        body: JSON.stringify(mappings)
+        // See https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#create-mapping
+        body: JSON.stringify({
+          dynamic: true,
+          mappings: {
+            properties: createMappingProperties(mappings.fields, mappings.storeFields)
+          }
+        })
       }
     )
-     .chain(response => response.status < 400 
-        ? Async.fromPromise(response.json.bind(response))()
-        : Async.Rejected({ok: false })
-     ) 
-     .map(r => ({ok: true}))
-     //.chain(handleResponse(201))
-     .toPromise()
+      .chain(
+        handleResponse(res => res.status < 400)
+      )
+      .bimap(
+        always({ ok: false }),
+        always({ ok: true })
+      )
+      .toPromise()
   }
 
   /**
    * @param {string} index
-   * @returns {Promise<Object>}
+   * @returns {Promise<Response>}
    */
-  const deleteIndex = (index) => asyncFetch(`${config.origin}/${index}`, {
-    method: 'DELETE',
-    headers
-  }).chain(handleResponse(200))
-    .toPromise()
-
-  /**
-   * @typedef {Object} IndexDocument
-   * @property {string} index
-   * @property {string} key
-   * @property {object} doc
-   * 
-   * @param {IndexDocument}
-   * @returns {Promise<Object>}
-   */
-  const indexDoc = ({index, key, doc}) => asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-    method: 'PUT',
-    headers,
-    body: JSON.stringify(doc)
-  })
-    .chain(result => {
-      if (result.status < 400) {
-        return Async.fromPromise(result.json.bind(result))(result)
-      } 
-      return Async.Rejected({ok: false})
+  function deleteIndex (index) {
+    return asyncFetch(`${config.origin}/${index}`, {
+      method: 'DELETE',
+      headers
     })
-    .map(r => ({ok: true}))
-    .toPromise()
-
+      .chain(
+        handleResponse(res => res.status === 200)
+      )
+      .bimap(
+        always({ ok: false }),
+        always({ ok: true })
+      )
+      .toPromise()
+  }
 
   /**
-   * @typedef {Object} DocumentInfo
-   * @property {string} index
-   * @property {string} key
+   * @param {SearchDoc}
+   * @returns {Promise<Response>}
+   */
+  function indexDoc ({ index, key, doc }) {
+    return asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(doc)
+    })
+      .chain(
+        handleResponse(res => res.status < 400)
+      )
+      .bimap(
+        always({ ok: false }),
+        always({ ok: true })
+      )
+      .toPromise()
+  }
+
+  /**
+   * @param {SearchInfo}
+   * @returns {Promise<Response>}
+   */
+  function getDoc ({ index, key }) {
+    return asyncFetch(`${config.origin}/${index}/_doc/${key}/_source`, {
+      method: 'GET',
+      headers
+    })
+      .chain(
+        handleResponse(res => res.status === 200)
+      )
+      .bimap(
+        always({ ok: false }),
+        res => ({ ok: true, doc: res })
+      )
+      .toPromise()
+  }
+
+  /**
+   * @param {SearchDoc}
+   * @returns {Promise<Response>}
+   */
+  function updateDoc ({ index, key, doc }) {
+    asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(doc)
+    })
+      .chain(
+        handleResponse(res => res.status === 200)
+      )
+      .bimap(
+        always({ ok: false }),
+        always({ ok: true })
+      )
+      .toPromise()
+  }
+
+  /**
+   * @param {SearchInfo}
+   * @returns {Promise<Response>}
+   */
+  function removeDoc () {
+    asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
+      method: 'DELETE',
+      headers
+    })
+      .chain(
+        handleResponse(res => res.status === 200)
+      )
+      .bimap(
+        always({ ok: false }),
+        always({ ok: true })
+      )
+      .toPromise()
+  }
+
+  /**
+   * @param {BulkIndex}
+   * @returns {Promise<ResponseWithResults>}
+   *
+   */
+  function bulk ({ index, docs }) {
+
+  }
+
+  /**
    * 
-   * @param {DocumentInfo}
-   * @returns {Promise<Object>}
+   * @param {SearchQuery}
+   * @returns {Promise<ResponseWithMatches>}  
    */
-  const getDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}/_source`, {
-    headers
-  }).chain(handleResponse(200))
-    .map(result => { console.log(result); return result })
-    .map(result => ({ok: true, key, doc: result}))
-    .toPromise()
+  function query_ ({ index, q: { query, fields, filter } }) {
 
-
-  /**
-   * @param {IndexDocument}
-   * @returns {Promise<Object>} 
-   */
-  const updateDoc = ({index, key, doc}) => asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-    method: 'PUT',
-    headers,
-    body: JSON.stringify(doc)
-  }).chain(handleResponse(200))
-    .map(r => ({ok: true}))
-    .toPromise()
-
-  /**
-   * @param {DocumentInfo}
-   * @returns {Promise<Object>}
-   */
-  const removeDoc = ({index, key}) => asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-    method: 'DELETE',
-    headers
-  }).chain(handleResponse(200))
-    .map(r => ({ok: true}))
-    .toPromise()
+  }
    
   /**
    * @typedef {Object} DocumentQuery
