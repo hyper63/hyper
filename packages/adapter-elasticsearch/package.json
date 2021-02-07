@@ -1,9 +1,9 @@
 {
   "name": "@hyper63/adapter-elasticsearch",
+  "version": "0.0.1",
   "dependencies": {
     "@vercel/fetch-retry": "^5.0.3",
     "crocks": "^0.12.4",
-    "esm": "^3.2.25",
     "node-fetch": "^2.6.1",
     "ramda": "^0.27.1"
   },

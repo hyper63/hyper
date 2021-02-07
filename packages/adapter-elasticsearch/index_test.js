@@ -1,6 +1,8 @@
-import { default as test } from 'tape'
-import {default as searchAdapter} from './index'
-import schema from '../../utils/plugin-schema'
+const test = require('tape')
+const searchAdapter = require('./index')
+
+// TODO: fix this broken require
+const schema = require('../../utils/plugin-schema')
 
 test('validate adapter', t => {
   t.plan(1)
@@ -11,5 +13,4 @@ test('validate adapter', t => {
     console.log(e)
     t.ok(false)
   }
-  
 })

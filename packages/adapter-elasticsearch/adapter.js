@@ -1,7 +1,7 @@
-import { Async } from 'crocks'
-import { pluck } from 'ramda'
+const { Async } = require('crocks')
+const { pluck } = require('ramda')
 
-export default function ({config, asyncFetch, headers, handleResponse}) {
+module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
   /**
    * @typedef {Object} CreateIndexObject
    * @property {string} index

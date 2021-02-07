@@ -1,8 +1,9 @@
-import { default as test } from 'tape'
-import { Async } from 'crocks'
-import { default as createAdapter } from './adapter'
-import fetchMock from 'fetch-mock'
-import { createHeaders, handleResponse } from './async-fetch'
+const test = require('tape')
+const { Async } = require('crocks')
+const fetchMock = require('fetch-mock')
+
+const createAdapter = require('./adapter')
+const { createHeaders, handleResponse } = require('./async-fetch')
 
 const headers = createHeaders('admin', 'password')
 const ES = 'http://localhost:9200'
