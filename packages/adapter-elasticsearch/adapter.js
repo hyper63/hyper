@@ -1,5 +1,5 @@
 
-const { pluck, reduce, always } = require('ramda')
+const { pluck, reduce, always, pipe, map, join } = require('ramda')
 
 /**
   * @typedef {Object} Mappings
@@ -206,9 +206,32 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @param {BulkIndex}
    * @returns {Promise<ResponseWithResults>}
    *
+   * TODO: maybe we could just Promise.all a map to indexDoc()?
    */
   function bulk ({ index, docs }) {
-
+    return asyncFetch(`${config.origin}/_bulk`, {
+      method: 'POST',
+      headers,
+      // See https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html#docs-bulk-api-example
+      body: pipe(
+        reduce(
+          (arr, doc) =>
+            [...arr, { index: { _index: index, _id: doc.id } }, doc],
+          []
+        ),
+        map(JSON.stringify.bind(JSON)),
+        join('\n'),
+        JSON.stringify.bind(JSON)
+      )(docs)
+    })
+      .chain(
+        handleResponse(res => res.status < 400)
+      )
+      .bimap(
+        always({ ok: false }),
+        res => ({ ok: true, results: res })
+      )
+      .toPromise()
   }
 
   /**
@@ -254,6 +277,7 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
     getDoc,
     updateDoc,
     removeDoc,
+    bulk, 
     query
   })
 }
