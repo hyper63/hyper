@@ -78,7 +78,7 @@ module.exports = function (services) {
   app.post('/search/:index/_bulk', express.json(), bindCore, search.bulk)
 
   app.get('/error', (req, res, next) => {
-    throw new Error('Error Generated from an endpoint')
+    throw new Error('Error occuried')
 
     //next(Error('Send Error!'))
   })
