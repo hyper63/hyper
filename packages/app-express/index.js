@@ -46,6 +46,7 @@ module.exports = function (services) {
   app.delete("/data/:db/:id", bindCore, data.deleteDocument);
   app.post("/data/:db/_query", express.json(), bindCore, data.queryDb);
   app.post("/data/:db/_index", express.json(), bindCore, data.indexDb);
+  app.post("/data/:db/_bulk", express.json(), bindCore, data.bulk)
 
   // cache api
   app.get("/cache", cache.index);
