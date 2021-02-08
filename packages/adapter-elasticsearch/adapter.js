@@ -216,28 +216,36 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @param {SearchQuery}
    * @returns {Promise<ResponseWithMatches>}  
    */
-  function query_ ({ index, q: { query, fields, filter } }) {
-
-  }
-   
-  /**
-   * @typedef {Object} DocumentQuery
-   * @property {string} index
-   * @property {object} q
-   * 
-   * @param {DocumentQuery}
-   * @returns {Promise<Object>}
-   */
-  const query = ({index, q}) => asyncFetch(`${config.origin}/${index}/_search`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(q)
-  }).chain(handleResponse(200))
-    .map(r => {
-      return r
+  function query ({ index, q: { query, fields, filter } }) {
+    return asyncFetch(`${config.origin}/${index}/_search`, {
+      method: 'POST',
+      headers,
+      // anything undefined will not be stringified, so this shorthand works
+      body: JSON.stringify({
+        query: {
+          bool: {
+            must: {
+              multi_match: {
+                query,
+                fields
+              }
+            },
+            filter
+          }
+        }
+      })
     })
-    .map(r => ({ok: true, matches: pluck('_source', r.hits.hits)}))
-  .toPromise()
+      .chain(handleResponse(200))
+      .bimap(
+        // TODO: what should message be for a failed query?
+        r => ({ ok: false, msg: JSON.stringify(r) }),
+        r => ({
+          ok: true,
+          matches: pluck('_source', r.hits.hits)
+        })
+      )
+      .toPromise()
+  }
   
   return Object.freeze({
     createIndex,
