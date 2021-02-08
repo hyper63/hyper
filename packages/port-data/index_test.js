@@ -11,7 +11,8 @@ test('data port tests', async t => {
     removeDocument: ({db, id}) => Promise.resolve({ok: true, id}),
     listDocuments: ({db, limit, startkey, endkey, keys, descending}) => Promise.resolve({ok: true, docs: []}),
     queryDocuments: ({db, query}) => Promise.resolve({ok: true, docs: []}),
-    indexDocuments: ({db, name, fields}) => Promise.resolve({ok: true})
+    indexDocuments: ({db, name, fields}) => Promise.resolve({ok: true}),
+    bulkDocuments: ({db, docs}) => Promise.resolve({ ok: true, results: [{ok: true, id: '1'}]})
   })
 
   const results = await Promise.all([
@@ -27,7 +28,8 @@ test('data port tests', async t => {
         id: 'bar'
       }
     }}),
-    adapter.indexDocuments({db: 'foo', name: 'id', fields: ['id']})
+    adapter.indexDocuments({db: 'foo', name: 'id', fields: ['id']}),
+    adapter.bulkDocuments({db: 'foo', docs: [{id: '1', type: 'movie'}]})
   ])
     .then(_ => ({ok: true}))
     .catch(_ => {
