@@ -3,7 +3,7 @@
   "description": "data adapter for hyper63",
   "repository": "https://github.com/hyper63/hyper63",
   "homepage": "https://github.com/hyper63/hyper63/packages/adapter-pouchdb#readme",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
