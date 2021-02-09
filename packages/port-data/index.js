@@ -71,6 +71,18 @@ module.exports = function (adapter) {
       .returns(z.promise(z.object({
         ok: z.boolean(),
         msg: z.string().optional()
+      }))),
+    bulkDocuments: z.function()
+      .args(z.object({
+        db: z.string(),
+        docs: z.array(z.any())
+      }))
+      .returns(z.promise(z.object({
+        ok: z.boolean(), 
+        results: z.array(z.object({
+          ok: z.boolean(),
+          id: z.string()
+        }))
       })))
  })
  const instance = Port.parse(adapter)
@@ -84,6 +96,7 @@ module.exports = function (adapter) {
  instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
  instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)
  instance.indexDocuments = Port.shape.indexDocuments.validate(instance.indexDocuments) 
+ instance.bulkDocuments = Port.shape.bulkDocuments.validate(instance.bulkDocuments)
 
  return instance
 }

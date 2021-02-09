@@ -38,3 +38,7 @@ exports.queryDb = ({ data, params, body }, res) =>
 // POST /data/:db/_index
 exports.indexDb = ({data, params, body}, res) => 
   fork(res, 201, data.index(params.db, body.name, body.fields));
+
+// POST /data/:db/_bulk
+exports.bulk = ({data, params, body}, res) => 
+  fork(res, 201, data.bulk(params.db, body))
