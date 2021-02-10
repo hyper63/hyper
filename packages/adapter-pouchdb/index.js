@@ -29,11 +29,11 @@ const adapter = require('./adapter')
  * data section
  */
 
-module.exports = function memory(config) {
+module.exports = function pouchdb(config) {
   return ({
     id: 'pouchdb',
     port: 'data',
     load: merge(config),
-    link: ({dir}) => _ => adapter(dir)
+    link: ({ dir }) => _ => adapter(dir)
   })
 }
