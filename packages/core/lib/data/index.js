@@ -65,7 +65,9 @@ module.exports = ({ data, events }) => {
    * @returns {Async}
    */
   const listDocuments = (dbname, options) => db.list(dbname, options).runWith({ svc: data, events });
-  
+
+  const bulkDocuments = (dbname, docs) => db.bulk(dbname, docs).runWith({ svc: data, events });
+
   return Object.freeze({
     createDatabase,
     destroyDatabase,
@@ -75,6 +77,7 @@ module.exports = ({ data, events }) => {
     removeDocument,
     query,
     index,
-    listDocuments
+    listDocuments,
+    bulkDocuments
   });
 };
