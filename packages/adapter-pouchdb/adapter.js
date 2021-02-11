@@ -7,7 +7,8 @@ const fs = require('fs')
 const { Async } = require('crocks')
 const { bichain } = require('crocks/pointfree')
 const allow409 = require('./handle409')
-const { assoc, compose, filter, identity, lens, map, merge, omit, over, pick, pluck, prop, propEq } = require('ramda')
+const R = require('ramda')
+const { assoc, compose, find, filter, identity, has, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R 
 
 const makedir = Async.fromPromise(mkdirp)
 //const rmdir = Async.fromNode(fs.rmdir)
@@ -280,6 +281,40 @@ module.exports = function (root) {
    * @property {Array<Object>} docs
    * 
    */
+  let lensId = lens(prop('id'), assoc('_id'))
+  let lensRev = lens(R.path(['value','rev']), assoc('rev'))
+  const xRevs = map(
+    compose(
+      omit(['key', 'value']),
+      over(lensRev, identity)
+    )
+  )
+
+  const switchIds = map(
+    compose(
+      omit(['id']),
+      over(lensId, identity)
+    )
+  )
+
+  const pluckIds = pluck('id')
+  const getDocsThatExist = pouch => ids => 
+     Async.fromPromise(pouch.allDocs.bind(pouch))({
+       keys: ids
+     })
+      .map(prop('rows'))
+      .map(filter(has('value')))
+      .map(xRevs)
+
+  const mergeWithRevs = docs => revs => 
+    map(doc => {
+      const rev = find(rev => doc.id === rev.id, revs)
+      return rev ? { _rev: rev.rev, ...doc } : doc
+    }, docs)
+
+  const applyBulkDocs = pouch => 
+    Async.fromPromise(pouch.bulkDocs.bind(pouch))
+
   /**
    * @param {BulkInput} 
    * @returns {Promise<object>}
@@ -288,23 +323,18 @@ module.exports = function (root) {
 
   function bulkDocuments({ db, docs }) {
     let pouch = databases.get(db)
-    let lensId = lens(prop('id'), assoc('_id'))
-    // find all documents that exist
-    // update those with a rev
-    // ignore docs that don't exist
-    docs = map(
-      compose(
-        omit(['id']),
-        over(lensId, identity)
-      )
-      , docs)
-    return pouch.bulkDocs(docs)
-      .then(docResults => {
-        return {
-          ok: true,
-          results: map(omit(['rev']), docResults)
-        }
-      })
+
+    return Async.of(docs)
+      // validate that the docs have an id
+      // maybe reject if they don't?
+      .map(pluckIds)
+      .chain(getDocsThatExist(pouch))
+      .map(mergeWithRevs(docs))
+      .map(switchIds)
+      .chain(applyBulkDocs(pouch))
+      .map(map(omit(['rev'])))
+      .map(docResults => ({ ok: true, results: docResults}))
+      .toPromise()
   }
 
   return Object.freeze({

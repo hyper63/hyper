@@ -8,14 +8,37 @@ test('pouchdb add bulk docs', async t => {
   const adapter = createAdapter('/tmp')
   const dbName = v4()
   await adapter.createDatabase(dbName)
+  await adapter.createDocument({
+    db: dbName, 
+    id: '2', 
+    doc: { hello: 'world'}
+  })
+
+  await adapter.createDocument({
+    db: dbName, 
+    id: '3', 
+    doc: { hello: 'world'}
+  })
+
   const result = await adapter.bulkDocuments({
     db: dbName,
-    docs: [{ id: '1' }, { id: '2' }]
+    docs: [
+      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '2', type: 'movie', title: 'Groundhog Day' },
+      { id: '3', _deleted: true }
+    ]
   })
-  console.log(result)
-  t.ok(true)
+  t.ok(result.ok)
+  t.equal(result.results.length, 3)
+
+  await adapter.removeDocument({
+    db: dbName,
+    id: '2'
+  })
+
   t.end()
 })
+
 test('pouchdb create same db', async t => {
   const adapter = createAdapter('/tmp')
   const dbName = v4()
