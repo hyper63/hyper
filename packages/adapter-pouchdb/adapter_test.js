@@ -4,6 +4,59 @@ const { v4 } = require('uuid')
 const faker = require('faker')
 const { times } = require('ramda')
 
+test('pouchdb add bulk docs non objects', async t => {
+  const adapter = createAdapter('/tmp')
+  const dbName = v4()
+  await adapter.createDatabase(dbName)
+  
+  const result = await adapter.bulkDocuments({
+    db: dbName,
+    docs: [1,2,3]
+  }).catch(e => e)
+  t.notOk(result.ok)
+  t.equal(result.msg, 'documents must be objects')
+  const r = await adapter.listDocuments({db: dbName})
+  console.log(r)
+  t.end()
+})
+
+
+test('pouchdb add bulk docs db not found', async t => {
+  const adapter = createAdapter('/tmp')
+  const dbName = v4()
+  const result = await adapter.bulkDocuments({
+    db: 'foo',
+    docs: [
+      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '2', type: 'movie', title: 'Groundhog Day' },
+      { id: '3', _deleted: true }
+    ]
+  }).catch(e => e)
+  t.notOk(result.ok)
+
+  t.equal(result.msg, 'db not found')
+
+  t.end()
+})
+test('pouchdb add bulk docs no db', async t => {
+  const adapter = createAdapter('/tmp')
+  const dbName = v4()
+  const result = await adapter.bulkDocuments({
+    db: null,
+    docs: [
+      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '2', type: 'movie', title: 'Groundhog Day' },
+      { id: '3', _deleted: true }
+    ]
+  }).catch(e => e)
+  t.notOk(result.ok)
+
+  t.equal(result.msg, 'db not defined')
+
+  t.end()
+})
+
+
 test('pouchdb add bulk docs', async t => {
   const adapter = createAdapter('/tmp')
   const dbName = v4()
