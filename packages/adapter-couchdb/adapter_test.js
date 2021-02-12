@@ -1,25 +1,16 @@
 const test = require('tape')
 const { Async } = require('crocks')
-const createAdapter = require('./adapter')
+
 const fetchMock = require('fetch-mock')
 const { createHeaders, handleResponse } = require('./async_fetch')
 
 const headers = createHeaders('admin', 'password')
 const COUCH = 'http://localhost:5984'
 
-const fetch = fetchMock.sandbox()
-  .put(`${COUCH}/hello`, 
-    { 
-      status: 201,
-      body: { ok: true },
-      headers
-    }
-  )
-  .put(`${COUCH}/hello/_security`, {
-    status: 200,
-    body: {ok: true},
-    headers
-  })
+globalThis.fetch = fetchMock.sandbox()
+  .get(`${COUCH}/hello`, { status: 200, body: { db_name: 'hello' }})
+  .put(`${COUCH}/hello`, { status: 201, body: { ok: true }, headers })
+  .put(`${COUCH}/hello/_security`, { status: 200, body: {ok: true}, headers })
   .delete(`${COUCH}/hello`, {
     status: 200,
     body: { ok: true },
@@ -67,7 +58,35 @@ const fetch = fetchMock.sandbox()
       }]
     }
   })
+  .get(`${COUCH}/hello/_all_docs?keys=1,2`, {
+    status: 200,
+    body: {
+      ok: true,
+      rows:[{
+        key: '1',
+        id: '1', 
+        value: { rev: '1' },
+      },{
+        key: '2',
+        id: '2',
+        value: { rev: '1' }
+      }]
+    }
+  })
+  .post(`${COUCH}/hello/_bulk_docs`, {
+    status: 200,
+    body: [{
+      ok: true,
+      id: '1',
+      rev: '1'
+    },{
+      ok: true,
+      id: '2',
+      rev: '2'
+    }]
+  })
 
+const createAdapter = require('./adapter')
 const adapter = createAdapter({
   config: { origin: COUCH },
   asyncFetch: Async.fromPromise(fetch),
@@ -75,6 +94,16 @@ const adapter = createAdapter({
   handleResponse
 })
 
+test('bulk documents', async t => {
+  const result = await adapter.bulkDocuments({
+    db:'hello',
+    docs: [{id: '1'},{id: '2'}]
+  })
+
+  t.ok(result.ok)
+  t.equal(result.results.length, 2)
+  t.end()
+})
 
 test('create database', async t => {
   const result = await adapter.createDatabase('hello')
