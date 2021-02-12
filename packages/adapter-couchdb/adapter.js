@@ -2,6 +2,7 @@ const { Async } = require('crocks')
 const { compose, omit, map, lens, prop, assoc, over, identity, merge,
   pluck } = require('ramda')
 const xId = lens(prop('_id'), assoc('id'))
+const bulk = require('./lib/bulk')
 
 module.exports = ({asyncFetch, config, handleResponse, headers }) => {
   const retrieveDocument = ({ db, id }) =>
@@ -159,6 +160,7 @@ module.exports = ({asyncFetch, config, handleResponse, headers }) => {
         )
       }))
       .toPromise()
-    }
+    },
+    bulkDocuments: bulk(config.origin, headers)
   })
 }
