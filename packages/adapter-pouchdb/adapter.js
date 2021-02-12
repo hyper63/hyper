@@ -9,6 +9,7 @@ const { bichain } = require('crocks/pointfree')
 const allow409 = require('./handle409')
 const R = require('ramda')
 const { assoc, compose, find, filter, identity, has, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R 
+const bulk = require('./lib/bulk')
 
 const makedir = Async.fromPromise(mkdirp)
 //const rmdir = Async.fromNode(fs.rmdir)
@@ -275,67 +276,6 @@ module.exports = function (root) {
       })
     })
   }
-  /**
-   * @typedef {Object} BulkInput
-   * @property {string} db
-   * @property {Array<Object>} docs
-   * 
-   */
-  let lensId = lens(prop('id'), assoc('_id'))
-  let lensRev = lens(R.path(['value','rev']), assoc('rev'))
-  const xRevs = map(
-    compose(
-      omit(['key', 'value']),
-      over(lensRev, identity)
-    )
-  )
-
-  const switchIds = map(
-    compose(
-      omit(['id']),
-      over(lensId, identity)
-    )
-  )
-
-  const pluckIds = pluck('id')
-  const getDocsThatExist = pouch => ids => 
-     Async.fromPromise(pouch.allDocs.bind(pouch))({
-       keys: ids
-     })
-      .map(prop('rows'))
-      .map(filter(has('value')))
-      .map(xRevs)
-
-  const mergeWithRevs = docs => revs => 
-    map(doc => {
-      const rev = find(rev => doc.id === rev.id, revs)
-      return rev ? { _rev: rev.rev, ...doc } : doc
-    }, docs)
-
-  const applyBulkDocs = pouch => 
-    Async.fromPromise(pouch.bulkDocs.bind(pouch))
-
-  /**
-   * @param {BulkInput} 
-   * @returns {Promise<object>}
-   */
-  // NEED to handle bulk PUTS which require revs
-
-  function bulkDocuments({ db, docs }) {
-    let pouch = databases.get(db)
-
-    return Async.of(docs)
-      // validate that the docs have an id
-      // maybe reject if they don't?
-      .map(pluckIds)
-      .chain(getDocsThatExist(pouch))
-      .map(mergeWithRevs(docs))
-      .map(switchIds)
-      .chain(applyBulkDocs(pouch))
-      .map(map(omit(['rev'])))
-      .map(docResults => ({ ok: true, results: docResults}))
-      .toPromise()
-  }
 
   return Object.freeze({
     createDatabase,
@@ -347,6 +287,6 @@ module.exports = function (root) {
     queryDocuments,
     indexDocuments,
     listDocuments,
-    bulkDocuments
+    bulkDocuments: bulk(databases)
   })
 }
