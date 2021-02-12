@@ -1,6 +1,9 @@
 {
   "name": "@hyper63/adapter-elasticsearch",
   "version": "0.0.1",
+  "scripts": {
+    "test": "tape *_test.js"
+  },
   "dependencies": {
     "@vercel/fetch-retry": "^5.0.3",
     "crocks": "^0.12.4",
