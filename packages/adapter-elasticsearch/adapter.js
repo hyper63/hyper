@@ -1,15 +1,14 @@
 
-const { pluck, reduce, always, pipe, map, join } = require('ramda')
+const { pluck, reduce, always, pipe, map, join, concat, flip } = require('ramda')
+const {
+  createIndexPath, deleteIndexPath, indexDocPath, getDocPath,
+  updateDocPath, removeDocPath, bulkPath, queryPath
+} = require('./paths')
 
 /**
-  * @typedef {Object} Mappings
-  * @property {Array<string>} fields - fields to be used to search
-  * @property {Array<string>} [storeFields] - fields to be return as result
-  * 
   * 
   * @typedef {Object} IndexInfo
   * @property {string} index - index name
-  * @property {Mappings} mappings - index setup
   * 
   * @typedef {Object} BulkSearchDoc
   * @property {boolean} ok
@@ -50,49 +49,31 @@ const { pluck, reduce, always, pipe, map, join } = require('ramda')
   * @property {Array<any>} matches
  */
 
-/**
- * Map hyper63 mappings shape to an Elasticsearch shape
- *
- * @param {Array<string>} fieldsToIndex
- * @param {Array<string>} fieldsToStore
- */
-function createMappingProperties (fieldsToIndex, fieldsToStore) {
-  return reduce(
-    (acc, storeField) => ({
-      ...acc,
-      // TODO: support nested fields with dot notation?
-      [storeField]: { 
-        index: fieldsToIndex.includes(storeField)
-      }
-    }),
-    {},
-    fieldsToStore
-  )
-}
-
+ /**
+  * TODO:
+  * - Sanitize inputs ie. index names
+  * - Map Port api to Elasticsearch api for creating an index
+  * - Enable monitoring ie. with bimap(tap(console.err), tap(console.log))
+  * - How to support different versions of Elasticsearch?
+  * - ? Should we expose Elasticsearch response in result as res?
+  */
 module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
 
   /**
    * @param {IndexInfo} 
    * @returns {Promise<Response>}
+   * 
+   * TODO: mappings object is not used, and instead all indexes
+   * created in Elasticsearch are dynamic. Don't see a great api for
+   * creating an Elasticsearch index emerging
+   * from the current api provided by the Search Port, so we will KISS for now
    */
-  function createIndex ({ index, mappings }) {
-    // default storeFields to the fields used for full text search
-    if (!mappings.storeFields || !mappings.storeFields.length) {
-      mappings.storeFields = mappings.fields
-    }
-
+  function createIndex ({ index }) {
     return asyncFetch(
-      `${config.origin}/${index}`, {
+      createIndexPath(config.origin, index),
+      {
         headers,
-        method: 'PUT',
-        // See https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#create-mapping
-        body: JSON.stringify({
-          dynamic: true,
-          mappings: {
-            properties: createMappingProperties(mappings.fields, mappings.storeFields)
-          }
-        })
+        method: 'PUT'
       }
     )
       .chain(
@@ -110,10 +91,13 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<Response>}
    */
   function deleteIndex (index) {
-    return asyncFetch(`${config.origin}/${index}`, {
-      method: 'DELETE',
-      headers
-    })
+    return asyncFetch(
+      deleteIndexPath(config.origin, index),
+      {
+        headers,
+        method: 'DELETE'
+      }
+    )
       .chain(
         handleResponse(res => res.status === 200)
       )
@@ -129,11 +113,14 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<Response>}
    */
   function indexDoc ({ index, key, doc }) {
-    return asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(doc)
-    })
+    return asyncFetch(
+      indexDocPath(config.origin, index, key),
+      {
+        headers,
+        method: 'PUT',
+        body: JSON.stringify(doc)
+      }
+    )
       .chain(
         handleResponse(res => res.status < 400)
       )
@@ -149,12 +136,15 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<Response>}
    */
   function getDoc ({ index, key }) {
-    return asyncFetch(`${config.origin}/${index}/_doc/${key}/_source`, {
-      method: 'GET',
-      headers
-    })
+    return asyncFetch(
+      getDocPath(config.origin, index, key),
+      {
+        headers,
+        method: 'GET'
+      }
+    )
       .chain(
-        handleResponse(res => res.status === 200)
+        handleResponse(res => res.status < 400)
       )
       .bimap(
         always({ ok: false }),
@@ -168,13 +158,16 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<Response>}
    */
   function updateDoc ({ index, key, doc }) {
-    asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(doc)
-    })
+    return asyncFetch(
+      updateDocPath(config.origin, index, key),
+      {
+        headers,
+        method: 'PUT',
+        body: JSON.stringify(doc)
+      }
+    )
       .chain(
-        handleResponse(res => res.status === 200)
+        handleResponse(res => res.status < 400)
       )
       .bimap(
         always({ ok: false }),
@@ -187,13 +180,16 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @param {SearchInfo}
    * @returns {Promise<Response>}
    */
-  function removeDoc () {
-    asyncFetch(`${config.origin}/${index}/_doc/${key}`, {
-      method: 'DELETE',
-      headers
-    })
+  function removeDoc ({ index, key }) {
+    return asyncFetch(
+      removeDocPath(config.origin, index, key),
+      {
+        headers,
+        method: 'DELETE'
+      }
+    )
       .chain(
-        handleResponse(res => res.status === 200)
+        handleResponse(res => res.status < 400)
       )
       .bimap(
         always({ ok: false }),
@@ -209,27 +205,32 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * TODO: maybe we could just Promise.all a map to indexDoc()?
    */
   function bulk ({ index, docs }) {
-    return asyncFetch(`${config.origin}/_bulk`, {
-      method: 'POST',
-      headers,
-      // See https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html#docs-bulk-api-example
-      body: pipe(
-        reduce(
-          (arr, doc) =>
-            [...arr, { index: { _index: index, _id: doc.id } }, doc],
-          []
-        ),
-        map(JSON.stringify.bind(JSON)),
-        join('\n'),
-        JSON.stringify.bind(JSON)
-      )(docs)
-    })
+    return asyncFetch(
+      bulkPath(config.origin),
+      {
+        headers,
+        method: 'POST',
+        // See https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html#docs-bulk-api-example
+        body: pipe(
+          reduce(
+            (arr, doc) =>
+              [...arr, { index: { _index: index, _id: doc.id } }, doc],
+            []
+          ),
+          // stringify each object in arr
+          map(JSON.stringify.bind(JSON)),
+          join('\n'),
+          // Bulk payload must end with a newline
+          flip(concat)('\n'),
+        )(docs)
+      }
+    )
       .chain(
         handleResponse(res => res.status < 400)
       )
       .bimap(
         always({ ok: false }),
-        res => ({ ok: true, results: res })
+        res => ({ ok: true, results: res.items })
       )
       .toPromise()
   }
@@ -240,31 +241,34 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<ResponseWithMatches>}  
    */
   function query ({ index, q: { query, fields, filter } }) {
-    return asyncFetch(`${config.origin}/${index}/_search`, {
-      method: 'POST',
-      headers,
-      // anything undefined will not be stringified, so this shorthand works
-      body: JSON.stringify({
-        query: {
-          bool: {
-            must: {
-              multi_match: {
-                query,
-                fields
-              }
-            },
-            filter
+    return asyncFetch(
+      queryPath(config.origin, index),
+      {
+        headers,
+        method: 'POST',
+        // anything undefined will not be stringified, so this shorthand works
+        body: JSON.stringify({
+          query: {
+            bool: {
+              must: {
+                multi_match: {
+                  query,
+                  fields
+                }
+              },
+              filter
+            }
           }
-        }
-      })
-    })
-      .chain(handleResponse(200))
+        })
+      }
+    )
+      .chain(handleResponse(res => res.status < 400))
       .bimap(
         // TODO: what should message be for a failed query?
-        r => ({ ok: false, msg: JSON.stringify(r) }),
-        r => ({
+        res => ({ ok: false, msg: JSON.stringify(res) }),
+        res => ({
           ok: true,
-          matches: pluck('_source', r.hits.hits)
+          matches: pluck('_source', res.hits.hits)
         })
       )
       .toPromise()
