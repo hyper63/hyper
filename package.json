@@ -14,6 +14,7 @@
     "packages/adapter-memory", 
     "packages/adapter-pouchdb",
     "packages/adapter-fs",
+    "packages/adapter-elasticsearch",
     "packages/adapter-minisearch",
     "packages/adapter-hooks",
     "packages/adapter-minio",
