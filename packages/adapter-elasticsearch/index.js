@@ -1,17 +1,20 @@
-import { merge } from 'ramda'
-import adapter from './adapter'
-import { asyncFetch, createHeaders, handleResponse} from './async-fetch'
+const { mergeDeepRight, defaultTo, pipe } = require('ramda')
+const adapter = require('./adapter')
+const { asyncFetch, createHeaders, handleResponse } = require('./async-fetch')
 
-export default function (config) {
+module.exports = function ElasticsearchAdapter (config) {
   return Object.freeze({
     id: 'elasticsearch',
     port: 'search',
-    load: merge(config),
+    load: pipe(
+      defaultTo({}),
+      mergeDeepRight(config)
+    ),
     link: env => _ => {
-      if (!env.url) { throw new Error('Config URL is required elastic search')}
-      const config = new URL(env.url)
+      if (!env.url) { throw new Error('Config URL is required elastic search') }
       const headers = createHeaders(config.username, config.password)
-      return adapter({config, asyncFetch, headers, handleResponse})
+      // TODO: probably shouldn't use origin, so to support mounting elasticsearch on path
+      return adapter({ config: new URL(env.url), asyncFetch, headers, handleResponse })
     }
   })
 }
