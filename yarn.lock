@@ -242,10 +242,10 @@
     node-fetch "^2.6.1"
     ramda "^0.27.1"
 
-"@hyper63/adapter-couchdb@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.7.tgz#e3388613c0c1e6d4c54361518233b401f147e33a"
-  integrity sha512-8CAaoZfiE1rY51cZT4nTZzbCHWg8ADm3YxpG2xUgONBYLEDSE6cmSI1TAc24Ua/pQa2pAh2/qHW8ed2khtniyg==
+"@hyper63/adapter-couchdb@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.9.tgz#2e492069a4eea9559df258835ac0ff1b7c42d595"
+  integrity sha512-EmdZjV/mj3OkwXxrw0BtWTmTbcpzndpJVGC/M2bfo9rbdtEo7O6Mn7QeS/AuosADJneQXvuu6mbd1+uzjSBBhw==
   dependencies:
     "@vercel/fetch" "^6.1.0"
     crocks "^0.12.4"

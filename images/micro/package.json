@@ -1,0 +1,19 @@
+{
+  "name": "micro",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@hyper63/adapter-couchdb": "^0.0.9",
+    "@hyper63/adapter-elasticsearch": "^0.0.2",
+    "@hyper63/adapter-minio": "^1.0.0",
+    "@hyper63/adapter-redis": "^1.0.2",
+    "@hyper63/app-express": "^1.0.10",
+    "@hyper63/core": "^1.2.6"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+}

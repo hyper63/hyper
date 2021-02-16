@@ -21,7 +21,7 @@ const switchIds = map(compose(omit(['id']), over(lensId, identity)))
 
 const pluckIds = pluck('id')
 const getDocsThatExist = (url, db, headers) => ids =>
-  asyncFetch(`${url}/${db}/_all_docs?keys=${encodeURI(ids)}`, { headers })
+  asyncFetch(`${url}/${db}/_all_docs`, { method: 'POST', body: JSON.stringify({ keys: ids }), headers })
     .chain(handleResponse(200))
     .map(prop('rows'))
     .map(filter(has('value')))

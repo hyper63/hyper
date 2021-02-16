@@ -1,5 +1,5 @@
 
-const { pluck, reduce, always, pipe, map, join, concat, flip } = require('ramda')
+const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip } = require('ramda')
 const {
   createIndexPath, deleteIndexPath, indexDocPath, getDocPath,
   updateDocPath, removeDocPath, bulkPath, queryPath
@@ -9,7 +9,8 @@ const {
   * 
   * @typedef {Object} IndexInfo
   * @property {string} index - index name
-  * 
+  * @property {Object} mappings
+  *
   * @typedef {Object} BulkSearchDoc
   * @property {boolean} ok
   * @property {string} [msg]
@@ -63,17 +64,18 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * @param {IndexInfo} 
    * @returns {Promise<Response>}
    * 
-   * TODO: mappings object is not used, and instead all indexes
-   * created in Elasticsearch are dynamic. Don't see a great api for
-   * creating an Elasticsearch index emerging
-   * from the current api provided by the Search Port, so we will KISS for now
    */
-  function createIndex ({ index }) {
+  function createIndex ({ index, mappings }) {
     return asyncFetch(
       createIndexPath(config.origin, index),
       {
         headers,
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify({
+          mappings: {
+            properties: mappings.fields.reduce((a, f) => set(lensProp(f), { type: 'text' }, a))
+          }
+        })
       }
     )
       .chain(

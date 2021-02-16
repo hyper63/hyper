@@ -63,7 +63,8 @@ test('create index', async t => {
   )
 
   const result = await adapter.createIndex({
-    index: INDEX
+    index: INDEX,
+    mappings: { fields: ["title"] }
   })
 
   t.equals(result.ok, true)
