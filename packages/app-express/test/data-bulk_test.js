@@ -2,7 +2,7 @@ const test = require('tape')
 const { Async } = require('crocks')
 const app = require('../')({
   data: {
-    bulk: () => Async.Resolved({ok: true, results: []})
+    bulkDocuments: () => Async.Resolved({ok: true, results: []})
   },
   middleware: []
 })

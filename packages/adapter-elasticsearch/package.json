@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-elasticsearch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "test": "tape *_test.js"
   },

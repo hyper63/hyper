@@ -41,4 +41,4 @@ exports.indexDb = ({data, params, body}, res) =>
 
 // POST /data/:db/_bulk
 exports.bulk = ({data, params, body}, res) => 
-  fork(res, 201, data.bulk(params.db, body))
+  fork(res, 201, data.bulkDocuments(params.db, body))
