@@ -1,4 +1,4 @@
-globalThis.fetch = require('@vercel/fetch')(require('node-fetch'))
+globalThis.fetch = require('@vercel/fetch-retry')(require('node-fetch'))
 const createAdapter = require('./adapter')
 const { asyncFetch, createHeaders, handleResponse } = require('./async-fetch')
 
