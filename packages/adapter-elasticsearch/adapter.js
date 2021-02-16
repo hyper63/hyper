@@ -66,15 +66,16 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
    * 
    */
   function createIndex ({ index, mappings }) {
+    const properties = mappings.fields.reduce((a, f) => set(lensProp(f), { type: 'text' }, a), {})
+    console.log('adapter-elasticsearch', properties)
+
     return asyncFetch(
       createIndexPath(config.origin, index),
       {
         headers,
         method: 'PUT',
         body: JSON.stringify({
-          mappings: {
-            properties: mappings.fields.reduce((a, f) => set(lensProp(f), { type: 'text' }, a))
-          }
+          mappings: { properties }
         })
       }
     )
