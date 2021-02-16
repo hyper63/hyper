@@ -82,7 +82,7 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
         handleResponse(res => res.status < 400)
       )
       .bimap(
-        always({ ok: false }),
+        res => ({ ok: false, msg: JSON.stringify(res) }),
         always({ ok: true })
       )
       .toPromise()
