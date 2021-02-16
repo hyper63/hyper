@@ -1,10 +1,7 @@
 const { Async } = require('crocks')
 const { assoc, compose, identity, has, head, find, filter, 
   is, lens, map, omit, over, path, prop, propEq, pluck } = require('ramda')
-
-const asyncFetch = Async.fromPromise(fetch)
-const toJSON = res => Async.fromPromise(res.json.bind(res))()
-
+const { asyncFetch, handleResponse } = require('./async-fetch')
 const lensRev = lens(path(['value', 'rev']), assoc('rev'))
 const lensId = lens(prop('id'), assoc('_id'))
 
@@ -25,7 +22,7 @@ const switchIds = map(compose(omit(['id']), over(lensId, identity)))
 const pluckIds = pluck('id')
 const getDocsThatExist = (url, db, headers) => ids =>
   asyncFetch(`${url}/${db}/_all_docs?keys=${encodeURI(ids)}`, { headers })
-    .chain(toJSON)
+    .chain(handleResponse(200))
     .map(prop('rows'))
     .map(filter(has('value')))
     .map(xRevs)
@@ -36,11 +33,11 @@ const applyBulkDocs = (url, db, headers) => docs =>
     headers,
     body: JSON.stringify({docs})
   })
-    .chain(toJSON)
+    .chain(handleResponse(201))
 
 const checkDbExists = (url, db, headers) => docs =>
   asyncFetch(`${url}/${db}`, {headers})
-    .chain(toJSON)
+    .chain(handleResponse(200))
     .chain(res => propEq('db_name', db, res) 
       ? Async.Resolved(docs) 
       : Async.Rejected({ok: false, msg: 'db not found'})

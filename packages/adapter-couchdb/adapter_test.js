@@ -2,29 +2,24 @@ const test = require('tape')
 const { Async } = require('crocks')
 
 const fetchMock = require('fetch-mock')
-const { createHeaders, handleResponse } = require('./async_fetch')
 
-const headers = createHeaders('admin', 'password')
 const COUCH = 'http://localhost:5984'
 
 globalThis.fetch = fetchMock.sandbox()
   .get(`${COUCH}/hello`, { status: 200, body: { db_name: 'hello' }})
-  .put(`${COUCH}/hello`, { status: 201, body: { ok: true }, headers })
-  .put(`${COUCH}/hello/_security`, { status: 200, body: {ok: true}, headers })
+  .put(`${COUCH}/hello`, { status: 201, body: { ok: true }})
+  .put(`${COUCH}/hello/_security`, { status: 200, body: {ok: true} })
   .delete(`${COUCH}/hello`, {
     status: 200,
-    body: { ok: true },
-    headers
+    body: { ok: true }
   })
   .post(`${COUCH}/hello`, {
     status: 201,
-    body: { ok: true },
-    headers
+    body: { ok: true }
   })
   .get(`${COUCH}/hello/1`, {
     status: 200,
-    body: { _id: '1', hello: 'world'},
-    headers
+    body: { _id: '1', hello: 'world'}
   })
   .post(`${COUCH}/hello/_find`, {
     status: 200,
@@ -74,7 +69,7 @@ globalThis.fetch = fetchMock.sandbox()
     }
   })
   .post(`${COUCH}/hello/_bulk_docs`, {
-    status: 200,
+    status: 201,
     body: [{
       ok: true,
       id: '1',
@@ -87,19 +82,16 @@ globalThis.fetch = fetchMock.sandbox()
   })
 
 const createAdapter = require('./adapter')
+
 const adapter = createAdapter({
-  config: { origin: COUCH },
-  asyncFetch: Async.fromPromise(fetch),
-  headers,
-  handleResponse
+  config: { origin: COUCH }
 })
 
 test('bulk documents', async t => {
   const result = await adapter.bulkDocuments({
     db:'hello',
     docs: [{id: '1'},{id: '2'}]
-  })
-
+  }).catch(err => ({ok: false, err}))
   t.ok(result.ok)
   t.equal(result.results.length, 2)
   t.end()

@@ -1,10 +1,14 @@
 const { Async } = require('crocks')
+const { asyncFetch, createHeaders, handleResponse } = require('./async-fetch')
+
 const { compose, omit, map, lens, prop, assoc, over, identity, merge,
   pluck } = require('ramda')
 const xId = lens(prop('_id'), assoc('id'))
-const bulk = require('./lib/bulk')
+const bulk = require('./bulk')
 
-module.exports = ({asyncFetch, config, handleResponse, headers }) => {
+module.exports = ({ config }) => {
+  const headers = createHeaders(config.username, config.password)
+
   const retrieveDocument = ({ db, id }) =>
     asyncFetch(`${config.origin}/${db}/${id}`, {
       headers,

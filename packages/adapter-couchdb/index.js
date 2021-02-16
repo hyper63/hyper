@@ -1,5 +1,7 @@
+globalThis.fetch = require('@vercel/fetch')(require('node-fetch'))
 const createAdapter = require('./adapter')
-const { asyncFetch, createHeaders, handleResponse } = require('./async_fetch')
+const { asyncFetch, createHeaders, handleResponse } = require('./async-fetch')
+
 
 
 /**
@@ -18,17 +20,17 @@ module.exports = function CouchDataAdapter (config) {
    * @param {object} env
    * @returns {function}
    */
-  function link(env) {
+  function link(env={url: 'http://localhost:5984'}) {
     /**
      * @param {object} adapter
      * @returns {object}
      */
     return function () {
+      
       // parse url
       const config = new URL(env.url)
-      const headers = createHeaders(config.username, config.password)
       
-      return createAdapter({ config, asyncFetch, headers, handleResponse })
+      return createAdapter({ config })
     }
   }
 

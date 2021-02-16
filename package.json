@@ -26,7 +26,8 @@
     "packages/port-search",
     "images/dev",
     "images/graphql",
-    "images/couchdb"
+    "images/couchdb",
+    "images/micro"
   ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",

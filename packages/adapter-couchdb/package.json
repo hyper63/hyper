@@ -12,7 +12,7 @@
   "scripts": {
     "test": "tape adapter_test.js"
   },
-  "version": "0.0.7",
+  "version": "0.0.9",
   "main": "index.js",
   "license": "MIT"
 }

@@ -1,0 +1,23 @@
+name: test couchdb adapter
+on:
+  push:
+    branches-ignore: main
+    paths:
+      - "packages/adapter-couchdb/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        name: Use NodeJS ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd packages/adapter-couchdb && yarn
+      - run: cd packages/adapter-couchdb && yarn test
+        env:
+          CI: true
+
