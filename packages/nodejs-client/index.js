@@ -36,7 +36,8 @@ module.exports = (host, client, secret, app) => {
       create: (doc) => $.post(`${host}/data/${app}`, doc),
       update: (id, doc) => $.put(`${host}/data/${app}/${id}`, doc),
       remove: (id) => $.remove(`${host}/data/${app}/${id}`),
-      index: (idx) => $.post(`${host}/data/${app}/_index`, idx)
+      index: (idx) => $.post(`${host}/data/${app}/_index`, idx),
+      bulk: (docs) => $.post(`${host}/data/${app}/_bulk`, docs)
     },
     search: {
       query: (query) => $.post(`${host}/search/${app}/_query`, query),

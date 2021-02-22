@@ -8,6 +8,7 @@ globalThis.fetch = fetchMock
     status: 201, 
     body: {ok: true}
   })
+  .post('https://nano.hyper63.com/data/bar/_bulk', { status: '200', body: {ok: true, results: []}})
   .sandbox()
 
 //globalThis.fetch = fetch
@@ -41,5 +42,14 @@ test('create search index', t => {
         console.log(r)
         t.ok(r.ok)
       }
+    )
+})
+
+test('post bulk docs', t => {
+  t.plan(1)
+  services.data.bulk([{id: '1', name: 'hello'}, {id: '2', name: 'world'}])
+    .fork(
+      e => t.ok(false),
+      r => t.ok(true)
     )
 })
