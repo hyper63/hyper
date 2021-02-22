@@ -67,6 +67,7 @@ Async.all([
 - client.data.remove - remove document
 - client.data.query - query documents
 - client.data.index - create index for query
+- client.data.bulk - bulk insert docs
 
 ### Cache API
 
@@ -80,6 +81,7 @@ Async.all([
 
 - client.search.create - adds a doc to search index
 - client.search.remove - removes a doc from the search index
+- client.search.bulk - adds more than one document to index
 
 ## License
 
