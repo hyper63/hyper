@@ -67,6 +67,7 @@ Async.all([
 - client.data.remove - remove document
 - client.data.query - query documents
 - client.data.index - create index for query
+- client.data.bulk - bulk insert docs
 
 ### Cache API
 
