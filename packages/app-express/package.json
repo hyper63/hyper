@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/app-express",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
@@ -18,6 +18,6 @@
     "tape": "^5.1.1"
   },
   "scripts": {
-    "test": "tape test/*_test.js"
+    "test": "NODE_ENV=test tape test/*_test.js"
   }
 }

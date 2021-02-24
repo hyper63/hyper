@@ -110,7 +110,7 @@ module.exports = function (services) {
     }
   })
 
-  if(!module.parent) {
+  if(process.env.NODE_ENV !== 'test') {
     app.listen(port)
     console.log('hyper63 service listening on port ', port)
   }
