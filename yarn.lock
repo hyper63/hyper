@@ -327,6 +327,18 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@twilson63/hyper63-adapter-greetings@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@twilson63/hyper63-adapter-greetings/-/hyper63-adapter-greetings-1.0.0.tgz#8a1a8728c6eb96b7ad854950dbaa990d8acca6f1"
+  integrity sha512-KxMb2gE4V69Y59VIS85dX3NVCBk4iRhRWo4e0DnH6ADCGfB6LIjRooXkXI3BAtg1tMqISY1Mzrkp0ezERaefTA==
+
+"@twilson63/hyper63-port-echo@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@twilson63/hyper63-port-echo/-/hyper63-port-echo-1.0.0.tgz#6cf106bf5e67511c7187e4d236829ac9e8ff57b0"
+  integrity sha512-LLRIMOcOVOp5oCM9Hwu2akPqbupgsxoSTnykoCJng+fiU06BWghB7XnNGanS/eKn8bkBJMy+F0r9j6jNK4SoXw==
+  dependencies:
+    zod "^3.0.0-alpha.4"
+
 "@twilson63/test-server@^1.0.1", "@twilson63/test-server@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@twilson63/test-server/-/test-server-1.0.2.tgz#5c849e022562525043bbe264f70d27839075a24e"

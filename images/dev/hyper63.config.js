@@ -9,7 +9,7 @@ module.exports = {
   adapters: [
     { port: 'cache', plugins: [memory()]},
     { port: 'data', plugins: [pouchdb({dir: process.env.DATA})]},
-    { port: 'search', plugins: [minisearch()]}
+    { port: 'search', plugins: [minisearch()]},
   ],
   middleware: [jwt]
 }

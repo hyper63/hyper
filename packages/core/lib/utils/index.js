@@ -27,10 +27,10 @@ exports.apply = (method) => (data) =>
   ask(({svc}) => {
     //const async = Async.fromPromise(svc[method])
     return Async(function(reject, resolve) {
-      //console.log(data)
       // NOTE: maybe consider using an Either here?
       try {
-        return svc[method](data).then(resolve).catch(reject)
+        return svc[method](data).then(resolve)
+          .catch(reject)
       } catch (e) {
         let msg = ''
         console.log(e)

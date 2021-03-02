@@ -83,6 +83,7 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function updateDoc({store, key, value, ttl}) {
+    console.log('update doc: ', value)
     if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
     if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
     if (!value) { return Promise.reject({ok: false, msg: 'value is required'})}

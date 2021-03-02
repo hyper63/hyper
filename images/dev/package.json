@@ -10,6 +10,8 @@
     "@hyper63/adapter-pouchdb": "^1.1.3",
     "@hyper63/app-express": "^1.0.7",
     "@hyper63/core": "^1.2.2",
+    "@twilson63/hyper63-adapter-greetings": "^1.0.0",
+    "@twilson63/hyper63-port-echo": "^1.0.0",
     "eslint": "^7.10.0",
     "express-jwt": "^6.0.0",
     "helmet": "^4.1.1",
