@@ -48,7 +48,9 @@ const update = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
     .chain(is(validKey, INVALID_KEY))
+    .map(v => (console.log('UPDATE', v), v))
     .chain(apply("updateDoc"))
+    .map(v => (console.log('UPDATE', v), v))
     .chain(triggerEvent('CACHE:UPDATE'))
     .chain(is(validResult, INVALID_RESULT));
 

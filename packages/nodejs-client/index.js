@@ -26,7 +26,7 @@ module.exports = (host, client, secret, app) => {
       query: pattern => $.get(`${host}/cache/${app}?${qs.stringify({pattern: pattern || '*'})}`),
       post: doc => $.post(`${host}/cache/${app}`, doc),
       get: id => $.get(`${host}/cache/${app}/${id}`),
-      put: doc => $.put(`${host}/cache/${app}/${doc.id}`, doc),
+      put: (key, doc) => $.put(`${host}/cache/${app}/${key}`, doc),
       remove: id => $.remove(`${host}/cache/${app}/${id}`)
     },
     data: {
