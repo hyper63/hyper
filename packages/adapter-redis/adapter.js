@@ -72,7 +72,7 @@ module.exports = function (client) {
       if (!v) {
         return { ok: false, msg: "document not found" };
       }
-      return { ok: true, doc: JSON.parse(v) };
+      return JSON.parse(v);
     })
     .toPromise();
 
