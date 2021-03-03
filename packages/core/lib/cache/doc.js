@@ -35,7 +35,7 @@ const get = (store, key) =>
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("getDoc"))
     .chain(triggerEvent('CACHE:GET'))
-    .chain(is(validResult, INVALID_RESULT));
+    //.chain(is(validResult, INVALID_RESULT));
 
 /**
  * @param {string} store

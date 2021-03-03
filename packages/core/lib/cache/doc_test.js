@@ -3,7 +3,7 @@ const doc = require('./doc.js')
 
 const mockService = {
   createDoc: ({ store, key, doc, ttl }) => Promise.resolve({ ok: true }),
-  getDoc: ({ store, key }) => Promise.resolve({ ok: true, doc: { hello: "world" } }),
+  getDoc: ({ store, key }) => Promise.resolve({ hello: "world" }),
   updateDoc: ({ store, key, doc }) => Promise.resolve({ ok: true }),
   deleteDoc: ({ store, key }) => Promise.resolve({ ok: true }),
 };
