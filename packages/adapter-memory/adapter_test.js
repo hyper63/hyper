@@ -69,7 +69,7 @@ test('delete store', async t => {
 })
 
 test('create doc', async t => {
-  t.plan(2)
+  t.plan(1)
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -81,13 +81,12 @@ test('create doc', async t => {
     store: store,
     key: '1'
   })
-  t.ok(result.ok)
-  t.deepEqual(result.doc, { hello: 'world'})
+  t.deepEqual(result, { hello: 'world'})
   await memory.destroyStore(store)
 })
 
 test('get doc', async t => {
-  t.plan(2)
+  t.plan(1)
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -98,14 +97,13 @@ test('get doc', async t => {
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.ok(result.ok)
-  t.deepEqual(result.doc, {foo: 'bar'})
+  t.deepEqual(result, {foo: 'bar'})
   await memory.destroyStore(store)
 })
 
 
 test('update doc', async t => {
-  t.plan(2)
+  t.plan(1)
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -121,10 +119,10 @@ test('update doc', async t => {
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.ok(result.ok)
-  t.deepEqual(result.doc, {beep: 'boop'})
+  t.deepEqual(result, {beep: 'boop'})
   await memory.destroyStore(store)
 })
+
 
 test('delete doc', async t => {
   t.plan(1)
@@ -141,7 +139,7 @@ test('delete doc', async t => {
   })
   const result = await memory.getDoc({
     store, key: '2'
-  })
-  t.ok(result.ok)
+  }).catch(e => e)
+  t.notOk(result.ok)
   await memory.destroyStore(store)
 })

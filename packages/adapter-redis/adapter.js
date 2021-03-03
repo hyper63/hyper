@@ -68,11 +68,11 @@ module.exports = function (client) {
    * @returns {Promise<object>}
    */
   const getDoc = ({ store, key }) =>
-    get(createKey(store, key)).map((v) => {
+    get(createKey(store, key)).chain((v) => {
       if (!v) {
-        return { ok: false, msg: "document not found" };
+        return Async.Rejected({ ok: false, msg: "document not found" });
       }
-      return JSON.parse(v);
+      return Async.Resolved(JSON.parse(v));
     })
     .toPromise();
 

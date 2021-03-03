@@ -32,7 +32,7 @@ test('get redis doc', async t => {
     store: 'foo',
     key: 'bar'
   })
-  t.ok(result.ok)
+  t.deepEqual(result, { bam: 'baz'})
   t.end()
 })
 

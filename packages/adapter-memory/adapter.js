@@ -70,9 +70,8 @@ module.exports = function adapter () {
    */
   function getDoc({store, key}) {
     if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
-    if (!stores[store].get(key)) { return Promise.reject({ok: false, msg: 'doc is not found!'})}
-   
-    return Promise.resolve(stores[store].get(key))
+    const doc = stores[store].get(key)
+    return doc ? Promise.resolve(doc) : Promise.reject({ok: false, msg: 'doc not found'})
   }
 
   /**
