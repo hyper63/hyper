@@ -57,9 +57,6 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function createDoc({store, key, value, ttl}) {
-    if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
-    if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
-    if (!value) { return Promise.reject({ok: false, msg: 'value is required'})}
 
     if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
     
@@ -72,10 +69,9 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function getDoc({store, key}) {
-    if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
-    if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
-   
-    return Promise.resolve({ ok: true, doc: stores[store].get(key) })
+    if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
+    const doc = stores[store].get(key)
+    return doc ? Promise.resolve(doc) : Promise.reject({ok: false, msg: 'doc not found'})
   }
 
   /**
@@ -83,10 +79,7 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function updateDoc({store, key, value, ttl}) {
-    console.log('update doc: ', value)
-    if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
-    if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
-    if (!value) { return Promise.reject({ok: false, msg: 'value is required'})}
+    if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
     
     stores[store].set(key, value)
     return Promise.resolve({ok: true})
@@ -97,8 +90,7 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function deleteDoc({store, key}) {
-    if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
-    if (!key) { return Promise.reject({ok: false, msg: 'key is required'})}
+    if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
     
     stores[store].delete(key)
     return Promise.resolve({ok: true})
@@ -109,7 +101,7 @@ module.exports = function adapter () {
    * @returns {Promise<Response>}
    */
   function listDocs({store, pattern}) {
-    if (!store) { return Promise.reject({ok: false, msg: 'store required'})}
+    if (!stores[store]) { return Promise.reject({ok: false, msg: 'store is not found!'})}
     
     // https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
     let docs = []

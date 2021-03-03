@@ -46,11 +46,10 @@ module.exports = function (adapter) {
     }))
     .returns(
       z.promise(
-        z.object({
-          ok: z.boolean(),
-          doc: z.any().optional(),
-          msg: z.string().optional()
-        })
+        z.union([
+          z.object({ok: z.boolean(), msg: z.string()}),
+          z.object({}).passthrough()
+        ])
       )
     ),
   updateDoc: z.function()

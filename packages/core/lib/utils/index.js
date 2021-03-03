@@ -30,7 +30,10 @@ exports.apply = (method) => (data) =>
       // NOTE: maybe consider using an Either here?
       try {
         return svc[method](data).then(resolve)
-          .catch(reject)
+          .catch(e => {
+            console.log(e)
+            return reject(e)
+          })
       } catch (e) {
         let msg = ''
         console.log(e)
