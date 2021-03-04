@@ -23,7 +23,7 @@ module.exports = (host, client, secret, app) => {
       search: (mappings={}) => $.put(`${host}/search/${app}`, mappings)
     },
     cache: {
-      query: pattern => $.get(`${host}/cache/${app}?${qs.stringify({pattern: pattern || '*'})}`),
+      query: pattern => $.get(`${host}/cache/${app}/_query?${qs.stringify({pattern: pattern || '*'})}`),
       post: doc => $.post(`${host}/cache/${app}`, doc),
       get: id => $.get(`${host}/cache/${app}/${id}`),
       put: (key, doc) => $.put(`${host}/cache/${app}/${key}`, doc),
