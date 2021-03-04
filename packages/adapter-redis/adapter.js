@@ -70,7 +70,7 @@ module.exports = function (client) {
   const getDoc = ({ store, key }) =>
     get(createKey(store, key)).chain((v) => {
       if (!v) {
-        return Async.Rejected({ ok: false, msg: "document not found" });
+        return Async.Rejected({ ok: false, status: 404, msg: "document not found" });
       }
       return Async.Resolved(JSON.parse(v));
     })
