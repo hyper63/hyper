@@ -47,7 +47,7 @@ module.exports = function (adapter) {
     .returns(
       z.promise(
         z.union([
-          z.object({ok: z.boolean(), msg: z.string()}),
+          z.object({ok: z.boolean(), status: z.number().optional(), msg: z.string()}),
           z.object({}).passthrough()
         ])
       )
