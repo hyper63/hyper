@@ -1,7 +1,8 @@
 {
   "name": "@hyper63/port-queue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
+  "typings": "lib/index",
   "license": "MIT",
   "dependencies": {
     "typescript": "^4.2.3",
