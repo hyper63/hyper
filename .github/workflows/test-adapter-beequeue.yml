@@ -10,12 +10,17 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+        redis-version: [6]
     steps:
       - uses: actions/checkout@v2
       - name: Use NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: ${{ matrix.redis_version }}
       - run: cd packages/adapter-beequeue && yarn
       - run: cd packages/adapter-beequeue && yarn test
         env:
