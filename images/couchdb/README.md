@@ -12,7 +12,7 @@ This service depends on two environment variables:
 - COUCHDB_SERVER {url} - this is a full url used to connect to your couchdb server, it should have a key and secret which gives hyper63 full control of your
   server. ex. 'https://[key]:[secret]@[host]:[port]'
 
-> Need to install a couchdb server? see [Create CouchDB Server](https://hyper63.com/blog/setup-couchdb)
+> Need to install a couchdb server? see [Create CouchDB Server](https://blog.hyper63.com/setup-couchdb)
 
 ## Run locally
 
@@ -25,8 +25,8 @@ Read this step by step post on how to setup this image locally.
 ## Run docker container
 
 ```sh
-docker pull hyper63/couchdb-service
-docker run -d --name hyper63couch \
+docker pull hyper63/couchdb-svc
+docker run -d --name hyper63 \
 --log-opt max-size=100m \
 --restart always \
 -e SECRET='your secret' \

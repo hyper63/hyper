@@ -7,6 +7,7 @@ COPY hyper63.config.js ./
 COPY index.js ./
 COPY package.json ./
 COPY middleware/jwt.js ./middleware/
+COPY README.md ./
 
 RUN yarn
 

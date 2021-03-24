@@ -3,6 +3,7 @@ const dataCore = require('./data')
 const storageCore = require('./storage')
 const searchCore = require('./search')
 const hooksCore = require('./hooks')
+const queueCore = require('./queue')
 /**
  * main core module
  *
@@ -16,6 +17,7 @@ module.exports = function (services) {
     data: services.data ? dataCore(services) : null,
     storage: services.storage ? storageCore(services) : null,
     search: services.search ? searchCore(services) : null,
+    queue: services.queue ? queueCore(services) : null,
     hooks: hooksCore(services),
     events: services.events,
     middleware: services.middleware
