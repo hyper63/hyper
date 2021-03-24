@@ -239,16 +239,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hyper63/adapter-couchdb@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.6.tgz#002a46ca630bef985f3ddbd66466b18fac02a4c6"
-  integrity sha512-hrARaukIzGvUBAPuI8uDs29lT83AtJa0+6e+UqW0gST+ABsyxE7bVrYezb8s0/9fsEAeAd9Mf/2yTMb+Q2009g==
-  dependencies:
-    "@vercel/fetch" "^6.1.0"
-    crocks "^0.12.4"
-    node-fetch "^2.6.1"
-    ramda "^0.27.1"
-
 "@hyper63/adapter-couchdb@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.9.tgz#2e492069a4eea9559df258835ac0ff1b7c42d595"
