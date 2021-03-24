@@ -2,7 +2,7 @@ const cache = require('@hyper63/port-cache')
 const data = require('@hyper63/port-data')
 const storage = require('@hyper63/port-storage')
 const search = require('@hyper63/port-search')
-const queue = require('@hyper63/port-queue')
+const queue = require('@hyper63/port-queue').default
 
 const { mapObjIndexed, reduce, ifElse } = require('ramda')
 

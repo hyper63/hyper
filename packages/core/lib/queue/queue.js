@@ -22,7 +22,7 @@ exports.post = (input) =>
 
 exports.list = (input) =>
   of(input)
-    .chain(apply('getJobs'))
+    .chain(apply('get'))
     .chain(triggerEvent('QUEUE:LIST'))
 
 exports.cancel = (input) =>

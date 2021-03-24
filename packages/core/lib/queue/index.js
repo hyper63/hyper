@@ -1,4 +1,4 @@
-const q = require('./queue'
+const q = require('./queue')
 
 module.exports = ({queue, events}) => 
 ({

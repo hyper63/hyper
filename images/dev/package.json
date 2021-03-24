@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
+    "@hyper63/adapter-beequeue": "^0.0.1",
     "@hyper63/adapter-fs": "^1.0.4",
     "@hyper63/adapter-memory": "^1.2.1",
     "@hyper63/adapter-minisearch": "^1.0.7",
