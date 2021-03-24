@@ -19,6 +19,7 @@ module.exports = function (services) {
   const data = require("./api/data");
   const storage = require("./api/storage");
   const search = require('./api/search')
+  const queue = require('./api/queue')
 
   const port = process.env.PORT || 6363;
 
@@ -30,6 +31,7 @@ module.exports = function (services) {
     req.search = services.search;
     req.events = services.events;
     req.hooks = services.hooks;
+    req.queue = services.queue;
     next();
   };
   
@@ -77,6 +79,15 @@ module.exports = function (services) {
   app.delete('/search/:index/:key', bindCore, search.removeDoc)
   app.post('/search/:index/_query', express.json(), bindCore, search.query)
   app.post('/search/:index/_bulk', express.json(), bindCore, search.bulk)
+
+  // queue api
+  app.get('/queue', queue.index)
+  app.put('/queue/:name', express.json(), bindCore, queue.create)
+  app.delete('/queue/:name', bindCore, queue.delete)
+  app.post('/queue/:name', express.json(), bindCore, queue.post)
+  app.get('/queue/:name', bindCore, queue.list)
+  app.post('/queue/:name/_cancel', bindCore, queue.cancel)
+
 
   app.get('/error', (req, res, next) => {
     throw new Error('Error occuried')
