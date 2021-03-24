@@ -5,7 +5,7 @@ exports.index = (req, res) =>
 
 // PUT /queue/:name
 exports.create = ({params, body, queue}, res) => 
-  fork(res, 201, queue.create({name: params, target: body.target, secret: body.secret}))
+  fork(res, 201, queue.create({name: params.name, target: body.target, secret: body.secret}))
 
 // DELETE /queue/:name
 exports['delete'] = ({params, queue }, res) =>
