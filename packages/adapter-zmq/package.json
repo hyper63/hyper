@@ -14,6 +14,7 @@
     "test": "tsc && tape lib/**/*_test.js"
   },
   "dependencies": {
+    "ramda": "^0.27.1",
     "zeromq": "^6.0.0-beta.6"
   }
 }
