@@ -1,7 +1,8 @@
 {
   "name": "@hyper63/adapter-zmq",
   "version": "0.0.1",
-  "main": "lib/index.js",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
   "license": "MIT",
   "devDependencies": {
     "@hyper63/port-queue": "^0.0.2",
@@ -11,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "tsc && tape lib/**/*_test.js"
+    "test": "tsc && tape src/**/*_test.js"
   },
   "dependencies": {
     "ramda": "^0.27.1",
