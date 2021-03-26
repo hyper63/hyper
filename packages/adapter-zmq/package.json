@@ -6,6 +6,8 @@
   "license": "MIT",
   "devDependencies": {
     "@hyper63/port-queue": "^0.0.2",
+    "@types/ramda": "^0.27.39",
+    "@types/tape": "^4.13.0",
     "fetch-mock": "^9.11.0",
     "tape": "^5.2.2",
     "typescript": "^4.2.3"
