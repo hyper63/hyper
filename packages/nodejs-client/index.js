@@ -20,7 +20,8 @@ module.exports = (host, client, secret, app) => {
     setup: {
       db: () => $.put(`${host}/data/${app}`),
       cache: () => $.put(`${host}/cache/${app}`),
-      search: (mappings={}) => $.put(`${host}/search/${app}`, mappings)
+      search: (mappings={}) => $.put(`${host}/search/${app}`, mappings),
+      queue: (target, secret) => $.put(`${host}/queue/${app}`, {target, secret})
     },
     cache: {
       query: pattern => $.get(`${host}/cache/${app}/_query?${qs.stringify({pattern: pattern || '*'})}`),
@@ -44,6 +45,9 @@ module.exports = (host, client, secret, app) => {
       bulk: (docs) => $.post(`${host}/search/${app}/_bulk`, docs),
       create: (doc) => $.post(`${host}/search/${app}`, doc),
       remove: (key) => $.remove(`${host}/search/${app}/${key}`)
+    },
+    queue: {
+      post: (job) => $.post(`${host}/queue/${app}`, job)
     }
   })
 }
