@@ -11,8 +11,8 @@ globalThis.fetch = fetchMock
 
 
 test('queue adapter', async t => {
-  const a = await adapter({port: '4000'})
-
+  const a = adapter({port: '4000'})
+  await new Promise(resolve => setTimeout(resolve, 500))
   await a.create({name: 'foo', target: 'https://jsonplaceholder.typicode.com/posts'})
   const res = await a.post({name: 'foo', job: { hello: 'world'} })
   t.ok(res.ok)

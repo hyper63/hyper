@@ -1,3 +1,5 @@
+// @ts-ignore
+globalThis.fetch = require('node-fetch')
 const { merge } = require('ramda')
 const adapter = require('./adapter')
 
@@ -19,8 +21,8 @@ module.exports = function (port) {
       /**
        * @param {import('@hyper63/port-queue').QueuePort} a
        */
-      async (a) => 
-        a ? merge(a, await adapter(env)) : await adapter(env) 
+      (a) => 
+        a ? merge(a, adapter(env)) : adapter(env) 
   }
 }
     

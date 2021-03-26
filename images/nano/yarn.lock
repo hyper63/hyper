@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-"@hyper63/adapter-fs@^1.0.3":
+"@hyper63/adapter-fs@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@hyper63/adapter-fs/-/adapter-fs-1.0.4.tgz#7eef5fd933841d1b8343c7cf6de3ca749f059b27"
   integrity sha512-9ed4IzftdYHAG3+oK6btV1HdpLisd2hl3MPyXC4mWh+z1ydLEUAZDjqwdix2RzBjZz9o+SseLn5/NJSyb8qsiw==
   dependencies:
     ramda "^0.27.1"
 
-"@hyper63/adapter-hooks@^1.0.1":
+"@hyper63/adapter-hooks@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@hyper63/adapter-hooks/-/adapter-hooks-1.0.2.tgz#6b55eb61286e48fb5823a64ea92fb474d8291c10"
   integrity sha512-jFqFH0FPPDNcNpKDBcCzTTDndNsy3TcJJomQz08uE+LPiHgJ/THck0Su80XNOLWP6gB01cCWKixeqKaM4IBlZg==
@@ -18,27 +18,27 @@
     crocks "^0.12.4"
     ramda "^0.27.1"
 
-"@hyper63/adapter-memory@^1.0.1":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@hyper63/adapter-memory/-/adapter-memory-1.1.2.tgz#6fb13660e5122f68b17c01064c3354cb9d01d508"
-  integrity sha512-VloGNS57ciHK1KpQ1vaDRM4kz26CBv6raia+B4SyO52IuSiuDWyKiMLpp5edd+LyLrkBXQRwIyrX1eUoyDLNdw==
+"@hyper63/adapter-memory@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-memory/-/adapter-memory-1.2.1.tgz#273e743b94f1d23245ed52b6bc9f62136b886604"
+  integrity sha512-sQr9EXeLxpx7oSnzZSy//kxT6KiXwCNBIdJB+IKIi1iYUI4HeH62QoY/Vlm8HNwWRVoPHYktZx/W8M25K0mdCg==
   dependencies:
     crocks "^0.12.4"
     ramda "^0.27.1"
 
-"@hyper63/adapter-minisearch@^1.0.2":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@hyper63/adapter-minisearch/-/adapter-minisearch-1.0.5.tgz#2c86a78770370d022c193ebe42f9999a0fe418e1"
-  integrity sha512-xI+Upbt0c7Slxsk/CqWoCJEG1/KGz2dyOw29lGJvsGnpaeZauW6HWRbBEVocNCtOJxp/ITY2wONXqO7++xGXGQ==
+"@hyper63/adapter-minisearch@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-minisearch/-/adapter-minisearch-1.0.7.tgz#9bd7eaa5c26e6b2258703d055e9bcb4a4a99c92c"
+  integrity sha512-epmtHrcysHq10sE0+LVSwnwumeJldWCF6RivLMThAqAZQU20W2vcPMoDT7t3y3ddYSTYtCFvH5r8MHip0EvAuQ==
   dependencies:
     crocks "^0.12.4"
     minisearch "^3.0.2"
     ramda "^0.27.1"
 
-"@hyper63/adapter-pouchdb@^1.0.3":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@hyper63/adapter-pouchdb/-/adapter-pouchdb-1.1.4.tgz#3f3b0e8206d2d5ce8fb4180812e86af4dd8c9ffb"
-  integrity sha512-9bBrO48XrJiJrGJpOlbqEoYuhuXNxEk2Yetr4vcnOfXz/TdOoO5ux4vSb4eTa0WYAm2aenWQulTRHM1aWHXuqA==
+"@hyper63/adapter-pouchdb@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-pouchdb/-/adapter-pouchdb-1.1.8.tgz#4d88883c49188b9227c2f2fd2fd38c06e3fc64df"
+  integrity sha512-FD8fJzkzANYMyVA1Kbc1OOYMxePjJWpvjyyYX1Sj+jzIXm61KWoHpaPZB4FVPS/aagTPZXNCakj0icWZ9OxVbw==
   dependencies:
     mkdirp "^1.0.4"
     pouchdb "^7.2.2"
@@ -46,10 +46,19 @@
     ramda "^0.27.1"
     rimraf "^3.0.2"
 
-"@hyper63/app-express@^1.0.1":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@hyper63/app-express/-/app-express-1.0.5.tgz#d8bcfda696fba2345a3eddeed6fa8639da557c80"
-  integrity sha512-yVl+eBgYLHEc7NcFA47EGFm4Fa6qUxqmhV+FZO1wNbCj/fpXL+cmFcYDx+C/q4c6Q2/xYsifShjrSOisfqQEKg==
+"@hyper63/adapter-zmq@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-zmq/-/adapter-zmq-0.0.3.tgz#47cc45e21c7e7b775059e226f3a3b2956ea2941a"
+  integrity sha512-hrfbBwtltwn1nwaEEQfjatu790zRDiIHZ4liniGptrjSPs/Gf4XVtZ5m0h+J8VjX+3taTX8XV9JxsZ4BueLgVA==
+  dependencies:
+    node-fetch "^2.6.1"
+    ramda "^0.27.1"
+    zeromq "^6.0.0-beta.6"
+
+"@hyper63/app-express@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/app-express/-/app-express-1.1.1.tgz#6c434df722b85a6665ac6a1fdc97b65600a5ba4a"
+  integrity sha512-aWEWjX17lblbRjU+hpzjT/Kds/jRYUHjKCmuV0QzEIhB4SdGDQXq1CBS8N7KZhE1oD/2ERSHaIoPzlzReUOfUg==
   dependencies:
     cors "^2.8.5"
     express "^4.17.1"
@@ -57,40 +66,49 @@
     mime "^2.4.6"
     multer "^1.4.2"
 
-"@hyper63/core@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@hyper63/core/-/core-1.2.0.tgz#e805117b7f2f4e79a14637bd287dc2edf3e0faf1"
-  integrity sha512-tgmfDzm8DOvIp56xSZYbe4dy0QAt9R9bFsUGN37Fka0RwuUTr2uYRyR0tis/x1ooTlWh8i4PitTMA1BJHzlqWg==
+"@hyper63/core@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/core/-/core-1.3.1.tgz#92caf13b83f09211ac76c866f77ca365a5ee1e25"
+  integrity sha512-iVW+IVE1P1GNMVe2zGNztNBWqU0cLk9zAxVChxRijs5XXeknBsboO3XwlPI6mErz4CxuDivITbFpJHxSeNLakA==
   dependencies:
-    "@hyper63/port-cache" "^1.0.0"
-    "@hyper63/port-data" "1.0.8"
-    "@hyper63/port-search" "^1.0.0"
+    "@hyper63/port-cache" "^1.1.1"
+    "@hyper63/port-data" "^1.0.9"
+    "@hyper63/port-queue" "^0.0.2"
+    "@hyper63/port-search" "^1.0.1"
     "@hyper63/port-storage" "^1.0.0"
     crocks "^0.12.4"
     cuid "^2.1.8"
     ramda "^0.27.1"
 
-"@hyper63/port-cache@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@hyper63/port-cache/-/port-cache-1.0.0.tgz#71f7bb9d4b9abf085e7f77bc87333095acb9001d"
-  integrity sha512-FT3GlYLQ6Z3nb08nHvzAPg53oN3r3Khh+S4vf8shbGy5OOo7j4Pj0fW50nBUm/mqjZ8W11Dtz4elqoH5vdYIQw==
+"@hyper63/port-cache@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-cache/-/port-cache-1.1.1.tgz#f3f6b442967e1c9051bfa7f22e75ace4f17182b7"
+  integrity sha512-kIt26VkgDkDmcu0zJJlp0iVg1RjRlhfetdyC3DzD1m0l6RGg+sghhjlGE/93GYwB3meg0shnzGemx9p2Nuwiqw==
   dependencies:
     zod "^2.0.0-beta.22"
 
-"@hyper63/port-data@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@hyper63/port-data/-/port-data-1.0.8.tgz#b2bc12d8411c01aa378563ed109578246c12edee"
-  integrity sha512-dMcBWIlC2DPCJ7nWJdqJnukYephsgqhcF470d3n4OKprZF0uE6Uuycv786s3zWoNRRI4rxkDvw3Ukk9H6H9MYA==
+"@hyper63/port-data@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-data/-/port-data-1.0.9.tgz#863e46418be012e79870fcf4c52527bb7005db52"
+  integrity sha512-3yGMTP03pWfuUjNRG/xvKnvc2FFYVmIALpYHxTbZdCQbejCqD/1ECOJoHBLYmGXBrl52PvfANJiEqRpgOngSTw==
   dependencies:
     zod "^2.0.0-beta.22"
 
-"@hyper63/port-search@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@hyper63/port-search/-/port-search-1.0.0.tgz#a2b5d46cd3ca46451ae2e9e174e3fcdd940217dc"
-  integrity sha512-50jfVQp6v9omZiH2vPfPL3Z+PJYQzVxa37iUhcWbeKtp+IONTjx2GB1ny8Gn4MOAYcOBfdpPQWPll2nS3zH0Lw==
+"@hyper63/port-queue@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-queue/-/port-queue-0.0.2.tgz#63449a7a48be6e0bc4ef6bbf15641cddf2dca8dd"
+  integrity sha512-gzgBbB0lPA+U9Vg4H3CRzlZsj3AkMR1zaPu8PoGORbyqVDC9LMWGNyiDXJCTwt4RYS8SzzUPppVfqWNuvrFqHw==
+  dependencies:
+    typescript "^4.2.3"
+    zod "^3.0.0-alpha.30"
+
+"@hyper63/port-search@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-search/-/port-search-1.0.1.tgz#f608e4452ebeb69d2a1993e14f6bb31c96465f52"
+  integrity sha512-6xn7XDFUIJKVDWq6jzchms3odxfd/K4gwSks9Cy64RClFlDjT9lXbPqvg/NGIbiaDVK/eyXnPQVs8uzPpyWJZQ==
   dependencies:
     crocks "^0.12.4"
-    zod "^2.0.0-beta.22"
+    zod "^3.0.0-alpha.4"
 
 "@hyper63/port-storage@^1.0.0":
   version "1.0.0"
@@ -846,6 +864,16 @@ node-fetch@2.6.0:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
+node-fetch@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
+node-gyp-build@^4.1.0:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.3.tgz#ce6277f853835f718829efb47db20f3e4d9c4739"
+  integrity sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg==
+
 node-gyp-build@~4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.1.1.tgz#d7270b5d86717068d114cc57fff352f96d745feb"
@@ -1231,6 +1259,11 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+typescript@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
+  integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
+
 universalify@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
@@ -1288,7 +1321,19 @@ yallist@^3.0.2:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
+zeromq@^6.0.0-beta.6:
+  version "6.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/zeromq/-/zeromq-6.0.0-beta.6.tgz#2b8934cafce735ea9007fd3074ec8aca9bf11204"
+  integrity sha512-wLf6M7pBHijl+BRltUL2VoDpgbQcOZetiX8UzycHL8CcYFxYnRrpoG5fi3UX3+Umavz1lk4/dGaQez8qiDgr/Q==
+  dependencies:
+    node-gyp-build "^4.1.0"
+
 zod@^2.0.0-beta.22:
   version "2.0.0-beta.30"
   resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.30.tgz#67ec3305c4a106a7bf9ef72078de72892d485dbe"
   integrity sha512-nwCSRXRy1jt0872mMXT2E6VVHXr2hO7jGEtwc/TDqOBb7gGodwAjsQ6UCS4XJLUmjVvmqLsuPvAIN8oL26weCQ==
+
+zod@^3.0.0-alpha.30, zod@^3.0.0-alpha.4:
+  version "3.0.0-alpha.33"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.0.0-alpha.33.tgz#8562cc92e57b7df7e0f99f3376181782d7233cfb"
+  integrity sha512-zxh7bbKBd1gPiHhjFL1f4QNJm7fnw8IJir84pFhqVsHalSBFsxIhDTduV9MdpCTpyfOvRnFgOF0rqrdLeQTEyA==
