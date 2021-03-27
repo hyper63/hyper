@@ -181,8 +181,7 @@ test('query', async t => {
     status: 200,
     hits: {
       hits: [
-        DOC1,
-        DOC2
+        DOC1
       ]
     }
   })
@@ -193,17 +192,13 @@ test('query', async t => {
       query: 'gatsby',
       fields: ['title'],
       filter: {
-        range: {
-          rating: {
-            gte: 4
-          }
-        }
+        rating: 4
       }
     }
   })
-  
+
   t.equals(result.ok, true)
   t.ok(result.matches)
-  t.equals(result.matches.length, 2)
+  t.equals(result.matches.length, 1)
   t.end()
 })
