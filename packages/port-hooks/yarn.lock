@@ -479,7 +479,7 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-zod@^2.0.0-beta.22:
-  version "2.0.0-beta.22"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.22.tgz#57c7a98a81ad60c076a5c7dca9f205182e66afda"
-  integrity sha512-A0UldVo1gA8OkXrVv6AuVPMiyGD2wPFc0iTIsK/DSavFNKke6Cgp1VwqaeM/FY1cui5t8I46iqsKNxUPHjIlpQ==
+zod@^3.0.0-alpha.33:
+  version "3.0.0-alpha.33"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.0.0-alpha.33.tgz#8562cc92e57b7df7e0f99f3376181782d7233cfb"
+  integrity sha512-zxh7bbKBd1gPiHhjFL1f4QNJm7fnw8IJir84pFhqVsHalSBFsxIhDTduV9MdpCTpyfOvRnFgOF0rqrdLeQTEyA==

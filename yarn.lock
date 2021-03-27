@@ -4502,7 +4502,7 @@ zeromq@^6.0.0-beta.6:
   dependencies:
     node-gyp-build "^4.1.0"
 
-zod@^2.0.0-beta.20, zod@^2.0.0-beta.22, zod@^2.0.0-beta.30:
+zod@^2.0.0-beta.20:
   version "2.0.0-beta.30"
   resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.30.tgz#67ec3305c4a106a7bf9ef72078de72892d485dbe"
   integrity sha512-nwCSRXRy1jt0872mMXT2E6VVHXr2hO7jGEtwc/TDqOBb7gGodwAjsQ6UCS4XJLUmjVvmqLsuPvAIN8oL26weCQ==
@@ -4512,7 +4512,7 @@ zod@^3.0.0-alpha.30:
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.0.0-alpha.31.tgz#2df4c9154ac6fd7df6d1f2753362fab43849eb79"
   integrity sha512-2wKr3+G7hgeKrdggvVJ1X4YsM4sW3OKWUmU3F5AqSShnEUTXXFD4Mv5V02q2eWZeQoJWFDlCnX8/Bbk5pINcSg==
 
-zod@^3.0.0-alpha.4:
-  version "3.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.0.0-alpha.4.tgz#530efd89f292c5840f9d8b0854427948b0314649"
-  integrity sha512-pOtx1/JRT4NQ3K0wlnVAFDMY6Kvsb0xIMZvAaVzZBDUFKUS6OgZtrztcpI5NqCB4KMexcbgXgKxgpOpia9SFSw==
+zod@^3.0.0-alpha.33:
+  version "3.0.0-alpha.33"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.0.0-alpha.33.tgz#8562cc92e57b7df7e0f99f3376181782d7233cfb"
+  integrity sha512-zxh7bbKBd1gPiHhjFL1f4QNJm7fnw8IJir84pFhqVsHalSBFsxIhDTduV9MdpCTpyfOvRnFgOF0rqrdLeQTEyA==
