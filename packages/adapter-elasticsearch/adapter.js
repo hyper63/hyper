@@ -1,5 +1,5 @@
 
-const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip } = require('ramda')
+const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip, toPairs } = require('ramda')
 const {
   createIndexPath, deleteIndexPath, indexDocPath, getDocPath,
   updateDocPath, removeDocPath, bulkPath, queryPath
@@ -259,7 +259,9 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
                   fields
                 }
               },
-              filter
+              filter: toPairs(filter).map(
+                ([key, value]) => ({ term: { [key]: value } })
+              )
             }
           }
         })
