@@ -1,10 +1,11 @@
 const { Async } = require('crocks')
-const { always, append, compose, identity, ifElse, isNil, not } = require('ramda')
+const { always, append, compose, identity, ifElse, isNil, not, remove } = require('ramda')
 
 
 const createKey = (store, key) => `${store}_${key}`;
 
 module.exports = function (client) {
+  const stores = []
   // redis commands
   const get = Async.fromNode(client.get.bind(client));
   const set = Async.fromNode(client.set.bind(client));
@@ -12,7 +13,7 @@ module.exports = function (client) {
   const keys = Async.fromNode(client.keys.bind(client));
   const scan = Async.fromNode(client.scan.bind(client));
 
-  const index = () => Promise.resolve([])
+  const index = () => Promise.resolve(stores)
 
   /**
    * @param {string} name
@@ -23,6 +24,7 @@ module.exports = function (client) {
       .map(append(createKey("store", name)))
       .map(append("active"))
       .chain(set)
+      .map(v => (append(name, stores), v))
       .map(always({ ok: true }))
       .toPromise();
 
@@ -40,6 +42,7 @@ module.exports = function (client) {
           (keys) => Async.of(keys)
         )
       )
+      .map(v => (remove([name], stores), v))
       .map(always({ ok: true }))
       .toPromise();
 
