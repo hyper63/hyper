@@ -1,4 +1,5 @@
 import { z } from 'zod';
+declare const QueueListResponse: z.ZodArray<z.ZodString>;
 declare const QueueCreateInput: z.ZodObject<{
     name: z.ZodString;
     target: z.ZodString;
@@ -69,6 +70,7 @@ declare const JobInput: z.ZodObject<{
     id: string;
 }>;
 declare const QueuePort: z.ZodObject<{
+    index: z.ZodFunction<z.ZodTuple<[]>, z.ZodPromise<z.ZodArray<z.ZodString>>>;
     create: z.ZodFunction<z.ZodTuple<[z.ZodObject<{
         name: z.ZodString;
         target: z.ZodString;
@@ -196,6 +198,7 @@ declare const QueuePort: z.ZodObject<{
         ok: boolean;
     }>>>;
 }, "strip", z.ZodTypeAny, {
+    index: () => Promise<string[]>;
     create: (args_0: {
         secret?: string | undefined;
         name: string;
@@ -243,6 +246,7 @@ declare const QueuePort: z.ZodObject<{
         ok: boolean;
     }>;
 }, {
+    index: () => Promise<string[]>;
     create: (args_0: {
         secret?: string | undefined;
         name: string;
@@ -291,6 +295,7 @@ declare const QueuePort: z.ZodObject<{
     }>;
 }>;
 export declare type QueuePort = z.infer<typeof QueuePort>;
+export declare type QueueListResponse = z.infer<typeof QueueListResponse>;
 export declare type QueueCreateInput = z.infer<typeof QueueCreateInput>;
 export declare type QueueResponse = z.infer<typeof QueueResponse>;
 export declare type QueuePostInput = z.infer<typeof QueuePostInput>;

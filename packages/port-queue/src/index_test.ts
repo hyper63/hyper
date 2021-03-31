@@ -1,8 +1,11 @@
 import { default as test } from 'tape'
-import queuePort, { QueuePort, QueueCreateInput, QueuePostInput, QueueResponse,
+import queuePort, { QueuePort, QueueListResponse, QueueCreateInput, QueuePostInput, QueueResponse,
   QueueGetInput, JobsResponse, JobInput } from './index'
 
 const adapter : QueuePort = {
+  index: () : Promise<QueueListResponse> => {
+    return Promise.resolve([])
+  },
   create: (input: QueueCreateInput) : Promise<QueueResponse> => {
     return Promise.resolve({
       ok: true,
@@ -39,6 +42,7 @@ const adapter : QueuePort = {
 }
 
 const badAdapter : QueuePort = {
+  index: () => Promise.reject({ ok: false, msg: 'could not create list'}),
   create: (input: QueueCreateInput) => Promise.reject({ok: false, msg: 'badfood'}),
   post: (input: QueuePostInput) => Promise.reject({ok: false, msg: 'badfood'}),
   'delete': (name: string) => Promise.reject({ok: false}),
