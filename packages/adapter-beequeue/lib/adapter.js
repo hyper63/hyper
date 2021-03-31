@@ -45,6 +45,7 @@ function default_1(env) {
     var _this = this;
     var queues = {};
     return {
+        index: function () { return Promise.resolve(Object.keys(queues)); },
         create: function (_a) {
             var name = _a.name, target = _a.target, secret = _a.secret;
             var q = new bee_queue_1.default(name, { redis: env.redis });

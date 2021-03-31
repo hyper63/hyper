@@ -8,6 +8,7 @@ import Queue from 'bee-queue'
 export default function (env: Config) : QueuePort {
   let queues : {[key: string] : Queue} = {}
   return {
+    index: () : Promise<string[]> => Promise.resolve(Object.keys(queues)),
     create: ({ name, target, secret }: QueueCreateInput): Promise<QueueResponse> => {
       const q = new Queue(name, { redis: env.redis })
       q.on('succeeded', (job : any, result: any) => {

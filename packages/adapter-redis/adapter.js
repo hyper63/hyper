@@ -12,6 +12,8 @@ module.exports = function (client) {
   const keys = Async.fromNode(client.keys.bind(client));
   const scan = Async.fromNode(client.scan.bind(client));
 
+  const index = () => Promise.resolve([])
+
   /**
    * @param {string} name
    * @returns {Promise<object>}
@@ -128,6 +130,7 @@ module.exports = function (client) {
       }).toPromise();
 
   return Object.freeze({
+    index,
     createStore,
     destroyStore,
     createDoc,

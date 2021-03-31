@@ -5,6 +5,12 @@ const z = require('zod')
  */
 module.exports = function (adapter) {
   const cachePort = z.object({ 
+    // list cache stores
+    index: z.function()
+      .args()
+      .returns(
+        z.promise(z.string().array())
+      ),
     createStore: z.function()
       .args(z.string())
       .returns(

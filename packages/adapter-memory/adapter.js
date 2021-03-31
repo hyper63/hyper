@@ -1,4 +1,4 @@
-const { merge, omit } = require('ramda') 
+const { keys, merge, omit } = require('ramda') 
 
 /**
  * hyper63 memory adapter
@@ -29,6 +29,13 @@ const { merge, omit } = require('ramda')
  */
 module.exports = function adapter () {
   let stores = {}
+
+  /**
+   * @returns {Promise<String>}
+   */
+  function index() {
+    return Promise.resolve(keys(stores))
+  }
 
   /**
    * @param {string} name
@@ -119,6 +126,7 @@ module.exports = function adapter () {
   }
 
   return Object.freeze({
+    index,
     createStore,
     destroyStore,
     createDoc,
