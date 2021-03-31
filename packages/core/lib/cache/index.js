@@ -2,6 +2,8 @@ const store = require('./store.js')
 const doc = require('./doc.js')
 
 module.exports = ({ cache, events }) => {
+  const index = () => store.index().runWith({ svc: cache, events });
+
   /**
    * @param {string} name
    * @returns {Async}
@@ -57,6 +59,7 @@ module.exports = ({ cache, events }) => {
     store.query(name, pattern).runWith({ svc: cache, events });
 
   return Object.freeze({
+    index,
     createStore,
     deleteStore,
     createDoc,

@@ -1,8 +1,8 @@
 const { fork } = require('../utils')
 
 // GET /cache
-exports.index = (req, res) =>
-  res.send({ name: "hyper63 Cache", version: "1.0", status: "unstable" });
+exports.index = ({cache}, res) =>
+  fork(res, 200, cache.index().map(stores => ({ name: 'cache', version: '0.0.4', stores })))
 
 // PUT /cache/:name
 exports.createStore = ({ params, cache }, res) =>
