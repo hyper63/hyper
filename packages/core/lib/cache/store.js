@@ -4,6 +4,9 @@ const { toLower } = require('ramda')
 const INVALID_NAME_MSG = "name is not valid";
 const INVALID_RESULT_MSG = "result is not valid";
 
+exports.index = () =>
+  apply("index")().chain(triggerEvent('CACHE:INDEX'))
+
 /**
  * @param {string} name
  * @returns {AsyncReader}

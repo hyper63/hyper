@@ -51,7 +51,7 @@ module.exports = function (services) {
   app.post("/data/:db/_bulk", express.json(), bindCore, data.bulk)
 
   // cache api
-  app.get("/cache", cache.index);
+  app.get("/cache", bindCore, cache.index);
   app.put("/cache/:name", bindCore, cache.createStore);
   app.delete("/cache/:name", bindCore, cache.deleteStore);
   app.get("/cache/:name/_query", bindCore, cache.queryStore);
