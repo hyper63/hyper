@@ -1,4 +1,4 @@
-const { omit } = require('ramda')
+const { omit, keys } = require('ramda')
 const zmq = require('zeromq')
 
 const noop = () => Promise.resolve({ok: false, msg: 'Not Implemented'})
@@ -22,6 +22,12 @@ module.exports = function (env) {
   sock.bind(`tcp://127.0.0.1:${env.port}`)
 
   return {
+    /**
+     * @returns {Promise<string[]>}
+    */
+    index: () => {
+      return Promise.resolve(Object.keys(queues))
+    },
     /**
      * @param {import('@hyper63/port-queue').QueueCreateInput} input 
      */

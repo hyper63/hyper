@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var zod_1 = require("zod");
-var QueueListResponse = zod_1.z.array(zod_1.z.string());
+var QueueListResponse = zod_1.z.string().array();
 var QueueCreateInput = zod_1.z.object({
     name: zod_1.z.string(),
     target: zod_1.z.string().url(),

@@ -2,6 +2,7 @@ const q = require('./queue')
 
 module.exports = ({queue, events}) => 
 ({
+  index: () => q.index().runWith({svc: queue, events}),
   create: (input) => q.create(input).runWith({svc: queue, events}),
   'delete': (name) => q.delete(name).runWith({svc: queue, events}),
   post: (input) => q.post(input).runWith({svc: queue, events}),

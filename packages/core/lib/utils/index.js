@@ -29,7 +29,8 @@ exports.apply = (method) => (data) =>
     return Async(function(reject, resolve) {
       // NOTE: maybe consider using an Either here?
       try {
-        return svc[method](data).then(resolve)
+        const p = data ? svc[method](data) : svc[method]() 
+        return p.then(resolve)
           .catch(e => {
             console.log(e)
             return reject(e)

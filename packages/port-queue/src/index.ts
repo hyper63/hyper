@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const QueueListResponse = z.array(z.string())
+const QueueListResponse = z.string().array() 
 
 const QueueCreateInput = z.object({
   name: z.string(),

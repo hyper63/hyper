@@ -1,7 +1,11 @@
 const { fork } = require('../utils')
 
-exports.index = (req, res) =>
-  res.send({ name: 'hyper63 queue', version: '0.1', status: 'unstable' })
+exports.index = ({queue}, res) =>
+  fork(res, 200, queue.index().map(queues => ({
+    name: 'queue', 
+    version: '0.0.4',
+    queues
+  })))
 
 // PUT /queue/:name
 exports.create = ({params, body, queue}, res) => 
