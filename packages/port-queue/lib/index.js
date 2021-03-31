@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var zod_1 = require("zod");
+var QueueListResponse = zod_1.z.array(zod_1.z.string());
 var QueueCreateInput = zod_1.z.object({
     name: zod_1.z.string(),
     target: zod_1.z.string().url(),
@@ -29,6 +30,9 @@ var JobInput = zod_1.z.object({
     id: zod_1.z.string()
 });
 var QueuePort = zod_1.z.object({
+    index: zod_1.z.function()
+        .args()
+        .returns(zod_1.z.promise(QueueListResponse)),
     create: zod_1.z.function()
         .args(QueueCreateInput)
         .returns(zod_1.z.promise(QueueResponse)),

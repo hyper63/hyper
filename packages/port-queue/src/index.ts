@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+const QueueListResponse = z.array(z.string())
+
 const QueueCreateInput = z.object({
   name: z.string(),
   target: z.string().url(),
@@ -34,6 +36,9 @@ const JobInput = z.object({
 })
 
 const QueuePort = z.object({
+  index: z.function() 
+    .args()
+    .returns(z.promise(QueueListResponse)),
   create: z.function()
     .args(QueueCreateInput)
     .returns(z.promise(QueueResponse)),
@@ -56,6 +61,7 @@ const QueuePort = z.object({
 })
 
 export type QueuePort = z.infer<typeof QueuePort>
+export type QueueListResponse = z.infer<typeof QueueListResponse>
 export type QueueCreateInput = z.infer<typeof QueueCreateInput>
 export type QueueResponse = z.infer<typeof QueueResponse>
 export type QueuePostInput = z.infer<typeof QueuePostInput>

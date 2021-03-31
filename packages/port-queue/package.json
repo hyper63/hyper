@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/port-queue",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "typings": "lib/index",
   "license": "MIT",

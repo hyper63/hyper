@@ -48,9 +48,13 @@ exports.apply = (method) => (data) =>
   
 exports.triggerEvent = (event) => (data) =>  
   ask(({events}) => {
+    const payload = { date: new Date().toISOString() }
+    if ( data.id ) { payload.id = data.id }
+    if ( data.type ) { payload.type = data.type }
+
     events.dispatch({
       type: event,
-      payload: { date: new Date().toISOString() }
+      payload
     })
     return Async.Resolved(data)
   }).chain(lift)

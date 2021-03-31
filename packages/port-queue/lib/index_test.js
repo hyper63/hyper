@@ -42,6 +42,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tape_1 = __importDefault(require("tape"));
 var index_1 = __importDefault(require("./index"));
 var adapter = {
+    index: function () {
+        return Promise.resolve([]);
+    },
     create: function (input) {
         return Promise.resolve({
             ok: true,
@@ -78,6 +81,7 @@ var adapter = {
     }
 };
 var badAdapter = {
+    index: function () { return Promise.reject({ ok: false, msg: 'could not create list' }); },
     create: function (input) { return Promise.reject({ ok: false, msg: 'badfood' }); },
     post: function (input) { return Promise.reject({ ok: false, msg: 'badfood' }); },
     'delete': function (name) { return Promise.reject({ ok: false }); },
