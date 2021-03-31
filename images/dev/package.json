@@ -9,7 +9,7 @@
     "@hyper63/adapter-memory": "^1.2.1",
     "@hyper63/adapter-minisearch": "^1.0.7",
     "@hyper63/adapter-pouchdb": "^1.1.3",
-    "@hyper63/adapter-zmq": "^0.0.3",
+    "@hyper63/adapter-zmq": "^0.0.4",
     "@hyper63/app-express": "^1.0.7",
     "@hyper63/core": "^1.2.11",
     "eslint": "^7.10.0",

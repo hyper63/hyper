@@ -81,7 +81,7 @@ module.exports = function (services) {
   app.post('/search/:index/_bulk', express.json(), bindCore, search.bulk)
 
   // queue api
-  app.get('/queue', queue.index)
+  app.get('/queue', bindCore, queue.index)
   app.put('/queue/:name', express.json(), bindCore, queue.create)
   app.delete('/queue/:name', bindCore, queue.delete)
   app.post('/queue/:name', express.json(), bindCore, queue.post)

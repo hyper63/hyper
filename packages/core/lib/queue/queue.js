@@ -3,6 +3,10 @@ const { toLower, lensProp, over } = require('ramda')
 
 const INVALID_NAME_MSG = 'queue name is not valid!';
 
+exports.index = () =>
+  apply('index')().chain(triggerEvent('QUEUE:INDEX'))  
+  //apply('index')().chain(triggerEvent('QUEUE:INDEX'))
+
 exports.create = (input) => 
   of(input)
     .map(over(lensProp('name'), toLower))
