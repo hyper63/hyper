@@ -50,6 +50,7 @@ exports.apply = (method) => (data) =>
 exports.triggerEvent = (event) => (data) =>  
   ask(({events}) => {
     const payload = { date: new Date().toISOString() }
+    if ( data.name ) { payload.name = data.name }
     if ( data.id ) { payload.id = data.id }
     if ( data.type ) { payload.type = data.type }
 
