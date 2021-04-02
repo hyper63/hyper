@@ -1,5 +1,6 @@
 const loadPorts = require('./ports')
 const wrapCore = require('./lib')
+const validateConfig = require('./utils/config-schema')
 const initAdapters = require('./utils/plugins')
 const eventMgr = require('./utils/event-mgr')
 const { compose, prop, assoc, propOr } = require('ramda')
@@ -10,6 +11,7 @@ const { compose, prop, assoc, propOr } = require('ramda')
  function main (config) {
   //const config = (await import(process.cwd() + '/hyper63.config')).default
   config = !config ? require(process.cwd() + '/hyper63.config') : config
+  config = validateConfig(config)
 
   // TODO: validate config
   const services = compose(
