@@ -66,7 +66,10 @@ module.exports = ({ config }) => {
         )
         .chain(handleResponse(201))
         .toPromise(),
-    retrieveDocument: ({db, id}) => retrieveDocument({db, id}).map(omit(['_id', '_rev'])).toPromise(),
+    retrieveDocument: ({db, id}) => retrieveDocument({db, id})
+      .map(omit(['_id', '_rev']))
+      .map(assoc('id', id))
+      .toPromise(),
     updateDocument: ({ db, id, doc }) => {
       // need to retrieve the document if exists
       // then upsert if possible
