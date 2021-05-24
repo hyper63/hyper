@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "esm": "^3.2.25",
+    "node-redis": "^0.1.7",
     "redis-mock": "^0.54.0",
     "tape": "^5.0.1"
   },

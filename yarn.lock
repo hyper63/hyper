@@ -239,6 +239,16 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@hyper63/adapter-couchdb@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.11.tgz#91f8da5d61f153792418966fce6a956966e5f14b"
+  integrity sha512-cA1+zmzdwsaicvigQCQ+CvQSNTIl/sHRls/f3qzdS3rt1oTpYWB8vwcZKXljGpCzbG7GxT+HzEAN9yF4DXCagw==
+  dependencies:
+    "@vercel/fetch-retry" "^5.0.3"
+    crocks "^0.12.4"
+    node-fetch "^2.6.1"
+    ramda "^0.27.1"
+
 "@hyper63/adapter-couchdb@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.9.tgz#2e492069a4eea9559df258835ac0ff1b7c42d595"
@@ -2985,6 +2995,11 @@ node-gyp-build@~4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.1.1.tgz#d7270b5d86717068d114cc57fff352f96d745feb"
   integrity sha512-dSq1xmcPDKPZ2EED2S6zw/b9NKsqzXRE6dVr8TVQnI3FJOTteUMuqF3Qqs6LZg+mLGYJWqQzMbIjMtJqTv87nQ==
+
+node-redis@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/node-redis/-/node-redis-0.1.7.tgz#6b5fd61ad95c331ea8289ca58856db13a3fb8013"
+  integrity sha1-a1/WGtlcMx6oKJyliFbbE6P7gBM=
 
 nodemon@^2.0.6:
   version "2.0.7"

@@ -1,5 +1,5 @@
 const { Async } = require('crocks')
-const { always, append, compose, identity, ifElse, isNil, not, remove } = require('ramda')
+const { always, append, compose, identity, ifElse, isNil, map, not, remove } = require('ramda')
 
 
 const createKey = (store, key) => `${store}_${key}`;
@@ -88,7 +88,7 @@ module.exports = function (client) {
       }
       return Async.Resolved(JSON.parse(v));
     })
-    .toPromise();
+      .toPromise();
 
   /**
    * @param {CacheDoc}
@@ -122,16 +122,47 @@ module.exports = function (client) {
    * @param {CacheQuery}
    * @returns {Promise<object>}
    */
-  const listDocs = ({ store, pattern = "*" }) =>
-    scan(0, "MATCH", store + "_" + pattern)
-      .chain(([cursor, keys]) =>
-        Async.all(
-          keys.map((key) =>
-            get(key).map((v) => ({
-              key: key.replace(`${store}_`, ""),
-              value: JSON.parse(v),
-            }))
-          )
+  const listDocs = async ({ store, pattern = "*" }) => {
+    let list = []
+    async function asyncScan(cursor) {
+      return new Promise((resolve, reject) => {
+        client.scan(cursor, "MATCH", store + '_' + pattern, (e, r) => {
+          if (e) { return reject(e) }
+          resolve(r)
+        })
+      })
+    }
+
+    // get initial list  
+    let [cursor, keys] = await asyncScan(0)
+    list = list.concat(keys)
+
+    let done = false
+
+    while (!done) {
+      // if cursor === 0 exit
+      if (cursor === '0') {
+        done = true
+        break;
+      }
+      // else get more keys
+      [cursor, keys] = await asyncScan(cursor)
+      // add the keys then check
+      list = list.concat(keys)
+    }
+
+
+    return Async.of(list)
+      .chain(
+        keys => Async.all(
+          map(key =>
+            get(key).map((v) =>
+              ({
+                key: key.replace(`${store}_`, ''),
+                value: JSON.parse(v)
+              })
+            )
+            , keys)
         )
       )
       .map((docs) => {
@@ -139,7 +170,9 @@ module.exports = function (client) {
           ok: true,
           docs,
         };
-      }).toPromise();
+      }).toPromise()
+  }
+
 
   return Object.freeze({
     index,
