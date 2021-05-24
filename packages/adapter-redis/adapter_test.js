@@ -1,9 +1,29 @@
 const test = require('tape')
 const redis = require('redis-mock')
+//const redis = require('redis')
 const createAdapter = require('./adapter')
 
 const client = redis.createClient()
 const adapter = createAdapter(client)
+
+test('test scan', async t => {
+  let result = await adapter.createStore('beep')
+  for (var i = 0; i < 100; i++) {
+    result = await adapter.createDoc({
+      store: 'beep',
+      key: 'bar' + i,
+      value: { bam: 'baz' }
+    })
+  }
+
+  result = await adapter.listDocs({
+    store: 'beep',
+    pattern: '*'
+  })
+
+  t.ok(result.docs.length === 100)
+  t.end()
+})
 
 test('create redis store', async t => {
   const result = await adapter.createStore('foo')
@@ -21,7 +41,7 @@ test('create redis doc', async t => {
   const result = await adapter.createDoc({
     store: 'foo',
     key: 'bar',
-    value: { bam: 'baz'}
+    value: { bam: 'baz' }
   })
   t.ok(result.ok)
   t.end()
@@ -32,7 +52,7 @@ test('get redis doc', async t => {
     store: 'foo',
     key: 'bar'
   })
-  t.deepEqual(result, { bam: 'baz'})
+  t.deepEqual(result, { bam: 'baz' })
   t.end()
 })
 
@@ -40,7 +60,7 @@ test('update redis doc', async t => {
   const result = await adapter.updateDoc({
     store: 'foo',
     key: 'bar',
-    value: { hello: 'world'}
+    value: { hello: 'world' }
   })
   t.ok(result.ok)
   t.end()
@@ -56,8 +76,8 @@ test('delete redis doc', async t => {
 })
 
 test('list redis docs', async t => {
-  const doc = {hello: 'world'}
-  await adapter.createDoc({store: 'foo', key: 'beep', value: doc})
+  const doc = { hello: 'world' }
+  await adapter.createDoc({ store: 'foo', key: 'beep', value: doc })
   const result = await adapter.listDocs({
     store: 'foo',
     pattern: '*'
