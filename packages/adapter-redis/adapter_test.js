@@ -7,20 +7,19 @@ const client = redis.createClient()
 const adapter = createAdapter(client)
 
 test('test scan', async t => {
-  let result = await adapter.createStore('beep')
+  let result = await adapter.createStore('word')
   for (var i = 0; i < 100; i++) {
     result = await adapter.createDoc({
-      store: 'beep',
+      store: 'word',
       key: 'bar' + i,
       value: { bam: 'baz' }
     })
   }
 
   result = await adapter.listDocs({
-    store: 'beep',
+    store: 'word',
     pattern: '*'
   })
-
   t.ok(result.docs.length === 100)
   t.end()
 })
@@ -82,6 +81,11 @@ test('list redis docs', async t => {
     store: 'foo',
     pattern: '*'
   })
+  await adapter.deleteDoc({
+    store: 'foo',
+    key: 'beep'
+  })
+
   t.ok(result.ok)
   t.equal(result.docs.length, 1)
   t.deepEqual(result.docs[0].value, doc)
