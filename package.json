@@ -9,9 +9,9 @@
   "private": true,
   "workspaces": [
     "packages/core",
-    "packages/adapter-couchdb", 
+    "packages/adapter-couchdb",
     "packages/adapter-redis",
-    "packages/adapter-memory", 
+    "packages/adapter-memory",
     "packages/adapter-pouchdb",
     "packages/adapter-fs",
     "packages/adapter-elasticsearch",
@@ -30,7 +30,8 @@
     "images/dev",
     "images/graphql",
     "images/couchdb",
-    "images/micro"
+    "images/micro",
+    "images/test"
   ],
   "devDependencies": {
     "@twilson63/test-server": "^1.0.1",
