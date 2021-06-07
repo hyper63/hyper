@@ -24,7 +24,7 @@ module.exports = function (adapter, env) {
     indexDoc: z.function()
       .args(z.object({
         index: z.string(),
-        key: z.string(), // remember to invalidate if key === query 
+        key: z.string(), // remember to invalidate if key === query
         doc: z.any()
       }))
       .returns(z.promise(z.object({
@@ -74,8 +74,7 @@ module.exports = function (adapter, env) {
             results: z.array(z.any())
           })
         )
-      )
-    ,
+      ),
     query: z.function()
       .args(z.object({
         index: z.string(),
@@ -105,7 +104,7 @@ module.exports = function (adapter, env) {
   return instance
 }
 
-function tryCatch(fn) {
+function tryCatch (fn) {
   return function (...val) {
     try {
       return Right(fn(...val))

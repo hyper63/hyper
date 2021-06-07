@@ -5,6 +5,5 @@ const Config = z.object({
   redis: z.string().url()
 }).passthrough()
 
-
 export type Config = z.infer<typeof Config>
 export type AdapterFn = () => QueuePort | undefined

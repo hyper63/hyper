@@ -13,16 +13,15 @@ module.exports = function (port) {
   return {
     id: 'zeromq',
     port: 'queue',
-    load: merge({port}),
+    load: merge({ port }),
     /**
      * @param {{port: string}} env
      */
-    link: (env) => 
+    link: (env) =>
       /**
        * @param {import('@hyper63/port-queue').QueuePort} a
        */
-      (a) => 
-        a ? merge(a, adapter(env)) : adapter(env) 
+      (a) =>
+        a ? merge(a, adapter(env)) : adapter(env)
   }
 }
-    

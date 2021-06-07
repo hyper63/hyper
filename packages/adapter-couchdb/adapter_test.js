@@ -6,9 +6,9 @@ const fetchMock = require('fetch-mock')
 const COUCH = 'http://localhost:5984'
 
 globalThis.fetch = fetchMock.sandbox()
-  .get(`${COUCH}/hello`, { status: 200, body: { db_name: 'hello' }})
-  .put(`${COUCH}/hello`, { status: 201, body: { ok: true }})
-  .put(`${COUCH}/hello/_security`, { status: 200, body: {ok: true} })
+  .get(`${COUCH}/hello`, { status: 200, body: { db_name: 'hello' } })
+  .put(`${COUCH}/hello`, { status: 201, body: { ok: true } })
+  .put(`${COUCH}/hello/_security`, { status: 200, body: { ok: true } })
   .delete(`${COUCH}/hello`, {
     status: 200,
     body: { ok: true }
@@ -19,7 +19,7 @@ globalThis.fetch = fetchMock.sandbox()
   })
   .get(`${COUCH}/hello/1`, {
     status: 200,
-    body: { _id: '1', hello: 'world'}
+    body: { _id: '1', hello: 'world' }
   })
   .post(`${COUCH}/hello/_find`, {
     status: 200,
@@ -44,9 +44,9 @@ globalThis.fetch = fetchMock.sandbox()
       ok: true,
       rows: [{
         key: '1',
-        value: { _id: '1', _rev: '1'},
+        value: { _id: '1', _rev: '1' },
         doc: {
-          _id: '1', 
+          _id: '1',
           _rev: '1',
           hello: 'world'
         }
@@ -57,11 +57,11 @@ globalThis.fetch = fetchMock.sandbox()
     status: 200,
     body: {
       ok: true,
-      rows:[{
+      rows: [{
         key: '1',
-        id: '1', 
-        value: { rev: '1' },
-      },{
+        id: '1',
+        value: { rev: '1' }
+      }, {
         key: '2',
         id: '2',
         value: { rev: '1' }
@@ -74,7 +74,7 @@ globalThis.fetch = fetchMock.sandbox()
       ok: true,
       id: '1',
       rev: '1'
-    },{
+    }, {
       ok: true,
       id: '2',
       rev: '2'
@@ -89,9 +89,9 @@ const adapter = createAdapter({
 
 test('bulk documents', async t => {
   const result = await adapter.bulkDocuments({
-    db:'hello',
-    docs: [{id: '1'},{id: '2'}]
-  }).catch(err => ({ok: false, err}))
+    db: 'hello',
+    docs: [{ id: '1' }, { id: '2' }]
+  }).catch(err => ({ ok: false, err }))
   t.ok(result.ok)
   t.equal(result.results.length, 2)
   t.end()
@@ -103,7 +103,6 @@ test('create database', async t => {
   t.end()
 })
 
-
 test('remove database', async t => {
   const result = await adapter.removeDatabase('hello')
   t.ok(result.ok)
@@ -112,7 +111,7 @@ test('remove database', async t => {
 
 test('create document', async t => {
   const result = await adapter.createDocument({
-    db: 'hello', id: '1', doc: {hello: 'world'}
+    db: 'hello', id: '1', doc: { hello: 'world' }
   })
   t.ok(result.ok)
   t.end()
@@ -121,7 +120,7 @@ test('create document', async t => {
 test('can not create design document', async t => {
   try {
     const result = await adapter.createDocument({
-      db: 'hello', id: '_design/1', doc: {hello: 'world'}
+      db: 'hello', id: '_design/1', doc: { hello: 'world' }
     })
   } catch (e) {
     t.ok(!e.ok)
@@ -131,7 +130,7 @@ test('can not create design document', async t => {
 
 test('retrieve document', async t => {
   const result = await adapter.retrieveDocument({
-    db: 'hello', 
+    db: 'hello',
     id: '1'
   })
   t.equal(result.hello, 'world')
@@ -148,7 +147,7 @@ test('find documents', async t => {
     }
   })
   t.deepEqual(results.docs[0], {
-    id: '1', 
+    id: '1',
     hello: 'world'
   })
   t.end()
@@ -157,7 +156,7 @@ test('find documents', async t => {
 test('create query index', async t => {
   const results = await adapter.indexDocuments({
     db: 'hello',
-    name: 'foo', 
+    name: 'foo',
     fields: ['foo']
   })
   t.ok(results.ok)
@@ -170,7 +169,7 @@ test('list documents', async t => {
     limit: 1
   })
   t.deepEqual(results.docs[0], {
-    id: '1', 
+    id: '1',
     hello: 'world'
   })
 })

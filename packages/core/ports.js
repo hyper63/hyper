@@ -6,7 +6,7 @@ const queue = require('@hyper63/port-queue').default
 
 const { mapObjIndexed, reduce, ifElse } = require('ramda')
 
-module.exports = (adapters) =>  ({
+module.exports = (adapters) => ({
   cache: adapters.cache ? cache(adapters.cache) : null,
   data: adapters.data ? data(adapters.data) : null,
   storage: adapters.storage ? storage(adapters.storage) : null,

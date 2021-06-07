@@ -3,14 +3,13 @@ const z = require('zod')
  * @param {object} plugin
  * @returns {object}
  */
-module.exports = function(plugin) {
+module.exports = function (plugin) {
   const schema = z.object({
     id: z.string().optional(),
     port: z.string().optional(),
     load: z.function()
       .args(z.any().optional())
-      .returns(z.any())  
-      ,
+      .returns(z.any()),
     link: z.function()
       .args(z.any())
       .returns(z.function()

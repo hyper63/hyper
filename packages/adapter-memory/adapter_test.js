@@ -4,12 +4,12 @@ const memory = require('./adapter')()
 
 test('try to create cache store with no name', async t => {
   const result = await memory.createStore(null).catch(e => e)
-  
+
   t.ok(!result.ok, 'should be false')
   t.equal(result.msg, 'name must be a string value', 'error msg is correct')
 
   const result2 = await memory.createStore(undefined).catch(e => e)
-  
+
   t.ok(!result2.ok, 'should be false')
   t.equal(result2.msg, 'name must be a string value', 'error msg is correct')
 
@@ -57,7 +57,7 @@ test('find documents', async t => {
 
 test('create store', async t => {
   t.plan(1)
- 
+
   const result = await memory.createStore('default')
   t.ok(result.ok)
 })
@@ -65,7 +65,7 @@ test('create store', async t => {
 test('delete store', async t => {
   t.plan(1)
   const result = await memory.destroyStore('default')
-  t.ok(result.ok)  
+  t.ok(result.ok)
 })
 
 test('create doc', async t => {
@@ -75,13 +75,13 @@ test('create doc', async t => {
   await memory.createDoc({
     store: store,
     key: '1',
-    value: {hello: 'world'}
+    value: { hello: 'world' }
   })
   const result = await memory.getDoc({
     store: store,
     key: '1'
   })
-  t.deepEqual(result, { hello: 'world'})
+  t.deepEqual(result, { hello: 'world' })
   await memory.destroyStore(store)
 })
 
@@ -92,15 +92,14 @@ test('get doc', async t => {
   await memory.createDoc({
     store,
     key: '2',
-    value: {foo: 'bar'}
+    value: { foo: 'bar' }
   })
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.deepEqual(result, {foo: 'bar'})
+  t.deepEqual(result, { foo: 'bar' })
   await memory.destroyStore(store)
 })
-
 
 test('update doc', async t => {
   t.plan(1)
@@ -109,20 +108,19 @@ test('update doc', async t => {
   await memory.createDoc({
     store,
     key: '2',
-    value: {foo: 'bar'}
+    value: { foo: 'bar' }
   })
   await memory.updateDoc({
     store,
     key: '2',
-    value: { beep: 'boop'}
+    value: { beep: 'boop' }
   })
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.deepEqual(result, {beep: 'boop'})
+  t.deepEqual(result, { beep: 'boop' })
   await memory.destroyStore(store)
 })
-
 
 test('delete doc', async t => {
   t.plan(1)
@@ -131,7 +129,7 @@ test('delete doc', async t => {
   await memory.createDoc({
     store,
     key: '2',
-    value: {foo: 'bar'}
+    value: { foo: 'bar' }
   })
   await memory.deleteDoc({
     store,

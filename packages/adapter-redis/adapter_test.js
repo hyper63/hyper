@@ -1,6 +1,6 @@
 const test = require('tape')
 const redis = require('redis-mock')
-//const redis = require('redis')
+// const redis = require('redis')
 const createAdapter = require('./adapter')
 
 const client = redis.createClient()
@@ -8,7 +8,7 @@ const adapter = createAdapter(client)
 
 test('test scan', async t => {
   let result = await adapter.createStore('word')
-  for (var i = 0; i < 100; i++) {
+  for (let i = 0; i < 100; i++) {
     result = await adapter.createDoc({
       store: 'word',
       key: 'bar' + i,

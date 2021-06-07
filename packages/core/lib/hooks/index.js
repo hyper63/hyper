@@ -1,6 +1,6 @@
 const { Async } = require('crocks')
 
-module.exports = function ({events, hooks}) {
+module.exports = function ({ events, hooks }) {
   events.subscribe(action => {
     if (hooks && hooks.call) {
       Async.fromPromise(hooks.call)(action)
@@ -8,12 +8,11 @@ module.exports = function ({events, hooks}) {
           err => console.log('ERROR', err.message),
           results => null
         )
-
     } else {
       console.log(`${action.type}: ${JSON.stringify(action.payload)}`)
     }
   })
   return ({
-    status: () => ({ok: true, msg: 'listening for events '})
+    status: () => ({ ok: true, msg: 'listening for events ' })
   })
 }

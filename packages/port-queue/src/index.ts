@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const QueueListResponse = z.string().array() 
+const QueueListResponse = z.string().array()
 
 const QueueCreateInput = z.object({
   name: z.string(),
@@ -36,19 +36,19 @@ const JobInput = z.object({
 })
 
 const QueuePort = z.object({
-  index: z.function() 
+  index: z.function()
     .args()
     .returns(z.promise(QueueListResponse)),
   create: z.function()
     .args(QueueCreateInput)
     .returns(z.promise(QueueResponse)),
-  'delete': z.function()
+  delete: z.function()
     .args(z.string())
     .returns(z.promise(QueueResponse)),
   post: z.function()
     .args(QueuePostInput)
     .returns(z.promise(QueueResponse)),
-  get: z.function() 
+  get: z.function()
     .args(QueueGetInput)
     .returns(z.promise(JobsResponse)),
   retry: z.function()
@@ -69,10 +69,7 @@ export type QueueGetInput = z.infer<typeof QueueGetInput>
 export type JobsResponse = z.infer<typeof JobsResponse>
 export type JobInput = z.infer<typeof JobInput>
 
-
 export default function (adapter : QueuePort) : QueuePort {
-
-
   const instance = QueuePort.parse(adapter)
 
   // wrap the functions with validators
@@ -83,7 +80,5 @@ export default function (adapter : QueuePort) : QueuePort {
   instance.retry = QueuePort.shape.retry.validate(instance.retry)
   instance.cancel = QueuePort.shape.cancel.validate(instance.cancel)
 
-
   return instance
-
 }

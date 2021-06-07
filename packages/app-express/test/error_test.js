@@ -9,6 +9,6 @@ test('GET /error', async t => {
   const server = createServer(app)
   const res = await (await fetch(`${server.url}/error`)).json()
 
-  t.equal(res.ok,false)
+  t.equal(res.ok, false)
   server.close(noop)
 })

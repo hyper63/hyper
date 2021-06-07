@@ -1,5 +1,7 @@
-import { QueuePort, QueueCreateInput, QueuePostInput, QueueResponse,
-  QueueGetInput, JobsResponse, JobInput } from '@hyper63/port-queue'
+import {
+  QueuePort, QueueCreateInput, QueuePostInput, QueueResponse,
+  QueueGetInput, JobsResponse, JobInput
+} from '@hyper63/port-queue'
 import { omit } from 'ramda'
 
 import { Config } from './types'
@@ -18,12 +20,12 @@ export default function (env: Config) : QueuePort {
         console.log(`Job ${job.id} failed with error ${err.message}`)
       })
       q.process(async (job: any) => {
-        return await fetch(target, { 
-          method: 'POST', 
+        return await fetch(target, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          }, 
-          body: JSON.stringify(job.data) 
+          },
+          body: JSON.stringify(job.data)
         })
           .then(res => {
             if (res.status > 300) {
@@ -37,14 +39,12 @@ export default function (env: Config) : QueuePort {
       return Promise.resolve({ ok: true })
     },
     post: (input: QueuePostInput): Promise<QueueResponse> => {
-      let q = queues[input.name]
-      let job = q.createJob(input.job) 
+      const q = queues[input.name]
+      const job = q.createJob(input.job)
       job.save()
-      return Promise.resolve({ok: true})
-      
-
+      return Promise.resolve({ ok: true })
     },
-    'delete': (name: string): Promise<QueueResponse> => {
+    delete: (name: string): Promise<QueueResponse> => {
       const q = queues[name]
       queues = omit([name], queues)
       return q.destroy().then(() => ({ ok: true }))
@@ -59,8 +59,7 @@ export default function (env: Config) : QueuePort {
     },
     retry: (input: JobInput): Promise<QueueResponse> => {
       const q = queues[input.name]
-      return Promise.resolve({ok: true})
+      return Promise.resolve({ ok: true })
     }
   }
-
 }

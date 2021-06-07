@@ -6,7 +6,7 @@ const {
 } = require('./paths')
 
 /**
-  * 
+  *
   * @typedef {Object} IndexInfo
   * @property {string} index - index name
   * @property {Object} mappings
@@ -15,7 +15,7 @@ const {
   * @property {boolean} ok
   * @property {string} [msg]
   * @property {Array<any>} results
-  * 
+  *
   * @typedef {Object} SearchDoc
   * @property {string} index
   * @property {string} key
@@ -24,33 +24,33 @@ const {
   * @typedef {Object} SearchInfo
   * @property {string} index
   * @property {string} key
-  * 
+  *
   * @typedef {Object} SearchOptions
   * @property {Array<string>} fields
   * @property {Object} boost
   * @property {boolean} prefix
-  * 
+  *
   * @typedef {Object} SearchQuery
   * @property {string} index
   * @property {string} query
   * @property {SearchOptions} [options]
-  * 
+  *
   * @typedef {Object} Response
   * @property {boolean} ok
   * @property {string} [msg]
-  * 
+  *
   * @typedef {Object} ResponseWithResults
   * @property {boolean} ok
   * @property {string} [msg]
   * @property {Array<any>} results
-  * 
+  *
   * @typedef {Object} ResponseWithMatches
   * @property {boolean} ok
   * @property {string} [msg]
   * @property {Array<any>} matches
  */
 
- /**
+/**
   * TODO:
   * - Sanitize inputs ie. index names
   * - Map Port api to Elasticsearch api for creating an index
@@ -59,11 +59,10 @@ const {
   * - ? Should we expose Elasticsearch response in result as res?
   */
 module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
-
   /**
-   * @param {IndexInfo} 
+   * @param {IndexInfo}
    * @returns {Promise<Response>}
-   * 
+   *
    */
   function createIndex ({ index, mappings }) {
     const properties = mappings.fields.reduce((a, f) => set(lensProp(f), { type: 'text' }, a), {})
@@ -224,7 +223,7 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
           map(JSON.stringify.bind(JSON)),
           join('\n'),
           // Bulk payload must end with a newline
-          flip(concat)('\n'),
+          flip(concat)('\n')
         )(docs)
       }
     )
@@ -239,9 +238,9 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
   }
 
   /**
-   * 
+   *
    * @param {SearchQuery}
-   * @returns {Promise<ResponseWithMatches>}  
+   * @returns {Promise<ResponseWithMatches>}
    */
   function query ({ index, q: { query, fields, filter } }) {
     return asyncFetch(
@@ -278,7 +277,7 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
       )
       .toPromise()
   }
-  
+
   return Object.freeze({
     createIndex,
     deleteIndex,
@@ -286,7 +285,7 @@ module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
     getDoc,
     updateDoc,
     removeDoc,
-    bulk, 
+    bulk,
     query
   })
 }

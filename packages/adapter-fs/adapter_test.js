@@ -18,21 +18,21 @@ test('fs adapter make bucket', async t => {
 
 test('fs adapter put object', async t => {
   t.plan(1)
-  // setup 
+  // setup
   const bucket = v4()
   const object = v4() + '.tmp'
   await adapter.makeBucket(bucket)
- 
+
   // test
   const stream = toStream.source(values(['hello', 'world']))
-  
+
   const result = await adapter.putObject({
     bucket,
     object,
     stream
   })
   t.ok(result.ok)
-  
+
   // clean up
 
   // remove file
@@ -43,17 +43,16 @@ test('fs adapter put object', async t => {
   // remove Bucket
   await adapter.removeBucket(bucket).catch(err => {
     console.log(JSON.stringify(err))
-    return {ok: false}
+    return { ok: false }
   })
-  
 })
 
 test('fs adapter get object', async t => {
   const bucket = v4()
   const object = v4() + '.tmp'
   await adapter.makeBucket(bucket)
- 
-  const stream = toStream.source(values(['hello', 'world']))  
+
+  const stream = toStream.source(values(['hello', 'world']))
   await adapter.putObject({
     bucket,
     object,
@@ -77,22 +76,19 @@ test('fs adapter get object', async t => {
         })
         // remove Bucket
         await adapter.removeBucket(bucket).catch(err => {
-          return {ok: false}
+          return { ok: false }
         })
-        resolve()    
+        resolve()
       })
     )
-    
   })
   t.end()
-
-
 })
 
 test('list files', async t => {
   const list = await adapter.listObjects({
     bucket: 'node_modules'
-  }) 
+  })
   t.ok(
     list.find(file => file === 'tape')
   )

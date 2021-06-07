@@ -3,15 +3,13 @@ const validateConfig = require('./config-schema')
 
 const noop = () => null
 
-
-
 test('validate schema', t => {
   t.plan(1)
   try {
     validateConfig({
       app: noop,
       adapters: [
-        { port: 'queue', plugins: [noop]}
+        { port: 'queue', plugins: [noop] }
       ]
     })
     t.ok(true)

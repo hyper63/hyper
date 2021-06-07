@@ -19,7 +19,7 @@ module.exports = function () {
     /**
      * @param {Function} fn
      */
-    subscribe(fn) {
+    subscribe (fn) {
       if (is(Function, fn)) {
         // append function
         fns = fns.map(append(fnSpec.validate(fn)))
@@ -28,7 +28,7 @@ module.exports = function () {
     /**
      * @param {Action} action
      */
-    dispatch(action) {
+    dispatch (action) {
       map(
         fn => fn(action),
         fns.valueOf()

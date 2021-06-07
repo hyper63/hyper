@@ -8,18 +8,17 @@ test('pouchdb add bulk docs non objects', async t => {
   const adapter = createAdapter('/tmp')
   const dbName = v4()
   await adapter.createDatabase(dbName)
-  
+
   const result = await adapter.bulkDocuments({
     db: dbName,
-    docs: [1,2,3]
+    docs: [1, 2, 3]
   }).catch(e => e)
   t.notOk(result.ok)
   t.equal(result.msg, 'documents must be objects')
-  const r = await adapter.listDocuments({db: dbName})
+  const r = await adapter.listDocuments({ db: dbName })
   console.log(r)
   t.end()
 })
-
 
 test('pouchdb add bulk docs db not found', async t => {
   const adapter = createAdapter('/tmp')
@@ -27,7 +26,7 @@ test('pouchdb add bulk docs db not found', async t => {
   const result = await adapter.bulkDocuments({
     db: 'foo',
     docs: [
-      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '1', type: 'movie', title: 'Ghostbusters' },
       { id: '2', type: 'movie', title: 'Groundhog Day' },
       { id: '3', _deleted: true }
     ]
@@ -44,7 +43,7 @@ test('pouchdb add bulk docs no db', async t => {
   const result = await adapter.bulkDocuments({
     db: null,
     docs: [
-      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '1', type: 'movie', title: 'Ghostbusters' },
       { id: '2', type: 'movie', title: 'Groundhog Day' },
       { id: '3', _deleted: true }
     ]
@@ -56,27 +55,26 @@ test('pouchdb add bulk docs no db', async t => {
   t.end()
 })
 
-
 test('pouchdb add bulk docs', async t => {
   const adapter = createAdapter('/tmp')
   const dbName = v4()
   await adapter.createDatabase(dbName)
   await adapter.createDocument({
-    db: dbName, 
-    id: '2', 
-    doc: { hello: 'world'}
+    db: dbName,
+    id: '2',
+    doc: { hello: 'world' }
   })
 
   await adapter.createDocument({
-    db: dbName, 
-    id: '3', 
-    doc: { hello: 'world'}
+    db: dbName,
+    id: '3',
+    doc: { hello: 'world' }
   })
 
   const result = await adapter.bulkDocuments({
     db: dbName,
     docs: [
-      { id: '1', type: 'movie', title: 'Ghostbusters' }, 
+      { id: '1', type: 'movie', title: 'Ghostbusters' },
       { id: '2', type: 'movie', title: 'Groundhog Day' },
       { id: '3', _deleted: true }
     ]
@@ -147,7 +145,6 @@ test('pouchdb find', async t => {
   t.ok(searchResults.ok)
   t.end()
 })
-
 
 test('pouchdb adapter tests', async t => {
   t.plan(5)

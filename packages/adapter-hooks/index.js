@@ -7,12 +7,11 @@ const createAdapter = require('./adapter.js')
 const fetch = createFetch(nodeFetch)
 const asyncFetch = Async.fromPromise(fetch)
 
-module.exports = function(hooks) {
+module.exports = function (hooks) {
   return Object.freeze({
     id: 'hooks',
     port: 'hooks',
-    load: merge({hooks}), 
-    link: env => _ => createAdapter({asyncFetch, hooks}) 
+    load: merge({ hooks }),
+    link: env => _ => createAdapter({ asyncFetch, hooks })
   })
 }
-

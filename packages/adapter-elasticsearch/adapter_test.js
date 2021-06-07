@@ -29,7 +29,7 @@ const DOC2 = {
   rating: 6
 }
 
-let fetch = fetchMock.sandbox()
+const fetch = fetchMock.sandbox()
 
 const adapter = createAdapter({
   config: { origin: ES },
@@ -54,8 +54,8 @@ test('remove index', async t => {
 
 test('create index', async t => {
   // create index
-  fetch.putOnce(createIndexPath(ES, INDEX), 
-    { 
+  fetch.putOnce(createIndexPath(ES, INDEX),
+    {
       status: 201,
       body: { ok: true },
       headers
@@ -64,7 +64,7 @@ test('create index', async t => {
 
   const result = await adapter.createIndex({
     index: INDEX,
-    mappings: { fields: ["title"] }
+    mappings: { fields: ['title'] }
   })
 
   t.equals(result.ok, true)
@@ -100,10 +100,10 @@ test('get document', async t => {
   })
 
   const result = await adapter.getDoc({
-    index: INDEX, 
+    index: INDEX,
     key: DOC1.id
   })
-  
+
   t.equals(result.doc.title, DOC1.title)
   t.equals(result.ok, true)
   t.end()
@@ -120,14 +120,14 @@ test('update document', async t => {
   })
 
   const result = await adapter.updateDoc({
-    index: INDEX, 
+    index: INDEX,
     key: DOC1.id,
     doc: {
       ...DOC1,
       rating: 6
     }
   })
-  
+
   t.equals(result.ok, true)
   t.end()
 })
@@ -141,10 +141,10 @@ test('delete document', async t => {
   })
 
   const result = await adapter.removeDoc({
-    index: INDEX, 
+    index: INDEX,
     key: DOC1.id
   })
-  
+
   t.equals(result.ok, true)
   t.end()
 })
@@ -169,7 +169,7 @@ test('bulk', async t => {
       DOC2
     ]
   })
-  
+
   t.equals(result.ok, true)
   t.ok(result.results)
   t.end()

@@ -2,7 +2,7 @@ const test = require('tape')
 const { Async } = require('crocks')
 const app = require('../')({
   data: {
-    bulkDocuments: () => Async.Resolved({ok: true, results: []})
+    bulkDocuments: () => Async.Resolved({ ok: true, results: [] })
   },
   middleware: []
 })
@@ -18,7 +18,7 @@ test('POST /data/movies/_bulk', async t => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify([{id: '1', type: 'movie'}])
+    body: JSON.stringify([{ id: '1', type: 'movie' }])
   })).json()
   t.ok(res.ok)
   server.close()

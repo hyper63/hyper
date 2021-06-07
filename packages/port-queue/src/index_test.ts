@@ -1,6 +1,8 @@
 import { default as test } from 'tape'
-import queuePort, { QueuePort, QueueListResponse, QueueCreateInput, QueuePostInput, QueueResponse,
-  QueueGetInput, JobsResponse, JobInput } from './index'
+import queuePort, {
+  QueuePort, QueueListResponse, QueueCreateInput, QueuePostInput, QueueResponse,
+  QueueGetInput, JobsResponse, JobInput
+} from './index'
 
 const adapter : QueuePort = {
   index: () : Promise<QueueListResponse> => {
@@ -18,15 +20,15 @@ const adapter : QueuePort = {
       msg: 'success'
     })
   },
-  'delete': (name: string) : Promise<QueueResponse> => {
-    return Promise.resolve({ok: true})
+  delete: (name: string) : Promise<QueueResponse> => {
+    return Promise.resolve({ ok: true })
   },
   get: (input: QueueGetInput) : Promise<JobsResponse> => {
     return Promise.resolve({
       ok: true,
       jobs: [{
         id: '1',
-        action: 'email', 
+        action: 'email',
         subject: 'Hello',
         body: 'world',
         to: 'foo@email.com',
@@ -34,21 +36,21 @@ const adapter : QueuePort = {
       }]
     })
   },
-  cancel: (input: JobInput) : Promise<QueueResponse> => 
-    Promise.resolve({ok: true}),
-  retry: (input: JobInput) : Promise<QueueResponse> => 
-    Promise.resolve({ok: true, status: 201})
+  cancel: (input: JobInput) : Promise<QueueResponse> =>
+    Promise.resolve({ ok: true }),
+  retry: (input: JobInput) : Promise<QueueResponse> =>
+    Promise.resolve({ ok: true, status: 201 })
 
 }
 
 const badAdapter : QueuePort = {
-  index: () => Promise.reject({ ok: false, msg: 'could not create list'}),
-  create: (input: QueueCreateInput) => Promise.reject({ok: false, msg: 'badfood'}),
-  post: (input: QueuePostInput) => Promise.reject({ok: false, msg: 'badfood'}),
-  'delete': (name: string) => Promise.reject({ok: false}),
-  get: (input: QueueGetInput) => Promise.reject({ok: false}),
-  cancel: (input: JobInput) => Promise.reject({ok: false}),
-  retry: (input: JobInput) => Promise.reject({ok: false})
+  index: () => Promise.reject({ ok: false, msg: 'could not create list' }),
+  create: (input: QueueCreateInput) => Promise.reject({ ok: false, msg: 'badfood' }),
+  post: (input: QueuePostInput) => Promise.reject({ ok: false, msg: 'badfood' }),
+  delete: (name: string) => Promise.reject({ ok: false }),
+  get: (input: QueueGetInput) => Promise.reject({ ok: false }),
+  cancel: (input: JobInput) => Promise.reject({ ok: false }),
+  retry: (input: JobInput) => Promise.reject({ ok: false })
 
 }
 
@@ -64,7 +66,7 @@ test('create a queue success', async t => {
   res = await x.post({
     name: 'test',
     job: {
-      action: 'email', 
+      action: 'email',
       subject: 'Hello',
       body: 'world',
       to: 'foo@email.com',
@@ -73,19 +75,17 @@ test('create a queue success', async t => {
   })
   t.ok(res.ok)
   res = await x.get({
-    name: 'test', 
+    name: 'test',
     status: 'ERROR'
   })
   t.ok(res.ok)
-  
-
 })
 
 test('create a queue failure', async t => {
   t.plan(2)
   const x = queuePort(badAdapter)
-  let res = await x.create({name: 'foo', target: 'bar'}).catch(err => err)
+  let res = await x.create({ name: 'foo', target: 'bar' }).catch(err => err)
   t.notOk(res.ok)
-  res = await x.post({name: 'foo', job: {}}).catch(err => err)
+  res = await x.post({ name: 'foo', job: {} }).catch(err => err)
   t.notOk(res.ok)
 })

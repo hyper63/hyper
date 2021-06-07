@@ -6,32 +6,32 @@ const fetchMock = require('fetch-mock')
 const logDb = 'http://127.0.0.1:9200/log/_doc'
 
 const hooks = [{
-  matcher: "*",
+  matcher: '*',
   target: logDb
 }, {
-  matcher: "TEST:*",
+  matcher: 'TEST:*',
   target: logDb
 }, {
-  matcher: "*:METHOD",
+  matcher: '*:METHOD',
   target: logDb
 }, {
-  matcher: "FOO:BAR",
+  matcher: 'FOO:BAR',
   target: logDb
 }]
 
 const fetch = fetchMock.sandbox()
-  .post(`${logDb}`, 
-    { 
+  .post(`${logDb}`,
+    {
       status: 201,
       body: { ok: true },
-      headers: {'content-type': 'application/json'}
+      headers: { 'content-type': 'application/json' }
     }
   )
 
 const asyncFetch = Async.fromPromise(fetch)
 
 test('using hooks log event', async t => {
-  const adapter = createAdapter({asyncFetch, hooks})
+  const adapter = createAdapter({ asyncFetch, hooks })
   const result = await adapter.call({
     type: 'TEST:METHOD',
     payload: { date: new Date().toISOString() }

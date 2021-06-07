@@ -8,8 +8,7 @@ const couchdb = require('@hyper63/adapter-couchdb')
 module.exports = {
   app: express,
   adapters: [
-    { port: 'data', plugins: [ couchdb({ url: process.env.COUCHDB_SERVER})]}
+    { port: 'data', plugins: [couchdb({ url: process.env.COUCHDB_SERVER })] }
   ],
   middleware: [jwt]
 }
-

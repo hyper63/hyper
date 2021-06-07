@@ -32,10 +32,10 @@ function getObject (storage) {
       (e) => res.status(500).send({ ok: false, msg: e.message }),
       (s) => {
         // get mime type
-        const mimeType = mime.getType(params[0].split(".")[1])
+        const mimeType = mime.getType(params[0].split('.')[1])
         res.writeHead(200, {
-          "Content-Type": mimeType,
-          "Transfer-Encoding": "chunked"
+          'Content-Type': mimeType,
+          'Transfer-Encoding': 'chunked'
         })
         s.pipe(res)
       }

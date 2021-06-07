@@ -2,9 +2,9 @@
 declare function _exports(port: string): {
     id: string;
     port: string;
-    load: <O2 extends object>(b: O2) => import("Object/Merge").MergeFlat<import("List/ObjectOf").ObjectOf<O2>, {
+    load: <O2 extends object>(b: O2) => import('Object/Merge').MergeFlat<import('List/ObjectOf').ObjectOf<O2>, {
         port: string;
-    }, 1, import("Misc/BuiltInObject").BuiltInObject>;
+    }, 1, import('Misc/BuiltInObject').BuiltInObject>;
     /**
      * @param {{port: string}} env
      */
@@ -36,7 +36,7 @@ declare function _exports(port: string): {
         }>;
         get: (args_0: {
             name: string;
-            status: "READY" | "ERROR";
+            status: 'READY' | 'ERROR';
         }) => Promise<{
             status?: number | undefined;
             jobs?: {}[] | undefined;

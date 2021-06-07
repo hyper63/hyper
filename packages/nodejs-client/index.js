@@ -10,7 +10,7 @@ const fetch = globalThis.fetch
 /**
  * @param {string} host = provide the host url for hyper63 service
  * @param {string} client - provide unique string representing this client app
- * @param {string} secret - provide a shared secret used to sign the jwt 
+ * @param {string} secret - provide a shared secret used to sign the jwt
  * @param {string} app - app name
  * @returns {Object}
  */
@@ -20,11 +20,11 @@ module.exports = (host, client, secret, app) => {
     setup: {
       db: () => $.put(`${host}/data/${app}`),
       cache: () => $.put(`${host}/cache/${app}`),
-      search: (mappings={}) => $.put(`${host}/search/${app}`, mappings),
-      queue: (target, secret) => $.put(`${host}/queue/${app}`, {target, secret})
+      search: (mappings = {}) => $.put(`${host}/search/${app}`, mappings),
+      queue: (target, secret) => $.put(`${host}/queue/${app}`, { target, secret })
     },
     cache: {
-      query: pattern => $.get(`${host}/cache/${app}/_query?${qs.stringify({pattern: pattern || '*'})}`),
+      query: pattern => $.get(`${host}/cache/${app}/_query?${qs.stringify({ pattern: pattern || '*' })}`),
       post: doc => $.post(`${host}/cache/${app}`, doc),
       get: id => $.get(`${host}/cache/${app}/${id}`),
       put: (key, doc) => $.put(`${host}/cache/${app}/${key}`, doc),
@@ -51,6 +51,3 @@ module.exports = (host, client, secret, app) => {
     }
   })
 }
- 
-
-

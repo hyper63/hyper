@@ -4,9 +4,9 @@ const z = require('zod')
  * @param {object} env - environment settings for the adapter
  */
 module.exports = function (adapter) {
-  const Port = z.object({ 
-    createDatabase: z.function().args(z.string()).returns(z.promise(z.object({ok: z.boolean()}))),
-    removeDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean()}))),
+  const Port = z.object({
+    createDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean() }))),
+    removeDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean() }))),
     createDocument: z.function()
       .args(z.object({
         db: z.string(),
@@ -14,9 +14,9 @@ module.exports = function (adapter) {
         doc: z.any()
       }))
       .returns(z.promise(z.object({
-      ok: z.boolean(),
-      id: z.string()
-    }))),
+        ok: z.boolean(),
+        id: z.string()
+      }))),
     retrieveDocument: z.function().args(z.object({
       db: z.string(),
       id: z.string()
@@ -43,7 +43,7 @@ module.exports = function (adapter) {
         endkey: z.string().optional(),
         keys: z.string().optional(),
         descending: z.boolean().optional()
-    
+
       })).returns(z.promise(z.object({
         ok: z.boolean(),
         docs: z.array(z.any())
@@ -78,25 +78,25 @@ module.exports = function (adapter) {
         docs: z.array(z.any())
       }))
       .returns(z.promise(z.object({
-        ok: z.boolean(), 
+        ok: z.boolean(),
         results: z.array(z.object({
           ok: z.boolean(),
           id: z.string()
         }))
       })))
- })
- const instance = Port.parse(adapter)
- instance.createDatabase = Port.shape.createDatabase.validate(instance.createDatabase)
- instance.removeDatabase = Port.shape.removeDatabase.validate(instance.removeDatabase)
- instance.createDocument = Port.shape.createDocument.validate(instance.createDocument)
- instance.retrieveDocument = Port.shape.retrieveDocument.validate(instance.retrieveDocument)
- // instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
- instance.updateDocument = adapter.updateDocument
- instance.removeDocument = Port.shape.removeDocument.validate(instance.removeDocument)
- instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
- instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)
- instance.indexDocuments = Port.shape.indexDocuments.validate(instance.indexDocuments) 
- instance.bulkDocuments = Port.shape.bulkDocuments.validate(instance.bulkDocuments)
+  })
+  const instance = Port.parse(adapter)
+  instance.createDatabase = Port.shape.createDatabase.validate(instance.createDatabase)
+  instance.removeDatabase = Port.shape.removeDatabase.validate(instance.removeDatabase)
+  instance.createDocument = Port.shape.createDocument.validate(instance.createDocument)
+  instance.retrieveDocument = Port.shape.retrieveDocument.validate(instance.retrieveDocument)
+  // instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
+  instance.updateDocument = adapter.updateDocument
+  instance.removeDocument = Port.shape.removeDocument.validate(instance.removeDocument)
+  instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
+  instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)
+  instance.indexDocuments = Port.shape.indexDocuments.validate(instance.indexDocuments)
+  instance.bulkDocuments = Port.shape.bulkDocuments.validate(instance.bulkDocuments)
 
- return instance
+  return instance
 }

@@ -22,17 +22,15 @@ export default function (config: Config) : Plugin {
   const load : Load<Config> = function (env:Config) : Config {
     return merge(env, config)
   }
-  
+
   const link : Link<Config, AdapterFn> = function (env: Config) : AdapterFn {
     return () => adapter(env)
   }
-  
+
   return ({
     id: 'beequeue',
     port: 'queue',
     load,
-    link  
+    link
   })
 }
-
-

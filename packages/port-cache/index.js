@@ -4,7 +4,7 @@ const z = require('zod')
  * @param {object} env - environment settings for the adapter
  */
 module.exports = function (adapter) {
-  const cachePort = z.object({ 
+  const cachePort = z.object({
     // list cache stores
     index: z.function()
       .args()
@@ -18,91 +18,90 @@ module.exports = function (adapter) {
           z.object({
             ok: z.boolean()
           })
+        )
+      ),
+    destroyStore: z.function()
+      .args(z.string())
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean()
+          })
+        )
+      ),
+    createDoc: z.function()
+      .args(z.object({
+        store: z.string(),
+        key: z.string(),
+        value: z.any(),
+        ttl: z.string().optional()
+      }))
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean(),
+            error: z.string().optional()
+          })
+        )
+      ),
+    getDoc: z.function()
+      .args(z.object({
+        store: z.string(),
+        key: z.string()
+      }))
+      .returns(
+        z.promise(
+          z.union([
+            z.object({ ok: z.boolean(), status: z.number().optional(), msg: z.string() }),
+            z.object({}).passthrough()
+          ])
+        )
+      ),
+    updateDoc: z.function()
+      .args(z.object({
+        store: z.string(),
+        key: z.string(),
+        value: z.any(),
+        ttl: z.string().optional()
+      }))
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean(),
+            error: z.string().optional()
+          })
+        )
+      ),
+    deleteDoc: z.function()
+      .args(z.object({
+        store: z.string(),
+        key: z.string()
+      }))
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean(),
+            error: z.string().optional()
+          })
+        )
+      ),
+    listDocs: z.function()
+      .args(z.object({
+        store: z.string(),
+        pattern: z.string().optional()
+      }))
+      .returns(
+        z.promise(
+          z.object({
+            ok: z.boolean(),
+            docs: z.array(
+              z.any()
+            )
+          })
+        )
       )
-   ),
-   destroyStore: z.function()
-     .args(z.string())
-     .returns(
-       z.promise(
-         z.object({
-           ok: z.boolean()
-         })
-       )
-     ),
-  createDoc: z.function()
-    .args(z.object({
-      store: z.string(),
-      key: z.string(),
-      value: z.any(),
-      ttl: z.string().optional()
-    }))
-    .returns(
-      z.promise(
-        z.object({
-          ok: z.boolean(),
-          error: z.string().optional()
-        })
-      )
-    )
-    ,
-  getDoc: z.function() 
-    .args(z.object({
-      store: z.string(),
-      key: z.string()
-    }))
-    .returns(
-      z.promise(
-        z.union([
-          z.object({ok: z.boolean(), status: z.number().optional(), msg: z.string()}),
-          z.object({}).passthrough()
-        ])
-      )
-    ),
-  updateDoc: z.function()
-    .args(z.object({
-      store: z.string(),
-      key: z.string(),
-      value: z.any(),
-      ttl: z.string().optional()
-    }))
-    .returns(
-      z.promise(
-        z.object({
-          ok: z.boolean(),
-          error: z.string().optional()
-        })
-      )
-    ),
-  deleteDoc: z.function()
-    .args(z.object({
-      store: z.string(),
-      key: z.string()
-    }))
-    .returns(
-      z.promise(
-        z.object({
-          ok: z.boolean(),
-          error: z.string().optional()
-        })
-      )
-    ),
-  listDocs: z.function()
-    .args(z.object({
-      store: z.string(),
-      pattern: z.string().optional()
-    }))
-    .returns(
-      z.promise(
-        z.object({
-          ok: z.boolean(),
-          docs: z.array(
-            z.any()
-          )
-        })
-      )
-    )
-  })  
-  let instance = cachePort.parse(adapter)
+  })
+  const instance = cachePort.parse(adapter)
   instance.createStore = cachePort.shape.createStore.validate(instance.createStore)
   instance.destroyStore = cachePort.shape.destroyStore.validate(instance.destroyStore)
   instance.createDoc = cachePort.shape.createDoc.validate(instance.createDoc)

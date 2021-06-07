@@ -4,7 +4,7 @@ const adapter = require('./adapter')()
 test('minisearch tests', async t => {
   t.plan(10)
   const result = await adapter.createIndex({
-    index: 'default', 
+    index: 'default',
     mappings: {
       fields: ['title', 'body'],
       storeFields: ['title', 'body', 'category']
@@ -48,7 +48,7 @@ test('minisearch tests', async t => {
     index: 'default',
     key: '1'
   })
-  
+
   t.equal(newDoc.title, 'Search is cool')
 
   const searchResults = await adapter.query({
@@ -59,10 +59,10 @@ test('minisearch tests', async t => {
   t.equal(searchResults.matches[0].id, '1', 'found doc')
 
   const searchResults2 = await adapter.query({
-    index: 'default', 
-    q: { 
-      query: 'Search is cool', 
-      filter: {category: 'search'}
+    index: 'default',
+    q: {
+      query: 'Search is cool',
+      filter: { category: 'search' }
     }
   })
 
@@ -78,10 +78,9 @@ test('minisearch tests', async t => {
     index: 'default',
     key: '1'
   })
-  
+
   t.equal(deletedDoc, null, 'could not find doc')
 
   const deleteResult = await adapter.deleteIndex('default')
   t.ok(deleteResult.ok, 'delete index')
-  
 })
