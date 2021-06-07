@@ -1,4 +1,4 @@
-const { omit, keys } = require('ramda')
+const { omit } = require('ramda')
 const zmq = require('zeromq')
 
 const noop = () => Promise.resolve({ ok: false, msg: 'Not Implemented' })
@@ -67,6 +67,8 @@ async function worker (port) {
 
   for await (const [msg] of sock) {
     const job = JSON.parse(msg.toString())
+    // fetch is pulled from environment
+    // eslint-disable-next-line no-undef
     await fetch(job.target, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

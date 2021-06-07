@@ -1,3 +1,5 @@
+/* eslint-disable no-redeclare */
+
 import { z } from 'zod'
 import { QueuePort } from '@hyper63/port-queue'
 

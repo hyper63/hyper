@@ -1,7 +1,7 @@
 
 const { join } = require('path')
 const { gql } = require('apollo-server-express')
-const { path, view } = require('ramda')
+const { view } = require('ramda')
 
 const { hyper63ServicesContextLens } = require('../../utils/hyper63-context.lens')
 const { STORAGE_PATH } = require('../../constants')

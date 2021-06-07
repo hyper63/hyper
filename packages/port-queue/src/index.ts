@@ -1,3 +1,5 @@
+/* eslint-disable no-redeclare */
+
 import { z } from 'zod'
 
 const QueueListResponse = z.string().array()
@@ -57,7 +59,6 @@ const QueuePort = z.object({
   cancel: z.function()
     .args(JobInput)
     .returns(z.promise(QueueResponse))
-
 })
 
 export type QueuePort = z.infer<typeof QueuePort>

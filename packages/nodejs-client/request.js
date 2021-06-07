@@ -1,6 +1,5 @@
 const { Async } = require('crocks')
 const jwt = require('jsonwebtoken')
-const ms = require('ms')
 const toJSON = res => Async.fromPromise(res.json.bind(res))()
 const [GET, PUT, POST, DELETE, CONTENT_TYPE, APPLICATION_JSON, BEARER] =
 ['GET', 'PUT', 'POST', 'DELETE', 'content-type', 'application/json', 'Bearer']
@@ -41,7 +40,6 @@ module.exports = function (fetch, client = 'noname', secret = 'nosecret') {
   }
 
   function generateHeaders (client, secret) {
-    verify = Async.fromNode(jwt.verify.bind(jwt))
     return Async.of({ [CONTENT_TYPE]: APPLICATION_JSON })
       .map(headers => {
         if (!token) {

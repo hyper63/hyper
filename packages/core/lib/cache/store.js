@@ -61,7 +61,7 @@ function validName (name) {
  * @param {object} result
  * @returns {boolean}
  */
-function validResult (result) {
+function validResult () {
   // return Left({ ok: false, msg: 'result is invalid'})
   return true
 }

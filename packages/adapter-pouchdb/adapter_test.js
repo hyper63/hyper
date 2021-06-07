@@ -22,7 +22,6 @@ test('pouchdb add bulk docs non objects', async t => {
 
 test('pouchdb add bulk docs db not found', async t => {
   const adapter = createAdapter('/tmp')
-  const dbName = v4()
   const result = await adapter.bulkDocuments({
     db: 'foo',
     docs: [
@@ -39,7 +38,6 @@ test('pouchdb add bulk docs db not found', async t => {
 })
 test('pouchdb add bulk docs no db', async t => {
   const adapter = createAdapter('/tmp')
-  const dbName = v4()
   const result = await adapter.bulkDocuments({
     db: null,
     docs: [
@@ -125,7 +123,7 @@ test('pouchdb find', async t => {
   })
   t.equal(results.docs.length, 5)
 
-  const idx = await adapter.indexDocuments({
+  await adapter.indexDocuments({
     db: dbName,
     name: 'username',
     fields: ['username']

@@ -22,7 +22,6 @@ test('event mgr - happy path', t => {
     events.dispatch({
       type: 'DATA:READ_DOC',
       payload: { date: new Date().toISOString(), app: 'bar', id: '4321' }
-    }),
-    500
-  })
+    })
+  }, 500)
 })

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const test = require('tape')
 const searchPort = require('./index.js')
 

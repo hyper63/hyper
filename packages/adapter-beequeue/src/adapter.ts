@@ -11,7 +11,7 @@ export default function (env: Config) : QueuePort {
   let queues : {[key: string] : Queue} = {}
   return {
     index: () : Promise<string[]> => Promise.resolve(Object.keys(queues)),
-    create: ({ name, target, secret }: QueueCreateInput): Promise<QueueResponse> => {
+    create: ({ name, target }: QueueCreateInput): Promise<QueueResponse> => {
       const q = new Queue(name, { redis: env.redis })
       q.on('succeeded', (job : any, result: any) => {
         console.log(`Job ${job.id} succeeded with result: ${JSON.stringify(result)}`)
@@ -20,6 +20,8 @@ export default function (env: Config) : QueuePort {
         console.log(`Job ${job.id} failed with error ${err.message}`)
       })
       q.process(async (job: any) => {
+        // fetch is pulled from environment
+        // eslint-disable-next-line no-undef
         return await fetch(target, {
           method: 'POST',
           headers: {
@@ -58,6 +60,7 @@ export default function (env: Config) : QueuePort {
       return q.removeJob(input.id).then(() => ({ ok: true }))
     },
     retry: (input: JobInput): Promise<QueueResponse> => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const q = queues[input.name]
       return Promise.resolve({ ok: true })
     }

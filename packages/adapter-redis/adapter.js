@@ -105,7 +105,7 @@ module.exports = function (client) {
         )
       )
       .chain((args) => set(...args))
-      .map((v) => ({
+      .map(() => ({
         ok: true
       }))
       .toPromise()
@@ -152,7 +152,7 @@ function getKeys (scan, matcher) {
       ? Async.Resolved(keys)
       : scan(cursor, 'MATCH', matcher)
         .chain(repeat)
-	  .map(v => keys.concat(v))
+        .map(v => keys.concat(v))
   }
 }
 
@@ -160,13 +160,12 @@ function getValues (get, store) {
   return function (keys) {
     return Async.all(
       map(key =>
-	 get(key).map((v) =>
-	 ({
-	    key: key.replace(`${store}_`, ''),
-	    value: JSON.parse(v)
-	 })
-	 )
-	 , keys)
+        get(key).map((v) => ({
+          key: key.replace(`${store}_`, ''),
+          value: JSON.parse(v)
+        })
+        )
+      , keys)
     )
   }
 }

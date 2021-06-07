@@ -1,7 +1,5 @@
 const sh = require('shelljs')
 const fs = require('fs')
-const path = require('path')
-const child_process = require('child_process')
 
 module.exports = () => {
   if (!sh.which('docker-compose')) {
@@ -63,7 +61,7 @@ services:
     sh.exec(
       'docker exec hyper63_couchdb_1 curl -X POST -H "Content-Type: application/json" localhost:5984/_cluster_setup -d \'{"action":"enable_single_node", "bind_address":"0.0.0.0"}\' -u \'admin:password\' ',
       { silent: true },
-      (code, stdout, stderr) => {
+      (code) => {
         if (code === 0) {
           console.log('Successfully setup database')
         } else {

@@ -22,6 +22,11 @@ module.exports = {
         ignoreRestSiblings: false
       }
     ],
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    /**
+     * hyper rejects promises with a lot of !instanceof Error,
+     * so we disable this rule
+     */
+    'prefer-promise-reject-errors': 'off'
   }
 }

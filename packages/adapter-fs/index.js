@@ -33,6 +33,6 @@ module.exports = function (config) {
     id: 'fs',
     port: 'storage',
     load: merge(config),
-    link: ({ dir }) => _ => adapter(dir)
+    link: ({ dir }) => () => adapter(dir)
   })
 }

@@ -38,11 +38,11 @@ module.exports = (client) => ({
       buckets: buckets.map(prop('name'))
     })).toPromise(),
   putObject: ({ bucket, object, stream }) =>
-    asyncify(client, 'putObject')(bucket, object, stream).map((result) => ({
+    asyncify(client, 'putObject')(bucket, object, stream).map(() => ({
       ok: true
     })).toPromise(),
   removeObject: ({ bucket, object }) =>
-    asyncify(client, 'removeObject')(bucket, object).map((result) => ({
+    asyncify(client, 'removeObject')(bucket, object).map(() => ({
       ok: true
     })).toPromise(),
   getObject: ({ bucket, object }) =>

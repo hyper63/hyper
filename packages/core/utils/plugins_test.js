@@ -7,7 +7,7 @@ test('sucessfully compose plugins', t => {
     id: 'plugin1',
     port: 'default',
     load: (env) => ({ ...env, hello: 'world' }),
-    link: env => _ => ({ hello: () => env.hello })
+    link: env => () => ({ hello: () => env.hello })
   })
 
   const plugin2 = config => validate({

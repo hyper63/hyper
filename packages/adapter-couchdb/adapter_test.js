@@ -1,5 +1,4 @@
 const test = require('tape')
-const { Async } = require('crocks')
 
 const fetchMock = require('fetch-mock')
 
@@ -119,7 +118,7 @@ test('create document', async t => {
 
 test('can not create design document', async t => {
   try {
-    const result = await adapter.createDocument({
+    await adapter.createDocument({
       db: 'hello', id: '_design/1', doc: { hello: 'world' }
     })
   } catch (e) {

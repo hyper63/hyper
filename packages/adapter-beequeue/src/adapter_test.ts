@@ -1,9 +1,9 @@
-import { default as test } from 'tape'
+import test from 'tape'
 import adapter from './adapter'
 import fetchMock from 'fetch-mock'
 
 globalThis.fetch = fetchMock
-  .post('https://jsonplaceholder.typicode.com/posts', (req) => {
+  .post('https://jsonplaceholder.typicode.com/posts', () => {
     return { status: 200, body: { hello: 'world' } }
   })
   .sandbox()

@@ -36,10 +36,10 @@ exports.bulk = (db, docs) =>
     .chain(apply('bulkDocuments'))
     .chain(triggerEvent('DATA:BULK'))
 
-function validDbName (name) {
+function validDbName () {
   return true
 }
 
-function validResponse (response) {
+function validResponse () {
   return true
 }

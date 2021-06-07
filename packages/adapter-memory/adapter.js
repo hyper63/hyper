@@ -63,7 +63,7 @@ module.exports = function adapter () {
    * @param {CacheDoc}
    * @returns {Promise<Response>}
    */
-  function createDoc ({ store, key, value, ttl }) {
+  function createDoc ({ store, key, value }) {
     if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
 
     stores[store].set(key, value)
@@ -84,7 +84,7 @@ module.exports = function adapter () {
    * @param {CacheDoc}
    * @returns {Promise<Response>}
    */
-  function updateDoc ({ store, key, value, ttl }) {
+  function updateDoc ({ store, key, value }) {
     if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
 
     stores[store].set(key, value)
@@ -112,6 +112,7 @@ module.exports = function adapter () {
     // https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
     const docs = []
     function match (str, rule) {
+      // eslint-disable-next-line no-useless-escape
       const escapeRegex = (str) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1')
       return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str)
     }

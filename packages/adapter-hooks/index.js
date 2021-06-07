@@ -12,6 +12,6 @@ module.exports = function (hooks) {
     id: 'hooks',
     port: 'hooks',
     load: merge({ hooks }),
-    link: env => _ => createAdapter({ asyncFetch, hooks })
+    link: () => () => createAdapter({ asyncFetch, hooks })
   })
 }

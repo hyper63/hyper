@@ -1,6 +1,5 @@
-import { z } from 'zod'
-import { identity, merge } from 'ramda'
-import { QueuePort } from '@hyper63/port-queue'
+
+import { merge } from 'ramda'
 import { Config, AdapterFn } from './types'
 import adapter from './adapter'
 import fetch from 'node-fetch'

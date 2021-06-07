@@ -10,7 +10,7 @@ module.exports = function ElasticsearchAdapter (config) {
       defaultTo({}),
       mergeDeepRight(config)
     ),
-    link: env => _ => {
+    link: env => () => {
       if (!env.url) { throw new Error('Config URL is required elastic search') }
       const headers = createHeaders(config.username, config.password)
       // TODO: probably shouldn't use origin, so to support mounting elasticsearch on path

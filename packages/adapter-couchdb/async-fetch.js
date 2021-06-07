@@ -2,6 +2,8 @@ const { Async } = require('crocks')
 const { ifElse, propEq } = require('ramda')
 const { composeK } = require('crocks/helpers')
 
+// fetch is pulled from environment
+// eslint-disable-next-line no-undef
 exports.asyncFetch = Async.fromPromise(fetch)
 exports.createHeaders = (username, password) => ({
   'Content-Type': 'application/json',

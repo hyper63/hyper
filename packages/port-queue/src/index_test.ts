@@ -1,4 +1,6 @@
-import { default as test } from 'tape'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import test from 'tape'
 import queuePort, {
   QueuePort, QueueListResponse, QueueCreateInput, QueuePostInput, QueueResponse,
   QueueGetInput, JobsResponse, JobInput

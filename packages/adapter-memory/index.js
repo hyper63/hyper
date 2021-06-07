@@ -7,11 +7,11 @@ const adapter = require('./adapter')
  * This memory plugin for the cache root is an adapter
  * that just uses a JS Map to store documents in memory.
  */
-module.exports = function memory (config) {
+module.exports = function memory () {
   return ({
     id: 'memory',
     port: 'cache',
     load: identity,
-    link: _ => _ => adapter()
+    link: () => () => adapter()
   })
 }

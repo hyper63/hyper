@@ -88,7 +88,7 @@ module.exports = function (services) {
   app.get('/queue/:name', bindCore, queue.list)
   app.post('/queue/:name/_cancel', bindCore, queue.cancel)
 
-  app.get('/error', (req, res, next) => {
+  app.get('/error', () => {
     throw new Error('Error occuried')
 
     // next(Error('Send Error!'))
@@ -108,7 +108,7 @@ module.exports = function (services) {
     })
   })
 
-  app.use((err, req, res, next) => {
+  app.use((err, _req, res) => {
     if (err) {
       console.log(JSON.stringify({
         type: 'ERROR',

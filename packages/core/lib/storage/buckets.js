@@ -1,7 +1,7 @@
-const { is, of, apply, triggerEvent } = require('../utils')
+const { of, apply, triggerEvent } = require('../utils')
 
-const INVALID_BUCKET_MSG = 'bucket name is not valid'
-const INVALID_RESPONSE = 'response is not valid'
+// const INVALID_BUCKET_MSG = 'bucket name is not valid'
+// const INVALID_RESPONSE = 'response is not valid'
 
 /**
  * @param {string} name

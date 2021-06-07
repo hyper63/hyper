@@ -6,7 +6,7 @@ module.exports = function ({ events, hooks }) {
       Async.fromPromise(hooks.call)(action)
         .fork(
           err => console.log('ERROR', err.message),
-          results => null
+          () => null
         )
     } else {
       console.log(`${action.type}: ${JSON.stringify(action.payload)}`)

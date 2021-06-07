@@ -1,6 +1,5 @@
 
 const { gql } = require('apollo-server-express')
-const { prop } = require('ramda')
 
 const typeDefs = gql`
   type Query {
@@ -17,7 +16,7 @@ const resolvers = {
     // TODO: check for existence of resource before sending along to children
     cache: (_, { cache }) => ({ name: cache }),
     data: (_, { db }) => ({ name: db }),
-    storage: (_, { bucket }, context) => {
+    storage: (_, { bucket }) => {
       // Singular bucket
       return { name: bucket }
 

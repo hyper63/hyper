@@ -34,6 +34,6 @@ module.exports = function pouchdb (config) {
     id: 'pouchdb',
     port: 'data',
     load: merge(config),
-    link: ({ dir }) => _ => adapter(dir)
+    link: ({ dir }) => () => adapter(dir)
   })
 }

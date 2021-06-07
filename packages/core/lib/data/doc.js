@@ -1,7 +1,7 @@
 const { is, of, apply, triggerEvent } = require('../utils')
 const cuid = require('cuid')
 
-const INVALID_ID_MSG = 'doc id is not valid'
+// const INVALID_ID_MSG = 'doc id is not valid'
 const INVALID_RESPONSE = 'response is not valid'
 
 const createGUID = (id) => (id || cuid())
@@ -27,10 +27,6 @@ exports.remove = (db, id) =>
     .chain(apply('removeDocument'))
     .chain(triggerEvent('DATA:DELETE'))
 
-function validDbName (name) {
-  return true
-}
-
-function validResponse (response) {
+function validResponse () {
   return true
 }

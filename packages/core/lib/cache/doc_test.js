@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const test = require('tape')
 const doc = require('./doc.js')
 
@@ -35,8 +37,8 @@ test(
     doc.create('store', 'Not_Valid', { beep: 'boop' })
       .runWith({ svc: mockService, events })
       .fork(
-        e => t.ok(true),
-        r => t.ok(false)
+        () => t.ok(true),
+        () => t.ok(false)
       )
   }
 )

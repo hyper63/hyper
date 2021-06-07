@@ -63,10 +63,10 @@ test('fs adapter get object', async t => {
     bucket,
     object
   })
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     pull(
       toPull.source(s),
-      concat(async (err, data) => {
+      concat(async (_err, data) => {
         t.equal(data, 'helloworld')
         // cleanup
         // remove file
@@ -75,7 +75,7 @@ test('fs adapter get object', async t => {
           object
         })
         // remove Bucket
-        await adapter.removeBucket(bucket).catch(err => {
+        await adapter.removeBucket(bucket).catch(() => {
           return { ok: false }
         })
         resolve()

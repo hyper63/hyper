@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const test = require('tape')
 const store = require('./store.js')
 
@@ -32,8 +34,8 @@ test('should not create store', t => {
 
   store.create('_foo').runWith({ svc: mockService, events })
     .fork(
-      e => t.ok(true),
-      r => t.ok(false)
+      () => t.ok(true),
+      () => t.ok(false)
     )
 })
 

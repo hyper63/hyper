@@ -28,11 +28,11 @@ const adapter = require('./adapter')
  *
  * search section
  */
-module.exports = function memory (config) {
+module.exports = function memory () {
   return ({
     id: 'minisearch',
     port: 'search',
     load: identity,
-    link: _ => _ => adapter()
+    link: () => () => adapter()
   })
 }
