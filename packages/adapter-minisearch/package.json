@@ -9,7 +9,6 @@
     "test": "tape *_test.js"
   },
   "dependencies": {
-    "crocks": "^0.12.4",
     "minisearch": "^3.0.2",
     "ramda": "^0.27.1"
   },

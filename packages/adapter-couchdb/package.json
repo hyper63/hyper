@@ -13,6 +13,7 @@
     "ramda": "^0.27.1"
   },
   "devDependencies": {
-    "fetch-mock": "^9.10.7"
+    "fetch-mock": "^9.10.7",
+    "tape": "^5.2.2"
   }
 }

@@ -7,11 +7,10 @@
     "test": "tape index_test.js"
   },
   "dependencies": {
-    "@vercel/fetch": "^6.1.0",
     "crocks": "^0.12.4",
     "jsonwebtoken": "^8.5.1",
-    "ms": "^2.1.2",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "querystring": "^0.2.1"
   },
   "devDependencies": {
     "fetch-mock": "^9.11.0",

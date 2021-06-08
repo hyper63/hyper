@@ -10,6 +10,7 @@
     "test": "tape *_test.js"
   },
   "dependencies": {
+    "crocks": "^0.12.4",
     "ramda": "^0.27.1"
   },
   "devDependencies": {

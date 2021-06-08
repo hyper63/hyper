@@ -1,21 +1,20 @@
 {
   "name": "micro",
   "version": "1.0.0",
+  "license": "MIT",
   "type": "module",
   "main": "index.js",
-  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "@hyper63/adapter-beequeue": "^0.0.1",
     "@hyper63/adapter-couchdb": "^0.0.9",
     "@hyper63/adapter-elasticsearch": "^0.0.2",
     "@hyper63/adapter-minio": "^1.0.0",
     "@hyper63/adapter-redis": "^1.2.2",
-    "@hyper63/adapter-zmq": "^0.0.4",
     "@hyper63/app-express": "^1.1.3",
     "@hyper63/core": "^1.3.5"
-  },
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
   }
 }
