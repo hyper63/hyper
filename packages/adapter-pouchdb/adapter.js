@@ -1,4 +1,5 @@
 const pouchdb = require('pouchdb')
+const memory = require('pouchdb-adapter-memory')
 const pouchdbFind = require('pouchdb-find')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
@@ -8,7 +9,7 @@ const { Async } = require('crocks')
 const { bichain } = require('crocks/pointfree')
 const allow409 = require('./handle409')
 const R = require('ramda')
-const { assoc, compose, find, filter, identity, has, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R 
+const { assoc, compose, find, filter, identity, has, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R
 const bulk = require('./lib/bulk')
 
 const makedir = Async.fromPromise(mkdirp)
@@ -17,6 +18,7 @@ const rmrf = Async.fromNode(rimraf)
 
 // add plugins
 pouchdb.plugin(pouchdbFind)
+pouchdb.plugin(memory)
 
 
 
@@ -42,10 +44,11 @@ const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluc
  * @param {string} root - databases location
  */
 module.exports = function (root) {
-  if (!root) { throw new Error('root storage location required!') }
-
+  // if no root then set pouchdb engine to be memory 
+  //if (!root) { throw new Error('root storage location required!') }
+  if (root) { makedir(path.resolve(root)) }
   // create master db to hold docs to databases
-  const sys = pouchdb(`${root}/_system`)
+  const sys = !root ? pouchdb('_system', { adapter: 'memory' }) : pouchdb(`${root}/_system`)
   const databases = new Map()
   sys.allDocs({ include_docs: true })
     .then(getDbNames)
@@ -61,11 +64,11 @@ module.exports = function (root) {
    */
   function createDatabase(name) {
     if (!name) { return Promise.reject({ ok: false, msg: 'name is required!' }) }
-    return makedir(path.resolve(root))
-      .map(_ => pouchdb(
-        path.resolve(`${root}/${name}`)
-      ))
+    return Async.of(root
+      ? pouchdb(path.resolve(`${root}/${name}`))
+      : pouchdb(name, { adapter: 'memory' })
 
+    )
       // add to system database
       .chain(db =>
         // want to capture Reject and return Resolve if error is 409

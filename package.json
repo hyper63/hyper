@@ -30,7 +30,8 @@
     "images/dev",
     "images/graphql",
     "images/couchdb",
-    "images/micro"
+    "images/micro",
+    "images/test"
   ],
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
