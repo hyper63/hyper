@@ -376,6 +376,18 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@hyper63/adapter-beequeue@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-beequeue/-/adapter-beequeue-0.0.1.tgz#0a97635c95ad72c76a2b7bce8e92485cc9583467"
+  integrity sha512-JqndOCb7UkyeRzF7HO5xMUjedeRcpNysJgbJolbX9f+u9tBj0DQPJjZYVULdocDEFbMq58loEG73xQAxfKr5BQ==
+  dependencies:
+    "@hyper63/port-queue" "^0.0.2"
+    bee-queue "^1.3.1"
+    node-fetch "^2.6.1"
+    ramda "^0.27.1"
+    typescript "^4.2.3"
+    zod "^3.0.0-alpha.30"
+
 "@hyper63/adapter-couchdb@^0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@hyper63/adapter-couchdb/-/adapter-couchdb-0.0.11.tgz#91f8da5d61f153792418966fce6a956966e5f14b"
@@ -405,6 +417,24 @@
     crocks "^0.12.4"
     node-fetch "^2.6.1"
     ramda "^0.27.1"
+
+"@hyper63/adapter-zmq@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@hyper63/adapter-zmq/-/adapter-zmq-0.0.4.tgz#04d031b9ddc3ffb1116a114c6c090805fc4d2a48"
+  integrity sha512-o+AtoDSZemA8cennuPSPQPt+WYm69igm0ZEJfuPHYacbh+8kNiJzrTj9PWW3EA7i33s50Z03haQXjaKYMbLtTQ==
+  dependencies:
+    "@hyper63/port-queue" "^0.1.1"
+    node-fetch "^2.6.1"
+    ramda "^0.27.1"
+    zeromq "^6.0.0-beta.6"
+
+"@hyper63/port-queue@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@hyper63/port-queue/-/port-queue-0.0.2.tgz#63449a7a48be6e0bc4ef6bbf15641cddf2dca8dd"
+  integrity sha512-gzgBbB0lPA+U9Vg4H3CRzlZsj3AkMR1zaPu8PoGORbyqVDC9LMWGNyiDXJCTwt4RYS8SzzUPppVfqWNuvrFqHw==
+  dependencies:
+    typescript "^4.2.3"
+    zod "^3.0.0-alpha.30"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

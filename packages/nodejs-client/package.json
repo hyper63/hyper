@@ -1,8 +1,11 @@
 {
   "name": "@hyper63/client",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.1.1",
   "license": "Apache-2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape index_test.js"
+  },
   "dependencies": {
     "@vercel/fetch": "^6.1.0",
     "crocks": "^0.12.4",
@@ -13,8 +16,5 @@
   "devDependencies": {
     "fetch-mock": "^9.11.0",
     "tape": "^5.1.1"
-  },
-  "scripts": {
-    "test": "tape index_test.js"
   }
 }

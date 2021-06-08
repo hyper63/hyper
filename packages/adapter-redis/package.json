@@ -1,8 +1,16 @@
 {
   "name": "@hyper63/adapter-redis",
-  "version": "1.2.5",
-  "main": "index.js",
+  "version": "1.2.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyper63/hyper63.git",
+    "directory": "packages/adapter-redis"
+  },
   "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape *_test.js"
+  },
   "dependencies": {
     "crocks": "^0.12.4",
     "ramda": "^0.27.1",
@@ -14,13 +22,5 @@
     "node-redis": "^0.1.7",
     "redis-mock": "^0.54.0",
     "tape": "^5.0.1"
-  },
-  "scripts": {
-    "test": "tape *_test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hyper63/hyper63.git",
-    "directory": "packages/adapter-redis"
   }
 }

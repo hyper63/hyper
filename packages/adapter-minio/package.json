@@ -1,8 +1,11 @@
 {
   "name": "@hyper63/adapter-minio",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.1",
   "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape *_test.js"
+  },
   "dependencies": {
     "crocks": "^0.12.4",
     "minio": "^7.0.16"
@@ -10,8 +13,5 @@
   "devDependencies": {
     "esm": "^3.2.25",
     "tape": "^5.0.1"
-  },
-  "scripts": {
-    "test": "tape *_test.js"
   }
 }

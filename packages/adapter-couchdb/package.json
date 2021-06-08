@@ -1,5 +1,11 @@
 {
   "name": "@hyper63/adapter-couchdb",
+  "version": "0.0.13",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape adapter_test.js"
+  },
   "dependencies": {
     "@vercel/fetch-retry": "^5.0.3",
     "crocks": "^0.12.4",
@@ -8,11 +14,5 @@
   },
   "devDependencies": {
     "fetch-mock": "^9.10.7"
-  },
-  "scripts": {
-    "test": "tape adapter_test.js"
-  },
-  "version": "0.0.12",
-  "main": "index.js",
-  "license": "MIT"
+  }
 }
