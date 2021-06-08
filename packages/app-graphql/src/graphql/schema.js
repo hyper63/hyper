@@ -1,5 +1,5 @@
 
-const { mergeDeepRight} = require('ramda')
+const { mergeDeepRight } = require('ramda')
 
 // Interfaces
 const PortResult = require('./__interface/PortResult')

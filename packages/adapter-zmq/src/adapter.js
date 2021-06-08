@@ -1,7 +1,7 @@
-const { omit, keys } = require('ramda')
+const { omit } = require('ramda')
 const zmq = require('zeromq')
 
-const noop = () => Promise.resolve({ok: false, msg: 'Not Implemented'})
+const noop = () => Promise.resolve({ ok: false, msg: 'Not Implemented' })
 
 /**
  * @func
@@ -17,8 +17,8 @@ module.exports = function (env) {
   let queues = {}
   // setup worker
   worker(env.port)
-  
-  const sock = new zmq.Push
+
+  const sock = new zmq.Push()
   sock.bind(`tcp://127.0.0.1:${env.port}`)
 
   return {
@@ -29,18 +29,18 @@ module.exports = function (env) {
       return Promise.resolve(Object.keys(queues))
     },
     /**
-     * @param {import('@hyper63/port-queue').QueueCreateInput} input 
+     * @param {import('@hyper63/port-queue').QueueCreateInput} input
      */
     create: (input) => {
-      queues[input.name] = input 
-      return Promise.resolve({ok: true})
+      queues[input.name] = input
+      return Promise.resolve({ ok: true })
     },
     /**
      * @param {string} name
      */
-    'delete': (name) => {
+    delete: (name) => {
       queues = omit([name], queues)
-      return Promise.resolve({ok: true})
+      return Promise.resolve({ ok: true })
     },
     /**
      * @param {import('@hyper63/port-queue').QueuePostInput} input
@@ -49,11 +49,11 @@ module.exports = function (env) {
       const q = queues[input.name]
       // setup producer
       await producer(sock, q.target, input.job)
-      return Promise.resolve({ok: true})
+      return Promise.resolve({ ok: true })
     },
     get: noop,
     cancel: noop,
-    retry: noop 
+    retry: noop
 
   }
 }
@@ -61,13 +61,17 @@ module.exports = function (env) {
 /**
  * @param {string} port
  */
-async function worker(port) {
-  const sock = new zmq.Pull
+async function worker (port) {
+  const sock = new zmq.Pull()
   sock.connect(`tcp://127.0.0.1:${port}`)
-  
+
   for await (const [msg] of sock) {
     const job = JSON.parse(msg.toString())
-    await fetch(job.target, { method: 'POST', headers: {'Content-Type': 'application/json'},
+    // fetch is pulled from environment
+    // eslint-disable-next-line no-undef
+    await fetch(job.target, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(job.data)
     }).then(res => res.json())
       .then(res => console.log(JSON.stringify(res)))
@@ -80,10 +84,9 @@ async function worker(port) {
  * @param {string} target
  * @param {{[key: string]: any}} job
  */
-async function producer(sock, target, job) {
-  //const sock = new zmq.Push
-  //await sock.bind(`tcp://127.0.0.1:${port}`)
-    
-  return sock.send(JSON.stringify({target, data: job})).then(() => ({ok: true})) 
-}
+async function producer (sock, target, job) {
+  // const sock = new zmq.Push
+  // await sock.bind(`tcp://127.0.0.1:${port}`)
 
+  return sock.send(JSON.stringify({ target, data: job })).then(() => ({ ok: true }))
+}

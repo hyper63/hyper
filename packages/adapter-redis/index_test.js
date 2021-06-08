@@ -7,8 +7,7 @@ const schema = z.object({
   port: z.string().optional(),
   load: z.function()
     .args(z.any().optional())
-    .returns(z.any())  
-    ,
+    .returns(z.any()),
   link: z.function()
     .args(z.any())
     .returns(z.function()

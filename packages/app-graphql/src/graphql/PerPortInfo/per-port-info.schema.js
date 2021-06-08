@@ -18,7 +18,7 @@ const resolvers = {
     cache: () => ({ port: 'Cache' }),
     storage: () => ({ port: 'Storage' }),
     data: () => ({ port: 'Data' }),
-    hooks: () => ({ port: 'Hooks' }),
+    hooks: () => ({ port: 'Hooks' })
   }
 }
 

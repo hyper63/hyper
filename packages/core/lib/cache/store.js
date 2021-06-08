@@ -1,11 +1,11 @@
 const { is, of, apply, triggerEvent } = require('../utils')
 const { toLower } = require('ramda')
 
-const INVALID_NAME_MSG = "name is not valid";
-const INVALID_RESULT_MSG = "result is not valid";
+const INVALID_NAME_MSG = 'name is not valid'
+const INVALID_RESULT_MSG = 'result is not valid'
 
 exports.index = () =>
-  apply("index")().chain(triggerEvent('CACHE:INDEX'))
+  apply('index')().chain(triggerEvent('CACHE:INDEX'))
 
 /**
  * @param {string} name
@@ -15,9 +15,9 @@ exports.create = (name) =>
   of(name)
     .map(toLower)
     .chain(is(validName, INVALID_NAME_MSG))
-    .chain(apply("createStore"))
+    .chain(apply('createStore'))
     .chain(triggerEvent('CACHE:CREATE_STORE'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 /**
  * @param {string} name
@@ -26,9 +26,9 @@ exports.create = (name) =>
 exports.del = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
-    .chain(apply("destroyStore"))
+    .chain(apply('destroyStore'))
     .chain(triggerEvent('CACHE:DELETE_STORE'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 /**
  * @param {string} name
@@ -39,9 +39,9 @@ exports.query = (name, pattern) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
-    .chain(apply("listDocs"))
+    .chain(apply('listDocs'))
     .chain(triggerEvent('CACHE:LIST'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 // validators predicate functions
 
@@ -49,19 +49,19 @@ exports.query = (name, pattern) =>
  * @param {string} name
  * @returns {boolean}
  */
-function validName(name) {
+function validName (name) {
   // verify that the name does not contains spaces
   // verify that the name does not contain slashes
   // verify that the name contains URI friendly characters
   // should return a true or false
-  return /^[a-z0-9-]+$/.test(name);
+  return /^[a-z0-9-]+$/.test(name)
 }
 
 /**
  * @param {object} result
  * @returns {boolean}
  */
-function validResult(result) {
+function validResult () {
   // return Left({ ok: false, msg: 'result is invalid'})
-  return true;
+  return true
 }

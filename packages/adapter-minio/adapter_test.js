@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const test = require('tape')
 const createAdapter = require('./adapter')
 
 const client = ({
-  makeBucket(name) {
+  makeBucket (name) {
     return Promise.resolve()
   },
-  removeBucket(name) {
+  removeBucket (name) {
     return Promise.resolve()
   }
 })

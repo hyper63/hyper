@@ -9,7 +9,7 @@ module.exports = function RedisCacheAdapter (config) {
   /**
    * @param {object} env
    */
-  function load() {
+  function load () {
     return config
   }
 
@@ -17,7 +17,7 @@ module.exports = function RedisCacheAdapter (config) {
    * @param {object} env
    * @returns {function}
    */
-  function link(env) {
+  function link (env) {
     /**
      * @param {object} adapter
      * @returns {object}

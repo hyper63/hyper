@@ -1,25 +1,24 @@
 const buckets = require('./buckets')
 const objects = require('./objects')
 
-
 module.exports = ({ storage, events }) => {
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const makeBucket = (name) => buckets.make(name).runWith({ svc: storage, events });
+  const makeBucket = (name) => buckets.make(name).runWith({ svc: storage, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const removeBucket = (name) => buckets.remove(name).runWith({ svc: storage, events });
+  const removeBucket = (name) => buckets.remove(name).runWith({ svc: storage, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const listBuckets = () => buckets.list().runWith({ svc: storage, events });
+  const listBuckets = () => buckets.list().runWith({ svc: storage, events })
 
   /**
    * @param {string} bucketName
@@ -28,7 +27,7 @@ module.exports = ({ storage, events }) => {
    * @returns {Async}
    */
   const putObject = (bucketName, objectName, stream) =>
-    objects.put(bucketName, objectName, stream).runWith({ svc: storage, events });
+    objects.put(bucketName, objectName, stream).runWith({ svc: storage, events })
 
   /**
    * @param {string} bucketName
@@ -36,7 +35,7 @@ module.exports = ({ storage, events }) => {
    * @returns {Async}
    */
   const getObject = (bucketName, objectName) =>
-    objects.get(bucketName, objectName).runWith({ svc: storage, events });
+    objects.get(bucketName, objectName).runWith({ svc: storage, events })
 
   /**
    * @param {string} bucketName
@@ -44,7 +43,7 @@ module.exports = ({ storage, events }) => {
    * @returns {Async}
    */
   const removeObject = (bucketName, objectName) =>
-    objects.remove(bucketName, objectName).runWith({ svc: storage, events });
+    objects.remove(bucketName, objectName).runWith({ svc: storage, events })
 
   /**
    * @param {string} bucketName
@@ -52,7 +51,7 @@ module.exports = ({ storage, events }) => {
    * @returns {Async}
    */
   const listObjects = (bucketName, prefix) =>
-    objects.list(bucketName, prefix).runWith({ svc: storage, events });
+    objects.list(bucketName, prefix).runWith({ svc: storage, events })
 
   return Object.freeze({
     makeBucket,
@@ -61,6 +60,6 @@ module.exports = ({ storage, events }) => {
     putObject,
     getObject,
     listObjects,
-    removeObject,
-  });
-};
+    removeObject
+  })
+}

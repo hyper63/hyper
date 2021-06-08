@@ -1,6 +1,6 @@
 
 const { schema } = require('./schema')
-const { mountApollo } =  require('./apollo')
+const { mountApollo } = require('./apollo')
 
 module.exports = {
   schema,

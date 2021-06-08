@@ -11,7 +11,7 @@ declare function _exports(port: string): {
     link: (env: {
         port: string;
     }) => (a: import('@hyper63/port-queue').QueuePort) => {
-        index: () => Promise<(string | number)[]>;
+        index: () => Promise<string[]>;
         create: (args_0: {
             secret?: string | undefined;
             name: string;

@@ -8,15 +8,15 @@ const { compose, prop, assoc, propOr } = require('ramda')
 /**
  * @returns {function} - listen function
  */
- function main (config) {
-  //const config = (await import(process.cwd() + '/hyper63.config')).default
+function main (config) {
+  // const config = (await import(process.cwd() + '/hyper63.config')).default
   config = !config ? require(process.cwd() + '/hyper63.config') : config
   config = validateConfig(config)
 
   // TODO: validate config
   const services = compose(
-     // add eventMgr to services
-    wrapCore, 
+    // add eventMgr to services
+    wrapCore,
     assoc('middleware', propOr([], 'middleware', config)),
     assoc('events', eventMgr()),
     loadPorts,
@@ -24,7 +24,7 @@ const { compose, prop, assoc, propOr } = require('ramda')
     prop('adapters')
   )(config)
 
-  let app = config.app(services)
+  const app = config.app(services)
 
   // return app
   return app

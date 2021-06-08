@@ -13,4 +13,3 @@ test('GET /', async t => {
   t.equal(res.name, 'hyper63')
   server.close(noop)
 })
-

@@ -2,14 +2,14 @@ const { assoc, compose, find, filter, identity, has, is, isNil, lens, map, omit,
 const { Async } = require('crocks')
 
 /**
- * 
+ *
  * @typedef {Object} BulkInput
  * @property {string} db
  * @property {Array<Object>} docs
- * 
+ *
  */
-let lensId = lens(prop('id'), assoc('_id'))
-let lensRev = lens(path(['value','rev']), assoc('rev'))
+const lensId = lens(prop('id'), assoc('_id'))
+const lensRev = lens(path(['value', 'rev']), assoc('rev'))
 const xRevs = map(
   compose(
     omit(['key', 'value']),
@@ -25,41 +25,40 @@ const switchIds = map(
 )
 
 const pluckIds = pluck('id')
-const getDocsThatExist = pouch => ids => 
-   Async.fromPromise(pouch.allDocs.bind(pouch))({
-     keys: ids
-   })
+const getDocsThatExist = pouch => ids =>
+  Async.fromPromise(pouch.allDocs.bind(pouch))({
+    keys: ids
+  })
     .map(prop('rows'))
     .map(filter(has('value')))
     .map(xRevs)
 
-const mergeWithRevs = docs => revs => 
+const mergeWithRevs = docs => revs =>
   map(doc => {
     const rev = find(rev => doc.id === rev.id, revs)
     return rev ? { _rev: rev.rev, ...doc } : doc
   }, docs)
 
-const applyBulkDocs = pouch => 
+const applyBulkDocs = pouch =>
   Async.fromPromise(pouch.bulkDocs.bind(pouch))
 
 /**
- * @param {BulkInput} 
+ * @param {BulkInput}
  * @returns {Promise<object>}
  */
 // NEED to handle bulk PUTS which require revs
-const bulkDocuments = databases => ({db, docs}) => {
+const bulkDocuments = databases => ({ db, docs }) => {
   if (isNil(db)) {
-    return Promise.reject({ok: false, msg: 'db not defined'})
+    return Promise.reject({ ok: false, msg: 'db not defined' })
   }
-  let pouch = databases.get(db)
+  const pouch = databases.get(db)
 
   if (isNil(pouch)) {
-    return Promise.reject({ok:false, msg: 'db not found'})
+    return Promise.reject({ ok: false, msg: 'db not found' })
   }
 
   if (docs && !is(Object, docs[0])) {
-    return Promise.reject({ok:false, msg: 'documents must be objects'})
-  
+    return Promise.reject({ ok: false, msg: 'documents must be objects' })
   }
   return Async.of(docs)
     // validate that the docs have an id
@@ -70,9 +69,8 @@ const bulkDocuments = databases => ({db, docs}) => {
     .map(switchIds)
     .chain(applyBulkDocs(pouch))
     .map(map(omit(['rev'])))
-    .map(docResults => ({ ok: true, results: docResults}))
+    .map(docResults => ({ ok: true, results: docResults }))
     .toPromise()
 }
 
 module.exports = bulkDocuments
-

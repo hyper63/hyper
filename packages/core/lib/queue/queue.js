@@ -1,22 +1,22 @@
 const { is, of, apply, triggerEvent } = require('../utils')
 const { toLower, lensProp, over } = require('ramda')
 
-const INVALID_NAME_MSG = 'queue name is not valid!';
+const INVALID_NAME_MSG = 'queue name is not valid!'
 
 exports.index = () =>
-  apply('index')().chain(triggerEvent('QUEUE:INDEX'))  
-  //apply('index')().chain(triggerEvent('QUEUE:INDEX'))
+  apply('index')().chain(triggerEvent('QUEUE:INDEX'))
+  // apply('index')().chain(triggerEvent('QUEUE:INDEX'))
 
-exports.create = (input) => 
+exports.create = (input) =>
   of(input)
     .map(over(lensProp('name'), toLower))
     .chain(is(validName, INVALID_NAME_MSG))
-    .chain(apply("create"))
+    .chain(apply('create'))
     .chain(triggerEvent('QUEUE:CREATE'))
 
-exports['delete'] = (name) =>
+exports.delete = (name) =>
   of(name)
-    .chain(apply("delete"))
+    .chain(apply('delete'))
     .chain(triggerEvent('QUEUE:DELETE'))
 
 exports.post = (input) =>
@@ -34,7 +34,6 @@ exports.cancel = (input) =>
     .chain(apply('cancel'))
     .chain(triggerEvent('QUEUE:CANCEL'))
 
-
-function validName(input) {
-  return /^[a-z0-9-]+$/.test(input.name);
+function validName (input) {
+  return /^[a-z0-9-]+$/.test(input.name)
 }

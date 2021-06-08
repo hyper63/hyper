@@ -9,15 +9,15 @@ module.exports = function MinioStorageAdapter (config) {
   /**
    * @param {object} env
    */
-  function load() {
-    return config 
+  function load () {
+    return config
   }
 
   /**
    * @param {object} env
    * @returns {function}
    */
-  function link(env) {
+  function link (env) {
     /**
      * @param {object} adapter
      * @returns {object}

@@ -23,4 +23,3 @@ module.exports = function (services) {
     middleware: services.middleware
   })
 }
-

@@ -1,7 +1,6 @@
 
 const { applyTo, filter, compose, map, is, reduce, defaultTo, fromPairs, reverse } = require('ramda')
 
-
 /**
  * Given a list of plugins, compose the plugin.load()
  * resulting in a portConfig obj
@@ -60,7 +59,7 @@ function initAdapter (portAdapter) {
  *
  * @param {[]} adapters - a list of port nodes from a hyper63 config
  */
-module.exports = function initAdapters(adapters) {
+module.exports = function initAdapters (adapters) {
   return compose(
     fromPairs,
     map(adapterNode => [adapterNode.port, initAdapter(adapterNode)])

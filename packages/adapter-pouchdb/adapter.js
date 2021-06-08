@@ -4,38 +4,35 @@ const pouchdbFind = require('pouchdb-find')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const path = require('path')
-const fs = require('fs')
 const { Async } = require('crocks')
 const { bichain } = require('crocks/pointfree')
 const allow409 = require('./handle409')
 const R = require('ramda')
-const { assoc, compose, find, filter, identity, has, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R
+const { assoc, compose, filter, identity, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R
 const bulk = require('./lib/bulk')
 
 const makedir = Async.fromPromise(mkdirp)
-//const rmdir = Async.fromNode(fs.rmdir)
+// const rmdir = Async.fromNode(fs.rmdir)
 const rmrf = Async.fromNode(rimraf)
 
 // add plugins
 pouchdb.plugin(pouchdbFind)
 pouchdb.plugin(memory)
 
-
-
 /**
  * @typedef {Object} DataObject
  * @property {string} db
  * @property {string} id
  * @property {Object} doc
- * 
+ *
  * @typedef {Object} DataInfo
  * @property {string} db
  * @property {string} id
- * 
+ *
  * @typedef {Object} Response
  * @property {boolean} ok
  * @property {string} [msg]
- * 
+ *
  */
 
 const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluck('doc'), prop('rows'))
@@ -44,8 +41,8 @@ const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluc
  * @param {string} root - databases location
  */
 module.exports = function (root) {
-  // if no root then set pouchdb engine to be memory 
-  //if (!root) { throw new Error('root storage location required!') }
+  // if no root then set pouchdb engine to be memory
+  // if (!root) { throw new Error('root storage location required!') }
   if (root) { makedir(path.resolve(root)) }
   // create master db to hold docs to databases
   const sys = !root ? pouchdb('_system', { adapter: 'memory' }) : pouchdb(`${root}/_system`)
@@ -56,22 +53,21 @@ module.exports = function (root) {
     .then(
       map(n => databases.set(n, pouchdb(`${root}/${n}`)))
     )
-    .catch(e => console.log('ERROR: Could not get databases!'))
+    .catch(() => console.log('ERROR: Could not get databases!'))
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function createDatabase(name) {
+  function createDatabase (name) {
     if (!name) { return Promise.reject({ ok: false, msg: 'name is required!' }) }
     return Async.of(root
       ? pouchdb(path.resolve(`${root}/${name}`))
       : pouchdb(name, { adapter: 'memory' })
-
     )
       // add to system database
       .chain(db =>
-        // want to capture Reject and return Resolve if error is 409
+      // want to capture Reject and return Resolve if error is 409
 
         bichain(
           allow409,
@@ -92,19 +88,19 @@ module.exports = function (root) {
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function removeDatabase(name) {
+  function removeDatabase (name) {
     if (!name) { return Promise.reject({ ok: false, msg: 'name is required!' }) }
     databases.delete(name)
     return rmrf(
       path.resolve(`${root}/${name}*`),
       { recursive: true }
     )
-      .chain(_ => {
+      .chain(() => {
         const get = Async.fromPromise(sys.get)
         const remove = Async.fromPromise(sys.remove)
         return get(name).chain(remove)
       })
-      .map(_ => ({ ok: true }))
+      .map(() => ({ ok: true }))
       .toPromise()
   }
 
@@ -112,7 +108,7 @@ module.exports = function (root) {
    * @param {DataObject}
    * @returns {Promise<Response>}
    */
-  function createDocument({ db, id, doc }) {
+  function createDocument ({ db, id, doc }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
     if (!doc) { return Promise.reject({ ok: false, msg: 'data document is required!' }) }
@@ -130,7 +126,7 @@ module.exports = function (root) {
    * @param {DataInfo}
    * @returns {Promise<Response>}
    */
-  function retrieveDocument({ db, id }) {
+  function retrieveDocument ({ db, id }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
 
@@ -142,15 +138,14 @@ module.exports = function (root) {
         omit(['_id', '_rev']),
         assoc('id', id)
       ))
-    //.then(doc => ({ok: true, doc}))
-
+    // .then(doc => ({ok: true, doc}))
   }
 
   /**
    * @param {DataObject}
    * @returns {Promise<Response>}
    */
-  function updateDocument({ db, id, doc }) {
+  function updateDocument ({ db, id, doc }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
     if (!doc) { return Promise.reject({ ok: false, msg: 'data document is required!' }) }
@@ -169,7 +164,7 @@ module.exports = function (root) {
    * @param {DataInfo}
    * @returns {Promise<Response>}
    */
-  function removeDocument({ db, id }) {
+  function removeDocument ({ db, id }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
 
@@ -185,11 +180,11 @@ module.exports = function (root) {
    * @property {Array[string]} [sort] - fields to sort by
    * @property {Number} [limit] - number of documents to return
    * @property {string} [use_index] - name of index to use
-   * 
+   *
    * @typedef {Object} DataQuery
    * @property {string} db
    * @property {MangoQuery} query
-   * 
+   *
    * @typedef {Object} ResponseDocs
    * @property {boolean} ok
    * @property {Array[Object]} docs
@@ -199,7 +194,7 @@ module.exports = function (root) {
    * @param {DataQuery}
    * @returns {Promise<ResponseDocs>}
    */
-  function queryDocuments({ db, query }) {
+  function queryDocuments ({ db, query }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!query) { return Promise.reject({ ok: false, msg: 'query is required!' }) }
     const xId = lens(prop('_id'), assoc('id'))
@@ -233,7 +228,7 @@ module.exports = function (root) {
    * @param {IndexInfo}
    * @returns {Promise<Response>}
    */
-  function indexDocuments({ db, name, fields }) {
+  function indexDocuments ({ db, name, fields }) {
     if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
     if (!name) { return Promise.reject({ ok: false, msg: 'index name is required!' }) }
     if (!fields) { return Promise.reject({ ok: false, msg: 'fields for index is required!' }) }
@@ -254,10 +249,10 @@ module.exports = function (root) {
    * @property {boolean} [descending]
    */
   /**
-   * @param {DataList} 
-   * @returns {Promise<Response>} 
+   * @param {DataList}
+   * @returns {Promise<Response>}
    */
-  function listDocuments({ db, limit, startkey, endkey, keys, descending }) {
+  function listDocuments ({ db, limit, startkey, endkey, keys, descending }) {
     const pouch = databases.get(db)
     let options = { include_docs: true }
     const xid = lens(prop('_id'), assoc('id'))

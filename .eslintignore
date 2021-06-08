@@ -1,0 +1,4 @@
+docs/
+packages/port-queue/lib/
+packages/adapter-beequeue/lib/
+packages/adapter-zmq/lib/

@@ -1,14 +1,14 @@
 {
   "name": "@hyper63/port-storage",
+  "version": "1.0.2",
   "description": "hyper63 service framework port for storage adapters",
-  "repository": "https://github.com/hyper63/hyper63",
   "homepage": "https://github.com/hyper63/hyper63#readme",
+  "repository": "https://github.com/hyper63/hyper63",
+  "license": "Apache-2.0",
+  "main": "index.js",
   "scripts": {
     "test": "tape index_test.js"
   },
-  "main": "index.js",
-  "version": "1.0.1",
-  "license": "Apache-2.0",
   "dependencies": {
     "zod": "^3.0.0-alpha.33"
   },

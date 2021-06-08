@@ -1,6 +1,5 @@
-import { z } from 'zod'
-import { identity, merge } from 'ramda'
-import { QueuePort } from '@hyper63/port-queue'
+
+import { merge } from 'ramda'
 import { Config, AdapterFn } from './types'
 import adapter from './adapter'
 import fetch from 'node-fetch'
@@ -22,17 +21,15 @@ export default function (config: Config) : Plugin {
   const load : Load<Config> = function (env:Config) : Config {
     return merge(env, config)
   }
-  
+
   const link : Link<Config, AdapterFn> = function (env: Config) : AdapterFn {
     return () => adapter(env)
   }
-  
+
   return ({
     id: 'beequeue',
     port: 'queue',
     load,
-    link  
+    link
   })
 }
-
-

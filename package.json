@@ -1,12 +1,12 @@
 {
   "name": "@hyper63/monorepo",
-  "description": "service gateway",
   "version": "1.0.0",
-  "main": "src/index.js",
-  "repository": "git@github.com:hyper63/hyper63.git",
-  "author": "Tom Wilson <twilson63@gmail.com>",
-  "license": "MIT",
   "private": true,
+  "description": "service gateway",
+  "repository": "git@github.com:hyper63/hyper63.git",
+  "license": "MIT",
+  "author": "Tom Wilson <twilson63@gmail.com>",
+  "main": "src/index.js",
   "workspaces": [
     "packages/core",
     "packages/adapter-couchdb",
@@ -33,20 +33,16 @@
     "images/micro",
     "images/test"
   ],
-  "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@twilson63/test-server": "^1.0.1",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.10.0",
-    "fetch-mock": "^9.10.7",
-    "husky": "^6.0.0",
-    "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.6",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.2",
-    "redis-mock": "^0.54.0",
-    "tape": "^5.0.1"
+  "scripts": {
+    "build": "docker build -t hyper63/hyper63:dev .",
+    "start:server": "node index.js",
+    "start": "run-s start:*",
+    "dev": "nodemon index.js",
+    "test:core": "tape packages/core/**/**/*_test.js",
+    "test:integration": "tape -r esm test/**/*_test.js",
+    "test": "run-p test:core",
+    "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@vercel/fetch": "^6.1.0",
@@ -66,14 +62,27 @@
     "redis": "^3.0.2",
     "zod": "^2.0.0-beta.20"
   },
-  "scripts": {
-    "build": "docker build -t hyper63/hyper63:dev .",
-    "start:server": "node index.js",
-    "start": "run-s start:*",
-    "dev": "nodemon index.js",
-    "test:core": "tape packages/core/**/**/*_test.js",
-    "test:integration": "tape -r esm test/**/*_test.js",
-    "test": "run-p test:core",
-    "prepare": "husky install"
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@twilson63/test-server": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.10.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "fetch-mock": "^9.10.7",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.2",
+    "redis-mock": "^0.54.0",
+    "sort-package-json": "^1.50.0",
+    "tape": "^5.0.1"
   }
 }

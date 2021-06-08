@@ -6,6 +6,6 @@ module.exports = function (adapter, env) {
   })
 
   const instance = Port.parse(adapter(env))
-  //TODO: wrap all methods with validation methods
+  // TODO: wrap all methods with validation methods
   return instance
 }

@@ -1,9 +1,6 @@
 const z = require('zod')
-const { Either } = require('crocks')
 
-const { Left, Right } = Either
-
-module.exports = function (adapter, env) {
+module.exports = function (adapter) {
   const Port = z.object({
     // add port methods
     createIndex: z.function()
@@ -24,7 +21,7 @@ module.exports = function (adapter, env) {
     indexDoc: z.function()
       .args(z.object({
         index: z.string(),
-        key: z.string(), // remember to invalidate if key === query 
+        key: z.string(), // remember to invalidate if key === query
         doc: z.any()
       }))
       .returns(z.promise(z.object({
@@ -74,8 +71,7 @@ module.exports = function (adapter, env) {
             results: z.array(z.any())
           })
         )
-      )
-    ,
+      ),
     query: z.function()
       .args(z.object({
         index: z.string(),
@@ -103,14 +99,4 @@ module.exports = function (adapter, env) {
   instance.query = Port.shape.query.validate(instance.query)
 
   return instance
-}
-
-function tryCatch(fn) {
-  return function (...val) {
-    try {
-      return Right(fn(...val))
-    } catch (e) {
-      return Left(e)
-    }
-  }
 }

@@ -1,8 +1,8 @@
 {
   "name": "@hyper63/app-graphql",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.1.1",
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "export-schema": "node scripts/exportSchema.js"
   },
