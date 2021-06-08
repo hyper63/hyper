@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-couchdb",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "main": "index.js",
   "scripts": {

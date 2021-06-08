@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-fs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "hyper63 storage adapter using file system",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",

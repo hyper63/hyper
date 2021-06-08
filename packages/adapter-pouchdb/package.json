@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-pouchdb",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "data adapter for hyper63",
   "homepage": "https://github.com/hyper63/hyper63/packages/adapter-pouchdb#readme",
   "repository": "https://github.com/hyper63/hyper63",

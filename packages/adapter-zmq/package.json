@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-zmq",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "main": "src/index.js",
   "types": "types/index.d.ts",

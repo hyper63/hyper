@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-memory",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "hyper63 cache adapter",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",
