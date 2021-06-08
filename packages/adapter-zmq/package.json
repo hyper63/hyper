@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-zmq",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "main": "src/index.js",
   "types": "types/index.d.ts",
@@ -9,7 +9,6 @@
     "test": "tsc && tape src/**/*_test.js"
   },
   "dependencies": {
-    "@hyper63/port-queue": "^0.1.1",
     "node-fetch": "^2.6.1",
     "ramda": "^0.27.1",
     "zeromq": "^6.0.0-beta.6"

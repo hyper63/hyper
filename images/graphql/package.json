@@ -1,27 +1,15 @@
 {
   "name": "@hyper63/graphql",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
   "dependencies": {
     "@hyper63/adapter-fs": "^1.0.3",
     "@hyper63/adapter-hooks": "^1.0.2",
     "@hyper63/adapter-memory": "^1.0.1",
     "@hyper63/adapter-pouchdb": "^1.0.3",
     "@hyper63/app-graphql": "^0.1.0",
-    "@hyper63/core": "^1.0.3",
-    "@twilson63/test-server": "^1.0.1",
-    "@zeit/fetch-retry": "^5.0.0",
-    "eslint": "^7.10.0",
-    "fetch-mock": "^9.10.7",
-    "helmet": "^4.1.1",
-    "mime": "^2.4.6",
-    "minio": "^7.0.16",
-    "ms": "^2.1.2",
-    "nodemon": "^2.0.6",
-    "prettier": "^2.1.2",
-    "tape": "^5.0.1",
-    "zod": "^2.0.0-beta.20"
+    "@hyper63/core": "^1.0.3"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"

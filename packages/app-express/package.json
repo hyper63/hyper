@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/app-express",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",
   "license": "Apache-2.0",
@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "crocks": "^0.12.4",
     "express": "^4.17.1",
     "helmet": "^4.2.0",
     "mime": "^2.4.6",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@twilson63/test-server": "^1.0.2",

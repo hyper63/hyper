@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/adapter-memory",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "hyper63 cache adapter",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",
@@ -10,11 +10,9 @@
     "test": "tape *_test.js"
   },
   "dependencies": {
-    "crocks": "^0.12.4",
     "ramda": "^0.27.1"
   },
   "devDependencies": {
-    "esm": "^3.2.25",
     "tape": "^5.0.1",
     "uuid": "^8.3.1"
   }

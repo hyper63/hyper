@@ -1,21 +1,20 @@
 {
   "name": "@hyper63/couchdb-image",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "license": "MIT",
-  "dependencies": {
-    "@hyper63/adapter-couchdb": "^0.0.11",
-    "@hyper63/app-express": "^1.0.12",
-    "@hyper63/core": "^1.2.11",
-    "@hyper63/port-data": "^1.0.9",
-    "express-jwt": "^6.0.0"
-  },
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  },
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "build": "docker build -t hyper63/couchdb-svc:v1-alpha ."
   },
-  "private": true
+  "dependencies": {
+    "@hyper63/adapter-couchdb": "^0.0.11",
+    "@hyper63/app-express": "^1.0.12",
+    "@hyper63/core": "^1.2.11",
+    "express-jwt": "^6.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
