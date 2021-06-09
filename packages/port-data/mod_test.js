@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
 
-const test = require('tape')
-const dataPort = require('./index.js')
+import { assert } from './dev_deps.js'
 
-test('data port tests', async t => {
+import dataPort from './mod.js'
+
+Deno.test('data port tests', async () => {
   const adapter = dataPort({
     createDatabase: (name) => Promise.resolve({ ok: true }),
     removeDatabase: (name) => Promise.resolve({ ok: true }),
@@ -42,7 +43,5 @@ test('data port tests', async t => {
       return ({ ok: false })
     })
 
-  t.ok(results.ok)
-
-  t.end()
+  assert(results.ok)
 })
