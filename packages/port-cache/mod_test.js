@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
 
-const test = require('tape')
-const cachePort = require('./index.js')
+import { assert } from './dev_deps.js'
 
-test('port cache ok', t => {
+import cachePort from './mod.js'
+
+Deno.test('port cache ok', () => {
   const goodCache = cachePort({
     createStore (name) {
       return Promise.resolve({ ok: true })
@@ -30,9 +31,11 @@ test('port cache ok', t => {
     },
     listDocs ({ store, pattern }) {
       return Promise.resolve({ ok: true, docs: [] })
+    },
+    index () {
+      return Promise.resolve([])
     }
-  }
-  )
+  })
   Promise.all([
     goodCache.createStore('foo'),
     goodCache.destroyStore('foo'),
@@ -48,19 +51,17 @@ test('port cache ok', t => {
     goodCache.listDocs({ store: 'foo', pattern: 'w*' })
   ])
     .then(() => {
-      t.ok(true)
-      t.end()
+      assert(true)
     })
     .catch(e => {
-      t.ok(false)
-      t.end()
+      assert(false)
     })
 })
 
-test('port cache shape not ok', t => {
-  t.end()
+Deno.test('port cache shape not ok', t => {
+  assert(true)
 })
 
-test('port cache methods not ok', t => {
-  t.end()
+Deno.test('port cache methods not ok', t => {
+  assert(true)
 })
