@@ -5,6 +5,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
+  globals: {
+    Deno: 'readonly'
+  },
   extends: [
     'standard' // Out of the box StandardJS rules
   ],
