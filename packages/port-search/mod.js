@@ -1,6 +1,6 @@
-const z = require('zod')
+import { z } from './deps.js'
 
-module.exports = function (adapter) {
+export default function (adapter) {
   const Port = z.object({
     // add port methods
     createIndex: z.function()

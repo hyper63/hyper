@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
 
-const test = require('tape')
-const searchPort = require('./index.js')
+import { assert } from './dev_deps.js'
 
-test('port search ok', t => {
-  t.plan(1)
+import searchPort from './mod.js'
+
+Deno.test('port search ok', () => {
   const search = searchPort({
     createIndex: ({ index, mappings }) => Promise.resolve({ ok: true }),
     deleteIndex: (index) => Promise.resolve({ ok: true }),
@@ -15,6 +15,7 @@ test('port search ok', t => {
     bulk: ({ index, docs }) => Promise.resolve({ ok: true, results: [] }),
     query: ({ index, q }) => Promise.resolve({ ok: true, matches: [] })
   })
+
   Promise.all([
     search.createIndex({ index: 'foo', mappings: {} }),
     search.deleteIndex('foo'),
@@ -25,10 +26,10 @@ test('port search ok', t => {
     search.bulk({ index: 'foo', docs: [] }),
     search.query({ index: 'foo', q: { query: 'foo' } })
 
-  ]).then(results => {
-    t.ok(true)
+  ]).then(() => {
+    assert(true)
   }).catch(e => {
     console.log(e)
-    t.ok(false)
+    assert(false)
   })
 })
