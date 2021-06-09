@@ -1,10 +1,11 @@
-const z = require('zod')
+
+import { z } from './deps.js'
 
 /**
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-module.exports = function (adapter) {
+export default function (adapter) {
   const Port = z.object({
     makeBucket: z.function()
       .args(z.string())
