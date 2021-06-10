@@ -1,5 +1,9 @@
-const { identity } = require('ramda')
-const adapter = require('./adapter')
+
+import { R } from './deps.js'
+
+import adapter from './adapter.js'
+
+const { identity } = R
 
 /**
  * hyper63 memory plugin adapter
@@ -7,7 +11,7 @@ const adapter = require('./adapter')
  * This memory plugin for the cache root is an adapter
  * that just uses a JS Map to store documents in memory.
  */
-module.exports = function memory () {
+export default function memory () {
   return ({
     id: 'memory',
     port: 'cache',

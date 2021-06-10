@@ -1,22 +1,25 @@
-const { v4 } = require('uuid')
-const test = require('tape')
-const memory = require('./adapter')()
 
-test('try to create cache store with no name', async t => {
+import { v4 as v4Generator, assert, assertEquals, assertObjectMatch } from './dev_deps.js'
+
+import createAdapter from './adapter.js'
+
+const v4 = v4Generator.generate.bind(v4Generator)
+
+const memory = createAdapter()
+
+Deno.test('try to create cache store with no name', async () => {
   const result = await memory.createStore(null).catch(e => e)
 
-  t.ok(!result.ok, 'should be false')
-  t.equal(result.msg, 'name must be a string value', 'error msg is correct')
+  assert(!result.ok, 'should be false')
+  assertEquals(result.msg, 'name must be a string value', 'error msg is correct')
 
   const result2 = await memory.createStore(undefined).catch(e => e)
 
-  t.ok(!result2.ok, 'should be false')
-  t.equal(result2.msg, 'name must be a string value', 'error msg is correct')
-
-  t.end()
+  assert(!result2.ok, 'should be false')
+  assertEquals(result2.msg, 'name must be a string value', 'error msg is correct')
 })
 
-test('find documents', async t => {
+Deno.test('find documents', async () => {
   await memory.createStore('demo')
   await memory.createDoc({
     store: 'demo',
@@ -49,27 +52,22 @@ test('find documents', async t => {
     store: 'demo',
     pattern: 'dc-*'
   })
-  t.ok(results.ok, 'list docs was successful')
-  t.equal(results.docs[0].value.hero, 'superman', 'found match')
+  assert(results.ok, 'list docs was successful')
+  assertEquals(results.docs[0].value.hero, 'superman', 'found match')
   await memory.destroyStore('demo')
-  t.end()
 })
 
-test('create store', async t => {
-  t.plan(1)
-
+Deno.test('create store', async () => {
   const result = await memory.createStore('default')
-  t.ok(result.ok)
+  assert(result.ok)
 })
 
-test('delete store', async t => {
-  t.plan(1)
+Deno.test('delete store', async () => {
   const result = await memory.destroyStore('default')
-  t.ok(result.ok)
+  assert(result.ok)
 })
 
-test('create doc', async t => {
-  t.plan(1)
+Deno.test('create doc', async () => {
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -81,12 +79,11 @@ test('create doc', async t => {
     store: store,
     key: '1'
   })
-  t.deepEqual(result, { hello: 'world' })
+  assertObjectMatch(result, { hello: 'world' })
   await memory.destroyStore(store)
 })
 
-test('get doc', async t => {
-  t.plan(1)
+Deno.test('get doc', async () => {
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -97,12 +94,11 @@ test('get doc', async t => {
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.deepEqual(result, { foo: 'bar' })
+  assertObjectMatch(result, { foo: 'bar' })
   await memory.destroyStore(store)
 })
 
-test('update doc', async t => {
-  t.plan(1)
+Deno.test('update doc', async () => {
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -118,12 +114,11 @@ test('update doc', async t => {
   const result = await memory.getDoc({
     store, key: '2'
   })
-  t.deepEqual(result, { beep: 'boop' })
+  assertObjectMatch(result, { beep: 'boop' })
   await memory.destroyStore(store)
 })
 
-test('delete doc', async t => {
-  t.plan(1)
+Deno.test('delete doc', async () => {
   const store = v4()
   await memory.createStore(store)
   await memory.createDoc({
@@ -138,6 +133,6 @@ test('delete doc', async t => {
   const result = await memory.getDoc({
     store, key: '2'
   }).catch(e => e)
-  t.notOk(result.ok)
+  assertEquals(result.ok, false)
   await memory.destroyStore(store)
 })

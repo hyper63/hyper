@@ -1,4 +1,7 @@
-const { keys, merge, omit } = require('ramda')
+
+import { R } from './deps.js'
+
+const { keys, merge, omit } = R
 
 /**
  * hyper63 memory adapter
@@ -27,7 +30,7 @@ const { keys, merge, omit } = require('ramda')
  * @property {Array} [docs]
  * @property {string} [msg]
  */
-module.exports = function adapter () {
+export default function adapter () {
   let stores = {}
 
   /**
