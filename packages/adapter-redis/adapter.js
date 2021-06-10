@@ -1,16 +1,24 @@
-const { Async } = require('crocks')
-const { always, append, compose, identity, ifElse, isNil, map, not, remove } = require('ramda')
+
+import { R, crocks } from './deps.js'
+
+const { Async } = crocks
+const { always, append, identity, ifElse, isNil, map, not, remove } = R
 
 const createKey = (store, key) => `${store}_${key}`
 
-module.exports = function (client) {
+export default function (client) {
   let stores = []
   // redis commands
-  const get = Async.fromNode(client.get.bind(client))
-  const set = Async.fromNode(client.set.bind(client))
-  const del = Async.fromNode(client.del.bind(client))
-  const keys = Async.fromNode(client.keys.bind(client))
-  const scan = Async.fromNode(client.scan.bind(client))
+  // key: Promise<string>
+  const get = Async.fromPromise(client.get.bind(client))
+  // key, value, { px, ex }: Promise<string>
+  const set = Async.fromPromise(client.set.bind(client))
+  // key, key, key: Promise<string[]>
+  const del = Async.fromPromise(client.del.bind(client))
+  // key: Promise<string[]>
+  const keys = Async.fromPromise(client.keys.bind(client))
+  // cursor, { type, pattern }: Promise<[string, string[]]>
+  const scan = Async.fromPromise(client.scan.bind(client))
 
   const index = () => {
     console.log('stores', stores)
@@ -25,7 +33,7 @@ module.exports = function (client) {
     Async.of([])
       .map(append(createKey('store', name)))
       .map(append('active'))
-      .chain(set)
+      .chain(args => set(...args))
       .map(v => {
         stores = append(name, stores)
         return v
@@ -43,7 +51,7 @@ module.exports = function (client) {
       .chain(
         ifElse(
           (keys) => keys.length > 0,
-          del,
+          args => del(...args),
           (keys) => Async.of(keys)
         )
       )
@@ -65,11 +73,11 @@ module.exports = function (client) {
       .map(
         ifElse(
           () => not(isNil(ttl)),
-          compose(append(ttl), append('PX')),
+          append(({ px: ttl })),
           identity
         )
       )
-      .chain(set)
+      .chain(args => set(...args))
       .map(() => ({
         ok: true,
         doc: value
@@ -100,11 +108,11 @@ module.exports = function (client) {
       .map(
         ifElse(
           () => not(isNil(ttl)),
-          compose(append(ttl), append('PX')),
+          append({ px: ttl }),
           identity
         )
       )
-      .chain((args) => set(...args))
+      .chain(args => set(...args))
       .map(() => ({
         ok: true
       }))
@@ -123,7 +131,7 @@ module.exports = function (client) {
    */
   const listDocs = async ({ store, pattern = '*' }) => {
     const matcher = `${store}_${pattern}`
-    return scan(0, 'MATCH', matcher)
+    return await scan(0, { pattern: matcher })
       .chain(getKeys(scan, matcher))
       .chain(getValues(get, store))
       .map(formatResponse)
@@ -150,7 +158,7 @@ function getKeys (scan, matcher) {
   return function repeat ([cursor, keys]) {
     return cursor === '0'
       ? Async.Resolved(keys)
-      : scan(cursor, 'MATCH', matcher)
+      : scan(cursor, { pattern: matcher })
         .chain(repeat)
         .map(v => keys.concat(v))
   }

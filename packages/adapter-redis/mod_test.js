@@ -1,6 +1,8 @@
-const test = require('tape')
-const RedisCacheAdapter = require('./index')
-const z = require('zod')
+
+import { z } from './deps.js'
+import { assert } from './dev_deps.js'
+
+import RedisCacheAdapter from './mod.js'
 
 const schema = z.object({
   id: z.string().optional(),
@@ -16,7 +18,6 @@ const schema = z.object({
     )
 })
 
-test('validate schema', t => {
-  t.ok(schema.safeParse(RedisCacheAdapter()).success)
-  t.end()
+Deno.test('validate schema', () => {
+  assert(schema.safeParse(RedisCacheAdapter()).success)
 })

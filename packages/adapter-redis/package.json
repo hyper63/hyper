@@ -6,19 +6,5 @@
     "url": "https://github.com/hyper63/hyper63.git",
     "directory": "packages/adapter-redis"
   },
-  "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "test": "tape *_test.js"
-  },
-  "dependencies": {
-    "crocks": "^0.12.4",
-    "ramda": "^0.27.1",
-    "redis": "^3.0.2",
-    "zod": "^3.0.0-alpha.33"
-  },
-  "devDependencies": {
-    "redis-mock": "^0.54.0",
-    "tape": "^5.0.1"
-  }
+  "license": "MIT"
 }

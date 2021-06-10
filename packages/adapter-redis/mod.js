@@ -1,20 +1,23 @@
-const createAdapter = require('./adapter')
-const redis = require('redis')
+
+import { redis } from './deps.js'
+
+import createAdapter from './adapter.js'
 
 /**
- * @param {object} config
+ * @typedef RedisClientArgs
+ * @property {string} hostname
+ * @property {number?} port - defaults to 6379
+ *
+ * @param {RedisClientArgs} config
  * @returns {object}
  */
-module.exports = function RedisCacheAdapter (config) {
-  /**
-   * @param {object} env
-   */
+export default function RedisCacheAdapter (config) {
   function load () {
     return config
   }
 
   /**
-   * @param {object} env
+   * @param {RedisClientArgs} env
    * @returns {function}
    */
   function link (env) {
@@ -24,7 +27,7 @@ module.exports = function RedisCacheAdapter (config) {
      */
     return function () {
       // create client
-      const client = redis.createClient(env)
+      const client = redis.connect(env)
       return createAdapter(client)
     }
   }

@@ -1,93 +1,154 @@
-const test = require('tape')
-const redis = require('redis-mock')
-// const redis = require('redis')
-const createAdapter = require('./adapter')
 
-const client = redis.createClient()
-const adapter = createAdapter(client)
+import { spy, resolves, assert, assertObjectMatch, assertEquals } from './dev_deps.js'
 
-test('test scan', async t => {
-  let result = await adapter.createStore('word')
+import createAdapter from './adapter.js'
+
+const baseStubClient = {
+  get: resolves(),
+  set: resolves(),
+  del: resolves(),
+  keys: resolves(),
+  scan: resolves()
+}
+
+Deno.test('test scan', async () => {
+  let results = []
   for (let i = 0; i < 100; i++) {
-    result = await adapter.createDoc({
-      store: 'word',
-      key: 'bar' + i,
-      value: { bam: 'baz' }
-    })
+    results.push(`key${i}`)
   }
 
-  result = await adapter.listDocs({
+  const adapter = createAdapter({
+    ...baseStubClient,
+    get: resolves(JSON.stringify({ bam: 'baz' })),
+    scan: resolves(['0', results])
+  })
+
+  results = await adapter.listDocs({
     store: 'word',
     pattern: '*'
   })
-  t.ok(result.docs.length === 100)
-  t.end()
+
+  assert(results.docs.length === 100)
 })
 
-test('create redis store', async t => {
+Deno.test('create redis store', async () => {
+  const adapter = createAdapter(baseStubClient)
+
   const result = await adapter.createStore('foo')
-  t.ok(result.ok)
-  t.end()
+  assert(result.ok)
 })
 
-test('remove redis store', async t => {
+Deno.test('remove redis store - no keys', async () => {
+  const adapter = createAdapter({
+    ...baseStubClient,
+    keys: resolves([])
+  })
+
   const result = await adapter.destroyStore('foo')
-  t.ok(result.ok)
-  t.end()
+  assert(result.ok)
 })
 
-test('create redis doc', async t => {
+Deno.test('remove redis store - keys', async () => {
+  const del = spy(() => Promise.resolve(2))
+  const adapter = createAdapter({
+    ...baseStubClient,
+    del,
+    keys: resolves(['baz', 'bar'])
+  })
+
+  const result = await adapter.destroyStore('foo')
+
+  assert(result.ok)
+  assertObjectMatch(del.calls[0], { args: ['store_foo'] })
+  assertObjectMatch(del.calls[1], { args: ['baz', 'bar'] })
+})
+
+Deno.test('create redis doc', async () => {
+  const adapter = createAdapter(baseStubClient)
+
   const result = await adapter.createDoc({
     store: 'foo',
     key: 'bar',
-    value: { bam: 'baz' }
+    value: { bam: 'baz' },
+    ttl: 5000
   })
-  t.ok(result.ok)
-  t.end()
+
+  assert(result.ok)
+  assertEquals(result.doc, { bam: 'baz' })
 })
 
-test('get redis doc', async t => {
+Deno.test('get redis doc', async () => {
+  const value = { bam: 'baz' }
+  const adapter = createAdapter({
+    ...baseStubClient,
+    get: resolves(JSON.stringify(value))
+  })
+
   const result = await adapter.getDoc({
     store: 'foo',
     key: 'bar'
   })
-  t.deepEqual(result, { bam: 'baz' })
-  t.end()
+
+  assertObjectMatch(result, value)
 })
 
-test('update redis doc', async t => {
+Deno.test('get redis doc - not found', async () => {
+  const adapter = createAdapter({
+    ...baseStubClient,
+    get: resolves(undefined)
+  })
+
+  // Wanted to use assertThrowsAsync, but it requires throwing an Error type
+  try {
+    await adapter.getDoc({
+      store: 'foo',
+      key: 'bar'
+    })
+
+    assert(false)
+  } catch (err) {
+    assertObjectMatch(err, { ok: false, status: 404 })
+  }
+})
+
+Deno.test('update redis doc', async () => {
+  const adapter = createAdapter(baseStubClient)
+
   const result = await adapter.updateDoc({
     store: 'foo',
     key: 'bar',
     value: { hello: 'world' }
   })
-  t.ok(result.ok)
-  t.end()
+
+  assert(result.ok)
 })
 
-test('delete redis doc', async t => {
+Deno.test('delete redis doc', async () => {
+  const adapter = createAdapter(baseStubClient)
+
   const result = await adapter.deleteDoc({
     store: 'foo',
     key: 'bar'
   })
-  t.ok(result.ok)
-  t.end()
+
+  assert(result.ok)
 })
 
-test('list redis docs', async t => {
-  const doc = { hello: 'world' }
-  await adapter.createDoc({ store: 'foo', key: 'beep', value: doc })
+Deno.test('list redis docs', async () => {
+  const doc = { bam: 'baz' }
+
+  const adapter = createAdapter({
+    ...baseStubClient,
+    get: resolves(JSON.stringify(doc)),
+    scan: resolves(['0', ['key']])
+  })
+
   const result = await adapter.listDocs({
     store: 'foo',
     pattern: '*'
   })
-  await adapter.deleteDoc({
-    store: 'foo',
-    key: 'beep'
-  })
 
-  t.ok(result.ok)
-  t.equal(result.docs.length, 1)
-  t.deepEqual(result.docs[0].value, doc)
-  t.end()
+  assert(result.ok)
+  assertEquals(result.docs.length, 1)
+  assertObjectMatch(result.docs[0].value, doc)
 })
