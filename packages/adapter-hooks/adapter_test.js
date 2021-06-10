@@ -1,7 +1,10 @@
-const test = require('tape')
-const { Async } = require('crocks')
-const createAdapter = require('./adapter.js')
-const fetchMock = require('fetch-mock')
+
+import { crocks } from './deps.js'
+import { assertEquals, assertObjectMatch, assert, resolves, spy } from './dev_deps.js'
+
+import createAdapter from './adapter.js'
+
+const { Async } = crocks
 
 const logDb = 'http://127.0.0.1:9200/log/_doc'
 
@@ -19,24 +22,30 @@ const hooks = [{
   target: logDb
 }]
 
-const fetch = fetchMock.sandbox()
-  .post(`${logDb}`,
-    {
-      status: 201,
-      body: { ok: true },
-      headers: { 'content-type': 'application/json' }
-    }
-  )
+const fetch = spy(() => Promise.resolve(({ json: resolves({ ok: true }) })))
 
 const asyncFetch = Async.fromPromise(fetch)
 
-test('using hooks log event', async t => {
+Deno.test('using hooks log event', async () => {
   const adapter = createAdapter({ asyncFetch, hooks })
-  const result = await adapter.call({
+
+  const action = {
     type: 'TEST:METHOD',
     payload: { date: new Date().toISOString() }
-  })
-  t.ok(result[0].ok)
-  t.equal(result.length, 3)
-  t.end()
+  }
+
+  const result = await adapter.call(action)
+  assert(result[0].ok)
+  assertEquals(result.length, 3)
+  assertObjectMatch(fetch.calls[0], {
+    args: [
+      logDb,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(action)
+      }
+    ]
+  }
+  )
 })

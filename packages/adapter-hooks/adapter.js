@@ -1,7 +1,10 @@
-const { Async } = require('crocks')
-const { map } = require('ramda')
 
-module.exports = function ({ asyncFetch, hooks }) {
+import { R, crocks } from './deps.js'
+
+const { Async } = crocks
+const { map } = R
+
+export default function ({ asyncFetch, hooks }) {
   const doNotify = action => hooks => Async.all(
     map(notify(action), hooks)
   )
@@ -13,7 +16,6 @@ module.exports = function ({ asyncFetch, hooks }) {
       .map(matcher(action.type))
       .map(v => { console.log(`${action.type}: ${JSON.stringify(action.payload)}`); return v })
       .chain(doNotify(action))
-
       .toPromise()
   })
 
