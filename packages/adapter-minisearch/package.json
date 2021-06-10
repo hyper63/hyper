@@ -3,16 +3,5 @@
   "version": "1.0.9",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",
-  "license": "Apache-2.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "tape *_test.js"
-  },
-  "dependencies": {
-    "minisearch": "^3.0.2",
-    "ramda": "^0.27.1"
-  },
-  "devDependencies": {
-    "tape": "^5.0.1"
-  }
+  "license": "Apache-2.0"
 }

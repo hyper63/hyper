@@ -1,5 +1,9 @@
-const { identity } = require('ramda')
-const adapter = require('./adapter')
+
+import { R } from './deps.js'
+
+import adapter from './adapter.js'
+
+const { identity } = R
 
 /**
  * hyper63 search plugin for the search port. This plugin is an adapter that
@@ -28,7 +32,7 @@ const adapter = require('./adapter')
  *
  * search section
  */
-module.exports = function memory () {
+export default function memory () {
   return ({
     id: 'minisearch',
     port: 'search',

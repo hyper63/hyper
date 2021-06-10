@@ -1,8 +1,13 @@
-const test = require('tape')
-const adapter = require('./adapter')()
 
-test('minisearch tests', async t => {
-  t.plan(10)
+import { assert, assertEquals } from './dev_deps.js'
+
+import createAdapter from './adapter.js'
+
+const adapter = createAdapter()
+
+// TODO: Tyler. Make tests independent of each other
+
+Deno.test('create index', async () => {
   const result = await adapter.createIndex({
     index: 'default',
     mappings: {
@@ -10,8 +15,10 @@ test('minisearch tests', async t => {
       storeFields: ['title', 'body', 'category']
     }
   })
-  t.ok(result.ok, 'create index')
+  assert(result.ok)
+})
 
+Deno.test('index doc', async () => {
   const result2 = await adapter.indexDoc({
     index: 'default',
     key: '1',
@@ -23,14 +30,19 @@ test('minisearch tests', async t => {
     }
   })
 
-  t.ok(result2.ok, 'index doc')
+  assert(result2.ok)
+})
 
+Deno.test('get document', async () => {
   const result3 = await adapter.getDoc({
     index: 'default',
     key: '1'
   })
-  t.equal(result3.id, '1', 'get document')
 
+  assertEquals(result3.id, '1')
+})
+
+Deno.test('update document', async () => {
   const result4 = await adapter.updateDoc({
     index: 'default',
     key: '1',
@@ -42,21 +54,22 @@ test('minisearch tests', async t => {
     }
   })
 
-  t.ok(result4.ok)
-
   const newDoc = await adapter.getDoc({
     index: 'default',
     key: '1'
   })
 
-  t.equal(newDoc.title, 'Search is cool')
+  assertEquals(newDoc.title, 'Search is cool')
+  assert(result4.ok)
+})
 
+Deno.test('query doc', async () => {
   const searchResults = await adapter.query({
     index: 'default',
     q: { query: 'Search is cool' }
   })
 
-  t.equal(searchResults.matches[0].id, '1', 'found doc')
+  assertEquals(searchResults.matches[0].id, '1')
 
   const searchResults2 = await adapter.query({
     index: 'default',
@@ -66,21 +79,26 @@ test('minisearch tests', async t => {
     }
   })
 
-  t.equal(searchResults2.matches[0].id, '1', 'found doc')
+  assertEquals(searchResults2.matches[0].id, '1', 'found doc')
+})
 
+Deno.test('remove doc', async () => {
   const docDeleteResult = await adapter.removeDoc({
     index: 'default',
     key: '1'
   })
-  t.ok(docDeleteResult.ok, 'deleted doc')
+
+  assert(docDeleteResult.ok)
 
   const deletedDoc = await adapter.getDoc({
     index: 'default',
     key: '1'
   })
 
-  t.equal(deletedDoc, null, 'could not find doc')
+  assertEquals(deletedDoc, null)
+})
 
+Deno.test('delete index', async () => {
   const deleteResult = await adapter.deleteIndex('default')
-  t.ok(deleteResult.ok, 'delete index')
+  assert(deleteResult.ok)
 })

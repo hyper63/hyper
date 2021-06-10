@@ -1,5 +1,7 @@
-const MiniSearch = require('minisearch')
-const { allPass, keys, reduce } = require('ramda')
+
+import { MiniSearch, R } from './deps.js'
+
+const { allPass, keys, reduce } = R
 // types
 
 /**
@@ -41,7 +43,7 @@ const { allPass, keys, reduce } = require('ramda')
   * @property {string} [msg]
  */
 
-module.exports = function () {
+export default function () {
   const indexes = new Map()
   const datastores = new Map()
 
