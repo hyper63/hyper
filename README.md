@@ -66,21 +66,7 @@ For more information about hyper63 go to our documentation site. https://docs.hy
 
 ## Contributions
 
-Our contributors guide will be coming out soon, for now, check out the project roadmap. https://github.com/hyper63/hyper63/projects/1
-
-## Contributing
-
-Options to contribute:
-
-- Write an adapter - create an adapter for a given port
-- Write an client - create a client for your favorite language
-- Write an app interface - create your own interface to the hyper63 service framework
-- Documentation - update the documentation to be concise and clear
-- Examples - create an example implementation.
-
-Want to get involved read the following to find out how.
-
-This is an opensource project, which welcomes all contributions and all development will occur in the open for interested parties to follow and comment. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) and the [Contributing](contributing.md) documentation to fully understand the requirements and restrictions to be a part of this community.
+See **[Contributing to hyper](https://docs.hyper.io/contributing-to-hyper)** and be sure to check out the **[project roadmap](https://github.com/hyper63/hyper63/projects/1)**. 
 
 ## Developer Setup 
 
