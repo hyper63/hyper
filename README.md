@@ -14,13 +14,13 @@
 </p>
 
 <p align="center">
-  <a href="https://api-docs.hyper63.com">Docs</a>
+  <a href="https://docs.hyper.io/">Docs</a>
   <span> · </span>
   <a href="https://github.com/hyper63/hyper63/discussions">Discussions</a>
   <span> · </span>
   <a href="https://github.com/hyper63/hyper63/issues">Issues</a>
   <span> · </span>
-  <a href="https://docs.hyper63.com/changelog">Changelog</a>
+  <a href="https://docs.hyper.io/changelog">Changelog</a>
 </p>
 
 ## Introduction
@@ -62,7 +62,7 @@ This `nano` version of hyper63 implements the following ports and adapters:
 
 ## Documentation
 
-For more information about hyper63 go to our documentation site. https://docs.hyper63.com, if you are unable to find the information you are looking for, post a question in our discussions forum. https://github.com/hyper63/hyper63/discussions
+For more information about hyper63 go to our documentation site. https://docs.hyper.io if you are unable to find the information you are looking for, post a question in our discussions forum. https://github.com/hyper63/hyper63/discussions
 
 ## Contributions
 
