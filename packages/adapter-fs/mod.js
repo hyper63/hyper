@@ -1,5 +1,9 @@
-const { merge } = require('ramda')
-const adapter = require('./adapter')
+
+import { R } from './deps.js'
+
+import adapter from './adapter.js'
+
+const { merge } = R
 
 /**
  * hyper63 fs plugin for the storage port. This plugin is an adapter that
@@ -28,7 +32,7 @@ const adapter = require('./adapter')
  *
  * storage section
  */
-module.exports = function (config) {
+export default function (config) {
   return ({
     id: 'fs',
     port: 'storage',

@@ -1,37 +1,82 @@
-const test = require('tape')
-const { v4 } = require('uuid')
-const adapter = require('./adapter')('./')
-const values = require('pull-stream/sources/values')
-const pull = require('pull-stream/pull')
-const concat = require('pull-stream/sinks/concat')
 
-const toStream = require('pull-stream-to-stream')
-const toPull = require('stream-to-pull-stream')
+import { v4 as v4Generator, readAll, assert, assertEquals } from './dev_deps.js'
 
-test('fs adapter make bucket', async t => {
-  t.plan(1)
+import createAdapter from './adapter.js'
+
+const v4 = v4Generator.generate.bind(v4Generator)
+
+const adapter = createAdapter('./')
+
+function emptyReader () {
+  return {
+    read (_) {
+      return Promise.resolve(null)
+    }
+  }
+}
+
+/**
+ * Given a string, return a Reader that read the encoded string
+ * into the provided buffer
+ *
+ * @param {string} text - the string to stream
+ * @returns {Deno.Reader} - a Reader implementation
+ */
+function textReader (text = '') {
+  const encoded = new TextEncoder().encode(text)
+  let totalRead = 0
+  let finished = false
+
+  async function read (buf) {
+    if (finished) {
+      return null
+    }
+
+    let result
+    const remaining = encoded.length - totalRead
+
+    // read into the buffer
+    buf.set(encoded.subarray(totalRead, buf.byteLength), 0)
+
+    if (remaining >= buf.byteLength) {
+      result = buf.byteLength
+    } else {
+      result = remaining
+    }
+
+    if (result) {
+      totalRead += result
+    }
+    finished = totalRead === encoded.length
+
+    return await result
+  }
+
+  return { read }
+}
+
+Deno.test('fs adapter make bucket', async () => {
   const bucket = v4()
   const result = await adapter.makeBucket(bucket)
-  t.ok(result.ok)
+  assert(result.ok)
   await adapter.removeBucket(bucket)
 })
 
-test('fs adapter put object', async t => {
-  t.plan(1)
+Deno.test('fs adapter put object', async () => {
   // setup
   const bucket = v4()
-  const object = v4() + '.tmp'
+  const object = v4() + '.txt'
   await adapter.makeBucket(bucket)
 
   // test
-  const stream = toStream.source(values(['hello', 'world']))
+  const stream = textReader('woop woop')
 
   const result = await adapter.putObject({
     bucket,
     object,
     stream
   })
-  t.ok(result.ok)
+  assert(result.ok)
 
   // clean up
 
@@ -47,12 +92,13 @@ test('fs adapter put object', async t => {
   })
 })
 
-test('fs adapter get object', async t => {
+Deno.test('fs adapter get object', async () => {
   const bucket = v4()
-  const object = v4() + '.tmp'
+  const object = v4() + '.txt'
   await adapter.makeBucket(bucket)
 
-  const stream = toStream.source(values(['hello', 'world']))
+  const stream = textReader('hello world')
+
   await adapter.putObject({
     bucket,
     object,
@@ -63,34 +109,53 @@ test('fs adapter get object', async t => {
     bucket,
     object
   })
-  await new Promise((resolve) => {
-    pull(
-      toPull.source(s),
-      concat(async (_err, data) => {
-        t.equal(data, 'helloworld')
-        // cleanup
-        // remove file
-        await adapter.removeObject({
-          bucket,
-          object
-        })
-        // remove Bucket
-        await adapter.removeBucket(bucket).catch(() => {
-          return { ok: false }
-        })
-        resolve()
-      })
-    )
+
+  const encodedResult = await readAll(s)
+  // close the Reader
+  s.close()
+
+  assertEquals(new TextDecoder().decode(encodedResult), 'hello world')
+
+  // cleanup
+  // remove file
+  await adapter.removeObject({
+    bucket,
+    object
   })
-  t.end()
+  // remove Bucket
+  await adapter.removeBucket(bucket).catch(() => {
+    return { ok: false }
+  })
 })
 
-test('list files', async t => {
-  const list = await adapter.listObjects({
-    bucket: 'node_modules'
+Deno.test('list files', async () => {
+  const bucket = v4()
+  const object = v4() + '.tmp'
+
+  // setup
+  await adapter.makeBucket(bucket)
+
+  const stream = emptyReader()
+
+  await adapter.putObject({
+    bucket,
+    object,
+    stream
   })
-  t.ok(
-    list.find(file => file === 'tape')
+
+  // test
+  const list = await adapter.listObjects({
+    bucket
+  })
+
+  assert(
+    list.find(file => file === object)
   )
-  t.end()
+
+  // clean up
+  await adapter.removeObject({
+    bucket,
+    object
+  })
+  await adapter.removeBucket(bucket)
 })
