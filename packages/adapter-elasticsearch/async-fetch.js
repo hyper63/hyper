@@ -1,15 +1,17 @@
-const createFetch = require('@vercel/fetch-retry')
-const nodeFetch = require('node-fetch')
-const { Async } = require('crocks')
-const { ifElse } = require('ramda')
 
-const fetch = createFetch(nodeFetch)
+import { R, crocks, base64Encode } from './deps.js'
 
-const asyncFetch = Async.fromPromise(fetch)
+const { Async } = crocks
+const { ifElse } = R
+
+// TODO: Tyler. wrap with opionated approach like before with https://github.com/vercel/fetch
+const asyncFetch = fetch => Async.fromPromise(fetch)
 
 const createHeaders = (username, password) => ({
   'Content-Type': 'application/json',
-  authorization: `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
+  authorization: `Basic ${
+    base64Encode(new TextEncoder().encode(username + ':' + password))
+  }`
 })
 
 const handleResponse = pred =>
@@ -20,7 +22,7 @@ const handleResponse = pred =>
       .chain(Async.Rejected)
   )
 
-module.exports = {
+export {
   asyncFetch,
   createHeaders,
   handleResponse

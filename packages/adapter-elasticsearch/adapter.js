@@ -1,9 +1,12 @@
 
-const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip, toPairs } = require('ramda')
-const {
+import { R } from './deps.js'
+
+import {
   createIndexPath, deleteIndexPath, indexDocPath, getDocPath,
   updateDocPath, removeDocPath, bulkPath, queryPath
-} = require('./paths')
+} from './paths.js'
+
+const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip, toPairs } = R
 
 /**
   *
@@ -58,7 +61,7 @@ const {
   * - How to support different versions of Elasticsearch?
   * - ? Should we expose Elasticsearch response in result as res?
   */
-module.exports = function ({ config, asyncFetch, headers, handleResponse }) {
+export default function ({ config, asyncFetch, headers, handleResponse }) {
   /**
    * @param {IndexInfo}
    * @returns {Promise<Response>}

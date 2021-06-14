@@ -1,14 +1,12 @@
 
-const test = require('tape')
-const { Async } = require('crocks')
-const fetchMock = require('fetch-mock')
+import { spy, resolves, assert, assertEquals, assertObjectMatch } from './dev_deps.js'
 
-const createAdapter = require('./adapter')
-const { createHeaders, handleResponse } = require('./async-fetch')
-const {
+import createAdapter from './adapter.js'
+import { createHeaders, handleResponse, asyncFetch } from './async-fetch.js'
+import {
   deleteIndexPath, createIndexPath, indexDocPath, getDocPath,
   updateDocPath, removeDocPath, bulkPath, queryPath
-} = require('./paths')
+} from './paths.js'
 
 const headers = createHeaders('admin', 'password')
 
@@ -29,57 +27,61 @@ const DOC2 = {
   rating: 6
 }
 
-const fetch = fetchMock.sandbox()
+const response = { json: () => Promise.resolve(), status: 200 }
+
+const stubResponse = (status, body) => {
+  response.json = resolves(body)
+  response.status = status
+}
+
+const fetch = spy(() => Promise.resolve(response))
 
 const adapter = createAdapter({
   config: { origin: ES },
-  asyncFetch: Async.fromPromise(fetch),
+  asyncFetch: asyncFetch(fetch),
   headers,
   handleResponse
 })
 
-test('remove index', async t => {
+Deno.test('remove index', async () => {
   // remove index
-  fetch.deleteOnce(deleteIndexPath(ES, INDEX), {
-    status: 200,
-    body: { ok: true },
-    headers
-  })
+  stubResponse(200, { ok: true })
 
   const result = await adapter.deleteIndex(INDEX)
 
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [deleteIndexPath(ES, INDEX), {
+      method: 'DELETE',
+      headers
+    }]
+  })
+
+  assertEquals(result.ok, true)
 })
 
-test('create index', async t => {
+Deno.test('create index', async () => {
   // create index
-  fetch.putOnce(createIndexPath(ES, INDEX),
-    {
-      status: 201,
-      body: { ok: true },
-      headers
-    }
-  )
+  stubResponse(201, { ok: true })
 
   const result = await adapter.createIndex({
     index: INDEX,
     mappings: { fields: ['title'] }
   })
 
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [createIndexPath(ES, INDEX), {
+      method: 'PUT',
+      headers,
+      body: '{"mappings":{"properties":{"title":{"type":"text"}}}}'
+    }]
+  })
+
+  assertEquals(result.ok, true)
 })
 
-test('index document', async t => {
+Deno.test('index document', async () => {
   // index doc
-  fetch.putOnce(indexDocPath(ES, INDEX, DOC1.id), {
-    status: 200,
-    body: { ok: true },
-    headers
-  }, {
-    overwriteRoutes: true
-  })
+  stubResponse(200, { ok: true })
 
   const result = await adapter.indexDoc({
     index: INDEX,
@@ -87,37 +89,40 @@ test('index document', async t => {
     doc: DOC1
   })
 
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [indexDocPath(ES, INDEX, DOC1.id), {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(DOC1)
+    }]
+  })
+
+  assertEquals(result.ok, true)
 })
 
-test('get document', async t => {
+Deno.test('get document', async () => {
   // get doc
-  fetch.getOnce(getDocPath(ES, INDEX, DOC1.id), {
-    status: 200,
-    body: DOC1,
-    headers
-  })
+  stubResponse(200, DOC1)
 
   const result = await adapter.getDoc({
     index: INDEX,
     key: DOC1.id
   })
 
-  t.equals(result.doc.title, DOC1.title)
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [getDocPath(ES, INDEX, DOC1.id), {
+      method: 'GET',
+      headers
+    }]
+  })
+
+  assertEquals(result.doc.title, DOC1.title)
+  assertEquals(result.ok, true)
 })
 
-test('update document', async t => {
+Deno.test('update document', async () => {
   // update doc
-  fetch.putOnce(updateDocPath(ES, INDEX, DOC1.id), {
-    status: 201,
-    body: { ok: true },
-    headers
-  }, {
-    overwriteRoutes: true
-  })
+  stubResponse(201, { ok: true })
 
   const result = await adapter.updateDoc({
     index: INDEX,
@@ -128,38 +133,46 @@ test('update document', async t => {
     }
   })
 
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [updateDocPath(ES, INDEX, DOC1.id), {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        ...DOC1,
+        rating: 6
+      })
+    }]
+  })
+
+  assertEquals(result.ok, true)
 })
 
-test('delete document', async t => {
+Deno.test('delete document', async () => {
   // remove doc
-  fetch.deleteOnce(removeDocPath(ES, INDEX, DOC1.id), {
-    status: 201,
-    body: { ok: true },
-    headers
-  })
+  stubResponse(201, { ok: true })
 
   const result = await adapter.removeDoc({
     index: INDEX,
     key: DOC1.id
   })
 
-  t.equals(result.ok, true)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [removeDocPath(ES, INDEX, DOC1.id), {
+      method: 'DELETE',
+      headers
+    }]
+  })
+
+  assertEquals(result.ok, true)
 })
 
-test('bulk', async t => {
+Deno.test('bulk', async () => {
   // bulk operation
-  fetch.postOnce(bulkPath(ES), {
-    status: 200,
-    body: {
-      items: [
-        DOC1,
-        DOC2
-      ]
-    },
-    headers
+  stubResponse(200, {
+    items: [
+      DOC1,
+      DOC2
+    ]
   })
 
   const result = await adapter.bulk({
@@ -170,15 +183,21 @@ test('bulk', async t => {
     ]
   })
 
-  t.equals(result.ok, true)
-  t.ok(result.results)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [bulkPath(ES), {
+      method: 'POST',
+      headers
+      // TODO: Tyler. Assert body here eventually
+    }]
+  })
+
+  assertEquals(result.ok, true)
+  assert(result.results)
 })
 
-test('query', async t => {
+Deno.test('query', async () => {
   // query docs
-  fetch.postOnce(queryPath(ES, INDEX), {
-    status: 200,
+  stubResponse(200, {
     hits: {
       hits: [
         DOC1
@@ -197,8 +216,15 @@ test('query', async t => {
     }
   })
 
-  t.equals(result.ok, true)
-  t.ok(result.matches)
-  t.equals(result.matches.length, 1)
-  t.end()
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [queryPath(ES, INDEX), {
+      method: 'POST',
+      headers
+      // TODO: Tyler. Assert body here eventually
+    }]
+  })
+
+  assertEquals(result.ok, true)
+  assert(result.matches)
+  assertEquals(result.matches.length, 1)
 })

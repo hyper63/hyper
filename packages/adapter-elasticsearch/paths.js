@@ -31,7 +31,7 @@ function queryPath (root, index) {
   return `${root}/${index}/_search`
 }
 
-module.exports = {
+export {
   createIndexPath,
   deleteIndexPath,
   indexDocPath,
