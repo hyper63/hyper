@@ -431,6 +431,19 @@
     ramda "^0.27.1"
     zeromq "^6.0.0-beta.6"
 
+"@hyper63/app-express@^1.0.12", "@hyper63/app-express@^1.0.7", "@hyper63/app-express@^1.1.3":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@hyper63/app-express/-/app-express-1.1.5.tgz#ff2fc944f3bda2a75543247a9c1f7f28e6d7cde5"
+  integrity sha512-3lK15KB4UuK7B8WGxcnmA0seZvF/my3CC9YPqSY3dTqzglZ4aY8WlU9jWSxf1GXww3HIsl1+Ia4SmXU1Z0M0xA==
+  dependencies:
+    cors "^2.8.5"
+    crocks "^0.12.4"
+    express "^4.17.1"
+    helmet "^4.2.0"
+    mime "^2.4.6"
+    multer "^1.4.2"
+    ramda "^0.27.1"
+
 "@hyper63/port-queue@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@hyper63/port-queue/-/port-queue-0.0.2.tgz#63449a7a48be6e0bc4ef6bbf15641cddf2dca8dd"
@@ -512,11 +525,6 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
-
-"@twilson63/test-server@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@twilson63/test-server/-/test-server-1.0.2.tgz#5c849e022562525043bbe264f70d27839075a24e"
-  integrity sha512-fhtmv77eVN7hbEUAcBfvkPXeUTSoQRPFtLSEpWrxYCPz5B4Bn3BI5rafeuQ5aZcqaV9CCNjF7Flq5fLnch/UqQ==
 
 "@types/accepts@*", "@types/accepts@^1.3.5":
   version "1.3.5"
@@ -4494,7 +4502,7 @@ symbol-observable@^1.0.4:
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
   integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
 
-tape@^5.0.1, tape@^5.1.1:
+tape@^5.0.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/tape/-/tape-5.1.1.tgz#51e6fc7af0c15cf39faa6aac3d0a1d2ca6fd4744"
   integrity sha512-ujhT+ZJPqSGY9Le02mIGBnyWo7Ks05FEGS9PnlqECr3sM3KyV4CSCXAvSBJKMN+t+aZYLKEFUEo0l4wFJMhppQ==
