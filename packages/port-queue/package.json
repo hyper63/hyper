@@ -1,19 +1,5 @@
 {
   "name": "@hyper63/port-queue",
   "version": "0.1.4",
-  "license": "MIT",
-  "main": "lib/index.js",
-  "typings": "lib/index",
-  "scripts": {
-    "build": "tsc",
-    "test": "tsc && tape lib/*_test.js"
-  },
-  "dependencies": {
-    "zod": "^3.0.0-alpha.33"
-  },
-  "devDependencies": {
-    "@types/tape": "^4.13.0",
-    "tape": "^5.2.2",
-    "typescript": "^4.2.3"
-  }
+  "license": "MIT"
 }

@@ -1,8 +1,7 @@
 # hyper63 MINIO Adapter
 
-MinIO is a storage service that allows you to create
-buckets and upload objects, like files, and media to
-a storage solution.
+MinIO is a storage service that allows you to create buckets and upload objects,
+like files, and media to a storage solution.
 
 ## Install
 

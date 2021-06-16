@@ -1,204 +1,241 @@
+import {
+  assert,
+  assertEquals,
+  assertObjectMatch,
+  resolves,
+  spy,
+} from "./dev_deps.js";
 
-const test = require('tape')
-const { Async } = require('crocks')
-const fetchMock = require('fetch-mock')
+import createAdapter from "./adapter.js";
+import { asyncFetch, createHeaders, handleResponse } from "./async-fetch.js";
+import {
+  bulkPath,
+  createIndexPath,
+  deleteIndexPath,
+  getDocPath,
+  indexDocPath,
+  queryPath,
+  removeDocPath,
+  updateDocPath,
+} from "./paths.js";
 
-const createAdapter = require('./adapter')
-const { createHeaders, handleResponse } = require('./async-fetch')
-const {
-  deleteIndexPath, createIndexPath, indexDocPath, getDocPath,
-  updateDocPath, removeDocPath, bulkPath, queryPath
-} = require('./paths')
+const headers = createHeaders("admin", "password");
 
-const headers = createHeaders('admin', 'password')
-
-const ES = 'http://localhost:9200'
-const INDEX = 'movies'
+const ES = "http://localhost:9200";
+const INDEX = "movies";
 
 const DOC1 = {
-  title: 'The Great Gatsby',
-  id: 'tgg',
+  title: "The Great Gatsby",
+  id: "tgg",
   year: 2012,
-  rating: 4
-}
+  rating: 4,
+};
 
 const DOC2 = {
-  title: 'The Foo Gatsby',
-  id: 'tfg',
+  title: "The Foo Gatsby",
+  id: "tfg",
   year: 2012,
-  rating: 6
-}
+  rating: 6,
+};
 
-const fetch = fetchMock.sandbox()
+const response = { json: () => Promise.resolve(), status: 200 };
+
+const stubResponse = (status, body) => {
+  response.json = resolves(body);
+  response.status = status;
+};
+
+const fetch = spy(() => Promise.resolve(response));
 
 const adapter = createAdapter({
   config: { origin: ES },
-  asyncFetch: Async.fromPromise(fetch),
+  asyncFetch: asyncFetch(fetch),
   headers,
-  handleResponse
-})
+  handleResponse,
+});
 
-test('remove index', async t => {
+Deno.test("remove index", async () => {
   // remove index
-  fetch.deleteOnce(deleteIndexPath(ES, INDEX), {
-    status: 200,
-    body: { ok: true },
-    headers
-  })
+  stubResponse(200, { ok: true });
 
-  const result = await adapter.deleteIndex(INDEX)
+  const result = await adapter.deleteIndex(INDEX);
 
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [deleteIndexPath(ES, INDEX), {
+      method: "DELETE",
+      headers,
+    }],
+  });
 
-test('create index', async t => {
+  assertEquals(result.ok, true);
+});
+
+Deno.test("create index", async () => {
   // create index
-  fetch.putOnce(createIndexPath(ES, INDEX),
-    {
-      status: 201,
-      body: { ok: true },
-      headers
-    }
-  )
+  stubResponse(201, { ok: true });
 
   const result = await adapter.createIndex({
     index: INDEX,
-    mappings: { fields: ['title'] }
-  })
+    mappings: { fields: ["title"] },
+  });
 
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [createIndexPath(ES, INDEX), {
+      method: "PUT",
+      headers,
+      body: '{"mappings":{"properties":{"title":{"type":"text"}}}}',
+    }],
+  });
 
-test('index document', async t => {
+  assertEquals(result.ok, true);
+});
+
+Deno.test("index document", async () => {
   // index doc
-  fetch.putOnce(indexDocPath(ES, INDEX, DOC1.id), {
-    status: 200,
-    body: { ok: true },
-    headers
-  }, {
-    overwriteRoutes: true
-  })
+  stubResponse(200, { ok: true });
 
   const result = await adapter.indexDoc({
     index: INDEX,
     key: DOC1.id,
-    doc: DOC1
-  })
+    doc: DOC1,
+  });
 
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [indexDocPath(ES, INDEX, DOC1.id), {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(DOC1),
+    }],
+  });
 
-test('get document', async t => {
+  assertEquals(result.ok, true);
+});
+
+Deno.test("get document", async () => {
   // get doc
-  fetch.getOnce(getDocPath(ES, INDEX, DOC1.id), {
-    status: 200,
-    body: DOC1,
-    headers
-  })
+  stubResponse(200, DOC1);
 
   const result = await adapter.getDoc({
     index: INDEX,
-    key: DOC1.id
-  })
+    key: DOC1.id,
+  });
 
-  t.equals(result.doc.title, DOC1.title)
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [getDocPath(ES, INDEX, DOC1.id), {
+      method: "GET",
+      headers,
+    }],
+  });
 
-test('update document', async t => {
+  assertEquals(result.doc.title, DOC1.title);
+  assertEquals(result.ok, true);
+});
+
+Deno.test("update document", async () => {
   // update doc
-  fetch.putOnce(updateDocPath(ES, INDEX, DOC1.id), {
-    status: 201,
-    body: { ok: true },
-    headers
-  }, {
-    overwriteRoutes: true
-  })
+  stubResponse(201, { ok: true });
 
   const result = await adapter.updateDoc({
     index: INDEX,
     key: DOC1.id,
     doc: {
       ...DOC1,
-      rating: 6
-    }
-  })
+      rating: 6,
+    },
+  });
 
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [updateDocPath(ES, INDEX, DOC1.id), {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({
+        ...DOC1,
+        rating: 6,
+      }),
+    }],
+  });
 
-test('delete document', async t => {
+  assertEquals(result.ok, true);
+});
+
+Deno.test("delete document", async () => {
   // remove doc
-  fetch.deleteOnce(removeDocPath(ES, INDEX, DOC1.id), {
-    status: 201,
-    body: { ok: true },
-    headers
-  })
+  stubResponse(201, { ok: true });
 
   const result = await adapter.removeDoc({
     index: INDEX,
-    key: DOC1.id
-  })
+    key: DOC1.id,
+  });
 
-  t.equals(result.ok, true)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [removeDocPath(ES, INDEX, DOC1.id), {
+      method: "DELETE",
+      headers,
+    }],
+  });
 
-test('bulk', async t => {
+  assertEquals(result.ok, true);
+});
+
+Deno.test("bulk", async () => {
   // bulk operation
-  fetch.postOnce(bulkPath(ES), {
-    status: 200,
-    body: {
-      items: [
-        DOC1,
-        DOC2
-      ]
-    },
-    headers
-  })
+  stubResponse(200, {
+    items: [
+      DOC1,
+      DOC2,
+    ],
+  });
 
   const result = await adapter.bulk({
     index: INDEX,
     docs: [
       DOC1,
-      DOC2
-    ]
-  })
+      DOC2,
+    ],
+  });
 
-  t.equals(result.ok, true)
-  t.ok(result.results)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [bulkPath(ES), {
+      method: "POST",
+      headers,
+      // TODO: Tyler. Assert body here eventually
+    }],
+  });
 
-test('query', async t => {
+  assertEquals(result.ok, true);
+  assert(result.results);
+});
+
+Deno.test("query", async () => {
   // query docs
-  fetch.postOnce(queryPath(ES, INDEX), {
-    status: 200,
+  stubResponse(200, {
     hits: {
       hits: [
-        DOC1
-      ]
-    }
-  })
+        DOC1,
+      ],
+    },
+  });
 
   const result = await adapter.query({
-    index: 'movies',
+    index: "movies",
     q: {
-      query: 'gatsby',
-      fields: ['title'],
+      query: "gatsby",
+      fields: ["title"],
       filter: {
-        rating: 4
-      }
-    }
-  })
+        rating: 4,
+      },
+    },
+  });
 
-  t.equals(result.ok, true)
-  t.ok(result.matches)
-  t.equals(result.matches.length, 1)
-  t.end()
-})
+  assertObjectMatch(fetch.calls.shift(), {
+    args: [queryPath(ES, INDEX), {
+      method: "POST",
+      headers,
+      // TODO: Tyler. Assert body here eventually
+    }],
+  });
+
+  assertEquals(result.ok, true);
+  assert(result.matches);
+  assertEquals(result.matches.length, 1);
+});

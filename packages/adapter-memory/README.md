@@ -1,7 +1,6 @@
 # hyper63 memory adapter
 
-The memory adapter is an adapter for the `CACHE` port in the
-hyper63 gateway.
+The memory adapter is an adapter for the `CACHE` port in the hyper63 gateway.
 
 ## How to use
 
@@ -34,7 +33,6 @@ export default {
 ```sh
 yarn test
 ```
-
 
 ## More information
 

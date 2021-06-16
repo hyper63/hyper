@@ -4,15 +4,5 @@
   "description": "hyper63 service framework port for cache adapters",
   "homepage": "https://github.com/hyper63/hyper63#readme",
   "repository": "https://github.com/hyper63/hyper63",
-  "license": "Apache-2.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "tape index_test.js"
-  },
-  "dependencies": {
-    "zod": "^3.0.0-alpha.33"
-  },
-  "devDependencies": {
-    "tape": "^5.0.1"
-  }
+  "license": "Apache-2.0"
 }

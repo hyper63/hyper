@@ -1,2 +1,2 @@
-require('dotenv').config()
-require('@hyper63/core')()
+require("dotenv").config();
+require("@hyper63/core")();

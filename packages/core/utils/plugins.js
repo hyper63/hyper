@@ -1,5 +1,16 @@
+import { R } from "../deps.js";
 
-const { applyTo, filter, compose, map, is, reduce, defaultTo, fromPairs, reverse } = require('ramda')
+const {
+  applyTo,
+  filter,
+  compose,
+  map,
+  is,
+  reduce,
+  defaultTo,
+  fromPairs,
+  reverse,
+} = R;
 
 /**
  * Given a list of plugins, compose the plugin.load()
@@ -7,11 +18,11 @@ const { applyTo, filter, compose, map, is, reduce, defaultTo, fromPairs, reverse
  *
  * @param {[]} plugins - a list of plugins
  */
-function loadAdapterConfig (plugins = []) {
+function loadAdapterConfig(plugins = []) {
   return compose(
     reduce((acc, plugin) => defaultTo(acc, plugin.load(acc)), {}),
-    filter(plugin => is(Function, plugin.load))
-  )(plugins)
+    filter((plugin) => is(Function, plugin.load)),
+  )(plugins);
 }
 
 /**
@@ -24,33 +35,34 @@ function loadAdapterConfig (plugins = []) {
  * @param {[]} plugins - a list of plugins
  * @param {{}} adapterConfig - the config obj for the adapter
  */
-function linkPlugins (plugins, adapterConfig) {
+function linkPlugins(plugins, adapterConfig) {
   return compose(
-    links => links.reduce((a, b) => ({
-      /**
+    (links) =>
+      links.reduce((a, b) => ({
+        /**
        * We spread here, so that plugins may just partially implement
        * a port interface. This allows the use of multiple plugins
        * to produce the *complete* port interface, while also achieving the
        * "Onion" wrapping of each method
        */
-      ...a,
-      ...b(a)
-    }), {}),
+        ...a,
+        ...b(a),
+      }), {}),
     reverse,
     map(
-      applyTo(adapterConfig)
+      applyTo(adapterConfig),
     ),
-    map(plugin => plugin.link.bind(plugin)),
-    filter(plugin => is(Function, plugin.link))
-  )(plugins)
+    map((plugin) => plugin.link.bind(plugin)),
+    filter((plugin) => is(Function, plugin.link)),
+  )(plugins);
 }
 
-function initAdapter (portAdapter) {
-  const { plugins } = portAdapter
+function initAdapter(portAdapter) {
+  const { plugins } = portAdapter;
   return compose(
-    adapterConfig => linkPlugins(plugins, adapterConfig),
-    loadAdapterConfig
-  )(plugins || [])
+    (adapterConfig) => linkPlugins(plugins, adapterConfig),
+    loadAdapterConfig,
+  )(plugins || []);
 }
 
 /**
@@ -59,9 +71,9 @@ function initAdapter (portAdapter) {
  *
  * @param {[]} adapters - a list of port nodes from a hyper63 config
  */
-module.exports = function initAdapters (adapters) {
+export default function initAdapters(adapters) {
   return compose(
     fromPairs,
-    map(adapterNode => [adapterNode.port, initAdapter(adapterNode)])
-  )(adapters)
+    map((adapterNode) => [adapterNode.port, initAdapter(adapterNode)]),
+  )(adapters);
 }

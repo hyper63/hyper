@@ -1,15 +1,15 @@
-const sh = require('shelljs')
-const fs = require('fs')
+const sh = require("shelljs");
+const fs = require("fs");
 
 module.exports = () => {
-  if (!sh.which('docker-compose')) {
+  if (!sh.which("docker-compose")) {
     sh.echo(
-      'Sorry, this script requires docker-compose which can be installed from docker desktop'
-    )
-    sh.exit(1)
+      "Sorry, this script requires docker-compose which can be installed from docker desktop",
+    );
+    sh.exit(1);
   }
-  if (!sh.test('-e', '~/.hyper63')) {
-    sh.mkdir('~/.hyper63')
+  if (!sh.test("-e", "~/.hyper63")) {
+    sh.mkdir("~/.hyper63");
   }
 
   const config = `version: "3.8"
@@ -50,12 +50,12 @@ services:
     - "./data:/usr/share/elasticsearch/data"
     environment:
       discovery.type: single-node
-`
+`;
 
-  fs.writeFileSync(`${process.env.HOME}/.hyper63/docker-compose.yml`, config)
+  fs.writeFileSync(`${process.env.HOME}/.hyper63/docker-compose.yml`, config);
 
-  sh.cd('~/.hyper63')
-  sh.exec('docker-compose up -d')
+  sh.cd("~/.hyper63");
+  sh.exec("docker-compose up -d");
 
   setTimeout(() => {
     sh.exec(
@@ -63,11 +63,11 @@ services:
       { silent: true },
       (code) => {
         if (code === 0) {
-          console.log('Successfully setup database')
+          console.log("Successfully setup database");
         } else {
-          console.log('ERROR! Could not setup database, try to re-run script')
+          console.log("ERROR! Could not setup database, try to re-run script");
         }
-      }
-    )
-  }, 5000)
-}
+      },
+    );
+  }, 5000);
+};

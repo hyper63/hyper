@@ -18,8 +18,4 @@ scribe: Author of notes
 
 ## Actions/Next Steps
 
-## Adjourn 
-
-
-
-
+## Adjourn

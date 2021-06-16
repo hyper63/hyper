@@ -2,9 +2,8 @@
 
 ## Requirements
 
-* git
-* node - https://nodejs.org 
-
+- git
+- node - https://nodejs.org
 
 ## Setup
 

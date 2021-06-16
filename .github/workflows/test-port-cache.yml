@@ -1,0 +1,21 @@
+name: test cache port
+on:
+  push:
+    branches-ignore: main
+    paths:
+      - "packages/port-cache/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.11.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Deno ${{ matrix.deno-version }}
+        uses: denolib/setup-deno@master
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - run: cd packages/port-cache && ./scripts/test.sh
+        env:
+          CI: true

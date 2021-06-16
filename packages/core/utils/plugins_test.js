@@ -1,31 +1,32 @@
-const test = require('tape')
-const initAdapters = require('./plugins')
-const validate = require('./plugin-schema')
+import initAdapters from "./plugins.js";
+import validate from "./plugin-schema.js";
+import { assertEquals, assertObjectMatch } from "../dev_deps.js";
 
-test('sucessfully compose plugins', t => {
+const test = Deno.test;
+
+test("sucessfully compose plugins", () => {
   const plugin1 = validate({
-    id: 'plugin1',
-    port: 'default',
-    load: (env) => ({ ...env, hello: 'world' }),
-    link: env => () => ({ hello: () => env.hello })
-  })
+    id: "plugin1",
+    port: "default",
+    load: (env) => ({ ...env, hello: "world" }),
+    link: (env) => () => ({ hello: () => env.hello }),
+  });
 
-  const plugin2 = config => validate({
-    id: 'plugin2',
-    port: 'default',
-    load: (env) => ({ ...env, ...config }),
-    link: env => plugin => ({ ...plugin, beep: () => env })
-  })
+  const plugin2 = (config) =>
+    validate({
+      id: "plugin2",
+      port: "default",
+      load: (env) => ({ ...env, ...config }),
+      link: (env) => (plugin) => ({ ...plugin, beep: () => env }),
+    });
 
   const config = {
     adapters: [
-      { port: 'default', plugins: [plugin2({ foo: 'bar' }), plugin1] }
-    ]
-  }
-  const adapters = initAdapters(config.adapters)
+      { port: "default", plugins: [plugin2({ foo: "bar" }), plugin1] },
+    ],
+  };
+  const adapters = initAdapters(config.adapters);
 
-  t.equal(adapters.default.hello(), 'world')
-  t.deepEqual(adapters.default.beep(), { foo: 'bar', hello: 'world' })
-  t.ok(true)
-  t.end()
-})
+  assertEquals(adapters.default.hello(), "world");
+  assertObjectMatch(adapters.default.beep(), { foo: "bar", hello: "world" });
+});

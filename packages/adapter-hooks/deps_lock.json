@@ -1,0 +1,6 @@
+{
+  "https://cdn.skypack.dev/-/crocks@v0.12.4-Mje8nEhNx2rmIpwz3ROp/dist=es2020,mode=imports/optimized/crocks.js": "93d587d18dc5f124f30e5b38de37a6471eb65309c94ef2ffc7a36dc40ab394da",
+  "https://cdn.skypack.dev/-/ramda@v0.27.1-3ePaNsppsnXYRcaNcaWn/dist=es2020,mode=imports/optimized/ramda.js": "0e51cd76039fc9669f9179d935b261bcbb19ecbb11d49e7e60cfbc14360a85d2",
+  "https://cdn.skypack.dev/crocks@^0.12.4": "d48852ce36c500f2770a2bc240cb6df9ffb2219d184b32b9be542e8560a6ff1d",
+  "https://cdn.skypack.dev/ramda@^0.27.1": "fb06d7de4305dcdb997f9adc903a463afcdac75d148d638295c420a8922048fd"
+}

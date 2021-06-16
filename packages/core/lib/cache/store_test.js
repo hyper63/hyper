@@ -1,66 +1,69 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
+import { assertEquals } from "../../dev_deps.js";
 
-const test = require('tape')
-const store = require('./store.js')
+import * as store from "./store.js";
+
+const test = Deno.test;
 
 const mockService = {
   createStore: (name) =>
     Promise.resolve({
-      ok: true
+      ok: true,
     }),
   destroyStore: (name) => Promise.resolve({ ok: true }),
-  listDocs: (name) => Promise.resolve({ ok: true })
-}
+  listDocs: (name) => Promise.resolve({ ok: true }),
+};
 
 const events = {
-  dispatch: () => null
-}
+  dispatch: () => null,
+};
 
-test('create cache store', (t) => {
-  t.plan(1)
-
-  function handleError () {
-    t.ok(false)
+test("create cache store", () => {
+  function handleError() {
+    assertEquals(false, true);
   }
-  function handleSuccess () {
-    t.ok(true)
+  function handleSuccess() {
+    assertEquals(true, true);
   }
 
-  store.create('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
-})
+  store.create("hello").runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess,
+  );
+});
 
-test('should not create store', t => {
-  t.plan(1)
-
-  store.create('_foo').runWith({ svc: mockService, events })
+test("should not create store", () => {
+  store.create("_foo").runWith({ svc: mockService, events })
     .fork(
-      () => t.ok(true),
-      () => t.ok(false)
-    )
-})
+      () => assertEquals(true, true),
+      () => assertEquals(false, true),
+    );
+});
 
-test('destroy cache store', (t) => {
-  t.plan(1)
-
-  function handleError () {
-    t.ok(false)
+test("destroy cache store", () => {
+  function handleError() {
+    assertEquals(false, true);
   }
-  function handleSuccess () {
-    t.ok(true)
+  function handleSuccess() {
+    assertEquals(true, true);
   }
 
-  store.del('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
-})
+  store.del("hello").runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess,
+  );
+});
 
-test('query cache store', (t) => {
-  t.plan(1)
-
-  function handleError () {
-    t.ok(false)
+test("query cache store", () => {
+  function handleError() {
+    assertEquals(false, true);
   }
-  function handleSuccess () {
-    t.ok(true)
+  function handleSuccess() {
+    assertEquals(true, true);
   }
 
-  store.query('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
-})
+  store.query("hello").runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess,
+  );
+});

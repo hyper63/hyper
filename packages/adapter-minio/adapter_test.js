@@ -1,27 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
 
-const test = require('tape')
-const createAdapter = require('./adapter')
+const test = require("tape");
+const createAdapter = require("./adapter");
 
 const client = ({
-  makeBucket (name) {
-    return Promise.resolve()
+  makeBucket(name) {
+    return Promise.resolve();
   },
-  removeBucket (name) {
-    return Promise.resolve()
-  }
-})
+  removeBucket(name) {
+    return Promise.resolve();
+  },
+});
 
-const adapter = createAdapter(client)
+const adapter = createAdapter(client);
 
-test('make bucket', async t => {
-  const result = await adapter.makeBucket('hello')
-  t.ok(result.ok)
-  t.end()
-})
+test("make bucket", async (t) => {
+  const result = await adapter.makeBucket("hello");
+  t.ok(result.ok);
+  t.end();
+});
 
-test('remove bucket', async t => {
-  const result = await adapter.removeBucket('hello')
-  t.ok(result.ok)
-  t.end()
-})
+test("remove bucket", async (t) => {
+  const result = await adapter.removeBucket("hello");
+  t.ok(result.ok);
+  t.end();
+});

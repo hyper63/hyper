@@ -9,15 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        deno-version: [1.11.x]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        name: Use NodeJS ${{ matrix.node-version }}
+      - name: Use Deno ${{ matrix.deno-version}}
+        uses: denolib/setup-deno@master
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd packages/adapter-couchdb && yarn
-      - run: cd packages/adapter-couchdb && yarn test
+          deno-version: ${{ matrix.deno-version }}
+      - run: cd packages/adapter-couchdb && ./scripts/test.sh
         env:
           CI: true
-

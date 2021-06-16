@@ -5,20 +5,20 @@
 
 hyper63 is a service gateway that provides
 
-The mission of hyper63 is to take a different approach to software, this approach
-focuses on shortening the gap between entry level developer to senior level. hyper63
-believes this can occur by reducing the surface area of application development and
-generalizing common services.
+The mission of hyper63 is to take a different approach to software, this
+approach focuses on shortening the gap between entry level developer to senior
+level. hyper63 believes this can occur by reducing the surface area of
+application development and generalizing common services.
 
 </details>
 
 <details open>
 <summary>Elevator Pitch</summary>
 
-atlas is a backend as a service platform that generalizes common services using a
-ports and adapter model. Developers can swap out different implementations of common
-services for their preferred backend stack. `atlas` is a standalone container
-specifically built for micro-services.
+atlas is a backend as a service platform that generalizes common services using
+a ports and adapter model. Developers can swap out different implementations of
+common services for their preferred backend stack. `atlas` is a standalone
+container specifically built for micro-services.
 
 atlas is the fastest way to get going on your micro-service, it gives you common
 services for data, cache, files and notifications.
@@ -59,7 +59,9 @@ What attributes do we need to make sure we account for to ship!
 
 - Security
 
-Must address access, the purpose of this micro-service is to run within a secured environment like a kubernetes environment or a vpc. API Keys will be need to be managed for dynamic runtime environments.
+Must address access, the purpose of this micro-service is to run within a
+secured environment like a kubernetes environment or a vpc. API Keys will be
+need to be managed for dynamic runtime environments.
 
 - Compliance
 
@@ -67,7 +69,8 @@ N/A for micro
 
 - Support
 
-Opensource support will be managed by a community board. Professional support services will be offered on an annual license bases.
+Opensource support will be managed by a community board. Professional support
+services will be offered on an annual license bases.
 
 </details>
 
@@ -107,7 +110,9 @@ From design to delivery the rough guess is we have a 3 month project scope:
 <details>
 <summary>Be clear on what is going to give</summary>
 
-In order to ship a viable project we must be clear on what is going to give, often times you can have all the things, you must make hard decisions on what can and cannot be accomplished within your constraints.
+In order to ship a viable project we must be clear on what is going to give,
+often times you can have all the things, you must make hard decisions on what
+can and cannot be accomplished within your constraints.
 
 - Scope - flexible, but focus on keeping small
 - Quality - all business rule code needs to be tested and reviewed
@@ -122,7 +127,8 @@ In order to ship a viable project we must be clear on what is going to give, oft
 <details>
 <summary>Show what it is going to take</summary>
 
-This is an opensource project and it will take all of the following competencies:
+This is an opensource project and it will take all of the following
+competencies:
 
 - Project manager
 - UX Designer
@@ -131,6 +137,7 @@ This is an opensource project and it will take all of the following competencies
 - Customer
 - Tester
 
-These competencies can happen over time and input and suggestions can occur via change requests and RFCs (Request for Change).
+These competencies can happen over time and input and suggestions can occur via
+change requests and RFCs (Request for Change).
 
 </details>

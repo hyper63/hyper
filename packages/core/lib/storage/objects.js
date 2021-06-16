@@ -1,30 +1,30 @@
-const { of, apply, triggerEvent } = require('../utils')
+import { apply, of, triggerEvent } from "../utils/mod.js";
 
-exports.put = (bucket, object, stream) =>
+export const put = (bucket, object, stream) =>
   of({
     bucket,
     object,
-    stream
-  }).chain(apply('putObject'))
-    .chain(triggerEvent('STORAGE:PUT'))
+    stream,
+  }).chain(apply("putObject"))
+    .chain(triggerEvent("STORAGE:PUT"));
 
-exports.get = (bucket, object) =>
+export const get = (bucket, object) =>
   of({
     bucket,
-    object
-  }).chain(apply('getObject'))
-    .chain(triggerEvent('STORAGE:GET'))
+    object,
+  }).chain(apply("getObject"))
+    .chain(triggerEvent("STORAGE:GET"));
 
-exports.remove = (bucket, object) =>
+export const remove = (bucket, object) =>
   of({
     bucket,
-    object
-  }).chain(apply('removeObject'))
-    .chain(triggerEvent('STORAGE:DELETE'))
+    object,
+  }).chain(apply("removeObject"))
+    .chain(triggerEvent("STORAGE:DELETE"));
 
-exports.list = (bucket, prefix) =>
+export const list = (bucket, prefix) =>
   of({
     bucket,
-    prefix
-  }).chain(apply('listObjects'))
-    .chain(triggerEvent('STORAGE:LIST'))
+    prefix,
+  }).chain(apply("listObjects"))
+    .chain(triggerEvent("STORAGE:LIST"));

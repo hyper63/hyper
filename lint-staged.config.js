@@ -1,5 +1,4 @@
-
 module.exports = {
-  '*.{js,ts,jsx,tsx}': ['eslint --cache --fix'],
-  'package.json': ['sort-package-json']
-}
+  "packages/**/*.{js,ts,jsx,tsx}": ["deno fmt", "deno lint"],
+  "package.json": ["sort-package-json"],
+};

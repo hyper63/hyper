@@ -1,36 +1,18 @@
-const cache = require('@hyper63/port-cache')
-const data = require('@hyper63/port-data')
-const storage = require('@hyper63/port-storage')
-const search = require('@hyper63/port-search')
-const queue = require('@hyper63/port-queue').default
+// deno-lint-ignore-file no-unused-vars
+import { queue } from "../port-queue/mod.js";
+import { cache } from "../port-cache/mod.js";
+import { data } from "../port-data/mod.js";
+import { storage } from "../port-storage/mod.js";
+import { search } from "../port-search/mod.js";
+import { hooks } from "../port-hooks/mod.js";
 
-module.exports = (adapters) => ({
-  cache: adapters.cache ? cache(adapters.cache) : null,
-  data: adapters.data ? data(adapters.data) : null,
-  storage: adapters.storage ? storage(adapters.storage) : null,
-  search: adapters.search ? search(adapters.search) : null,
-  queue: adapters.queue ? queue(adapters.queue) : null,
-  hooks: adapters.hooks
-})
-
-/*
-module.exports = mapObjIndexed(
-  (adapter, k) => {
-    if (k === 'cache') {
-      return cache(adapter)
-    } else if (k === 'data' ) {
-      return data(adapter)
-    } else if (k === 'storage') {
-      return storage(adapter)
-    } else if (k === 'search') {
-      return search(adapter)
-    } else if (k === 'hooks') {
-      return v
-    } else {
-      // need to use the value to combine port and adapter
-      let port = require(k)
-      return port(adapter)
-    }
-  }
-)
-*/
+export default function (adapters) {
+  return ({
+    cache: adapters.cache ? cache(adapters.cache) : null,
+    data: adapters.data ? data(adapters.data) : null,
+    storage: adapters.storage ? storage(adapters.storage) : null,
+    search: adapters.search ? search(adapters.search) : null,
+    queue: adapters.queue ? queue(adapters.queue) : null,
+    hooks: adapters.hooks,
+  });
+}
