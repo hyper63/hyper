@@ -12,7 +12,6 @@
     "packages/adapter-couchdb",
     "packages/adapter-redis",
     "packages/adapter-memory",
-    "packages/adapter-pouchdb",
     "packages/adapter-fs",
     "packages/adapter-elasticsearch",
     "packages/adapter-minisearch",
