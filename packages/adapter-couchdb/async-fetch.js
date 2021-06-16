@@ -1,16 +1,21 @@
-const { Async } = require('crocks')
-const { ifElse, propEq } = require('ramda')
-const { composeK } = require('crocks/helpers')
+import { crocks, R } from "./deps.js";
 
-// fetch is pulled from environment
-// eslint-disable-next-line no-undef
-exports.asyncFetch = Async.fromPromise(fetch)
-exports.createHeaders = (username, password) => ({
-  'Content-Type': 'application/json',
-  authorization: `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
-})
-const toJSON = (result) => Async.fromPromise(result.json.bind(result))()
-const toJSONReject = composeK(Async.Rejected, toJSON)
+const { Async, composeK } = crocks;
+const { ifElse, propEq } = R;
 
-exports.handleResponse = (code) =>
-  ifElse(propEq('status', code), toJSON, toJSONReject)
+export const asyncFetch = (fetch) => Async.fromPromise(fetch);
+export const createHeaders = (username, password) => {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (username) {
+    headers.authorization = `Basic ${btoa(username + ":" + password)}`;
+  }
+  return headers;
+};
+
+const toJSON = (result) => Async.fromPromise(result.json.bind(result))();
+const toJSONReject = composeK(Async.Rejected, toJSON);
+
+export const handleResponse = (code) =>
+  ifElse(propEq("status", code), toJSON, toJSONReject);

@@ -1,174 +1,213 @@
-const test = require('tape')
+import { assertEquals, assertObjectMatch } from "./deps_dev.js";
+import { asyncFetch, createHeaders, handleResponse } from "./async-fetch.js";
+import { adapter } from "./adapter.js";
 
-const fetchMock = require('fetch-mock')
+const test = Deno.test;
+const COUCH = "http://localhost:5984";
 
-const COUCH = 'http://localhost:5984'
+const testFetch = (url, options) => {
+  options.method = options.method || "GET";
 
-globalThis.fetch = fetchMock.sandbox()
-  .get(`${COUCH}/hello`, { status: 200, body: { db_name: 'hello' } })
-  .put(`${COUCH}/hello`, { status: 201, body: { ok: true } })
-  .put(`${COUCH}/hello/_security`, { status: 200, body: { ok: true } })
-  .delete(`${COUCH}/hello`, {
-    status: 200,
-    body: { ok: true }
-  })
-  .post(`${COUCH}/hello`, {
-    status: 201,
-    body: { ok: true }
-  })
-  .get(`${COUCH}/hello/1`, {
-    status: 200,
-    body: { _id: '1', hello: 'world' }
-  })
-  .post(`${COUCH}/hello/_find`, {
-    status: 200,
-    body: {
-      docs: [{
-        _id: '1',
-        hello: 'world'
-      }]
-    }
-  })
-  .post(`${COUCH}/hello/_index`, {
-    status: 200,
-    body: {
-      result: 'created',
-      id: '_design/foo',
-      name: 'foo'
-    }
-  })
-  .post(`${COUCH}/hello/_all_docs`, {
-    status: 200,
-    body: {
+  if (url === "http://localhost:5984/hello" && options.method === "PUT") {
+    return Promise.resolve({
+      status: 201,
       ok: true,
-      rows: [{
-        key: '1',
-        value: { _id: '1', _rev: '1' },
-        doc: {
-          _id: '1',
-          _rev: '1',
-          hello: 'world'
-        }
-      }]
-    }
-  })
-  .get(`${COUCH}/hello/_all_docs?keys=1,2`, {
-    status: 200,
-    body: {
-      ok: true,
-      rows: [{
-        key: '1',
-        id: '1',
-        value: { rev: '1' }
-      }, {
-        key: '2',
-        id: '2',
-        value: { rev: '1' }
-      }]
-    }
-  })
-  .post(`${COUCH}/hello/_bulk_docs`, {
-    status: 201,
-    body: [{
-      ok: true,
-      id: '1',
-      rev: '1'
-    }, {
-      ok: true,
-      id: '2',
-      rev: '2'
-    }]
-  })
-
-const createAdapter = require('./adapter')
-
-const adapter = createAdapter({
-  config: { origin: COUCH }
-})
-
-test('bulk documents', async t => {
-  const result = await adapter.bulkDocuments({
-    db: 'hello',
-    docs: [{ id: '1' }, { id: '2' }]
-  }).catch(err => ({ ok: false, err }))
-  t.ok(result.ok)
-  t.equal(result.results.length, 2)
-  t.end()
-})
-
-test('create database', async t => {
-  const result = await adapter.createDatabase('hello')
-  t.ok(result.ok)
-  t.end()
-})
-
-test('remove database', async t => {
-  const result = await adapter.removeDatabase('hello')
-  t.ok(result.ok)
-  t.end()
-})
-
-test('create document', async t => {
-  const result = await adapter.createDocument({
-    db: 'hello', id: '1', doc: { hello: 'world' }
-  })
-  t.ok(result.ok)
-  t.end()
-})
-
-test('can not create design document', async t => {
-  try {
-    await adapter.createDocument({
-      db: 'hello', id: '_design/1', doc: { hello: 'world' }
-    })
-  } catch (e) {
-    t.ok(!e.ok)
-    t.end()
+      json: () => Promise.resolve({ ok: true }),
+    });
   }
-})
+  if (
+    url === "http://localhost:5984/hello/_security" && options.method === "PUT"
+  ) {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({ ok: true }),
+    });
+  }
 
-test('retrieve document', async t => {
-  const result = await adapter.retrieveDocument({
-    db: 'hello',
-    id: '1'
-  })
-  t.equal(result.hello, 'world')
-  t.end()
-})
+  if (url === "http://localhost:5984/hello" && options.method === "DELETE") {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({ ok: true }),
+    });
+  }
 
-test('find documents', async t => {
-  const results = await adapter.queryDocuments({
-    db: 'hello',
+  if (url === "http://localhost:5984/hello" && options.method === "POST") {
+    return Promise.resolve({
+      status: 201,
+      ok: true,
+      json: () => Promise.resolve({ ok: true, id: "1" }),
+    });
+  }
+  if (url === "http://localhost:5984/hello/1" && options.method === "GET") {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({ _id: "1", _rev: "1", hello: "world" }),
+    });
+  }
+
+  if (
+    url === "http://localhost:5984/hello/_find" && options.method === "POST"
+  ) {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          ok: true,
+          docs: [{ _id: "1", _rev: "1", hello: "world" }],
+        }),
+    });
+  }
+
+  if (
+    url === "http://localhost:5984/hello/_index" && options.method === "POST"
+  ) {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({ ok: true }),
+    });
+  }
+
+  if (
+    url === "http://localhost:5984/hello/_all_docs" && options.method === "POST"
+  ) {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          ok: true,
+          rows: [{
+            key: "1",
+            id: "1",
+            value: { rev: "1" },
+            doc: { _id: "1", _rev: "1", hello: "world" },
+          }],
+        }),
+    });
+  }
+
+  if (url === "http://localhost:5984/hello" && options.method === "GET") {
+    return Promise.resolve({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve({ db_name: "hello" }),
+    });
+  }
+
+  if (
+    url === "http://localhost:5984/hello/_bulk_docs" &&
+    options.method === "POST"
+  ) {
+    return Promise.resolve({
+      status: 201,
+      ok: true,
+      json: () =>
+        Promise.resolve([{ id: "1", ok: true }, { id: "2", ok: true }]),
+    });
+  }
+  console.log("URL not resolving: ", options.method, url);
+
+  return Promise.resolve({
+    status: 500,
+    ok: false,
+    json: () => Promise.resolve({ ok: true }),
+  });
+};
+
+const a = adapter({
+  config: { origin: COUCH },
+  asyncFetch: asyncFetch(testFetch),
+  headers: createHeaders("admin", "password"),
+  handleResponse,
+});
+
+test("bulk documents", async () => {
+  const result = await a.bulkDocuments({
+    db: "hello",
+    docs: [{ id: "1" }, { id: "2" }],
+  }).catch((err) => ({ ok: false, err }));
+  console.log("results", result);
+  assertEquals(result.ok, true);
+  assertEquals(result.results.length, 2);
+});
+
+test("create database", async () => {
+  const result = await a.createDatabase("hello");
+  assertEquals(result.ok, true);
+});
+
+test("remove database", async () => {
+  const result = await a.removeDatabase("hello");
+  assertEquals(result.ok, true);
+});
+
+test("create document", async () => {
+  const result = await a.createDocument({
+    db: "hello",
+    id: "1",
+    doc: { hello: "world" },
+  });
+  assertEquals(result.ok, true);
+});
+
+test("can not create design document", async () => {
+  try {
+    await a.createDocument({
+      db: "hello",
+      id: "_design/1",
+      doc: { hello: "world" },
+    });
+  } catch (e) {
+    assertEquals(e.ok, false);
+  }
+});
+
+test("retrieve document", async () => {
+  const result = await a.retrieveDocument({
+    db: "hello",
+    id: "1",
+  });
+  assertEquals(result.hello, "world");
+});
+
+test("find documents", async () => {
+  const results = await a.queryDocuments({
+    db: "hello",
     query: {
       selector: {
-        id: '1'
-      }
-    }
-  })
-  t.deepEqual(results.docs[0], {
-    id: '1',
-    hello: 'world'
-  })
-  t.end()
-})
+        id: "1",
+      },
+    },
+  });
 
-test('create query index', async t => {
-  const results = await adapter.indexDocuments({
-    db: 'hello',
-    name: 'foo',
-    fields: ['foo']
-  })
-  t.ok(results.ok)
-  t.end()
-})
+  assertObjectMatch(results.docs[0], {
+    id: "1",
+    hello: "world",
+  });
+});
 
-test('list documents', async t => {
-  const results = await adapter.listDocuments({
-    db: 'hello',
-    limit: 1
-  })
-  t.deepEqual(results.docs[0], {
-    id: '1',
-    hello: 'world'
-  })
-})
+test("create query index", async () => {
+  const results = await a.indexDocuments({
+    db: "hello",
+    name: "foo",
+    fields: ["foo"],
+  });
+  console.log("results", results);
+  assertEquals(results.ok, true);
+});
+
+test("list documents", async () => {
+  const results = await a.listDocuments({
+    db: "hello",
+    limit: 1,
+  });
+  assertObjectMatch(results.docs[0], {
+    id: "1",
+    hello: "world",
+  });
+});
