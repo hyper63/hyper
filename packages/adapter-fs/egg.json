@@ -1,0 +1,18 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "@hyper/adapter-fs",
+  "entry": "./mod.js",
+  "description": "Hyper Storage port adapter for local file system",
+  "homepage": "https://github.com/hyper63/hyper63",
+  "version": "1.0.6",
+  "unstable": true,
+  "unlisted": false,
+  "files": [
+    "./*"
+  ],
+  "ignore": [],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}

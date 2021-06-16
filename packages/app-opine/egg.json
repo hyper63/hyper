@@ -1,0 +1,19 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "@hyper/app-opine",
+  "entry": "./mod.js",
+  "description": "Hyper REST API on Opine",
+  "homepage": "https://github.com/hyper63/hyper63",
+  "version": "0.0.1",
+  "unstable": true,
+  "unlisted": false,
+  "files": [
+    "./*",
+    "./api/*"
+  ],
+  "ignore": [],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}

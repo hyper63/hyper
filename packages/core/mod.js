@@ -1,4 +1,4 @@
-import loadPorts from "./ports";
+import loadPorts from "./ports.js";
 import wrapCore from "./lib/mod.js";
 import validateConfig from "./utils/config-schema.js";
 import initAdapters from "./utils/plugins.js";

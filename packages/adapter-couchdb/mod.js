@@ -1,4 +1,4 @@
-import { adapter } from "./adapter";
+import { adapter } from "./adapter.js";
 import { asyncFetch, createHeaders, handleResponse } from "./async-fetch.js";
 
 /**

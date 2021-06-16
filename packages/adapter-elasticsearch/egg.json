@@ -1,0 +1,18 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "@hyper/adapter-elasticsearch",
+  "entry": "./mod.js",
+  "description": "Hyper Search port adapter for Elasticsearch",
+  "homepage": "https://github.com/hyper63/hyper63",
+  "version": "0.1.1",
+  "unstable": true,
+  "unlisted": false,
+  "files": [
+    "./*"
+  ],
+  "ignore": [],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}

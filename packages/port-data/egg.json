@@ -1,0 +1,18 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "@hyper/port-data",
+  "entry": "./mod.js",
+  "description": "Hyper Data port adapter schema parser",
+  "homepage": "https://github.com/hyper63/hyper63",
+  "version": "1.0.11",
+  "unstable": true,
+  "unlisted": false,
+  "files": [
+    "./*"
+  ],
+  "ignore": [],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "@hyper/adapter-minisearch",
+  "entry": "./mod.js",
+  "description": "Hyper Search port adapter for Minisearch",
+  "homepage": "https://github.com/hyper63/hyper63",
+  "version": "1.0.9",
+  "unstable": true,
+  "unlisted": false,
+  "files": [
+    "./*"
+  ],
+  "ignore": [],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}
