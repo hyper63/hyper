@@ -18,7 +18,6 @@
     "packages/adapter-minisearch",
     "packages/adapter-hooks",
     "packages/adapter-minio",
-    "packages/adapter-beequeue",
     "packages/adapter-zmq",
     "packages/app-express",
     "packages/app-graphql",
