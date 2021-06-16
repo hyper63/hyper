@@ -1,8 +1,7 @@
+import { crocks, path, R } from "./deps.js";
 
-import { R, crocks, path } from './deps.js'
-
-const { Async } = crocks
-const { always, identity } = R
+const { Async } = crocks;
+const { always, identity } = R;
 
 /**
  * hyper63 adapter for the storage port
@@ -30,69 +29,83 @@ const { always, identity } = R
  * @returns {Object}
  */
 export default function (root) {
-  if (!root) { throw new Error('STORAGE: FS_Adapter: root directory required for this service!') }
+  if (!root) {
+    throw new Error(
+      "STORAGE: FS_Adapter: root directory required for this service!",
+    );
+  }
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function makeBucket (name) {
-    if (!name) { return Promise.reject({ ok: false, msg: 'name for bucket is required!' }) }
+  function makeBucket(name) {
+    if (!name) {
+      return Promise.reject({ ok: false, msg: "name for bucket is required!" });
+    }
 
-    const mkdir = Async.fromPromise(Deno.mkdir.bind(Deno))
+    const mkdir = Async.fromPromise(Deno.mkdir.bind(Deno));
 
     return mkdir(path.resolve(path.join(root, name)))
       .bimap(
-        err => ({ ok: false, error: err.message }),
-        always({ ok: true })
+        (err) => ({ ok: false, error: err.message }),
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function removeBucket (name) {
-    if (!name) { return Promise.reject({ ok: false, msg: 'name for bucket is required!' }) }
+  function removeBucket(name) {
+    if (!name) {
+      return Promise.reject({ ok: false, msg: "name for bucket is required!" });
+    }
 
-    const rmdir = Async.fromPromise(Deno.remove.bind(Deno))
+    const rmdir = Async.fromPromise(Deno.remove.bind(Deno));
 
     // TODO: Tyler. Do we want to do a recursive remove here?
     return rmdir(path.resolve(path.join(root, name)))
       .bimap(
-        err => ({ ok: false, error: err.message }),
-        always({ ok: true })
+        (err) => ({ ok: false, error: err.message }),
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {StorageObject}
    * @returns {Promise<Response>}
    */
-  async function putObject ({ bucket, object, stream }) {
-    if (!bucket) { return Promise.reject({ ok: false, msg: 'bucket name required' }) }
-    if (!object) { return Promise.reject({ ok: false, msg: 'object name required' }) }
-    if (!stream) { return Promise.reject({ ok: false, msg: 'stream is required' }) }
+  async function putObject({ bucket, object, stream }) {
+    if (!bucket) {
+      return Promise.reject({ ok: false, msg: "bucket name required" });
+    }
+    if (!object) {
+      return Promise.reject({ ok: false, msg: "object name required" });
+    }
+    if (!stream) {
+      return Promise.reject({ ok: false, msg: "stream is required" });
+    }
 
-    let file
+    let file;
     try {
       // Create Writer
       file = await Deno.create(
         path.join(
           path.resolve(path.join(root, bucket)),
-          object
-        )
-      )
+          object,
+        ),
+      );
 
       // Copy Reader into Writer
-      await Deno.copy(stream, file)
+      await Deno.copy(stream, file);
 
-      return { ok: true }
+      return { ok: true };
     } catch (err) {
-      return { ok: false, msg: err.message }
+      return { ok: false, msg: err.message };
     } finally {
-      file && await file.close()
+      file && await file.close();
     }
   }
 
@@ -100,57 +113,68 @@ export default function (root) {
    * @param {StorageInfo}
    * @returns {Promise<Response>}
    */
-  function removeObject ({ bucket, object }) {
-    if (!bucket) { return Promise.reject({ ok: false, msg: 'bucket name required' }) }
-    if (!object) { return Promise.reject({ ok: false, msg: 'object name required' }) }
+  function removeObject({ bucket, object }) {
+    if (!bucket) {
+      return Promise.reject({ ok: false, msg: "bucket name required" });
+    }
+    if (!object) {
+      return Promise.reject({ ok: false, msg: "object name required" });
+    }
 
-    const rm = Async.fromPromise(Deno.remove.bind(Deno))
+    const rm = Async.fromPromise(Deno.remove.bind(Deno));
 
     return rm(
-      path.resolve(path.join(root, bucket, object))
+      path.resolve(path.join(root, bucket, object)),
     ).bimap(
-      err => ({ ok: false, error: err.message }),
-      always({ ok: true })
-    ).toPromise()
+      (err) => ({ ok: false, error: err.message }),
+      always({ ok: true }),
+    ).toPromise();
   }
 
   /**
    * @param {StorageInfo}
    * @returns {Promise<stream>}
    */
-  function getObject ({ bucket, object }) {
-    if (!bucket) { return Promise.reject({ ok: false, msg: 'bucket name required' }) }
-    if (!object) { return Promise.reject({ ok: false, msg: 'object name required' }) }
+  function getObject({ bucket, object }) {
+    if (!bucket) {
+      return Promise.reject({ ok: false, msg: "bucket name required" });
+    }
+    if (!object) {
+      return Promise.reject({ ok: false, msg: "object name required" });
+    }
 
-    const open = Async.fromPromise(Deno.open.bind(Deno))
+    const open = Async.fromPromise(Deno.open.bind(Deno));
 
     return open(
-      path.resolve(path.join(root, bucket, object)), {
+      path.resolve(path.join(root, bucket, object)),
+      {
         read: true,
-        write: false
-      }
+        write: false,
+      },
     ).bimap(
-      err => ({ ok: false, msg: err.message }),
-      identity
-    ).toPromise()
+      (err) => ({ ok: false, msg: err.message }),
+      identity,
+    ).toPromise();
   }
 
-  async function listObjects ({ bucket, prefix = '' }) {
-    if (!bucket) { return Promise.reject({ ok: false, msg: 'bucket name required' }) }
+  async function listObjects({ bucket, prefix = "" }) {
+    if (!bucket) {
+      return Promise.reject({ ok: false, msg: "bucket name required" });
+    }
 
-    const files = []
+    const files = [];
     try {
       for await (
         const dirEntry of Deno.readDir(
-          path.resolve(path.join(root, bucket, prefix))
+          path.resolve(path.join(root, bucket, prefix)),
         )
       ) {
-        files.push(dirEntry.name)
+        files.push(dirEntry.name);
       }
 
-      return files
+      return files;
     } catch (err) {
-      return { ok: false, error: err.message }
+      return { ok: false, error: err.message };
     }
   }
 
@@ -161,6 +185,6 @@ export default function (root) {
     putObject,
     removeObject,
     getObject,
-    listObjects
-  })
+    listObjects,
+  });
 }

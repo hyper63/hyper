@@ -1,7 +1,6 @@
+import { redis } from "./deps.js";
 
-import { redis } from './deps.js'
-
-import createAdapter from './adapter.js'
+import createAdapter from "./adapter.js";
 
 /**
  * @typedef RedisClientArgs
@@ -11,31 +10,31 @@ import createAdapter from './adapter.js'
  * @param {RedisClientArgs} config
  * @returns {object}
  */
-export default function RedisCacheAdapter (config) {
-  function load () {
-    return config
+export default function RedisCacheAdapter(config) {
+  function load() {
+    return config;
   }
 
   /**
    * @param {RedisClientArgs} env
    * @returns {function}
    */
-  function link (env) {
+  function link(env) {
     /**
      * @param {object} adapter
      * @returns {object}
      */
     return function () {
       // create client
-      const client = redis.connect(env)
-      return createAdapter(client)
-    }
+      const client = redis.connect(env);
+      return createAdapter(client);
+    };
   }
 
   return Object.freeze({
-    id: 'redis-cache-adapter',
-    port: 'cache',
+    id: "redis-cache-adapter",
+    port: "cache",
     load,
-    link
-  })
+    link,
+  });
 }

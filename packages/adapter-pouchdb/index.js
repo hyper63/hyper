@@ -1,5 +1,5 @@
-const { merge } = require('ramda')
-const adapter = require('./adapter')
+const { merge } = require("ramda");
+const adapter = require("./adapter");
 
 /**
  * hyper63 data plugin for the data port. This plugin is an adapter that
@@ -29,11 +29,11 @@ const adapter = require('./adapter')
  * data section
  */
 
-module.exports = function pouchdb (config) {
+module.exports = function pouchdb(config) {
   return ({
-    id: 'pouchdb',
-    port: 'data',
+    id: "pouchdb",
+    port: "data",
     load: merge(config),
-    link: ({ dir }) => () => adapter(dir)
-  })
-}
+    link: ({ dir }) => () => adapter(dir),
+  });
+};

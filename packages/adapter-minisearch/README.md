@@ -1,7 +1,6 @@
 # MiniSearch Adapter
 
-This adapter is for the search port, and it
-implements an embedded search called
+This adapter is for the search port, and it implements an embedded search called
 minisearch.
 
 ## How to use

@@ -2,23 +2,28 @@
 
 A service gateway for creating future proof applications.
 
-hyper63 is a service gateway that encourages separation between
-common services and business logic of your application. This separation is
-a function of a clean architecture leveraging the ports and adapters pattern.
-As products grow in complexity over time with strong pressure to ship features
-in a time sensitive way, the likely hood that business rules get spread between
-architectural layers is extremely likely.
+hyper63 is a service gateway that encourages separation between common services
+and business logic of your application. This separation is a function of a clean
+architecture leveraging the ports and adapters pattern. As products grow in
+complexity over time with strong pressure to ship features in a time sensitive
+way, the likely hood that business rules get spread between architectural layers
+is extremely likely.
 
-> hyper63's goal is to encourage business rules to settle in a core area leveraging solid principles to keep the business logic highly maintainable as the product grows over time.
+> hyper63's goal is to encourage business rules to settle in a core area
+> leveraging solid principles to keep the business logic highly maintainable as
+> the product grows over time.
 
 - interface/api
 - business rules
 - services
 
 What hyper63 wants to do is to generalize the services your application may need
-so that you can keep your business rules cleanly separated as well as leveraging the ports
-and adapter design so that your backend services can be replacable without having to modify
-business rules. hyper63 is a docker container that gives you data, cache, storage, search and webhooks out of the box, without having to make any decisions, you simply `docker-compose up` and you have your backend end service up and running!
+so that you can keep your business rules cleanly separated as well as leveraging
+the ports and adapter design so that your backend services can be replacable
+without having to modify business rules. hyper63 is a docker container that
+gives you data, cache, storage, search and webhooks out of the box, without
+having to make any decisions, you simply `docker-compose up` and you have your
+backend end service up and running!
 
 [Inception Deck](inception.md)
 
@@ -44,7 +49,8 @@ Currently, the services for micro are
 
 All apis use this basic pattern:
 
-> designing the api to support multiple services currenlty only supporting data, cache, storage, search, hooks.
+> designing the api to support multiple services currenlty only supporting data,
+> cache, storage, search, hooks.
 
 ```
 /:service/:name
@@ -64,7 +70,8 @@ GET /cache/products
 
 All commands will start with an underscore
 
-> Commands are built in urls that instruct the system to perform an action usually with a POST, PUT or DELETE method.
+> Commands are built in urls that instruct the system to perform an action
+> usually with a POST, PUT or DELETE method.
 
 queries a customer data store
 
@@ -316,7 +323,6 @@ buckets.*.delete - when any deletion occurs for a file
 
 So the scope pattern would :service.:name.:action - asterisk equals all and
 actions are (read,write,delete)
-
 ```
 
 list hooks

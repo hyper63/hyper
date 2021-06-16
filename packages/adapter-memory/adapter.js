@@ -1,7 +1,6 @@
+import { R } from "./deps.js";
 
-import { R } from './deps.js'
-
-const { keys, merge, omit } = R
+const { keys, merge, omit } = R;
 
 /**
  * hyper63 memory adapter
@@ -30,102 +29,116 @@ const { keys, merge, omit } = R
  * @property {Array} [docs]
  * @property {string} [msg]
  */
-export default function adapter () {
-  let stores = {}
+export default function adapter() {
+  let stores = {};
 
   /**
    * @returns {Promise<String>}
    */
-  function index () {
-    return Promise.resolve(keys(stores))
+  function index() {
+    return Promise.resolve(keys(stores));
   }
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function createStore (name) {
+  function createStore(name) {
     if (!name) {
-      return Promise.reject({ ok: false, msg: 'name must be a string value' })
+      return Promise.reject({ ok: false, msg: "name must be a string value" });
     }
-    const store = new Map()
-    stores = merge({ [name]: store }, stores)
-    return Promise.resolve({ ok: true })
+    const store = new Map();
+    stores = merge({ [name]: store }, stores);
+    return Promise.resolve({ ok: true });
   }
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function destroyStore (name) {
-    stores = omit([name], stores)
-    return Promise.resolve({ ok: true })
+  function destroyStore(name) {
+    stores = omit([name], stores);
+    return Promise.resolve({ ok: true });
   }
 
   /**
    * @param {CacheDoc}
    * @returns {Promise<Response>}
    */
-  function createDoc ({ store, key, value }) {
-    if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
+  function createDoc({ store, key, value }) {
+    if (!stores[store]) {
+      return Promise.reject({ ok: false, msg: "store is not found!" });
+    }
 
-    stores[store].set(key, value)
-    return Promise.resolve({ ok: true })
+    stores[store].set(key, value);
+    return Promise.resolve({ ok: true });
   }
 
   /**
    * @param {CacheInfo}
    * @returns {Promise<Response>}
    */
-  function getDoc ({ store, key }) {
-    if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
-    const doc = stores[store].get(key)
-    return doc ? Promise.resolve(doc) : Promise.reject({ ok: false, status: 404, msg: 'doc not found' })
+  function getDoc({ store, key }) {
+    if (!stores[store]) {
+      return Promise.reject({ ok: false, msg: "store is not found!" });
+    }
+    const doc = stores[store].get(key);
+    return doc
+      ? Promise.resolve(doc)
+      : Promise.reject({ ok: false, status: 404, msg: "doc not found" });
   }
 
   /**
    * @param {CacheDoc}
    * @returns {Promise<Response>}
    */
-  function updateDoc ({ store, key, value }) {
-    if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
+  function updateDoc({ store, key, value }) {
+    if (!stores[store]) {
+      return Promise.reject({ ok: false, msg: "store is not found!" });
+    }
 
-    stores[store].set(key, value)
-    return Promise.resolve({ ok: true })
+    stores[store].set(key, value);
+    return Promise.resolve({ ok: true });
   }
 
   /**
    * @param {CacheInfo}
    * @returns {Promise<Response>}
    */
-  function deleteDoc ({ store, key }) {
-    if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
+  function deleteDoc({ store, key }) {
+    if (!stores[store]) {
+      return Promise.reject({ ok: false, msg: "store is not found!" });
+    }
 
-    stores[store].delete(key)
-    return Promise.resolve({ ok: true })
+    stores[store].delete(key);
+    return Promise.resolve({ ok: true });
   }
 
   /**
    * @param {CacheQuery}
    * @returns {Promise<Response>}
    */
-  function listDocs ({ store, pattern }) {
-    if (!stores[store]) { return Promise.reject({ ok: false, msg: 'store is not found!' }) }
+  function listDocs({ store, pattern }) {
+    if (!stores[store]) {
+      return Promise.reject({ ok: false, msg: "store is not found!" });
+    }
 
     // https://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
-    const docs = []
-    function match (str, rule) {
+    const docs = [];
+    function match(str, rule) {
       // eslint-disable-next-line no-useless-escape
-      const escapeRegex = (str) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1')
-      return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str)
+      const escapeRegex = (str) =>
+        str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+      return new RegExp("^" + rule.split("*").map(escapeRegex).join(".*") + "$")
+        .test(str);
     }
 
     stores[store].forEach((value, key) => {
       if (match(key, pattern)) {
-        docs.push({ key, value })
+        docs.push({ key, value });
       }
-    })
-    return Promise.resolve({ ok: true, docs })
+    });
+    return Promise.resolve({ ok: true, docs });
   }
 
   return Object.freeze({
@@ -136,6 +149,6 @@ export default function adapter () {
     getDoc,
     updateDoc,
     deleteDoc,
-    listDocs
-  })
+    listDocs,
+  });
 }

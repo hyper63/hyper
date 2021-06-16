@@ -1,4 +1,4 @@
-import { apply, of, triggerEvent } from '../utils/mod.js'
+import { apply, of, triggerEvent } from "../utils/mod.js";
 
 // const INVALID_BUCKET_MSG = 'bucket name is not valid'
 // const INVALID_RESPONSE = 'response is not valid'
@@ -10,8 +10,8 @@ import { apply, of, triggerEvent } from '../utils/mod.js'
 export const make = (name) =>
   of(name)
     // .chain(is(validDbName, INVALID_DB_MSG))
-    .chain(apply('makeBucket'))
-    .chain(triggerEvent('STORAGE:CREATE_BUCKET'))
+    .chain(apply("makeBucket"))
+    .chain(triggerEvent("STORAGE:CREATE_BUCKET"));
 // .chain(is(validResponse, INVALID_RESPONSE));
 
 /**
@@ -20,10 +20,10 @@ export const make = (name) =>
  */
 export const remove = (name) =>
   of(name)
-    .chain(apply('removeBucket'))
-    .chain(triggerEvent('STORAGE:DELTE_BUCKET'))
+    .chain(apply("removeBucket"))
+    .chain(triggerEvent("STORAGE:DELTE_BUCKET"));
 
 /**
  * @returns {AsyncReader}
  */
-export const list = () => of().chain(apply('listBuckets'))
+export const list = () => of().chain(apply("listBuckets"));

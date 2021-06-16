@@ -1,29 +1,25 @@
+import { base64Encode, crocks, R } from "./deps.js";
 
-import { R, crocks, base64Encode } from './deps.js'
-
-const { Async } = crocks
-const { ifElse } = R
+const { Async } = crocks;
+const { ifElse } = R;
 
 // TODO: Tyler. wrap with opionated approach like before with https://github.com/vercel/fetch
-const asyncFetch = fetch => Async.fromPromise(fetch)
+const asyncFetch = (fetch) => Async.fromPromise(fetch);
 
 const createHeaders = (username, password) => ({
-  'Content-Type': 'application/json',
+  "Content-Type": "application/json",
   authorization: `Basic ${
-    base64Encode(new TextEncoder().encode(username + ':' + password))
-  }`
-})
+    base64Encode(new TextEncoder().encode(username + ":" + password))
+  }`,
+});
 
-const handleResponse = pred =>
+const handleResponse = (pred) =>
   ifElse(
-    res => pred(res),
-    res => Async.fromPromise(() => res.json())(),
-    res => Async.fromPromise(() => res.json())()
-      .chain(Async.Rejected)
-  )
+    (res) => pred(res),
+    (res) => Async.fromPromise(() => res.json())(),
+    (res) =>
+      Async.fromPromise(() => res.json())()
+        .chain(Async.Rejected),
+  );
 
-export {
-  asyncFetch,
-  createHeaders,
-  handleResponse
-}
+export { asyncFetch, createHeaders, handleResponse };

@@ -2,12 +2,12 @@
 
 ## hyper63 micro image
 
-This image uses the following services in a docker compose 
+This image uses the following services in a docker compose
 
-* couchdb - single-node
-* redis
-* minio
-* elasticsearch
+- couchdb - single-node
+- redis
+- minio
+- elasticsearch
 
 ## Start Services
 
@@ -28,4 +28,3 @@ yarn start
 yarn
 yarn dev
 ```
-

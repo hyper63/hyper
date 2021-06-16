@@ -1,12 +1,29 @@
-
-import { R } from './deps.js'
+import { R } from "./deps.js";
 
 import {
-  createIndexPath, deleteIndexPath, indexDocPath, getDocPath,
-  updateDocPath, removeDocPath, bulkPath, queryPath
-} from './paths.js'
+  bulkPath,
+  createIndexPath,
+  deleteIndexPath,
+  getDocPath,
+  indexDocPath,
+  queryPath,
+  removeDocPath,
+  updateDocPath,
+} from "./paths.js";
 
-const { set, lensProp, pluck, reduce, always, pipe, map, join, concat, flip, toPairs } = R
+const {
+  set,
+  lensProp,
+  pluck,
+  reduce,
+  always,
+  pipe,
+  map,
+  join,
+  concat,
+  flip,
+  toPairs,
+} = R;
 
 /**
   *
@@ -67,140 +84,143 @@ export default function ({ config, asyncFetch, headers, handleResponse }) {
    * @returns {Promise<Response>}
    *
    */
-  function createIndex ({ index, mappings }) {
-    const properties = mappings.fields.reduce((a, f) => set(lensProp(f), { type: 'text' }, a), {})
-    console.log('adapter-elasticsearch', properties)
+  function createIndex({ index, mappings }) {
+    const properties = mappings.fields.reduce(
+      (a, f) => set(lensProp(f), { type: "text" }, a),
+      {},
+    );
+    console.log("adapter-elasticsearch", properties);
 
     return asyncFetch(
       createIndexPath(config.origin, index),
       {
         headers,
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({
-          mappings: { properties }
-        })
-      }
+          mappings: { properties },
+        }),
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
-        res => ({ ok: false, msg: JSON.stringify(res) }),
-        always({ ok: true })
+        (res) => ({ ok: false, msg: JSON.stringify(res) }),
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {string} index
    * @returns {Promise<Response>}
    */
-  function deleteIndex (index) {
+  function deleteIndex(index) {
     return asyncFetch(
       deleteIndexPath(config.origin, index),
       {
         headers,
-        method: 'DELETE'
-      }
+        method: "DELETE",
+      },
     )
       .chain(
-        handleResponse(res => res.status === 200)
+        handleResponse((res) => res.status === 200),
       )
       .bimap(
         always({ ok: false }),
-        always({ ok: true })
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {SearchDoc}
    * @returns {Promise<Response>}
    */
-  function indexDoc ({ index, key, doc }) {
+  function indexDoc({ index, key, doc }) {
     return asyncFetch(
       indexDocPath(config.origin, index, key),
       {
         headers,
-        method: 'PUT',
-        body: JSON.stringify(doc)
-      }
+        method: "PUT",
+        body: JSON.stringify(doc),
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
         always({ ok: false }),
-        always({ ok: true })
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {SearchInfo}
    * @returns {Promise<Response>}
    */
-  function getDoc ({ index, key }) {
+  function getDoc({ index, key }) {
     return asyncFetch(
       getDocPath(config.origin, index, key),
       {
         headers,
-        method: 'GET'
-      }
+        method: "GET",
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
         always({ ok: false }),
-        res => ({ ok: true, doc: res })
+        (res) => ({ ok: true, doc: res }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {SearchDoc}
    * @returns {Promise<Response>}
    */
-  function updateDoc ({ index, key, doc }) {
+  function updateDoc({ index, key, doc }) {
     return asyncFetch(
       updateDocPath(config.origin, index, key),
       {
         headers,
-        method: 'PUT',
-        body: JSON.stringify(doc)
-      }
+        method: "PUT",
+        body: JSON.stringify(doc),
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
         always({ ok: false }),
-        always({ ok: true })
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {SearchInfo}
    * @returns {Promise<Response>}
    */
-  function removeDoc ({ index, key }) {
+  function removeDoc({ index, key }) {
     return asyncFetch(
       removeDocPath(config.origin, index, key),
       {
         headers,
-        method: 'DELETE'
-      }
+        method: "DELETE",
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
         always({ ok: false }),
-        always({ ok: true })
+        always({ ok: true }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
@@ -209,35 +229,37 @@ export default function ({ config, asyncFetch, headers, handleResponse }) {
    *
    * TODO: maybe we could just Promise.all a map to indexDoc()?
    */
-  function bulk ({ index, docs }) {
+  function bulk({ index, docs }) {
     return asyncFetch(
       bulkPath(config.origin),
       {
         headers,
-        method: 'POST',
+        method: "POST",
         // See https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html#docs-bulk-api-example
         body: pipe(
           reduce(
-            (arr, doc) =>
-              [...arr, { index: { _index: index, _id: doc.id } }, doc],
-            []
+            (
+              arr,
+              doc,
+            ) => [...arr, { index: { _index: index, _id: doc.id } }, doc],
+            [],
           ),
           // stringify each object in arr
           map(JSON.stringify.bind(JSON)),
-          join('\n'),
+          join("\n"),
           // Bulk payload must end with a newline
-          flip(concat)('\n')
-        )(docs)
-      }
+          flip(concat)("\n"),
+        )(docs),
+      },
     )
       .chain(
-        handleResponse(res => res.status < 400)
+        handleResponse((res) => res.status < 400),
       )
       .bimap(
         always({ ok: false }),
-        res => ({ ok: true, results: res.items })
+        (res) => ({ ok: true, results: res.items }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   /**
@@ -245,12 +267,12 @@ export default function ({ config, asyncFetch, headers, handleResponse }) {
    * @param {SearchQuery}
    * @returns {Promise<ResponseWithMatches>}
    */
-  function query ({ index, q: { query, fields, filter } }) {
+  function query({ index, q: { query, fields, filter } }) {
     return asyncFetch(
       queryPath(config.origin, index),
       {
         headers,
-        method: 'POST',
+        method: "POST",
         // anything undefined will not be stringified, so this shorthand works
         body: JSON.stringify({
           query: {
@@ -258,27 +280,27 @@ export default function ({ config, asyncFetch, headers, handleResponse }) {
               must: {
                 multi_match: {
                   query,
-                  fields
-                }
+                  fields,
+                },
               },
               filter: toPairs(filter).map(
-                ([key, value]) => ({ term: { [key]: value } })
-              )
-            }
-          }
-        })
-      }
+                ([key, value]) => ({ term: { [key]: value } }),
+              ),
+            },
+          },
+        }),
+      },
     )
-      .chain(handleResponse(res => res.status < 400))
+      .chain(handleResponse((res) => res.status < 400))
       .bimap(
         // TODO: what should message be for a failed query?
-        res => ({ ok: false, msg: JSON.stringify(res) }),
-        res => ({
+        (res) => ({ ok: false, msg: JSON.stringify(res) }),
+        (res) => ({
           ok: true,
-          matches: pluck('_source', res.hits.hits)
-        })
+          matches: pluck("_source", res.hits.hits),
+        }),
       )
-      .toPromise()
+      .toPromise();
   }
 
   return Object.freeze({
@@ -289,6 +311,6 @@ export default function ({ config, asyncFetch, headers, handleResponse }) {
     updateDoc,
     removeDoc,
     bulk,
-    query
-  })
+    query,
+  });
 }

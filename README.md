@@ -27,9 +27,13 @@
 
 👋 Hey 👋
 
-Welcome to ⚡hyper63 open source project, above is plenty of links that can give you the why and what of hyper63, check them out! Also, if you are a hands on kind of developer, try out hyper63 using our playground and gitpod. You don't have to install anything to kick the tires ⚙️. 
+Welcome to ⚡hyper63 open source project, above is plenty of links that can give
+you the why and what of hyper63, check them out! Also, if you are a hands on
+kind of developer, try out hyper63 using our playground and gitpod. You don't
+have to install anything to kick the tires ⚙️.
 
 ## Status
+
 - [x] Development
 - [ ] Alpha
 - [ ] Beta
@@ -41,7 +45,7 @@ You can take a 🎫 tour of the api starting here https://github.com/hyper63/tou
 
 or watch a video here https://youtu.be/J75hYi6Gqgc
 
-## Running Locally 
+## Running Locally
 
 To run hyper63 on your local machine in your terminal type:
 
@@ -51,7 +55,8 @@ To run hyper63 on your local machine in your terminal type:
 npx @hyper63/x
 ```
 
-> This command will run a hyper63 service on PORT `6363` and store data in `${HOME}/.hyper63` > [Ctrl/Cmd] - C will stop the service.
+> This command will run a hyper63 service on PORT `6363` and store data in
+> `${HOME}/.hyper63` > [Ctrl/Cmd] - C will stop the service.
 
 This `nano` version of hyper63 implements the following ports and adapters:
 
@@ -78,9 +83,7 @@ yarn dev
 
 ## Thank you
 
-* OpenSource Community
-* CharlestonJS Community
-* JRS Coding School Team
-* And everyone else that has helped this project become successful!
-
-
+- OpenSource Community
+- CharlestonJS Community
+- JRS Coding School Team
+- And everyone else that has helped this project become successful!

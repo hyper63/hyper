@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-unused-vars
 
-import { assert } from './dev_deps.js'
+import { assert } from "./dev_deps.js";
 
-import { data as dataPort } from './mod.js'
+import { data as dataPort } from "./mod.js";
 
-Deno.test('data port tests', async () => {
+Deno.test("data port tests", async () => {
   const adapter = dataPort({
     createDatabase: (name) => Promise.resolve({ ok: true }),
     removeDatabase: (name) => Promise.resolve({ ok: true }),
@@ -17,33 +17,33 @@ Deno.test('data port tests', async () => {
     queryDocuments: ({ db, query }) => Promise.resolve({ ok: true, docs: [] }),
     indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
     bulkDocuments: ({ db, docs }) =>
-      Promise.resolve({ ok: true, results: [{ ok: true, id: '1' }] })
-  })
+      Promise.resolve({ ok: true, results: [{ ok: true, id: "1" }] }),
+  });
 
   const results = await Promise.all([
-    adapter.createDatabase('foo'),
-    adapter.removeDatabase('foo'),
-    adapter.createDocument({ db: 'foo', id: 'bar', doc: { hello: 'world' } }),
-    adapter.retrieveDocument({ db: 'foo', id: 'bar' }),
-    adapter.updateDocument({ db: 'foo', id: 'bar', doc: { hello: 'mars' } }),
-    adapter.removeDocument({ db: 'foo', id: 'bar' }),
-    adapter.listDocuments({ db: 'foo' }),
+    adapter.createDatabase("foo"),
+    adapter.removeDatabase("foo"),
+    adapter.createDocument({ db: "foo", id: "bar", doc: { hello: "world" } }),
+    adapter.retrieveDocument({ db: "foo", id: "bar" }),
+    adapter.updateDocument({ db: "foo", id: "bar", doc: { hello: "mars" } }),
+    adapter.removeDocument({ db: "foo", id: "bar" }),
+    adapter.listDocuments({ db: "foo" }),
     adapter.queryDocuments({
-      db: 'foo',
+      db: "foo",
       query: {
         selector: {
-          id: 'bar'
-        }
-      }
+          id: "bar",
+        },
+      },
     }),
-    adapter.indexDocuments({ db: 'foo', name: 'id', fields: ['id'] }),
-    adapter.bulkDocuments({ db: 'foo', docs: [{ id: '1', type: 'movie' }] })
+    adapter.indexDocuments({ db: "foo", name: "id", fields: ["id"] }),
+    adapter.bulkDocuments({ db: "foo", docs: [{ id: "1", type: "movie" }] }),
   ])
     .then((_) => ({ ok: true }))
     .catch((_) => {
-      console.log(_)
-      return ({ ok: false })
-    })
+      console.log(_);
+      return ({ ok: false });
+    });
 
-  assert(results.ok)
-})
+  assert(results.ok);
+});

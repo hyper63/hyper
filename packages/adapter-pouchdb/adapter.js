@@ -1,23 +1,37 @@
-const pouchdb = require('pouchdb')
-const memory = require('pouchdb-adapter-memory')
-const pouchdbFind = require('pouchdb-find')
-const mkdirp = require('mkdirp')
-const rimraf = require('rimraf')
-const path = require('path')
-const { Async } = require('crocks')
-const { bichain } = require('crocks/pointfree')
-const allow409 = require('./handle409')
-const R = require('ramda')
-const { assoc, compose, filter, identity, lens, map, merge, omit, over, pick, pluck, prop, propEq } = R
-const bulk = require('./lib/bulk')
+const pouchdb = require("pouchdb");
+const memory = require("pouchdb-adapter-memory");
+const pouchdbFind = require("pouchdb-find");
+const mkdirp = require("mkdirp");
+const rimraf = require("rimraf");
+const path = require("path");
+const { Async } = require("crocks");
+const { bichain } = require("crocks/pointfree");
+const allow409 = require("./handle409");
+const R = require("ramda");
+const {
+  assoc,
+  compose,
+  filter,
+  identity,
+  lens,
+  map,
+  merge,
+  omit,
+  over,
+  pick,
+  pluck,
+  prop,
+  propEq,
+} = R;
+const bulk = require("./lib/bulk");
 
-const makedir = Async.fromPromise(mkdirp)
+const makedir = Async.fromPromise(mkdirp);
 // const rmdir = Async.fromNode(fs.rmdir)
-const rmrf = Async.fromNode(rimraf)
+const rmrf = Async.fromNode(rimraf);
 
 // add plugins
-pouchdb.plugin(pouchdbFind)
-pouchdb.plugin(memory)
+pouchdb.plugin(pouchdbFind);
+pouchdb.plugin(memory);
 
 /**
  * @typedef {Object} DataObject
@@ -35,7 +49,12 @@ pouchdb.plugin(memory)
  *
  */
 
-const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluck('doc'), prop('rows'))
+const getDbNames = compose(
+  map(prop("name")),
+  filter(propEq("type", "db")),
+  pluck("doc"),
+  prop("rows"),
+);
 
 /**
  * @param {string} root - databases location
@@ -43,101 +62,124 @@ const getDbNames = compose(map(prop('name')), filter(propEq('type', 'db')), pluc
 module.exports = function (root) {
   // if no root then set pouchdb engine to be memory
   // if (!root) { throw new Error('root storage location required!') }
-  if (root) { makedir(path.resolve(root)) }
+  if (root) makedir(path.resolve(root));
   // create master db to hold docs to databases
-  const sys = !root ? pouchdb('_system', { adapter: 'memory' }) : pouchdb(`${root}/_system`)
-  const databases = new Map()
+  const sys = !root
+    ? pouchdb("_system", { adapter: "memory" })
+    : pouchdb(`${root}/_system`);
+  const databases = new Map();
   sys.allDocs({ include_docs: true })
     .then(getDbNames)
     // load databases
     .then(
-      map(n => databases.set(n, pouchdb(`${root}/${n}`)))
+      map((n) => databases.set(n, pouchdb(`${root}/${n}`))),
     )
-    .catch(() => console.log('ERROR: Could not get databases!'))
+    .catch(() => console.log("ERROR: Could not get databases!"));
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function createDatabase (name) {
-    if (!name) { return Promise.reject({ ok: false, msg: 'name is required!' }) }
-    return Async.of(root
-      ? pouchdb(path.resolve(`${root}/${name}`))
-      : pouchdb(name, { adapter: 'memory' })
+  function createDatabase(name) {
+    if (!name) return Promise.reject({ ok: false, msg: "name is required!" });
+    return Async.of(
+      root
+        ? pouchdb(path.resolve(`${root}/${name}`))
+        : pouchdb(name, { adapter: "memory" }),
     )
       // add to system database
-      .chain(db =>
-      // want to capture Reject and return Resolve if error is 409
+      .chain((db) =>
+        // want to capture Reject and return Resolve if error is 409
 
         bichain(
           allow409,
           Async.Resolved,
-          Async.fromPromise(sys.put.bind(sys))({ _id: name, type: 'db', name: name })
+          Async.fromPromise(sys.put.bind(sys))({
+            _id: name,
+            type: "db",
+            name: name,
+          }),
         )
           .map(() => db)
       )
       // set in Map
-      .map(db => {
-        databases.set(name, db)
-        return { ok: true }
+      .map((db) => {
+        databases.set(name, db);
+        return { ok: true };
       })
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {string} name
    * @returns {Promise<Response>}
    */
-  function removeDatabase (name) {
-    if (!name) { return Promise.reject({ ok: false, msg: 'name is required!' }) }
-    databases.delete(name)
+  function removeDatabase(name) {
+    if (!name) return Promise.reject({ ok: false, msg: "name is required!" });
+    databases.delete(name);
     return rmrf(
       path.resolve(`${root}/${name}*`),
-      { recursive: true }
+      { recursive: true },
     )
       .chain(() => {
-        const get = Async.fromPromise(sys.get)
-        const remove = Async.fromPromise(sys.remove)
-        return get(name).chain(remove)
+        const get = Async.fromPromise(sys.get);
+        const remove = Async.fromPromise(sys.remove);
+        return get(name).chain(remove);
       })
       .map(() => ({ ok: true }))
-      .toPromise()
+      .toPromise();
   }
 
   /**
    * @param {DataObject}
    * @returns {Promise<Response>}
    */
-  function createDocument ({ db, id, doc }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
-    if (!doc) { return Promise.reject({ ok: false, msg: 'data document is required!' }) }
+  function createDocument({ db, id, doc }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!id) {
+      return Promise.reject({
+        ok: false,
+        msg: "unique identifier is required!",
+      });
+    }
+    if (!doc) {
+      return Promise.reject({ ok: false, msg: "data document is required!" });
+    }
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
 
     return pouch.put({
       _id: id,
-      ...doc
-    }).then(omit(['rev']))
+      ...doc,
+    }).then(omit(["rev"]));
   }
 
   /**
    * @param {DataInfo}
    * @returns {Promise<Response>}
    */
-  function retrieveDocument ({ db, id }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
+  function retrieveDocument({ db, id }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!id) {
+      return Promise.reject({
+        ok: false,
+        msg: "unique identifier is required!",
+      });
+    }
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
 
     return pouch.get(id)
       .then(compose(
-        omit(['_id', '_rev']),
-        assoc('id', id)
-      ))
+        omit(["_id", "_rev"]),
+        assoc("id", id),
+      ));
     // .then(doc => ({ok: true, doc}))
   }
 
@@ -145,33 +187,49 @@ module.exports = function (root) {
    * @param {DataObject}
    * @returns {Promise<Response>}
    */
-  function updateDocument ({ db, id, doc }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
-    if (!doc) { return Promise.reject({ ok: false, msg: 'data document is required!' }) }
+  function updateDocument({ db, id, doc }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!id) {
+      return Promise.reject({
+        ok: false,
+        msg: "unique identifier is required!",
+      });
+    }
+    if (!doc) {
+      return Promise.reject({ ok: false, msg: "data document is required!" });
+    }
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
 
     return pouch.get(id)
-      .then(pick(['_id', '_rev']))
+      .then(pick(["_id", "_rev"]))
       .then(merge(doc))
       .then(pouch.put.bind(pouch))
-      .then(omit(['rev']))
+      .then(omit(["rev"]));
   }
 
   /**
    * @param {DataInfo}
    * @returns {Promise<Response>}
    */
-  function removeDocument ({ db, id }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!id) { return Promise.reject({ ok: false, msg: 'unique identifier is required!' }) }
+  function removeDocument({ db, id }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!id) {
+      return Promise.reject({
+        ok: false,
+        msg: "unique identifier is required!",
+      });
+    }
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
     return pouch.get(id)
-      .then(pouch.remove.bind(pouch))
+      .then(pouch.remove.bind(pouch));
   }
 
   /**
@@ -194,13 +252,15 @@ module.exports = function (root) {
    * @param {DataQuery}
    * @returns {Promise<ResponseDocs>}
    */
-  function queryDocuments ({ db, query }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!query) { return Promise.reject({ ok: false, msg: 'query is required!' }) }
-    const xId = lens(prop('_id'), assoc('id'))
+  function queryDocuments({ db, query }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!query) return Promise.reject({ ok: false, msg: "query is required!" });
+    const xId = lens(prop("_id"), assoc("id"));
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
 
     return pouch.find(query)
       .then(({ docs }) => {
@@ -208,13 +268,13 @@ module.exports = function (root) {
           ok: true,
           docs: map(
             compose(
-              omit(['_id', '_rev']),
-              over(xId, identity)
+              omit(["_id", "_rev"]),
+              over(xId, identity),
             ),
-            docs
-          )
-        })
-      })
+            docs,
+          ),
+        });
+      });
   }
 
   /**
@@ -228,15 +288,24 @@ module.exports = function (root) {
    * @param {IndexInfo}
    * @returns {Promise<Response>}
    */
-  function indexDocuments ({ db, name, fields }) {
-    if (!db) { return Promise.reject({ ok: false, msg: 'dbname is required!' }) }
-    if (!name) { return Promise.reject({ ok: false, msg: 'index name is required!' }) }
-    if (!fields) { return Promise.reject({ ok: false, msg: 'fields for index is required!' }) }
+  function indexDocuments({ db, name, fields }) {
+    if (!db) return Promise.reject({ ok: false, msg: "dbname is required!" });
+    if (!name) {
+      return Promise.reject({ ok: false, msg: "index name is required!" });
+    }
+    if (!fields) {
+      return Promise.reject({
+        ok: false,
+        msg: "fields for index is required!",
+      });
+    }
 
-    const pouch = databases.get(db)
-    if (!pouch) { return Promise.reject({ ok: false, msg: 'database not initalized!' }) }
+    const pouch = databases.get(db);
+    if (!pouch) {
+      return Promise.reject({ ok: false, msg: "database not initalized!" });
+    }
     return pouch.createIndex({ index: { fields }, ddoc: name })
-      .then(result => ({ ok: true, msg: result.result }))
+      .then((result) => ({ ok: true, msg: result.result }));
   }
 
   /**
@@ -252,27 +321,30 @@ module.exports = function (root) {
    * @param {DataList}
    * @returns {Promise<Response>}
    */
-  function listDocuments ({ db, limit, startkey, endkey, keys, descending }) {
-    const pouch = databases.get(db)
-    let options = { include_docs: true }
-    const xid = lens(prop('_id'), assoc('id'))
+  function listDocuments({ db, limit, startkey, endkey, keys, descending }) {
+    const pouch = databases.get(db);
+    // deno-lint-ignore camelcase
+    let options = { include_docs: true };
+    const xid = lens(prop("_id"), assoc("id"));
 
-    options = limit ? merge({ limit }, options) : options
-    options = startkey ? merge({ startkey }, options) : options
-    options = endkey ? merge({ endkey }, options) : options
-    options = keys ? merge({ keys }, options) : options
-    options = descending ? merge({ descending }, options) : options
-    console.log({ options })
-    return pouch.allDocs(options).then(results => {
+    options = limit ? merge({ limit }, options) : options;
+    options = startkey ? merge({ startkey }, options) : options;
+    options = endkey ? merge({ endkey }, options) : options;
+    options = keys ? merge({ keys }, options) : options;
+    options = descending ? merge({ descending }, options) : options;
+    console.log({ options });
+    return pouch.allDocs(options).then((results) => {
       return ({
         ok: true,
         docs: map(
           compose(
-            omit(['_rev', '_id']),
-            over(xid, identity)
-          ), pluck('doc', results.rows))
-      })
-    })
+            omit(["_rev", "_id"]),
+            over(xid, identity),
+          ),
+          pluck("doc", results.rows),
+        ),
+      });
+    });
   }
 
   return Object.freeze({
@@ -285,6 +357,6 @@ module.exports = function (root) {
     queryDocuments,
     indexDocuments,
     listDocuments,
-    bulkDocuments: bulk(databases)
-  })
-}
+    bulkDocuments: bulk(databases),
+  });
+};

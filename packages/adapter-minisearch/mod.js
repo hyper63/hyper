@@ -1,9 +1,8 @@
+import { R } from "./deps.js";
 
-import { R } from './deps.js'
+import adapter from "./adapter.js";
 
-import adapter from './adapter.js'
-
-const { identity } = R
+const { identity } = R;
 
 /**
  * hyper63 search plugin for the search port. This plugin is an adapter that
@@ -32,11 +31,11 @@ const { identity } = R
  *
  * search section
  */
-export default function memory () {
+export default function memory() {
   return ({
-    id: 'minisearch',
-    port: 'search',
+    id: "minisearch",
+    port: "search",
     load: identity,
-    link: () => () => adapter()
-  })
+    link: () => () => adapter(),
+  });
 }

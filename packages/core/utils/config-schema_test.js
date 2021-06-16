@@ -1,22 +1,22 @@
-import validateConfig from './config-schema.js'
-import { assertEquals } from '../dev_deps.js'
+import validateConfig from "./config-schema.js";
+import { assertEquals } from "../dev_deps.js";
 
-const test = Deno.test
+const test = Deno.test;
 
-const noop = () => null
-const plugin = () => ({ id: 'foo', load: noop, link: noop })
+const noop = () => null;
+const plugin = () => ({ id: "foo", load: noop, link: noop });
 
-test('validate schema', () => {
+test("validate schema", () => {
   try {
     validateConfig({
       app: noop,
       adapters: [
-        { port: 'queue', plugins: [plugin()] }
-      ]
-    })
-    assertEquals(true, true)
+        { port: "queue", plugins: [plugin()] },
+      ],
+    });
+    assertEquals(true, true);
   } catch (e) {
-    console.log(JSON.stringify(e.issues))
-    assertEquals(true, false)
+    console.log(JSON.stringify(e.issues));
+    assertEquals(true, false);
   }
-})
+});

@@ -1,5 +1,5 @@
-import { assert } from './dev_deps.js'
+import { assert } from "./dev_deps.js";
 
-Deno.test('storage port tests', () => {
-  assert(true)
-})
+Deno.test("storage port tests", () => {
+  assert(true);
+});
