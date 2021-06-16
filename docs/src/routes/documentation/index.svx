@@ -1,9 +1,0 @@
-# hyper63 Documentation
-
-## Contents
-
-- [Introduction](/documentation/introduction)
-- [Getting Started](/documentation/getting_started)
-- [Adapters](/documentation/adapters)
-- [Hooks](/documentation/hooks)
-- [Plugins](/documentation/plugins)
