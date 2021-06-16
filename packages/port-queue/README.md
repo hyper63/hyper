@@ -1,13 +1,13 @@
 # README
 
-Queue Port 
+Queue Port
 
-* Create a Queue
-* Delete a Queue
-* Post a JOB to a Queue
-* Get Jobs from a queue
-* Cancel a Job
-* Retry a Job
+- Create a Queue
+- Delete a Queue
+- Post a JOB to a Queue
+- Get Jobs from a queue
+- Cancel a Job
+- Retry a Job
 
 ## Documentation
 
@@ -26,4 +26,3 @@ yarn build
 ```
 yarn test
 ```
-

@@ -1,11 +1,10 @@
-
 import { z } from './deps.js'
 
 /**
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-export default function (adapter) {
+export function cache (adapter) {
   const cachePort = z.object({
     // list cache stores
     index: z.function()
@@ -54,7 +53,11 @@ export default function (adapter) {
       .returns(
         z.promise(
           z.union([
-            z.object({ ok: z.boolean(), status: z.number().optional(), msg: z.string() }),
+            z.object({
+              ok: z.boolean(),
+              status: z.number().optional(),
+              msg: z.string()
+            }),
             z.object({}).passthrough()
           ])
         )
@@ -104,8 +107,12 @@ export default function (adapter) {
       )
   })
   const instance = cachePort.parse(adapter)
-  instance.createStore = cachePort.shape.createStore.validate(instance.createStore)
-  instance.destroyStore = cachePort.shape.destroyStore.validate(instance.destroyStore)
+  instance.createStore = cachePort.shape.createStore.validate(
+    instance.createStore
+  )
+  instance.destroyStore = cachePort.shape.destroyStore.validate(
+    instance.destroyStore
+  )
   instance.createDoc = cachePort.shape.createDoc.validate(instance.createDoc)
   instance.getDoc = cachePort.shape.getDoc.validate(instance.getDoc)
   instance.updateDoc = cachePort.shape.updateDoc.validate(instance.updateDoc)

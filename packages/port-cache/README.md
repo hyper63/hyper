@@ -1,6 +1,7 @@
 # Cache Port
 
-The cache port takes an adapter and environment, then parses the adapter and wraps function validations around each function.
+The cache port takes an adapter and environment, then parses the adapter and
+wraps function validations around each function.
 
 Your adapter or composed adapter should implement all specified functions:
 
@@ -35,7 +36,7 @@ test("certify adapter", async (t) => {
         key: "hello",
         value: { foo: "bar" },
       })
-    ).ok
+    ).ok,
   );
   t.deepEqual((await instance.getDoc({ store: "default", key: "hello" })).doc, {
     foo: "bar",

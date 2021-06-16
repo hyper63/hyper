@@ -1,7 +1,7 @@
 
 import { z } from './deps.js'
 
-export default function (adapter, env) {
+export function hooks (adapter, env) {
   const Port = z.object({
     // add port methods
   })

@@ -1,6 +1,4 @@
-/* eslint-disable no-redeclare */
-
-import { z } from 'zod'
+import { z } from './deps.js'
 
 const QueueListResponse = z.string().array()
 
@@ -61,16 +59,7 @@ const QueuePort = z.object({
     .returns(z.promise(QueueResponse))
 })
 
-export type QueuePort = z.infer<typeof QueuePort>
-export type QueueListResponse = z.infer<typeof QueueListResponse>
-export type QueueCreateInput = z.infer<typeof QueueCreateInput>
-export type QueueResponse = z.infer<typeof QueueResponse>
-export type QueuePostInput = z.infer<typeof QueuePostInput>
-export type QueueGetInput = z.infer<typeof QueueGetInput>
-export type JobsResponse = z.infer<typeof JobsResponse>
-export type JobInput = z.infer<typeof JobInput>
-
-export default function (adapter : QueuePort) : QueuePort {
+export function queue (adapter) {
   const instance = QueuePort.parse(adapter)
 
   // wrap the functions with validators

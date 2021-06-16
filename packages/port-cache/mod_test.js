@@ -2,7 +2,7 @@
 
 import { assert } from './dev_deps.js'
 
-import cachePort from './mod.js'
+import { cache as cachePort } from './mod.js'
 
 Deno.test('port cache ok', () => {
   const goodCache = cachePort({
@@ -53,15 +53,15 @@ Deno.test('port cache ok', () => {
     .then(() => {
       assert(true)
     })
-    .catch(e => {
+    .catch((e) => {
       assert(false)
     })
 })
 
-Deno.test('port cache shape not ok', t => {
+Deno.test('port cache shape not ok', (t) => {
   assert(true)
 })
 
-Deno.test('port cache methods not ok', t => {
+Deno.test('port cache methods not ok', (t) => {
   assert(true)
 })

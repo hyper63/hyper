@@ -1,14 +1,17 @@
-
 import { z } from './deps.js'
 
 /**
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
-export default function (adapter) {
+export function data (adapter) {
   const Port = z.object({
-    createDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean() }))),
-    removeDatabase: z.function().args(z.string()).returns(z.promise(z.object({ ok: z.boolean() }))),
+    createDatabase: z.function().args(z.string()).returns(
+      z.promise(z.object({ ok: z.boolean() }))
+    ),
+    removeDatabase: z.function().args(z.string()).returns(
+      z.promise(z.object({ ok: z.boolean() }))
+    ),
     createDocument: z.function()
       .args(z.object({
         db: z.string(),
@@ -45,7 +48,6 @@ export default function (adapter) {
         endkey: z.string().optional(),
         keys: z.string().optional(),
         descending: z.boolean().optional()
-
       })).returns(z.promise(z.object({
         ok: z.boolean(),
         docs: z.array(z.any())
@@ -88,17 +90,35 @@ export default function (adapter) {
       })))
   })
   const instance = Port.parse(adapter)
-  instance.createDatabase = Port.shape.createDatabase.validate(instance.createDatabase)
-  instance.removeDatabase = Port.shape.removeDatabase.validate(instance.removeDatabase)
-  instance.createDocument = Port.shape.createDocument.validate(instance.createDocument)
-  instance.retrieveDocument = Port.shape.retrieveDocument.validate(instance.retrieveDocument)
+  instance.createDatabase = Port.shape.createDatabase.validate(
+    instance.createDatabase
+  )
+  instance.removeDatabase = Port.shape.removeDatabase.validate(
+    instance.removeDatabase
+  )
+  instance.createDocument = Port.shape.createDocument.validate(
+    instance.createDocument
+  )
+  instance.retrieveDocument = Port.shape.retrieveDocument.validate(
+    instance.retrieveDocument
+  )
   // instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
   instance.updateDocument = adapter.updateDocument
-  instance.removeDocument = Port.shape.removeDocument.validate(instance.removeDocument)
-  instance.listDocuments = Port.shape.listDocuments.validate(instance.listDocuments)
-  instance.queryDocuments = Port.shape.queryDocuments.validate(instance.queryDocuments)
-  instance.indexDocuments = Port.shape.indexDocuments.validate(instance.indexDocuments)
-  instance.bulkDocuments = Port.shape.bulkDocuments.validate(instance.bulkDocuments)
+  instance.removeDocument = Port.shape.removeDocument.validate(
+    instance.removeDocument
+  )
+  instance.listDocuments = Port.shape.listDocuments.validate(
+    instance.listDocuments
+  )
+  instance.queryDocuments = Port.shape.queryDocuments.validate(
+    instance.queryDocuments
+  )
+  instance.indexDocuments = Port.shape.indexDocuments.validate(
+    instance.indexDocuments
+  )
+  instance.bulkDocuments = Port.shape.bulkDocuments.validate(
+    instance.bulkDocuments
+  )
 
   return instance
 }

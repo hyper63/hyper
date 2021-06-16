@@ -2,7 +2,7 @@
 
 import { assert } from './dev_deps.js'
 
-import dataPort from './mod.js'
+import { data as dataPort } from './mod.js'
 
 Deno.test('data port tests', async () => {
   const adapter = dataPort({
@@ -12,10 +12,12 @@ Deno.test('data port tests', async () => {
     retrieveDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
     updateDocument: ({ db, id, doc }) => Promise.resolve({ ok: true, id }),
     removeDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
-    listDocuments: ({ db, limit, startkey, endkey, keys, descending }) => Promise.resolve({ ok: true, docs: [] }),
+    listDocuments: ({ db, limit, startkey, endkey, keys, descending }) =>
+      Promise.resolve({ ok: true, docs: [] }),
     queryDocuments: ({ db, query }) => Promise.resolve({ ok: true, docs: [] }),
     indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
-    bulkDocuments: ({ db, docs }) => Promise.resolve({ ok: true, results: [{ ok: true, id: '1' }] })
+    bulkDocuments: ({ db, docs }) =>
+      Promise.resolve({ ok: true, results: [{ ok: true, id: '1' }] })
   })
 
   const results = await Promise.all([
@@ -37,8 +39,8 @@ Deno.test('data port tests', async () => {
     adapter.indexDocuments({ db: 'foo', name: 'id', fields: ['id'] }),
     adapter.bulkDocuments({ db: 'foo', docs: [{ id: '1', type: 'movie' }] })
   ])
-    .then(_ => ({ ok: true }))
-    .catch(_ => {
+    .then((_) => ({ ok: true }))
+    .catch((_) => {
       console.log(_)
       return ({ ok: false })
     })

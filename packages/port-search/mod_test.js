@@ -2,14 +2,15 @@
 
 import { assert } from './dev_deps.js'
 
-import searchPort from './mod.js'
+import { search as searchPort } from './mod.js'
 
 Deno.test('port search ok', () => {
   const search = searchPort({
     createIndex: ({ index, mappings }) => Promise.resolve({ ok: true }),
     deleteIndex: (index) => Promise.resolve({ ok: true }),
     indexDoc: ({ index, key, doc }) => Promise.resolve({ ok: true }),
-    getDoc: ({ index, key }) => Promise.resolve({ ok: true, key, doc: { hello: 'world' } }),
+    getDoc: ({ index, key }) =>
+      Promise.resolve({ ok: true, key, doc: { hello: 'world' } }),
     updateDoc: ({ index, key, doc }) => Promise.resolve({ ok: true }),
     removeDoc: ({ index, key }) => Promise.resolve({ ok: true }),
     bulk: ({ index, docs }) => Promise.resolve({ ok: true, results: [] }),
@@ -25,10 +26,9 @@ Deno.test('port search ok', () => {
     search.removeDoc({ index: 'foo', key: 'bar' }),
     search.bulk({ index: 'foo', docs: [] }),
     search.query({ index: 'foo', q: { query: 'foo' } })
-
   ]).then(() => {
     assert(true)
-  }).catch(e => {
+  }).catch((e) => {
     console.log(e)
     assert(false)
   })

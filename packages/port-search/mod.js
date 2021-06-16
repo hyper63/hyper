@@ -1,6 +1,6 @@
 import { z } from './deps.js'
 
-export default function (adapter) {
+export function search (adapter) {
   const Port = z.object({
     // add port methods
     createIndex: z.function()
