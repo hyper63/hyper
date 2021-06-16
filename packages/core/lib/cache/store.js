@@ -1,17 +1,18 @@
-const { is, of, apply, triggerEvent } = require('../utils')
-const { toLower } = require('ramda')
+import { apply, is, of, triggerEvent } from '../utils/mod.js'
+import { R } from '../../deps.js'
+
+const { toLower } = R
 
 const INVALID_NAME_MSG = 'name is not valid'
 const INVALID_RESULT_MSG = 'result is not valid'
 
-exports.index = () =>
-  apply('index')().chain(triggerEvent('CACHE:INDEX'))
+export const index = () => apply('index')().chain(triggerEvent('CACHE:INDEX'))
 
 /**
  * @param {string} name
  * @returns {AsyncReader}
  */
-exports.create = (name) =>
+export const create = (name) =>
   of(name)
     .map(toLower)
     .chain(is(validName, INVALID_NAME_MSG))
@@ -23,7 +24,7 @@ exports.create = (name) =>
  * @param {string} name
  * @returns {AsyncReader}
  */
-exports.del = (name) =>
+export const del = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply('destroyStore'))
@@ -35,7 +36,7 @@ exports.del = (name) =>
  * @param {string} pattern
  * @returns {AsyncReader}
  */
-exports.query = (name, pattern) =>
+export const query = (name, pattern) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))

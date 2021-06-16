@@ -1,9 +1,10 @@
-const cacheCore = require('./cache')
-const dataCore = require('./data')
-const storageCore = require('./storage')
-const searchCore = require('./search')
-const hooksCore = require('./hooks')
-const queueCore = require('./queue')
+import cacheCore from './cache/mod.js'
+import dataCore from './data/mod.js'
+import storageCore from './storage/mod.js'
+import searchCore from './search/mod.js'
+import hooksCore from './hooks/mod.js'
+import queueCore from './queue/mod.js'
+
 /**
  * main core module
  *
@@ -11,7 +12,7 @@ const queueCore = require('./queue')
  * and passes them to each core module
  *
  */
-module.exports = function (services) {
+export default function (services) {
   return Object.freeze({
     cache: services.cache ? cacheCore(services) : null,
     data: services.data ? dataCore(services) : null,

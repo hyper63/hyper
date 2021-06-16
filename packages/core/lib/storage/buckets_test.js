@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
+import * as buckets from './buckets.js'
+import { assertEquals } from '../../dev_deps.js'
 
-const test = require('tape')
-const buckets = require('./buckets')
+const test = Deno.test
 
 const mock = {
   makeBucket (name) {
@@ -15,18 +16,21 @@ const mock = {
   }
 }
 
-const fork = (m) => (t) => {
-  t.plan(1)
-  m.fork(
-    () => t.ok(false),
-    () => t.ok(true)
-  )
-}
+const fork = (m) =>
+  () => {
+    m.fork(
+      () => assertEquals(false, true),
+      () => assertEquals(true, true)
+    )
+  }
 
 const events = {
   dispatch: () => null
 }
 
 test('make bucket', fork(buckets.make('beep').runWith({ svc: mock, events })))
-test('remove bucket', fork(buckets.remove('beep').runWith({ svc: mock, events })))
+test(
+  'remove bucket',
+  fork(buckets.remove('beep').runWith({ svc: mock, events }))
+)
 test('list buckets', fork(buckets.list().runWith({ svc: mock, events })))

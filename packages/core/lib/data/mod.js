@@ -1,18 +1,20 @@
-const db = require('./db.js')
-const doc = require('./doc.js')
+import * as db from './db.js'
+import * as doc from './doc.js'
 
-module.exports = ({ data, events }) => {
+export default function ({ data, events }) {
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const createDatabase = (name) => db.create(name).runWith({ svc: data, events })
+  const createDatabase = (name) =>
+    db.create(name).runWith({ svc: data, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const destroyDatabase = (name) => db.remove(name).runWith({ svc: data, events })
+  const destroyDatabase = (name) =>
+    db.remove(name).runWith({ svc: data, events })
 
   /**
    * @param {string} db
@@ -27,7 +29,8 @@ module.exports = ({ data, events }) => {
    * @param {string} id
    * @returns {Async}
    */
-  const getDocument = (db, id) => doc.get(db, id).runWith({ svc: data, events })
+  const getDocument = (db, id) =>
+    doc.get(db, id).runWith({ svc: data, events })
 
   /**
    * @param {string} db
@@ -43,30 +46,35 @@ module.exports = ({ data, events }) => {
    * @param {string} id
    * @returns {Async}
    */
-  const removeDocument = (db, id) => doc.remove(db, id).runWith({ svc: data, events })
+  const removeDocument = (db, id) =>
+    doc.remove(db, id).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname
    * @param {object} query
    * @returns {Async}
    */
-  const query = (dbname, query) => db.query(dbname, query).runWith({ svc: data, events })
+  const query = (dbname, query) =>
+    db.query(dbname, query).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname
    * @param {object} index
    * @returns {Async}
    */
-  const index = (dbname, name, fields) => db.index(dbname, name, fields).runWith({ svc: data, events })
+  const index = (dbname, name, fields) =>
+    db.index(dbname, name, fields).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname,
    * @param {object} options
    * @returns {Async}
    */
-  const listDocuments = (dbname, options) => db.list(dbname, options).runWith({ svc: data, events })
+  const listDocuments = (dbname, options) =>
+    db.list(dbname, options).runWith({ svc: data, events })
 
-  const bulkDocuments = (dbname, docs) => db.bulk(dbname, docs).runWith({ svc: data, events })
+  const bulkDocuments = (dbname, docs) =>
+    db.bulk(dbname, docs).runWith({ svc: data, events })
 
   return Object.freeze({
     createDatabase,

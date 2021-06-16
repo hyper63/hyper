@@ -1,20 +1,22 @@
-const test = require('tape')
-const validateConfig = require('./config-schema')
+import validateConfig from './config-schema.js'
+import { assertEquals } from '../dev_deps.js'
+
+const test = Deno.test
 
 const noop = () => null
+const plugin = () => ({ id: 'foo', load: noop, link: noop })
 
-test('validate schema', t => {
-  t.plan(1)
+test('validate schema', () => {
   try {
     validateConfig({
       app: noop,
       adapters: [
-        { port: 'queue', plugins: [noop] }
+        { port: 'queue', plugins: [plugin()] }
       ]
     })
-    t.ok(true)
+    assertEquals(true, true)
   } catch (e) {
     console.log(JSON.stringify(e.issues))
-    t.ok(false)
+    assertEquals(true, false)
   }
 })

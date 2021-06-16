@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// deno-lint-ignore-file no-unused-vars
+import { assertEquals } from '../../dev_deps.js'
 
-const test = require('tape')
-const store = require('./store.js')
+import * as store from './store.js'
+
+const test = Deno.test
 
 const mockService = {
   createStore: (name) =>
@@ -16,51 +18,52 @@ const events = {
   dispatch: () => null
 }
 
-test('create cache store', (t) => {
-  t.plan(1)
-
+test('create cache store', () => {
   function handleError () {
-    t.ok(false)
+    assertEquals(false, true)
   }
   function handleSuccess () {
-    t.ok(true)
+    assertEquals(true, true)
   }
 
-  store.create('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
+  store.create('hello').runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess
+  )
 })
 
-test('should not create store', t => {
-  t.plan(1)
-
+test('should not create store', () => {
   store.create('_foo').runWith({ svc: mockService, events })
     .fork(
-      () => t.ok(true),
-      () => t.ok(false)
+      () => assertEquals(true, true),
+      () => assertEquals(false, true)
     )
 })
 
-test('destroy cache store', (t) => {
-  t.plan(1)
-
+test('destroy cache store', () => {
   function handleError () {
-    t.ok(false)
+    assertEquals(false, true)
   }
   function handleSuccess () {
-    t.ok(true)
+    assertEquals(true, true)
   }
 
-  store.del('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
+  store.del('hello').runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess
+  )
 })
 
-test('query cache store', (t) => {
-  t.plan(1)
-
+test('query cache store', () => {
   function handleError () {
-    t.ok(false)
+    assertEquals(false, true)
   }
   function handleSuccess () {
-    t.ok(true)
+    assertEquals(true, true)
   }
 
-  store.query('hello').runWith({ svc: mockService, events }).fork(handleError, handleSuccess)
+  store.query('hello').runWith({ svc: mockService, events }).fork(
+    handleError,
+    handleSuccess
+  )
 })

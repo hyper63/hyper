@@ -1,4 +1,4 @@
-const { of, apply, triggerEvent } = require('../utils')
+import { apply, of, triggerEvent } from '../utils/mod.js'
 
 // const INVALID_BUCKET_MSG = 'bucket name is not valid'
 // const INVALID_RESPONSE = 'response is not valid'
@@ -7,7 +7,7 @@ const { of, apply, triggerEvent } = require('../utils')
  * @param {string} name
  * @returns {AsyncReader}
  */
-exports.make = (name) =>
+export const make = (name) =>
   of(name)
     // .chain(is(validDbName, INVALID_DB_MSG))
     .chain(apply('makeBucket'))
@@ -18,7 +18,7 @@ exports.make = (name) =>
  * @param {string} name
  * @returns {AsyncReader}
  */
-exports.remove = (name) =>
+export const remove = (name) =>
   of(name)
     .chain(apply('removeBucket'))
     .chain(triggerEvent('STORAGE:DELTE_BUCKET'))
@@ -26,4 +26,4 @@ exports.remove = (name) =>
 /**
  * @returns {AsyncReader}
  */
-exports.list = () => of().chain(apply('listBuckets'))
+export const list = () => of().chain(apply('listBuckets'))

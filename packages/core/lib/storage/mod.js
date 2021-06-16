@@ -1,18 +1,20 @@
-const buckets = require('./buckets')
-const objects = require('./objects')
+import * as buckets from './buckets'
+import * as objects from './objects'
 
-module.exports = ({ storage, events }) => {
+export default function ({ storage, events }) {
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const makeBucket = (name) => buckets.make(name).runWith({ svc: storage, events })
+  const makeBucket = (name) =>
+    buckets.make(name).runWith({ svc: storage, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const removeBucket = (name) => buckets.remove(name).runWith({ svc: storage, events })
+  const removeBucket = (name) =>
+    buckets.remove(name).runWith({ svc: storage, events })
 
   /**
    * @param {string} name
@@ -27,7 +29,10 @@ module.exports = ({ storage, events }) => {
    * @returns {Async}
    */
   const putObject = (bucketName, objectName, stream) =>
-    objects.put(bucketName, objectName, stream).runWith({ svc: storage, events })
+    objects.put(bucketName, objectName, stream).runWith({
+      svc: storage,
+      events
+    })
 
   /**
    * @param {string} bucketName

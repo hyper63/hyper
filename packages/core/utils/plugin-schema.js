@@ -1,9 +1,10 @@
-const z = require('zod')
+import { z } from '../deps.js'
+
 /**
  * @param {object} plugin
  * @returns {object}
  */
-module.exports = function (plugin) {
+export default function (plugin) {
   const schema = z.object({
     id: z.string().optional(),
     port: z.string().optional(),
@@ -12,9 +13,10 @@ module.exports = function (plugin) {
       .returns(z.any()),
     link: z.function()
       .args(z.any())
-      .returns(z.function()
-        .args(z.any())
-        .returns(z.any())
+      .returns(
+        z.function()
+          .args(z.any())
+          .returns(z.any())
       )
   })
 

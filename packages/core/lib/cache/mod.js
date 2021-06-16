@@ -1,14 +1,15 @@
-const store = require('./store.js')
-const doc = require('./doc.js')
+import * as store from './store.js'
+import * as doc from './doc.js'
 
-module.exports = ({ cache, events }) => {
+export default function ({ cache, events }) {
   const index = () => store.index().runWith({ svc: cache, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const createStore = (name) => store.create(name).runWith({ svc: cache, events })
+  const createStore = (name) =>
+    store.create(name).runWith({ svc: cache, events })
 
   /**
    *
@@ -41,14 +42,16 @@ module.exports = ({ cache, events }) => {
    * @param {string} key
    * @returns {Async}
    */
-  const getDoc = (store, key) => doc.get(store, key).runWith({ svc: cache, events })
+  const getDoc = (store, key) =>
+    doc.get(store, key).runWith({ svc: cache, events })
 
   /**
    * @param {string} name
    * @param {string} key
    * @returns {Async}
    */
-  const deleteDoc = (store, key) => doc.del(store, key).runWith({ svc: cache, events })
+  const deleteDoc = (store, key) =>
+    doc.del(store, key).runWith({ svc: cache, events })
 
   /**
    * @param {string} name

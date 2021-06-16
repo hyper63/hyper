@@ -1,14 +1,16 @@
-const loadPorts = require('./ports')
-const wrapCore = require('./lib')
-const validateConfig = require('./utils/config-schema')
-const initAdapters = require('./utils/plugins')
-const eventMgr = require('./utils/event-mgr')
-const { compose, prop, assoc, propOr } = require('ramda')
+import loadPorts from './ports'
+import wrapCore from './lib/mod.js'
+import validateConfig from './utils/config-schema.js'
+import initAdapters from './utils/plugins.js'
+import eventMgr from './utils/event-mgr.js'
+import { R } from './deps.js'
+
+const { compose, prop, assoc, propOr } = R
 
 /**
  * @returns {function} - listen function
  */
-function main (config) {
+export default function main (config) {
   // const config = (await import(process.cwd() + '/hyper63.config')).default
   config = !config ? require(process.cwd() + '/hyper63.config') : config
   config = validateConfig(config)
@@ -29,5 +31,3 @@ function main (config) {
   // return app
   return app
 }
-
-module.exports = main

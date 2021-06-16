@@ -1,35 +1,36 @@
-const { is, of, apply, triggerEvent } = require('../utils')
-const { toLower, lensProp, over } = require('ramda')
+import { apply, is, of, triggerEvent } from '../utils/mod.js'
+import { R } from '../../deps.js'
+
+const { toLower, lensProp, over } = R
 
 const INVALID_NAME_MSG = 'queue name is not valid!'
 
-exports.index = () =>
-  apply('index')().chain(triggerEvent('QUEUE:INDEX'))
-  // apply('index')().chain(triggerEvent('QUEUE:INDEX'))
+export const index = () => apply('index')().chain(triggerEvent('QUEUE:INDEX'))
+// apply('index')().chain(triggerEvent('QUEUE:INDEX'))
 
-exports.create = (input) =>
+export const create = (input) =>
   of(input)
     .map(over(lensProp('name'), toLower))
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply('create'))
     .chain(triggerEvent('QUEUE:CREATE'))
 
-exports.delete = (name) =>
+export const del = (name) =>
   of(name)
     .chain(apply('delete'))
     .chain(triggerEvent('QUEUE:DELETE'))
 
-exports.post = (input) =>
+export const post = (input) =>
   of(input)
     .chain(apply('post'))
     .chain(triggerEvent('QUEUE:POST'))
 
-exports.list = (input) =>
+export const list = (input) =>
   of(input)
     .chain(apply('get'))
     .chain(triggerEvent('QUEUE:LIST'))
 
-exports.cancel = (input) =>
+export const cancel = (input) =>
   of(input)
     .chain(apply('cancel'))
     .chain(triggerEvent('QUEUE:CANCEL'))

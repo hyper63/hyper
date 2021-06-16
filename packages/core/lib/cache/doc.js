@@ -1,11 +1,15 @@
-const ms = require('ms')
-const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = require('ramda')
-const { is, of, apply, triggerEvent } = require('../utils')
-const { hasProp } = require('crocks/predicates')
+import { crocks, ms, R } from '../../deps.js'
+import { apply, is, of, triggerEvent } from '../utils/mod.js'
+
+const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = R
+const { hasProp } = crocks
 
 const INVALID_KEY = 'key is not valid'
 const INVALID_RESULT = 'result is not valid'
-const convertTTL = over(lensProp('ttl'), (ttl) => (ttl ? String(ms(ttl)) : null))
+const convertTTL = over(
+  lensProp('ttl'),
+  (ttl) => (ttl ? String(ms(ttl)) : null)
+)
 const removeTTL = ifElse(compose(isNil, prop('ttl')), omit(['ttl']), identity)
 
 /**
@@ -15,7 +19,7 @@ const removeTTL = ifElse(compose(isNil, prop('ttl')), omit(['ttl']), identity)
  * @param {string} ttl
  * @returns {AsyncReader}
  */
-const create = (store, key, value, ttl) =>
+export const create = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
     .map(removeTTL)
@@ -29,12 +33,12 @@ const create = (store, key, value, ttl) =>
  * @param {string} key
  * @returns {AsyncReader}
  */
-const get = (store, key) =>
+export const get = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply('getDoc'))
     .chain(triggerEvent('CACHE:GET'))
-    // .chain(is(validResult, INVALID_RESULT));
+// .chain(is(validResult, INVALID_RESULT));
 
 /**
  * @param {string} store
@@ -43,7 +47,7 @@ const get = (store, key) =>
  * @param {string} ttl
  * @returns {AsyncReader}
  */
-const update = (store, key, value, ttl) =>
+export const update = (store, key, value, ttl) =>
   of({ store, key, value, ttl })
     .map(convertTTL)
     .map(removeTTL)
@@ -56,19 +60,13 @@ const update = (store, key, value, ttl) =>
  * @param {string} key
  * @returns {AsyncReader}
  */
-const del = (store, key) =>
+export const del = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply('deleteDoc'))
     .chain(triggerEvent('CACHE:DELETE'))
     .chain(is(validResult, INVALID_RESULT))
 
-module.exports = {
-  create,
-  get,
-  update,
-  del
-}
 // validators predicate functions
 
 function validKey (doc) {

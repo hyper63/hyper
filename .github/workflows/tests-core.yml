@@ -9,14 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        deno: [1.11.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Use NodeJS ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Use Deno ${{ matrix.deno }}
+        uses: denolib/setup-deno@master
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd packages/core && yarn
-      - run: cd packages/core && yarn test
+          deno-version: ${{ matrix.deno }}
+      - run: cd packages/core && ./scripts/test.sh
         env:
           CI: true

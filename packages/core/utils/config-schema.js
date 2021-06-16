@@ -1,4 +1,4 @@
-const z = require('zod')
+import { z } from '../deps.js'
 
 const F = z.function().args(z.any())
 
@@ -10,9 +10,10 @@ const plugin = z.object({
     .returns(z.any()),
   link: z.function()
     .args(z.any())
-    .returns(z.function()
-      .args(z.any())
-      .returns(z.any())
+    .returns(
+      z.function()
+        .args(z.any())
+        .returns(z.any())
     )
 })
 
@@ -25,6 +26,6 @@ const Schema = z.object({
   middleware: F.array().optional()
 })
 
-module.exports = data => {
+export default function (data) {
   return Schema.parse(data)
 }

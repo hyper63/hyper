@@ -1,6 +1,7 @@
-const { Identity } = require('crocks')
-const { is, append, map } = require('ramda')
-const z = require('zod')
+import { crocks, R, z } from '../deps.js'
+
+const { Identity } = crocks
+const { is, append, map } = R
 
 const fnSpec = z.function()
   .args(z.object({
@@ -13,7 +14,7 @@ const fnSpec = z.function()
  * @property {string} type
  * @property {Object} payload
  */
-module.exports = function () {
+export default function () {
   let fns = Identity([]) // maybe change to Either to handle tryCatch
   return Object.freeze({
     /**
@@ -30,7 +31,7 @@ module.exports = function () {
      */
     dispatch (action) {
       map(
-        fn => fn(action),
+        (fn) => fn(action),
         fns.valueOf()
       )
     }

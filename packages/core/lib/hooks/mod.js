@@ -1,11 +1,13 @@
-const { Async } = require('crocks')
+import { crocks } from '../../deps.js'
 
-module.exports = function ({ events, hooks }) {
-  events.subscribe(action => {
+const { Async } = crocks
+
+export default function ({ events, hooks }) {
+  events.subscribe((action) => {
     if (hooks && hooks.call) {
       Async.fromPromise(hooks.call)(action)
         .fork(
-          err => console.log('ERROR', err.message),
+          (err) => console.log('ERROR', err.message),
           () => null
         )
     } else {

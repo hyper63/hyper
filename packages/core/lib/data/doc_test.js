@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-const test = require('tape')
-const doc = require('./doc')
+// deno-lint-ignore-file no-unused-vars
+import { assertEquals } from '../../dev_deps.js'
+import * as doc from './doc.js'
+const test = Deno.test
 
 const mock = {
   createDocument ({ db, id, doc }) {
@@ -18,13 +18,13 @@ const mock = {
   }
 }
 
-const fork = (m) => (t) => {
-  t.plan(1)
-  return m.fork(
-    () => t.ok(false),
-    () => t.ok(true)
-  )
-}
+const fork = (m) =>
+  () => {
+    return m.fork(
+      () => assertEquals(false, true),
+      () => assertEquals(true, true)
+    )
+  }
 
 const events = {
   dispatch: () => null
@@ -37,6 +37,14 @@ test(
 test('get document', fork(doc.get('foo', '1').runWith({ svc: mock, events })))
 test(
   'update document',
-  fork(doc.update('foo', '1', { id: '1', goodbye: 'moon' }).runWith({ svc: mock, events }))
+  fork(
+    doc.update('foo', '1', { id: '1', goodbye: 'moon' }).runWith({
+      svc: mock,
+      events
+    })
+  )
 )
-test('remove document', fork(doc.remove('foo', '1').runWith({ svc: mock, events })))
+test(
+  'remove document',
+  fork(doc.remove('foo', '1').runWith({ svc: mock, events }))
+)
