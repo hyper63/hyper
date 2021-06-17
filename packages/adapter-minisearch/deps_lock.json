@@ -1,6 +1,0 @@
-{
-  "https://cdn.skypack.dev/-/minisearch@v3.0.2-jqmvazcIQ6riIWVKlgnX/dist=es2020,mode=imports/optimized/minisearch.js": "eb73afc17ca41033d1322446c2137953a7d7864b857a788037ed9e5ab7954353",
-  "https://cdn.skypack.dev/-/ramda@v0.27.1-3ePaNsppsnXYRcaNcaWn/dist=es2020,mode=imports/optimized/ramda.js": "0e51cd76039fc9669f9179d935b261bcbb19ecbb11d49e7e60cfbc14360a85d2",
-  "https://cdn.skypack.dev/minisearch": "b5f61eda24249e6afbdc9f4800ac9ec101678a35ab075192ff0e1b4c7ad0cb7d",
-  "https://cdn.skypack.dev/ramda@^0.27.1": "fb06d7de4305dcdb997f9adc903a463afcdac75d148d638295c420a8922048fd"
-}
