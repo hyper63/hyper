@@ -6,27 +6,8 @@
   "repository": "git@github.com:hyper63/hyper63.git",
   "license": "MIT",
   "author": "Tom Wilson <twilson63@gmail.com>",
-  "main": "src/index.js",
   "workspaces": [
-    "packages/core",
-    "packages/adapter-couchdb",
-    "packages/adapter-redis",
-    "packages/adapter-memory",
-    "packages/adapter-pouchdb",
-    "packages/adapter-fs",
-    "packages/adapter-elasticsearch",
-    "packages/adapter-minisearch",
-    "packages/adapter-hooks",
-    "packages/adapter-minio",
-    "packages/adapter-beequeue",
-    "packages/adapter-zmq",
-    "packages/app-express",
     "packages/app-graphql",
-    "packages/port-data",
-    "packages/port-cache",
-    "packages/port-storage",
-    "packages/port-search",
-    "packages/port-queue",
     "images/dev",
     "images/graphql",
     "images/couchdb",
@@ -35,23 +16,12 @@
     "launcher"
   ],
   "scripts": {
-    "build": "docker build -t hyper63/hyper63:dev .",
-    "start": "run-s start:*",
-    "test:core": "tape packages/core/**/**/*_test.js",
-    "test:integration": "tape -r esm test/**/*_test.js",
-    "test": "run-p test:core",
-    "lint": "deno lint --ignore=\"node_modules/*\"",
     "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "adio": "^1.2.1",
-    "esm": "^3.2.25",
     "husky": "^6.0.0",
-    "lint-staged": "^11.0.0",
-    "npm-run-all": "^4.1.5",
-    "sort-package-json": "^1.50.0",
-    "tape": "^5.0.1"
+    "lint-staged": "^11.0.0"
   }
 }
