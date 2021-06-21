@@ -68,24 +68,6 @@ export default function (services) {
     next();
   };
 
-  /**
-   * Workaround for:
-   * https://github.com/asos-craigmorten/opine/issues/126
-   * https://github.com/asos-craigmorten/opine/issues/128
-   *
-   * waiting until released on Deno land
-   */
-  app.use((_req, res, next) => {
-    if (typeof res.setHeader !== "function") {
-      res.setHeader = res.set.bind(res);
-    }
-
-    if (typeof res.removeHeader !== "function") {
-      res.removeHeader = (name) => res.headers && res.headers.delete(name);
-    }
-    next();
-  });
-
   app.use(helmet());
   app.use(cors({ credentials: true }));
   // data api
