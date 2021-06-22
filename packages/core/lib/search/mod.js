@@ -1,4 +1,4 @@
-import { apply, of, triggerEvent } from "../utils";
+import { apply, of, triggerEvent } from "../utils/mod.js";
 
 export default function ({ search, events }) {
   return ({

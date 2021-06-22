@@ -1,5 +1,5 @@
-import * as buckets from "./buckets";
-import * as objects from "./objects";
+import * as buckets from "./buckets.js";
+import * as objects from "./objects.js";
 
 export default function ({ storage, events }) {
   /**

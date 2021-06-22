@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-unused-vars
-import * as buckets from "./buckets.js";
 import { assertEquals } from "../../dev_deps.js";
+
+import * as buckets from "./buckets.js";
 
 const test = Deno.test;
 
