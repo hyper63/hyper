@@ -1,4 +1,4 @@
-import q from "./queue.js";
+import * as q from "./queue.js";
 
 export default function ({ queue, events }) {
   return ({

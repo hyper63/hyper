@@ -1,5 +1,6 @@
-import { apply, is, of, triggerEvent } from "../utils/mod.js";
 import { R } from "../../deps.js";
+
+import { apply, is, of, triggerEvent } from "../utils/mod.js";
 
 const { toLower } = R;
 

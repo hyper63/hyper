@@ -1,5 +1,5 @@
-import { apply, is, of, triggerEvent } from "../utils/mod.js";
 import { cuid } from "../../deps.js";
+import { apply, is, of, triggerEvent } from "../utils/mod.js";
 
 // const INVALID_ID_MSG = 'doc id is not valid'
 const INVALID_RESPONSE = "response is not valid";

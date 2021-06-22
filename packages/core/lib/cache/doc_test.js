@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-unused-vars
 import { assertEquals } from "../../dev_deps.js";
+
 import * as doc from "./doc.js";
 
 const test = Deno.test;
