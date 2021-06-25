@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Deno ${{ matrix.deno-version }}
-        uses: denolib/setup-deno@master
+        uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
       - run: cd packages/port-cache && ./scripts/test.sh
