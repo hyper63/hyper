@@ -1,9 +1,9 @@
-name: test queue port
+name: test opine app
 on:
   push:
     branches-ignore: main
     paths:
-      - "packages/port-queue/**"
+      - "packages/app-opine/**"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +16,6 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd packages/port-queue && ./scripts/test.sh
+      - run: cd packages/app-opine && ./scripts/test.sh
         env:
           CI: true

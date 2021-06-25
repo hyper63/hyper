@@ -1,0 +1,23 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "hyper-port-storage",
+  "entry": "./mod.js",
+  "description": "Hyper service framework port for Storage adapters",
+  "homepage": "https://github.com/hyper63/hyper",
+  "repo": "https://github.com/hyper63/hyper",
+  "version": "1.0.2",
+  "unstable": false,
+  "unlisted": false,
+  "files": [
+    "./*"
+  ],
+  "ignore": [
+    "./package.json",
+    "./scripts/*",
+    "./.git*"
+  ],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}
