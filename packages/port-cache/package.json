@@ -1,8 +1,0 @@
-{
-  "name": "@hyper63/port-cache",
-  "version": "1.1.4",
-  "description": "hyper63 service framework port for cache adapters",
-  "homepage": "https://github.com/hyper63/hyper63#readme",
-  "repository": "https://github.com/hyper63/hyper63",
-  "license": "Apache-2.0"
-}
