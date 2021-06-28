@@ -7,9 +7,7 @@
   "license": "MIT",
   "author": "Tom Wilson <twilson63@gmail.com>",
   "workspaces": [
-    "packages/app-graphql",
     "images/dev",
-    "images/graphql",
     "images/couchdb",
     "images/micro",
     "images/test",
