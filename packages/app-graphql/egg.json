@@ -1,0 +1,25 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "hyper-app-graphql",
+  "entry": "./mod.js",
+  "description": "Hyper service framework standalone GQL app, or mount on your custom opine app",
+  "homepage": "https://github.com/hyper63/hyper",
+  "repo": "https://github.com/hyper63/hyper",
+  "version": "0.2.0",
+  "unstable": false,
+  "unlisted": false,
+  "files": [
+    "./*",
+    "./lib/**/*"
+  ],
+  "ignore": [
+    "./package.json",
+    "./scripts/*",
+    "./.git*",
+    "./test/**/*"
+  ],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}
