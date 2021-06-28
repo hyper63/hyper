@@ -1,6 +1,6 @@
 {
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
-  "name": "hyper-core",
+  "name": "hyper",
   "entry": "./mod.js",
   "description": "Hyper core module for parsing hyper config, and composing hyper adapters",
   "homepage": "https://github.com/hyper63/hyper",

@@ -3,7 +3,7 @@ name: publish core
 on: 
   push:
     tags:
-      - 'hyper-core@*'
+      - 'hyper@*'
 
 jobs:
   publish-egg:
