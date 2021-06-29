@@ -1,12 +1,11 @@
-import { Buffer, crocks, gql, R, urlJoin } from "../../../deps.js";
+import { gql, R, urlJoin } from "../../../deps.js";
 
+import { STORAGE_PATH } from "../../constants.js";
 import {
   hyper63ServicesContextLens,
-  requestContextLens,
 } from "../../utils/hyper63-context.lens.js";
 
 const { view } = R;
-const { Async } = crocks;
 
 const typeDefs = gql`
   """
@@ -24,9 +23,7 @@ const typeDefs = gql`
   extend type Mutation {
     makeStorageBucket (bucket: String!): StorageResult!
     removeStorageBucket (bucket: String!): StorageResult!
-    # Name is optional and defaults to filename
-    putStorageObject (bucket: String!, prefix: String! name: String): StorageResult!
-    removeStorageObject (bucket: String!, prefix: String!): StorageResult!
+    removeStorageObject (bucket: String!, prefix: String!, name: String!): StorageResult!
   }
 `;
 
@@ -45,7 +42,7 @@ const resolvers = {
         // Provide url to download in GraphQL response
         url: urlJoin(
           `${req.protocol}://${req.get("host")}`,
-          "storage",
+          STORAGE_PATH,
           name,
           prefix,
           objectName,
@@ -66,40 +63,10 @@ const resolvers = {
       const { storage } = view(hyper63ServicesContextLens, context);
       return storage.removeBucket(bucket).toPromise();
     },
-    putStorageObject: async (_, { bucket, prefix, name }, context) => {
-      // Pull file off of opine request context for now
-      const { file } = view(requestContextLens, context);
+    removeStorageObject: (_, { bucket, prefix, name: objectName }, context) => {
       const { storage } = view(hyper63ServicesContextLens, context);
-
-      const reader = file.content
-        ? new Buffer(file.content.buffer) // from memory
-        : await Deno.open(file.tempfile, { read: true }); // from tempfile if too large for memory buffer
-
-      /**
-       * Ensure reader is closed to prevent leaks
-       * in the case of a tempfile being created
-       */
-      const cleanup = (_constructor) =>
-        Async.fromPromise(async (res) => {
-          if (typeof reader.close === "function") {
-            await reader.close();
-          }
-
-          return _constructor(res);
-        });
-
-      return storage.putObject(
-        bucket,
-        urlJoin(prefix, name || file.filename),
-        reader,
-      ).bichain(
-        cleanup(Promise.reject.bind(Promise)),
-        cleanup(Promise.resolve.bind(Promise)),
-      ).toPromise();
-    },
-    removeStorageObject: (_, { bucket, prefix }, context) => {
-      const { storage } = view(hyper63ServicesContextLens, context);
-      return storage.removeObject(bucket, prefix).toPromise();
+      return storage.removeObject(bucket, urlJoin(prefix, objectName))
+        .toPromise();
     },
   },
 };

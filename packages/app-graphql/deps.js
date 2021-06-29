@@ -8,9 +8,6 @@ export {
 export { makeExecutableSchema } from "https://deno.land/x/graphql_tools@0.0.1/schema/makeExecutableSchema.ts";
 export { GraphQLHTTP } from "https://deno.land/x/gql@0.1.4/mod.ts";
 
-export { MultipartReader } from "https://deno.land/std@0.99.0/mime/mod.ts";
-export { Buffer } from "https://deno.land/std@0.99.0/io/buffer.ts";
-export { exists } from "https://deno.land/std@0.99.0/fs/exists.ts";
 export { join } from "https://deno.land/std@0.99.0/path/mod.ts";
 
 export * as R from "https://cdn.skypack.dev/ramda@^0.27.1";

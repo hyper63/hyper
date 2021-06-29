@@ -14,7 +14,7 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
-"""Describes metadata about the Hyper63 Server"""
+"""Describes metadata about the hyper service"""
 type RootInfo {
   name: String!
   ports: PerPortInfo!
@@ -104,6 +104,5 @@ type Mutation {
   deleteData(db: String!, id: String!): DataResult!
   makeStorageBucket(bucket: String!): StorageResult!
   removeStorageBucket(bucket: String!): StorageResult!
-  putStorageObject(bucket: String!, prefix: String!, name: String): StorageResult!
-  removeStorageObject(bucket: String!, prefix: String!): StorageResult!
+  removeStorageObject(bucket: String!, prefix: String!, name: String!): StorageResult!
 }

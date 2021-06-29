@@ -5,3 +5,8 @@ This is a Graphql App that implements the hyper63 API of services
 - data
 - cache
 - storage
+
+## TODO
+
+- implement queue service types
+- implement search service types

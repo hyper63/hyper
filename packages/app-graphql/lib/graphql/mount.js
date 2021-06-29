@@ -1,7 +1,6 @@
 import { GraphQLHTTP, makeExecutableSchema, R } from "../../deps.js";
 
 import { hyper63ServicesContextLens } from "../utils/hyper63-context.lens.js";
-import { multipartMiddleware } from "../middleware.js";
 
 import { resolvers, typeDefs } from "./schema.js";
 
@@ -27,15 +26,9 @@ function addOpineContext({ req, res }, prevContext) {
 const mountGql = ({
   app,
   contexters = [],
-}, options = { playground: true, mountMultipartMiddleware: true }) =>
+}, options = { playground: true }) =>
   (services) => {
     const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-    // TODO: Shim until Upload type for gql is available on Deno.
-    // TODO: Will just pull file from opine request for now.
-    if (options.mountMultipartMiddleware) {
-      app.use(multipartMiddleware());
-    }
 
     app.use("/graphql", async (req, res) => {
       // Build graphql context

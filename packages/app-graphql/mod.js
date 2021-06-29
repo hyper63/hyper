@@ -3,10 +3,16 @@ import { lookup as getMimeType } from "https://deno.land/x/media_types@v2.8.4/mo
 import { opine } from "https://deno.land/x/opine@1.5.0/mod.ts";
 import { default as helmet } from "https://cdn.skypack.dev/helmet@^4.6.0";
 import { opineCors as cors } from "https://deno.land/x/cors@v1.2.1/mod.ts";
+import { Buffer } from "https://deno.land/std@0.99.0/io/buffer.ts";
+import { MultipartReader } from "https://deno.land/std@0.99.0/mime/mod.ts";
+import { exists } from "https://deno.land/std@0.99.0/fs/exists.ts";
+
+import { crocks } from "./deps.js";
 
 import { mountGql } from "./lib/graphql/mount.js";
 import { STORAGE_PATH } from "./lib/constants.js";
-import { multipartMiddleware } from "./lib/middleware.js";
+
+const { Async } = crocks;
 
 function getObject(storage) {
   return ({ params }, res) => {
@@ -27,23 +33,103 @@ function getObject(storage) {
   };
 }
 
+/**
+ * requires multi-part form post
+ * fields: file, [path]
+ */
+function putObject(storage) {
+  return async ({ file, params, body }, res) => {
+    let object = file.filename;
+    if (body.path) {
+      object = `${body.path}/${file.filename}`;
+    }
+
+    const reader = file.content
+      ? new Buffer(file.content.buffer) // from memory
+      : await Deno.open(file.tempfile, { read: true }); // from tempfile if too large for memory buffer
+
+    /**
+     * Ensure reader is closed to prevent leaks
+     * in the case of a tempfile being created
+     */
+    const cleanup = (_constructor) =>
+      Async.fromPromise(async (res) => {
+        if (typeof reader.close === "function") {
+          await reader.close();
+        }
+
+        return _constructor(res);
+      });
+
+    storage.putObject(params.name, object, reader).bichain(
+      cleanup(Promise.reject.bind(Promise)),
+      cleanup(Promise.resolve.bind(Promise)),
+    ).fork(
+      (err) => {
+        if (err.status) {
+          return res.setStatus(err.status).send({
+            ok: false,
+            msg: err.message,
+          });
+        }
+        res.setStatus(500).send(err);
+      },
+      (result) => res.setStatus(201).send(result),
+    );
+  };
+}
+
+// Upload middleware for handling multipart/formdata ie. files
+function multipartMiddleware(fieldName = "file") {
+  const TMP_DIR = "/tmp/hyper/uploads";
+
+  return async (req, _res, next) => {
+    let boundary;
+
+    const contentType = req.get("content-type");
+    if (contentType.startsWith("multipart/form-data")) {
+      boundary = contentType.split(";")[1].split("=")[1];
+    }
+
+    // Ensure tmp dir exists. Otherwise MultipartReader throws error when reading form data
+    if (!(await exists(TMP_DIR))) {
+      await Deno.mkdir(TMP_DIR, { recursive: true });
+    }
+
+    const form = await new MultipartReader(req.body, boundary).readForm({
+      maxMemory: 10 << 20,
+      dir: TMP_DIR,
+    });
+
+    // emulate multer
+    req.file = form.file(fieldName);
+
+    next();
+  };
+}
+
 // TODO: Maybe allow passing custom schema here?
 export default function () {
   return function (services) {
-    const app = opine();
+    let app = opine();
     app.use(helmet());
     app.use(cors({ credentials: true }));
-    app.get("/", (_req, res) => res.send({ name: "hyper63" }));
+    app.get("/", (_req, res) => res.send({ name: "hyper" }));
 
-    app.use(multipartMiddleware());
-    // For serving files since graphql doesn't handle this
+    // GraphQL shouldn't handle file uploads, so we provide paths for streaming and uploading files
+    // See https://www.apollographql.com/blog/backend/file-uploads/file-upload-best-practices/
     app.get(`/${STORAGE_PATH}/:name/*`, getObject(services.storage));
+    app.post(
+      `/${STORAGE_PATH}/:name`,
+      multipartMiddleware(),
+      putObject(services.storage),
+    );
 
-    app = mountGql({ app }, { multipartMiddleware: false, playground: true })(
+    app = mountGql({ app }, { playground: true })(
       services,
     );
 
-    const port = parseInt(process.env.PORT) || 6363;
+    const port = parseInt(Deno.env.get("PORT")) || 6363;
 
     // Start server
     app.listen(port);
