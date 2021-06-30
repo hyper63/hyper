@@ -3,6 +3,7 @@ import {
   exists,
   helmet,
   json,
+  mountGql,
   MultipartReader,
   opine,
   R,
@@ -125,6 +126,17 @@ export default function (services) {
   app.post("/queue/:name", json(), bindCore, queue.post);
   app.get("/queue/:name", bindCore, queue.list);
   app.post("/queue/:name/_cancel", bindCore, queue.cancel);
+
+  // /graphql
+  const playground = Deno.env.get("GQL_PLAYGROUND");
+  mountGql(
+    { app },
+    // disable playground in production by default
+    {
+      playground: (playground && playground !== "false") ||
+        Deno.env.get("DENO_ENV") !== "production",
+    },
+  )(services);
 
   app.get("/error", (_req, _res, next) => {
     console.log("oooooo");

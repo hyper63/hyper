@@ -10,3 +10,5 @@ export { default as helmet } from "https://cdn.skypack.dev/helmet@^4.6.0";
 
 export * as R from "https://cdn.skypack.dev/ramda@^0.27.1";
 export { default as crocks } from "https://cdn.skypack.dev/crocks@^0.12.4";
+
+export { mountGql } from "https://x.nest.land/hyper-app-graphql@0.2.0/mount.js";
