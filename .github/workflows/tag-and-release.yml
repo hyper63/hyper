@@ -1,0 +1,50 @@
+name: Tag and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+    # See https://github.com/hyper63/hyper-ci-bump#inputs for available inputs for the bump action
+      version:
+        description: the semver version to bump to
+        required: true
+      package:
+        description: the package to bump ie. `app-opine`
+        required: true
+      prefix:
+        description: the git tag prefix ie. `hyper-app-opine`
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Allows for pushes from this workflow to trigger subsequent workflows 
+          token: ${{ secrets.CI_GITHUB_TOKEN }} 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: set git user
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: bump
+        id: bump
+        uses: hyper63/hyper-ci-bump@main
+        with:
+          bump-to: ${{github.event.inputs.version}}
+          package: ${{github.event.inputs.package}}
+          prefix: ${{github.event.inputs.prefix}}
+          # set to 'node' to bump node manifest files ie. package.json and package-lock.json
+          runtime: deno
+      - name: push
+        run: |
+          git push --follow-tags
+      - name: create github release
+        if: steps.bump.outputs.tag
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{steps.bump.outputs.tag}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
