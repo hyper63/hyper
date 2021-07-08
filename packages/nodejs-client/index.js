@@ -15,13 +15,14 @@ const fetch = globalThis.fetch
  * @returns {Object}
  */
 module.exports = (host, client, secret, app) => {
+  const defaultApp = app
   const $ = createRequest(fetch, client, secret)
   return Object.freeze({
     setup: {
       db: () => $.put(`${host}/data/${app}`),
       cache: () => $.put(`${host}/cache/${app}`),
       search: (mappings = {}) => $.put(`${host}/search/${app}`, mappings),
-      queue: (target, secret) => $.put(`${host}/queue/${app}`, { target, secret })
+      queue: (target, { secret = '', app = defaultApp } = { secret: '', app: defaultApp }) => $.put(`${host}/queue/${app}`, { target, secret })
     },
     cache: {
       query: pattern => $.get(`${host}/cache/${app}/_query?${qs.stringify({ pattern: pattern || '*' })}`),
@@ -47,7 +48,7 @@ module.exports = (host, client, secret, app) => {
       remove: (key) => $.remove(`${host}/search/${app}/${key}`)
     },
     queue: {
-      post: (job) => $.post(`${host}/queue/${app}`, job)
+      post: (job, { app = defaultApp } = { app: defaultApp }) => $.post(`${host}/queue/${app}`, job)
     }
   })
 }

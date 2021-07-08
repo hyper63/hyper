@@ -8,6 +8,11 @@ globalThis.fetch = fetchMock
     body: { ok: true }
   })
   .post('https://nano.hyper63.com/data/bar/_bulk', { status: '200', body: { ok: true, results: [] } })
+  .put('https://nano.hyper63.com/queue/foo', { status: 201, body: { ok: true } })
+  .put('https://nano.hyper63.com/queue/bar', { status: 201, body: { ok: true } })
+  .post('https://nano.hyper63.com/queue/bar', { status: 200, body: {ok: true }})
+  .post('https://nano.hyper63.com/queue/foo', { status: 200, body: {ok: true }})
+  
   .sandbox()
 
 // globalThis.fetch = fetch
@@ -46,6 +51,43 @@ test('create search index', t => {
 test('post bulk docs', t => {
   t.plan(1)
   services.data.bulk([{ id: '1', name: 'hello' }, { id: '2', name: 'world' }])
+    .fork(
+      () => t.ok(false),
+      () => t.ok(true)
+    )
+})
+
+test('create queue with app name', t => {
+  t.plan(1)
+  services.setup.queue('https://jsonplaceholder.typicode.com/posts', { app: 'bar' })
+    .fork(
+      () => t.ok(false),
+      () => t.ok(true)
+    )
+})
+
+test('create queue with default app', t => {
+  t.plan(1)
+  services.setup.queue('https://jsonplaceholder.typicode.com/posts')
+    .fork(
+      () => t.ok(false),
+      () => t.ok(true)
+    )
+})
+
+test('post job to specific queue', t => {
+  t.plan(1)
+  services.queue.post({ hello: 'world'}, {app: 'bar'})
+    .fork(
+      () => t.ok(false),
+      () => t.ok(true)
+    )
+})
+
+
+test('post job to default queue', t => {
+  t.plan(1)
+  services.queue.post({ hello: 'world'})
     .fork(
       () => t.ok(false),
       () => t.ok(true)
