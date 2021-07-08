@@ -13,7 +13,10 @@ on:
       prefix:
         description: the git tag prefix ie. `hyper-app-opine`
         required: true
-
+      runtime:
+        description: 'runtime of the package ie. deno or node default: deno'
+        required: false
+        default: deno
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -36,8 +39,7 @@ jobs:
           bump-to: ${{github.event.inputs.version}}
           package: ${{github.event.inputs.package}}
           prefix: ${{github.event.inputs.prefix}}
-          # set to 'node' to bump node manifest files ie. package.json and package-lock.json
-          runtime: deno
+          runtime: ${{github.event.inputs.runtime}}
       - name: push
         run: |
           git push --follow-tags
