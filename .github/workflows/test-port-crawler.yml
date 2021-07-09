@@ -1,0 +1,21 @@
+name: test crawler port
+on:
+  push:
+    branches-ignore: main
+    paths:
+      - "packages/port-crawler/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.11.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Deno ${{ matrix.deno-version }}
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - run: cd packages/port-crawler && ./scripts/test.sh
+        env:
+          CI: true
