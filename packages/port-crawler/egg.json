@@ -2,7 +2,7 @@
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
   "name": "hyper-port-crawler",
   "entry": "./mod.js",
-  "description": "Hyper service framework port for Data adapters",
+  "description": "Hyper service framework port for Crawler adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
   "version": "0.0.0",
