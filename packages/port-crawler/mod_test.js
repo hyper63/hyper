@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-unused-vars
 
 import { crawler as crawlerPort } from "./mod.js";
-import { assertEquals } from "./dev_deps.js";
+import { assert, equal } from "./dev_deps.js";
 
 const test = Deno.test;
 const crawlerJob = {
@@ -33,5 +33,29 @@ const a = crawlerPort(adapter);
 
 test("create crawler", async () => {
   const result = await a.upsert(crawlerJob);
-  assertEquals(result.ok, true);
+  assert(result.ok);
+});
+
+test("run crawler", async () => {
+  const result = await a.start({
+    app: "app",
+    name: "name",
+  });
+  assert(result.ok);
+});
+
+test("get crawler", async () => {
+  const result = await a.get({
+    app: "app",
+    name: "name",
+  });
+  equal(result, crawlerJob);
+});
+
+test("delete crawler", async () => {
+  const result = await a.delete({
+    app: "app",
+    name: "name",
+  });
+  assert(result.ok);
 });
