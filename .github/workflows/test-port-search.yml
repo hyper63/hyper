@@ -1,7 +1,6 @@
 name: test search port
 on:
   push:
-    branches-ignore: main
     paths:
       - "packages/port-search/**"
 jobs:

@@ -1,7 +1,6 @@
 name: test opine app
 on:
   push:
-    branches-ignore: main
     paths:
       - "packages/app-opine/**"
 jobs:

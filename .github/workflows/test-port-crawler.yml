@@ -1,7 +1,6 @@
 name: test crawler port
 on:
   push:
-    branches-ignore: main
     paths:
       - "packages/port-crawler/**"
 jobs:

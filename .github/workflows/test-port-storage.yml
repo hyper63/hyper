@@ -1,7 +1,6 @@
 name: test storage port
 on:
   push:
-    branches-ignore: main
     paths:
       - "packages/port-storage/**"
 jobs:

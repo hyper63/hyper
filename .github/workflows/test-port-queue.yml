@@ -1,7 +1,6 @@
 name: test queue port
 on:
   push:
-    branches-ignore: main
     paths:
       - "packages/port-queue/**"
 jobs:
