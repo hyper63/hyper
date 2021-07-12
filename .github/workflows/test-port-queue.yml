@@ -1,6 +1,7 @@
 name: test queue port
 on:
   push:
+    tags-ignore: '*'
     paths:
       - "packages/port-queue/**"
 jobs:

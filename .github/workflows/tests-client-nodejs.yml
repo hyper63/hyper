@@ -1,6 +1,7 @@
 name: test nodejs client
 on:
   push:
+    tags-ignore: '*'
     paths:
       - "packages/nodejs-client/**"
 jobs:

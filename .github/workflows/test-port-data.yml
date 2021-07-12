@@ -1,6 +1,7 @@
 name: test data port
 on:
   push:
+    tags-ignore: '*'
     paths:
       - "packages/port-data/**"
 jobs:

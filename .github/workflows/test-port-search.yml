@@ -1,6 +1,7 @@
 name: test search port
 on:
   push:
+    tags-ignore: '*'
     paths:
       - "packages/port-search/**"
 jobs:

@@ -1,6 +1,7 @@
 name: test storage port
 on:
   push:
+    tags-ignore: '*'
     paths:
       - "packages/port-storage/**"
 jobs:
