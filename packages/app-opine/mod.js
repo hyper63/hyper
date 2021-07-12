@@ -55,7 +55,7 @@ export default function (services) {
     ? compose(...services.middleware)(app)
     : app;
 
-  const port = Deno.env.get("PORT") || 6363;
+  const port = Deno.env.get("PORT") ? parseInt(Deno.env.get("PORT")) : 6363;
 
   // middleware to inject core modules into request object
   const bindCore = (req, _res, next) => {
