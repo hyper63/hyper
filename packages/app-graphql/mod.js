@@ -1,15 +1,14 @@
 // These are here, so to not bog down deps.js if consumer imports mount.js instead of mod.js
 import { lookup as getMimeType } from "https://deno.land/x/media_types@v2.8.4/mod.ts";
-import { opine } from "https://deno.land/x/opine@1.5.0/mod.ts";
 import { default as helmet } from "https://cdn.skypack.dev/helmet@^4.6.0";
 import { opineCors as cors } from "https://deno.land/x/cors@v1.2.1/mod.ts";
 import { Buffer } from "https://deno.land/std@0.99.0/io/buffer.ts";
 import { MultipartReader } from "https://deno.land/std@0.99.0/mime/mod.ts";
 import { exists } from "https://deno.land/std@0.99.0/fs/exists.ts";
 
-import { crocks } from "./deps.js";
+import { crocks, opine } from "./deps.js";
 
-import { mountGql } from "./lib/graphql/mount.js";
+import { gqlRouter } from "./lib/graphql/router.js";
 import { STORAGE_PATH } from "./lib/constants.js";
 
 const { Async } = crocks;
@@ -111,7 +110,7 @@ function multipartMiddleware(fieldName = "file") {
 // TODO: Maybe allow passing custom schema here?
 export default function () {
   return function (services) {
-    let app = opine();
+    const app = opine();
     app.use(helmet());
     app.use(cors({ credentials: true }));
     app.get("/", (_req, res) => res.send({ name: "hyper" }));
@@ -125,9 +124,7 @@ export default function () {
       putObject(services.storage),
     );
 
-    app = mountGql({ app }, { playground: true })(
-      services,
-    );
+    app.use("/graphql", gqlRouter()(services));
 
     const port = parseInt(Deno.env.get("PORT")) || 6363;
 

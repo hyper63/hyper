@@ -1,3 +1,5 @@
+export { opine, Router } from "https://deno.land/x/opine@1.5.0/mod.ts";
+
 export { gql } from "https://deno.land/x/graphql_tag@0.0.1/mod.ts";
 export {
   GraphQLScalarType,
