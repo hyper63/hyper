@@ -1,4 +1,4 @@
-import { mountGql, opine } from "./deps.js";
+import { hyperGqlRouter, opine } from "./deps.js";
 
 import { hyperRouter } from "./router.js";
 
@@ -12,17 +12,13 @@ export default function (services) {
 
   // REST
   app.use(hyperRouter(services));
-
-  // TODO: refactor this to a router like hyperRouter
-  // /graphql
-  mountGql(
-    { app },
-    // disable playground in production by default
-    {
+  // GQL
+  app.use(
+    hyperGqlRouter({
       playground: (playground && playground !== "false") ||
         env !== "production",
-    },
-  )(services);
+    })(services),
+  );
 
   if (env !== "test") {
     app.listen(port);
