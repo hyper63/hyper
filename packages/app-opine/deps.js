@@ -1,4 +1,4 @@
-export { json, opine } from "https://deno.land/x/opine@1.5.0/mod.ts";
+export { json, opine, Router } from "https://deno.land/x/opine@1.5.0/mod.ts";
 export { opineCors as cors } from "https://deno.land/x/cors@v1.2.1/mod.ts";
 export { lookup as getMimeType } from "https://deno.land/x/media_types@v2.8.4/mod.ts";
 
