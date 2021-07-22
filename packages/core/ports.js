@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import { cache, data, hooks, queue, search, storage, crawler } from "./deps.js";
+import { cache, crawler, data, hooks, queue, search, storage } from "./deps.js";
 
 export default function (adapters) {
   return ({
