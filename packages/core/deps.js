@@ -13,3 +13,4 @@ export { data } from "https://x.nest.land/hyper-port-data@1.0.11/mod.js";
 export { storage } from "https://x.nest.land/hyper-port-storage@1.0.2/mod.js";
 export { search } from "https://x.nest.land/hyper-port-search@1.0.4/mod.js";
 export { hooks } from "https://x.nest.land/hyper-port-hooks@1.0.2/mod.js";
+export { crawler } from "https://x.nest.land/hyper-port-crawler@0.0.2/mod.js";
