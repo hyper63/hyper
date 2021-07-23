@@ -84,11 +84,27 @@ type StorageResult implements PortResult {
   objects: JSON
 }
 
+"""The hyper Crawler Service Type"""
+type Crawler {
+  info: PortInfo!
+  name: String!
+  job(name: String!): CrawlerResult!
+}
+
+"""Represents the result of a crawler port operation"""
+type CrawlerResult implements PortResult {
+  ok: Boolean!
+  msg: String
+  type: String!
+  data: JSON
+}
+
 type Query {
   info: RootInfo
   cache(cache: String!): Cache
   data(db: String!): Data
   storage(bucket: String!): Storage
+  crawler(bucket: String!): Crawler
 }
 
 type Mutation {
@@ -105,4 +121,7 @@ type Mutation {
   makeStorageBucket(bucket: String!): StorageResult!
   removeStorageBucket(bucket: String!): StorageResult!
   removeStorageObject(bucket: String!, prefix: String!, name: String!): StorageResult!
+  upsertCrawlerJob(bucket: String!, name: String!, job: JSON!): CrawlerResult!
+  startCrawlerJob(bucket: String!, name: String!): CrawlerResult!
+  deleteCrawlerJob(bucket: String!, name: String!): CrawlerResult!
 }
