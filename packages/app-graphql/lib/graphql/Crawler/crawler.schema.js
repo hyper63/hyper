@@ -14,9 +14,9 @@ export const typeDefs = gql`
   }
 
   extend type Mutation {
-    upsert (bucket: String!, name: String!, job: JSON!): CrawlerResult!
-    start (bucket: String!, name: String!): CrawlerResult!
-    delete (bucket: String!, name: String!): CrawlerResult!
+    upsertCrawlerJob (bucket: String!, name: String!, job: JSON!): CrawlerResult!
+    startCrawlerJob (bucket: String!, name: String!): CrawlerResult!
+    deleteCrawlerJob (bucket: String!, name: String!): CrawlerResult!
   }
 `;
 
@@ -30,15 +30,15 @@ export const resolvers = {
     },
   },
   Mutation: {
-    upsert: (_, { bucket, name, job }, context) => {
+    upsertCrawlerJob: (_, { bucket, name, job }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
       return crawler.upsert({ app: bucket, name, ...job }).toPromise();
     },
-    start: (_, { bucket, name }, context) => {
+    startCrawlerJob: (_, { bucket, name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
       return crawler.start(bucket, name).toPromise();
     },
-    delete: (_, { bucket, name }, context) => {
+    deleteCrawlerJob: (_, { bucket, name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
       return crawler.remove(bucket, name).toPromise();
     },
