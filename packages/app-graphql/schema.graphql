@@ -88,7 +88,7 @@ type StorageResult implements PortResult {
 type Crawler {
   info: PortInfo!
   name: String!
-  get(bucket: String!, name: String!): CrawlerResult!
+  get(name: String!): CrawlerResult!
 }
 
 """Represents the result of a crawler port operation"""
