@@ -88,7 +88,7 @@ type StorageResult implements PortResult {
 type Crawler {
   info: PortInfo!
   name: String!
-  get(app: String!, name: String!): CrawlerResult!
+  get(bucket: String!, name: String!): CrawlerResult!
 }
 
 """Represents the result of a crawler port operation"""
@@ -120,7 +120,7 @@ type Mutation {
   makeStorageBucket(bucket: String!): StorageResult!
   removeStorageBucket(bucket: String!): StorageResult!
   removeStorageObject(bucket: String!, prefix: String!, name: String!): StorageResult!
-  upsert(app: String!, name: String!, job: JSON!): CrawlerResult!
-  start(app: String!, name: String!): CrawlerResult!
-  delete(app: String!, name: String!): CrawlerResult!
+  upsert(bucket: String!, name: String!, job: JSON!): CrawlerResult!
+  start(bucket: String!, name: String!): CrawlerResult!
+  delete(bucket: String!, name: String!): CrawlerResult!
 }

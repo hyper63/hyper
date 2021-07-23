@@ -10,13 +10,13 @@ export const typeDefs = gql`
   type Crawler {
     info: PortInfo!
     name: String!
-    get (app: String!, name: String!): CrawlerResult!
+    get (bucket: String!, name: String!): CrawlerResult!
   }
 
   extend type Mutation {
-    upsert (app: String!, name: String!, job: JSON!): CrawlerResult!
-    start (app: String!, name: String!): CrawlerResult!
-    delete (app: String!, name: String!): CrawlerResult!
+    upsert (bucket: String!, name: String!, job: JSON!): CrawlerResult!
+    start (bucket: String!, name: String!): CrawlerResult!
+    delete (bucket: String!, name: String!): CrawlerResult!
   }
 `;
 
@@ -24,23 +24,23 @@ export const resolvers = {
   Crawler: {
     info: () => ({ port: "Crawler" }),
     name: ({ name }) => name,
-    get: (_, { app, name }, context) => {
+    get: (_, { bucket, name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
-      return crawler.get(app, name).toPromise();
+      return crawler.get(bucket, name).toPromise();
     },
   },
   Mutation: {
-    upsert: (_, { app, name, job }, context) => {
+    upsert: (_, { bucket, name, job }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
-      return crawler.upsert(app, name, job).toPromise();
+      return crawler.upsert({ app: bucket, name, ...job }).toPromise();
     },
-    start: (_, { app, name }, context) => {
+    start: (_, { bucket, name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
-      return crawler.start(app, name).toPromise();
+      return crawler.start(bucket, name).toPromise();
     },
-    delete: (_, { app, name }, context) => {
+    delete: (_, { bucket, name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
-      return crawler.remove(app, name).toPromise();
+      return crawler.remove(bucket, name).toPromise();
     },
   },
 };
