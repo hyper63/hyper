@@ -6,6 +6,7 @@ const typeDefs = gql`
     cache (cache: String!): Cache
     data (db: String!): Data
     storage (bucket: String!): Storage
+    crawler (bucket: String!): Crawler
   }
 `;
 
@@ -23,6 +24,7 @@ const resolvers = {
       // // Multiple buckets [{ name: 'foo' }]
       // return storage.listBuckets().then(prop('buckets'))
     },
+    crawler: (_, { bucket }) => ({ name: bucket })
   },
 };
 
