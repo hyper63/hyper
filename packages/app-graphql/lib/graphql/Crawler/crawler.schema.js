@@ -24,7 +24,7 @@ export const resolvers = {
   Crawler: {
     info: () => ({ port: "Crawler" }),
     name: ({ name }) => name,
-    get: (_, { bucket, name }, context) => {
+    get: ({ bucket }, { name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
       return crawler.get(bucket, name).toPromise();
     },
