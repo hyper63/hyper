@@ -8,7 +8,7 @@ export const upsert = ({ crawler, params, body }, res) =>
     res,
     201,
     crawler.upsert(
-      merge(body, { app: params.app, name: params.name }),
+      merge(body, { app: params.bucket, name: params.name }),
     ),
   );
 
@@ -16,19 +16,19 @@ export const get = ({ crawler, params }, res) =>
   fork(
     res,
     200,
-    crawler.get(params.app, params.name),
+    crawler.get(params.bucket, params.name),
   );
 
 export const start = ({ crawler, params }, res) =>
   fork(
     res,
     200,
-    crawler.start(params.app, params.name),
+    crawler.start(params.bucket, params.name),
   );
 
 export const del = ({ crawler, params }, res) =>
   fork(
     res,
     200,
-    crawler.remove(params.app, params.name),
+    crawler.remove(params.bucket, params.name),
   );

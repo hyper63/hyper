@@ -98,7 +98,7 @@ export function hyperRouter(services) {
   app.post("/queue/:name/_cancel", bindCore, queue.cancel);
 
   // crawler api
-  app.put("/crawler/:app/:name", json(), bindCore, crawler.upsert);
+  app.put("/crawler/:bucket/:name", json(), bindCore, crawler.upsert);
   app.get("/crawler/:app/:name", bindCore, crawler.get);
   app.post("/crawler/:app/:name/_start", bindCore, crawler.start);
   //app.post('/crawler/:app/:name/_doc', json(), bindCore, crawler.post);
