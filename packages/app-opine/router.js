@@ -1,52 +1,20 @@
-import {
-  cors,
-  exists,
-  helmet,
-  json,
-  MultipartReader,
-  R,
-  Router,
-} from "./deps.js";
+import { cors, helmet, json, R, Router } from "./deps.js";
 
+// middleware
+import upload from "./lib/upload.js";
+
+// route handlers
 import * as cache from "./api/cache.js";
 import * as data from "./api/data.js";
 import * as storage from "./api/storage.js";
 import * as search from "./api/search.js";
 import * as queue from "./api/queue.js";
+import * as crawler from "./api/crawler.js";
 
 const { compose } = R;
 
-const TMP_DIR = "/tmp/hyper/uploads";
-
 // Opine Router
 export function hyperRouter(services) {
-  // TODO: Maybe refine this and make this a lib?
-  // Upload middleware for handling multipart/formdata ie. files
-  const upload = (fieldName = "file") =>
-    async (req, _res, next) => {
-      let boundary;
-
-      const contentType = req.get("content-type");
-      if (contentType.startsWith("multipart/form-data")) {
-        boundary = contentType.split(";")[1].split("=")[1];
-      }
-
-      // Ensure tmp dir exists. Otherwise MultipartReader throws error when reading form data
-      if (!(await exists(TMP_DIR))) {
-        await Deno.mkdir(TMP_DIR, { recursive: true });
-      }
-
-      const form = await new MultipartReader(req.body, boundary).readForm({
-        maxMemory: 10 << 20,
-        dir: TMP_DIR,
-      });
-
-      // emulate multer
-      req.file = form.file(fieldName);
-
-      next();
-    };
-
   /**
    * This router can be mounted onto other apps,
    * so we will want access to those req parameters
@@ -67,6 +35,7 @@ export function hyperRouter(services) {
     req.events = services.events;
     req.hooks = services.hooks;
     req.queue = services.queue;
+    req.crawler = services.crawler;
     next();
   };
 
@@ -127,6 +96,13 @@ export function hyperRouter(services) {
   app.post("/queue/:name", json(), bindCore, queue.post);
   app.get("/queue/:name", bindCore, queue.list);
   app.post("/queue/:name/_cancel", bindCore, queue.cancel);
+
+  // crawler api
+  app.put("/crawler/:bucket/:name", json(), bindCore, crawler.upsert);
+  app.get("/crawler/:bucket/:name", bindCore, crawler.get);
+  app.post("/crawler/:bucket/:name/_start", bindCore, crawler.start);
+  //app.post('/crawler/:bucket/:name/_doc', json(), bindCore, crawler.post);
+  app.delete("/crawler/:bucket/:name", bindCore, crawler.del);
 
   app.get("/error", (_req, _res, next) => {
     console.log("oooooo");
