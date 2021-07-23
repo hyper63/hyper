@@ -99,10 +99,10 @@ export function hyperRouter(services) {
 
   // crawler api
   app.put("/crawler/:bucket/:name", json(), bindCore, crawler.upsert);
-  app.get("/crawler/:app/:name", bindCore, crawler.get);
-  app.post("/crawler/:app/:name/_start", bindCore, crawler.start);
-  //app.post('/crawler/:app/:name/_doc', json(), bindCore, crawler.post);
-  app.delete("/crawler/:app/:name", bindCore, crawler.del);
+  app.get("/crawler/:bucket/:name", bindCore, crawler.get);
+  app.post("/crawler/:bucket/:name/_start", bindCore, crawler.start);
+  //app.post('/crawler/:bucket/:name/_doc', json(), bindCore, crawler.post);
+  app.delete("/crawler/:bucket/:name", bindCore, crawler.del);
 
   app.get("/error", (_req, _res, next) => {
     console.log("oooooo");
