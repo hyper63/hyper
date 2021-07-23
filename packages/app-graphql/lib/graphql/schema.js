@@ -23,6 +23,10 @@ import * as DataResult from "./DataResult/data-result.schema.js";
 import * as Storage from "./Storage/storage-schema.js";
 import * as StorageResult from "./StorageResult/storage-result-schema.js";
 
+// Crawler
+import * as Crawler from "./Crawler/crawler.schema.js";
+import * as CrawlerResult from "./CrawlerResult/crawler-result.schema.js";
+
 // Root Types
 import * as Query from "./Query/query.schema.js";
 import * as Mutation from "./Mutation/mutation.schema.js";
@@ -39,6 +43,8 @@ const schema = [
   DataResult,
   Storage,
   StorageResult,
+  Crawler,
+  CrawlerResult,
   Query,
   Mutation,
 ].reduce((acc, { typeDefs, resolvers = {} }) => ({
