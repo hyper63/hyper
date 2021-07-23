@@ -10,7 +10,7 @@ export const typeDefs = gql`
   type Crawler {
     info: PortInfo!
     name: String!
-    get (bucket: String!, name: String!): CrawlerResult!
+    get (name: String!): CrawlerResult!
   }
 
   extend type Mutation {
@@ -24,7 +24,7 @@ export const resolvers = {
   Crawler: {
     info: () => ({ port: "Crawler" }),
     name: ({ name }) => name,
-    get: ({ bucket }, { name }, context) => {
+    get: ({ name: bucket }, { name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);
       return crawler.get(bucket, name).toPromise();
     },
