@@ -1,15 +1,22 @@
 import { R } from "../deps.js";
 
 const {
+  andThen,
   applyTo,
   filter,
   compose,
+  composeP,
   map,
+  mergeAll,
   is,
+  identity,
   reduce,
   defaultTo,
   fromPairs,
+  pluck,
+  pipe,
   reverse,
+  tap,
 } = R;
 
 /**
@@ -18,11 +25,8 @@ const {
  *
  * @param {[]} plugins - a list of plugins
  */
-function loadAdapterConfig(plugins = []) {
-  return compose(
-    reduce((acc, plugin) => defaultTo(acc, plugin.load(acc)), {}),
-    filter((plugin) => is(Function, plugin.load)),
-  )(plugins);
+async function loadAdapterConfig(plugins = []) {
+  return await pipe(...pluck('load', plugins))({})
 }
 
 /**
@@ -57,12 +61,10 @@ function linkPlugins(plugins, adapterConfig) {
   )(plugins);
 }
 
-function initAdapter(portAdapter) {
+async function initAdapter(portAdapter) {
   const { plugins } = portAdapter;
-  return compose(
-    (adapterConfig) => linkPlugins(plugins, adapterConfig),
-    loadAdapterConfig,
-  )(plugins || []);
+  const env = await loadAdapterConfig(plugins || [])
+  return linkPlugins(plugins, env)
 }
 
 /**
@@ -71,9 +73,11 @@ function initAdapter(portAdapter) {
  *
  * @param {[]} adapters - a list of port nodes from a hyper63 config
  */
-export default function initAdapters(adapters) {
-  return compose(
-    fromPairs,
-    map((adapterNode) => [adapterNode.port, initAdapter(adapterNode)]),
-  )(adapters);
+export default async function initAdapters(adapters) {
+  const svcs = await Promise.all(
+    map(async (adapterNode) => ({
+      [adapterNode.port]: await initAdapter(adapterNode)
+    }), adapters),
+  );
+  return mergeAll(svcs)
 }
