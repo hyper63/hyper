@@ -1,7 +1,8 @@
 name: test core
 on:
   push:
-    tags-ignore: '*'
+    branches:
+      - "**"
     paths:
       - "packages/core/**"
 jobs:

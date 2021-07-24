@@ -1,7 +1,8 @@
 name: test opine app
 on:
   push:
-    tags-ignore: '*'
+    branches:
+      - "**"
     paths:
       - "packages/app-opine/**"
 jobs:
