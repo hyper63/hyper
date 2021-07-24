@@ -5,21 +5,20 @@ import { assertEquals, assertObjectMatch } from "../dev_deps.js";
 const test = Deno.test;
 
 test("sucessfully compose plugins", async () => {
-  const plugin1 =
-    validate({
-      id: "plugin1",
-      port: "default",
-      load: (env) => ({ ...env, hello: "world" }),
-      link: (env) => () => ({ hello: () => env.hello }),
-    });
+  const plugin1 = validate({
+    id: "plugin1",
+    port: "default",
+    load: (env) => ({ ...env, hello: "world" }),
+    link: (env) => () => ({ hello: () => env.hello }),
+  });
 
   const plugin2 = (config) =>
-  validate({
-    id: "plugin2",
-    port: "default",
-    load: (env) => ({ ...env, ...config }),
-    link: (env) => (plugin) => ({ ...plugin, beep: () => env }),
-  });
+    validate({
+      id: "plugin2",
+      port: "default",
+      load: (env) => ({ ...env, ...config }),
+      link: (env) => (plugin) => ({ ...plugin, beep: () => env }),
+    });
 
   const config = {
     adapters: [

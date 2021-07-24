@@ -1,22 +1,15 @@
 import { R } from "../deps.js";
 
 const {
-  andThen,
   applyTo,
   filter,
   compose,
-  composeP,
   map,
   mergeAll,
   is,
-  identity,
-  reduce,
-  defaultTo,
-  fromPairs,
   pluck,
   pipe,
   reverse,
-  tap,
 } = R;
 
 /**
@@ -26,7 +19,7 @@ const {
  * @param {[]} plugins - a list of plugins
  */
 async function loadAdapterConfig(plugins = []) {
-  return await pipe(...pluck('load', plugins))({})
+  return await pipe(...filter(is(Function), pluck("load", plugins)))({});
 }
 
 /**
@@ -63,8 +56,8 @@ function linkPlugins(plugins, adapterConfig) {
 
 async function initAdapter(portAdapter) {
   const { plugins } = portAdapter;
-  const env = await loadAdapterConfig(plugins || [])
-  return linkPlugins(plugins, env)
+  const env = await loadAdapterConfig(plugins || []);
+  return linkPlugins(plugins, env);
 }
 
 /**
@@ -76,8 +69,8 @@ async function initAdapter(portAdapter) {
 export default async function initAdapters(adapters) {
   const svcs = await Promise.all(
     map(async (adapterNode) => ({
-      [adapterNode.port]: await initAdapter(adapterNode)
+      [adapterNode.port]: await initAdapter(adapterNode),
     }), adapters),
   );
-  return mergeAll(svcs)
+  return mergeAll(svcs);
 }
