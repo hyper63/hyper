@@ -21,7 +21,7 @@ export default function (plugin) {
   });
 
   const instance = schema.parse(plugin);
-  instance.load = schema.shape.load.validate(plugin.load);
+  //instance.load = schema.shape.load.validate(plugin.load);
   instance.link = schema.shape.link.validate(plugin.link);
 
   return instance;

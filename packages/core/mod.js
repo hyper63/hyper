@@ -17,6 +17,9 @@ export default async function main(config) {
 
   config = validateConfig(config);
 
+  //load methods can return promises so entire plugin svc returns a promise -tnw
+  const adapters = await initAdapters(prop("adapters", config));
+
   // TODO: validate config
   const services = compose(
     // add eventMgr to services
@@ -24,9 +27,7 @@ export default async function main(config) {
     assoc("middleware", propOr([], "middleware", config)),
     assoc("events", eventMgr()),
     loadPorts,
-    initAdapters,
-    prop("adapters"),
-  )(config);
+  )(adapters);
 
   const app = config.app(services);
 
