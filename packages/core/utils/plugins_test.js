@@ -8,7 +8,7 @@ test("sucessfully compose plugins", async () => {
   const plugin1 = validate({
     id: "plugin1",
     port: "default",
-    load: (env) => ({ ...env, hello: "world" }),
+    load: (env) => Promise.resolve({ ...env, hello: "world" }),
     link: (env) => () => ({ hello: () => env.hello }),
   });
 
@@ -16,7 +16,7 @@ test("sucessfully compose plugins", async () => {
     validate({
       id: "plugin2",
       port: "default",
-      load: (env) => ({ ...env, ...config }),
+      load: (env) => Promise.resolve({ ...env, ...config }),
       link: (env) => (plugin) => ({ ...plugin, beep: () => env }),
     });
 

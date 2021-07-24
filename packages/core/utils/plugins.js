@@ -8,7 +8,7 @@ const {
   mergeAll,
   is,
   pluck,
-  pipe,
+  pipeP,
   reverse,
 } = R;
 
@@ -19,7 +19,7 @@ const {
  * @param {[]} plugins - a list of plugins
  */
 async function loadAdapterConfig(plugins = []) {
-  return await pipe(...filter(is(Function), pluck("load", plugins)))({});
+  return await pipeP(...filter(is(Function), pluck("load", plugins)))({});
 }
 
 /**
