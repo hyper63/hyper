@@ -1,7 +1,8 @@
 name: test cache port
 on:
   push:
-    tags-ignore: '*'
+    branches:
+      - "**"
     paths:
       - "packages/port-cache/**"
 jobs:
