@@ -10,3 +10,7 @@ The core package validates the config schema and plugin schemas
 ```
 ./scripts/test.sh
 ```
+
+## License
+
+Apache 2.0
