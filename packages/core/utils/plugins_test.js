@@ -26,7 +26,6 @@ test("sucessfully compose plugins", async () => {
     ],
   };
   const adapters = await initAdapters(config.adapters);
-  //console.log(adapters)
 
   assertEquals(adapters.default.hello(), "world");
   assertObjectMatch(adapters.default.beep(), { foo: "bar", hello: "world" });
