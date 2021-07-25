@@ -20,7 +20,15 @@ const plugin = z.object({
 const Schema = z.object({
   app: F,
   adapters: z.object({
-    port: z.enum(["data", "cache", "search", "storage", "queue", "hooks"]),
+    port: z.enum([
+      "data",
+      "cache",
+      "search",
+      "storage",
+      "queue",
+      "hooks",
+      "crawler",
+    ]),
     plugins: plugin.array(),
   }).array(),
   middleware: F.array().optional(),

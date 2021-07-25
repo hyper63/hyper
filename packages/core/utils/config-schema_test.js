@@ -12,6 +12,7 @@ test("validate schema", () => {
       app: noop,
       adapters: [
         { port: "queue", plugins: [plugin()] },
+        { port: "crawler", plugins: [plugin()] },
       ],
     });
     assertEquals(true, true);
