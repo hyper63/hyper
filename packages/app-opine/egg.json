@@ -10,7 +10,8 @@
   "unlisted": false,
   "files": [
     "./*",
-    "./api/**/*"
+    "./api/**/*",
+    "./lib/**/*"
   ],
   "ignore": [
     "./package.json",
