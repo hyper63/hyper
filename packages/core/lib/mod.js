@@ -4,7 +4,7 @@ import storageCore from "./storage/mod.js";
 import searchCore from "./search/mod.js";
 import hooksCore from "./hooks/mod.js";
 import queueCore from "./queue/mod.js";
-import crawlerCore from './crawler/mod.js';
+import crawlerCore from "./crawler/mod.js";
 
 /**
  * main core module

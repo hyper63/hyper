@@ -20,7 +20,6 @@ export default async function main(config) {
   //load methods can return promises so entire plugin svc returns a promise -tnw
   const adapters = await initAdapters(prop("adapters", config));
 
-
   const services = compose(
     // add eventMgr to services
     wrapCore,
