@@ -4,6 +4,7 @@ import storageCore from "./storage/mod.js";
 import searchCore from "./search/mod.js";
 import hooksCore from "./hooks/mod.js";
 import queueCore from "./queue/mod.js";
+import crawlerCore from "./crawler/mod.js";
 
 /**
  * main core module
@@ -19,6 +20,7 @@ export default function (services) {
     storage: services.storage ? storageCore(services) : null,
     search: services.search ? searchCore(services) : null,
     queue: services.queue ? queueCore(services) : null,
+    crawler: services.crawler ? crawlerCore(services) : null,
     hooks: hooksCore(services),
     events: services.events,
     middleware: services.middleware,
