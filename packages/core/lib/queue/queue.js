@@ -37,5 +37,5 @@ export const cancel = (input) =>
     .chain(triggerEvent("QUEUE:CANCEL"));
 
 function validName(input) {
-  return /^[a-z0-9-]+$/.test(input.name);
+  return /^[a-z0-9-~_]+$/.test(input.name);
 }
