@@ -14,7 +14,7 @@ const plugin = z.object({
       z.function()
         .args(z.any())
         .returns(z.any()),
-    ),
+    ).optional(),
 });
 
 const Schema = z.object({
