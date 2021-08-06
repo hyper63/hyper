@@ -63,6 +63,7 @@ export function queue(adapter) {
   const instance = QueuePort.parse(adapter);
 
   // wrap the functions with validators
+  instance.index = QueuePort.shape.index.validate(instance.index);
   instance.create = QueuePort.shape.create.validate(instance.create);
   instance.post = QueuePort.shape.post.validate(instance.post);
   instance.delete = QueuePort.shape.delete.validate(instance.delete);
