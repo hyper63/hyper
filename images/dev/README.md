@@ -1,10 +1,10 @@
-# hyper63 dev images
+# hyper dev image
 
 ## Docker container mode
 
 ```sh
-yarn
-yarn start
+docker pull hyper63/hyper-dev
+docker run -it -p 6363:6363 --name hyper hyper63/hyper-dev
 ```
 
 ## Dev Mode
