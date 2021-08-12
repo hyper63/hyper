@@ -14,7 +14,7 @@ export default {
     },
     {
       port: 'storage',
-      plugins: [fs()]
+      plugins: [fs({dir: '/tmp'})]
     },
     {
       port: 'search',
