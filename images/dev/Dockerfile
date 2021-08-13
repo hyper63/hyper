@@ -14,5 +14,5 @@ RUN deno cache --unstable --no-check deps.js
 
 RUN deno cache --unstable --no-check mod.js
 
-CMD ["run", "--unstable", "--no-check", "--allow-env", "--allow-net", "--allow-read", "--allow-write=/tmp", "mod.js"]
+CMD ["run", "--unstable", "--no-check", "--allow-env", "--allow-net", "--allow-read", "--allow-write", "mod.js"]
 
