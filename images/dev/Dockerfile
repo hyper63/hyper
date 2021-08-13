@@ -1,17 +1,18 @@
-FROM node:14
-
-WORKDIR /usr/src/hyper63
-
-COPY hyper63.config.js ./
-COPY index.js ./
-COPY package.json ./
-COPY yarn.lock ./
-RUN yarn
-RUN mkdir /data
-
-VOLUME /data
+FROM denoland/deno:1.13.0
 
 EXPOSE 6363
 
-CMD ["yarn", "start"]
+WORKDIR /app
+
+USER deno
+
+COPY hyper.config.js ./
+COPY deps.js ./
+COPY mod.js ./
+
+RUN deno cache --unstable --no-check deps.js
+
+RUN deno cache --unstable --no-check mod.js
+
+CMD ["run", "--unstable", "--no-check", "--allow-env", "--allow-net", "--allow-read", "--allow-write", "mod.js"]
 
