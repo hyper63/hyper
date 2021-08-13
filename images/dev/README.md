@@ -12,3 +12,9 @@ docker run -it -p 6363:6363 --name hyper hyper63/hyper-dev
 ```sh
 deno run --unstable --no-check --allow-env --allow-net --allow-read --allow-write=/tmp mod.js
 ```
+
+## Create an executable
+
+```
+deno compile --output hyper --allow-env --allow-net --allow-read --allow-write=/tmp --unstable --no-check mod.js
+```
