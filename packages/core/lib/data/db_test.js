@@ -20,6 +20,10 @@ const mockDb = {
       return Promise.reject({ ok: false });
     }
   },
+  listDocuments({ db, limit, start, end, keys }) {
+    console.log('limit: ', limit)
+    return Promise.resolve({ ok: true, docs: [] })
+  }
 };
 
 const fork = (m) =>
@@ -59,5 +63,19 @@ test(
   "bulk docs failure",
   handleFail(db.bulk("foo", []).runWith({ svc: mockDb, events })),
 );
+
+test(
+  "list docs",
+  fork(
+    db.list("foo", { limit: "2" }).runWith({ svc: mockDb, events })
+  )
+)
+
+test(
+  "list docs",
+  fork(
+    db.list("foo", {}).runWith({ svc: mockDb, events })
+  )
+)
 // test("query database");
 // test("index database");
