@@ -21,9 +21,9 @@ const mockDb = {
     }
   },
   listDocuments({ db, limit, start, end, keys }) {
-    console.log('limit: ', limit)
-    return Promise.resolve({ ok: true, docs: [] })
-  }
+    console.log("limit: ", limit);
+    return Promise.resolve({ ok: true, docs: [] });
+  },
 };
 
 const fork = (m) =>
@@ -67,15 +67,15 @@ test(
 test(
   "list docs",
   fork(
-    db.list("foo", { limit: "2" }).runWith({ svc: mockDb, events })
-  )
-)
+    db.list("foo", { limit: "2" }).runWith({ svc: mockDb, events }),
+  ),
+);
 
 test(
   "list docs",
   fork(
-    db.list("foo", {}).runWith({ svc: mockDb, events })
-  )
-)
+    db.list("foo", {}).runWith({ svc: mockDb, events }),
+  ),
+);
 // test("query database");
 // test("index database");
