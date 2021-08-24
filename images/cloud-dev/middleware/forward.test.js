@@ -26,7 +26,7 @@ test("should forward the app route", async () => {
 
 test("should 404 on if root service route is hit and is not a forwarded request", async () => {
   const app = compose(
-    hyperCloudForwardMiddleware(HYPER_DELIMITER),
+    foward(HYPER_DELIMITER),
   )(opine());
 
   await superdeno(app)
