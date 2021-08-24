@@ -1,0 +1,1 @@
+deno compile --unstable --no-check --output hyper-cloud-dev mod.js

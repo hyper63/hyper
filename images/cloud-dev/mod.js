@@ -1,4 +1,4 @@
-import { hyper } from './deps.js'
-import config from './hyper.config.js'
+import { hyper } from "./deps.js";
+import { config } from "./hyper.config.js";
 
-await hyper(config)
+await hyper(config);

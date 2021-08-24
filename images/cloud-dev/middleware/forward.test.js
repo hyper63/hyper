@@ -1,5 +1,5 @@
-import { opine, R } from "../deps.js";
-import { superdeno } from "../dev_deps.js";
+import { R } from "../deps.js";
+import { opine, superdeno } from "../deps_dev.js";
 
 import { HYPER_DELIMITER } from "../constants.js";
 import { forward } from "./forward.js";
@@ -26,7 +26,7 @@ test("should forward the app route", async () => {
 
 test("should 404 on if root service route is hit and is not a forwarded request", async () => {
   const app = compose(
-    foward(HYPER_DELIMITER),
+    forward(HYPER_DELIMITER),
   )(opine());
 
   await superdeno(app)

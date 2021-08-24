@@ -1,40 +1,9 @@
 import { R } from "../deps.js";
 
-import { fork } from "../utils/fork.js";
+const { compose, map } = R;
+const SERVICES = ["data", "cache", "storage", "search", "queue"];
 
-const { compose, assoc, filter, defaultTo, __ } = R;
-const SERVICES = ['data', 'cache', 'storage', 'search', 'queue']
-const serviceToKeys = {
-  cache: {
-    method: "index",
-    resource: "stores",
-  },
-  storage: {
-    method: "listBuckets",
-    resource: "buckets",
-  },
-  queue: {
-    method: "index",
-    resource: "queues",
-  },
-  // Data does not currently specify an index api for adapters
-  // data: {
-  //   method: "index",
-  //   resource: "dbs",
-  // },
-  // Search does not currently specify an index api for adapters
-  // search: {
-  //   method: "index",
-  //   resource: "indexes",
-  // },
-  // Crawler does not currently specify an index api for adapters
-  // crawlers: {
-  //   method: "index",
-  //   resource: "crawlers",
-  // },
-};
-
-export function serviceIndex(delimiter) {
+export function serviceIndex() {
   /**
    * Override the index path of the app-opine router with a custom implementation
    * that filters the resources returned from the adapter, based on the app serviceName
@@ -49,25 +18,8 @@ export function serviceIndex(delimiter) {
   function buildIndexRouteForService(serviceName) {
     return (app) => {
       // Override index routes of each service
-      app.get(`/:app/${serviceName}`, (req, res) => {
-        const { params } = req;
-
-        const { method, resource } = serviceToKeys[serviceName];
-        const service = services[serviceName];
-
-        return fork(
-          res,
-          200,
-          service[method]()
-            .map(defaultTo([]))
-            .map(
-              filter((name) => name.indexOf(`${params.app}${delimiter}`) === 0),
-            )
-            .map(assoc(resource, __, {
-              name: serviceName,
-              version: "0.0.1", // TODO: Tyler. what should this version be?
-            })),
-        );
+      app.get(`/:app/${serviceName}`, (_req, res) => {
+        return res.setStatus(501).send({ message: "Not Implemented" });
       });
 
       return app;
@@ -76,10 +28,6 @@ export function serviceIndex(delimiter) {
 
   return (app) =>
     compose(
-      ...(SERVICES.map((name) =>
-        buildIndexRouteForService(
-          name,
-        )
-      )),
+      ...map(buildIndexRouteForService, SERVICES),
     )(app);
 }
