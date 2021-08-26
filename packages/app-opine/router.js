@@ -1,4 +1,4 @@
-import { cors, helmet, json, R, Router } from "./deps.js";
+import { cors, helmet, json, opine, R } from "./deps.js";
 
 // middleware
 import upload from "./lib/upload.js";
@@ -18,8 +18,11 @@ export function hyperRouter(services) {
   /**
    * This router can be mounted onto other apps,
    * so we will want access to those req parameters
+   * ---
+   * changed router to opine so middleware had full access
+   * to `app props` --tnw
    */
-  let app = Router({ mergeParams: true });
+  let app = opine();
   // enable extensibility to allow
   // middleware
   app = services.middleware.length > 0
