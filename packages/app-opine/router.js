@@ -108,7 +108,6 @@ export function hyperRouter(services) {
   app.delete("/crawler/:bucket/:name", bindCore, crawler.del);
 
   app.get("/error", (_req, _res, next) => {
-    console.log("oooooo");
     next(new Error("Error occuried"));
   });
 
