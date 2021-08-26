@@ -12,6 +12,7 @@
 - [cache](#cache)
 - [test](#test)
 - [compile](#compile)
+- [actions](#actions)
 
 ---
 
@@ -36,3 +37,7 @@
 ```
 ./scripts/compile.sh
 ```
+
+## actions
+
+Github actions deploy hyper to https://hyperland.s3.amazonaws.com/hyper 
