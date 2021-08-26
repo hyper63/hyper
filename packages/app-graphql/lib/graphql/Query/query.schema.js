@@ -24,7 +24,7 @@ const resolvers = {
       // // Multiple buckets [{ name: 'foo' }]
       // return storage.listBuckets().then(prop('buckets'))
     },
-    crawler: (_, { bucket }) => ({ name: bucket })
+    crawler: (_, { bucket }) => ({ name: bucket }),
   },
 };
 

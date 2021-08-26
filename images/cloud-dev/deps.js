@@ -1,9 +1,10 @@
 export { default as crocks } from "https://cdn.skypack.dev/crocks@0.12.4";
 export * as R from "https://cdn.skypack.dev/ramda@^0.27.1";
+export { opine } from "https://x.nest.land/opine@1.7.2/mod.ts";
 
 // hyper core
-export { default as app } from "https://x.nest.land/hyper-app-opine@1.2.1/mod.js";
-export { default as hyper } from "https://x.nest.land/hyper@1.4.2/mod.js";
+export { default as app } from "../../packages/app-opine/mod.js";
+export { default as hyper } from "../../packages/core/mod.js";
 
 // hyper adapters
 export { default as dndb } from "https://x.nest.land/hyper-adapter-dndb@0.0.4/mod.js";

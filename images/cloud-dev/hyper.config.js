@@ -13,16 +13,16 @@ import { serviceIndex } from "./middleware/service-index.js";
 import { HYPER_DELIMITER } from "./constants.js";
 
 export const config = {
-  app,
+  app: app,
   adapters: [
     { port: "cache", plugins: [memory()] },
     { port: "data", plugins: [dndb({ dir: "/tmp" })] },
     { port: "storage", plugins: [fs({ dir: "/tmp" })] },
     { port: "search", plugins: [minisearch()] },
-    { port: "queue", plugins: [queue('/tmp/queue.db')] },
+    { port: "queue", plugins: [queue("/tmp/queue.db")] },
   ],
   middleware: [
     forward(HYPER_DELIMITER),
-    //serviceIndex(),
+    serviceIndex(),
   ],
 };

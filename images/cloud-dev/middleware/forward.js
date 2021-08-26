@@ -22,30 +22,31 @@ export function forward(delimiter) {
         const [name, ...rest] = parts;
 
         // Route rewrite
-        req.url = `/${service}/${req.params.app}${delimiter}${name}/${rest.join("/")
-          }`;
-        console.log(req.url)
+        req.url = `/${service}/${req.params.app}${delimiter}${name}/${
+          rest.join("/")
+        }`;
+
+        console.log("url: ", req.url);
         // TODO: maybe make some sort of key or identifier?
         // Set forward flag
         req.__hyper = true;
 
-        //return app._router.handle(req, res, next);
-        next();
+        return app._router.handle(req, res, next);
+        //next();
       });
 
       // Forward index routes of each service
-      // app.use(`/:app/${service}`, (req, res, next) => {
-      //   req.url = `/${service}`;
+      app.use(`/:app/${service}`, (req, res, next) => {
+        req.url = `/${service}`;
 
-      //   return next()
-      //   //return app._router.handle(req, res, next);
-      // });
+        return app._router.handle(req, res, next);
+      });
 
       // Only accept traffic at root service routes from forwarded requests
       app.use(`/${service}/*`, (req, res, next) => {
         // didn't originate from a hyper forward, so 404 for now
         if (!req.__hyper) {
-          return res.sendStatus(404);
+          return res.setStatus(501).send({ ok: false, msg: "Not Implemented" });
         }
 
         next();

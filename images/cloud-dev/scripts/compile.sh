@@ -1,1 +1,1 @@
-deno compile --unstable --no-check --output hyper-cloud-dev mod.js
+deno compile --allow-env --allow-read --allow-write --allow-net --unstable --no-check --output hyper-cloud-dev mod.js
