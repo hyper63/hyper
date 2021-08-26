@@ -14,6 +14,7 @@ export default function (services) {
   app.use(hyperRouter(services));
   // GQL
   app.use(
+    "/graphql",
     hyperGqlRouter({
       playground: (playground && playground !== "false") ||
         env !== "production",
