@@ -1,0 +1,22 @@
+name: test image nano
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "images/nano/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.13.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Deno ${{ matrix.deno-version }}
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - run: cd images/nano && ./scripts/test.sh
+        env:
+          CI: true

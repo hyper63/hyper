@@ -1,0 +1,32 @@
+name: publish nano
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "images/nano/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.13.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Deno ${{ matrix.deno-version }}
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - run: cd images/nano && ./scripts/compile.sh
+        env:
+          CI: true
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Upload S3
+        env:
+          AWS_REGION: us-east-1
+        run: |
+          aws s3 cp --acl pubic-read ./images/nano/hyper s3://hyperland
