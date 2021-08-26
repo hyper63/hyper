@@ -1,30 +1,14 @@
-# README
+<h1 align="center">hyper {micro}</h1>
+<p>hyper Micro is an example of using remote services for the community version of hyper using containers</p>
 
-## hyper63 micro image
+> WIP: TODO
 
-This image uses the following services in a docker compose
+---
 
-- couchdb - single-node
-- redis
-- minio
-- elasticsearch
+## Table of Contents
 
-## Start Services
+- [Getting Started](#getting-started)
+- [Adapters](#adapters)
+- [Testing](#testing)
+- [Publish](#publish)
 
-```
-docker-compose up -d
-```
-
-## Start hyper63
-
-```
-yarn
-yarn start
-```
-
-## Dev Mode
-
-```
-yarn
-yarn dev
-```
