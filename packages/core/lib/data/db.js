@@ -1,4 +1,7 @@
 import { apply, is, of, triggerEvent } from "../utils/mod.js";
+import { R } from "../../deps.js";
+
+const { lensProp, over } = R;
 
 const INVALID_DB_MSG = "database name is not valid";
 const INVALID_RESPONSE = "response is not valid";
@@ -21,8 +24,15 @@ export const query = (db, query) =>
     .chain(apply("queryDocuments"))
     .chain(triggerEvent("DATA:QUERY"));
 
+// convert query param descending to boolean
+const castFieldDescending = over(
+  lensProp("fields"),
+  over(lensProp("descending"), Boolean),
+);
+
 export const index = (db, name, fields) =>
   of({ db, name, fields })
+    .map(castFieldDescending)
     .chain(apply("indexDocuments"))
     .chain(triggerEvent("DATA:INDEX"));
 

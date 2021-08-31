@@ -55,8 +55,9 @@ function validName(name) {
   // verify that the name does not contains spaces
   // verify that the name does not contain slashes
   // verify that the name contains URI friendly characters
+  // cache names should only start with alphanumeric characters
   // should return a true or false
-  return /^[a-z0-9-~_]+$/.test(name);
+  return /^[a-z0-9]+$/.test(name[0]) && /^[a-z0-9-~_]+$/.test(name);
 }
 
 /**
