@@ -24,20 +24,14 @@ export const query = (db, query) =>
     .chain(apply("queryDocuments"))
     .chain(triggerEvent("DATA:QUERY"));
 
-// convert query param descending to boolean
-const castFieldDescending = over(
-  lensProp("fields"),
-  over(lensProp("descending"), Boolean),
-);
-
 export const index = (db, name, fields) =>
   of({ db, name, fields })
-    .map(castFieldDescending)
     .chain(apply("indexDocuments"))
     .chain(triggerEvent("DATA:INDEX"));
 
 export const list = (db, options) =>
   of({ db, ...options })
+    .map(over(lensProp("descending"), Boolean))
     .chain(apply("listDocuments"))
     .chain(triggerEvent("DATA:LIST"));
 

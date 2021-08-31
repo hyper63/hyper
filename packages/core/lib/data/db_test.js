@@ -20,25 +20,24 @@ const mockDb = {
       return Promise.reject({ ok: false });
     }
   },
-  listDocuments({ db, limit, start, end, keys }) {
-    console.log("limit: ", limit);
-    return Promise.resolve({ ok: true, docs: [] });
+  listDocuments({ db, limit, start, end, keys, descending }) {
+    return Promise.resolve({ ok: true, docs: [{ id: "1" }, { id: "2" }] });
   },
 };
 
 const fork = (m) =>
   () => {
-    return m.fork(
+    return m.bimap(
       () => assertEquals(false, true),
       () => assertEquals(true, true),
-    );
+    ).toPromise();
   };
 const handleFail = (m) =>
   () => {
-    return m.fork(
+    return m.bimap(
       () => assertEquals(true, true),
       () => assertEquals(false, true),
-    );
+    ).toPromise().catch((e) => e);
   };
 
 const events = {
@@ -74,7 +73,7 @@ test(
 test(
   "list docs",
   fork(
-    db.list("foo", {}).runWith({ svc: mockDb, events }),
+    db.list("foo", { descending: true }).runWith({ svc: mockDb, events }),
   ),
 );
 // test("query database");
