@@ -20,10 +20,10 @@ const mock = {
 
 const fork = (m) =>
   () => {
-    return m.fork(
+    return m.bimap(
       () => assertEquals(false, true),
       () => assertEquals(true, true),
-    );
+    ).toPromise();
   };
 
 const events = {
