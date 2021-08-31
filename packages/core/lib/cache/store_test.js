@@ -32,13 +32,20 @@ test("create cache store", () => {
   );
 });
 
-test("should not create store", () => {
+test("should not create store with space in name", () =>
+  store.create("foo bar").runWith({ svc: mockService, events })
+    .toPromise()
+    .then(() => assertEquals(true, false), () => assertEquals(true, true)));
+
+test("should create store with non alpha in name", () =>
+  store.create("foo_bar").runWith({ svc: mockService, events })
+    .toPromise()
+    .then(() => assertEquals(true, true), () => assertEquals(true, false)));
+
+test("should not create store starting with non alphanumeric", () =>
   store.create("_foo").runWith({ svc: mockService, events })
-    .fork(
-      () => assertEquals(true, true),
-      () => assertEquals(false, true),
-    );
-});
+    .toPromise()
+    .then(() => assertEquals(true, false), () => assertEquals(true, true)));
 
 test("destroy cache store", () => {
   function handleError() {
