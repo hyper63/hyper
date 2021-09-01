@@ -14,7 +14,9 @@ Deno.test("data port tests", async () => {
     removeDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
     listDocuments: ({ db, limit, startkey, endkey, keys, descending }) =>
       Promise.resolve({ ok: true, docs: [] }),
-    queryDocuments: ({ db, query }) => Promise.resolve({ ok: true, docs: [] }),
+    queryDocuments: (
+      { db, query },
+    ) => (console.log(query), Promise.resolve({ ok: true, docs: [] })),
     indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
     bulkDocuments: ({ db, docs }) =>
       Promise.resolve({ ok: true, results: [{ ok: true, id: "1" }] }),
@@ -34,6 +36,9 @@ Deno.test("data port tests", async () => {
         selector: {
           id: "bar",
         },
+        fields: ["id"],
+        sort: [{ id: "DESC" }],
+        limit: 10,
       },
     }),
     adapter.indexDocuments({ db: "foo", name: "id", fields: ["id"] }),

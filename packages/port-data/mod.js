@@ -57,7 +57,10 @@ export function data(adapter) {
         db: z.string(),
         query: z.object({
           selector: z.any(),
-          sort: z.array(z.string()).optional(),
+          fields: z.array(z.string()).optional(),
+          sort: z.array(
+            z.object({}).passthrough().or(z.string()),
+          ).optional(),
           limit: z.number().optional(),
           use_index: z.string().optional(),
         }),
