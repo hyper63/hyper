@@ -49,7 +49,8 @@ function Reader(runWith) {
   }
 
   return {
-    type,
+    runWith,
+    type: _type,
     ap,
     of,
     map: map('map'),
@@ -61,7 +62,7 @@ function Reader(runWith) {
 
 Reader.of = _of
 Reader.ask = ask
-Reader.type = type
+Reader.type = _type
 Reader['@@type'] = _type
 
 export default Reader
