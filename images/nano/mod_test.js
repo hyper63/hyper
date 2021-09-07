@@ -9,10 +9,15 @@ import config from "./hyper.config.js";
 
 const test = Deno.test;
 
-test("GET /", async () => {
-  const app = await hyper(config);
-  await superdeno(app)
-    .get("/")
-    .expect("Content-Type", /json/)
-    .expect(200);
+test({
+  name: "GET /",
+  async fn() {
+    const app = await hyper(config);
+    await superdeno(app)
+      .get("/")
+      .expect("Content-Type", /json/)
+      .expect(200);
+  },
+  sanitizeResources: false,
+  sanitizeOps: false,
 });
