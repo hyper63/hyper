@@ -40,7 +40,7 @@
 
 ## actions
 
-Github actions deploy hyper to https://hyperland.s3.amazonaws.com/hyper 
+Github actions deploy hyper to https://hyperland.s3.amazonaws.com/hyper
 
 ## LICENSE
 

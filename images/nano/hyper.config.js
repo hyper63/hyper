@@ -1,19 +1,21 @@
-import { app, dndb, fs, memory, minisearch } from "./deps.js";
+import { app, cache, dndb, fs, minisearch } from "./deps.js";
+
+const DIR = "/tmp";
 
 export default {
   app,
   adapters: [
     {
       port: "data",
-      plugins: [dndb({ dir: "/tmp" })],
+      plugins: [dndb({ dir: DIR })],
     },
     {
       port: "cache",
-      plugins: [memory()],
+      plugins: [cache({ dir: DIR })],
     },
     {
       port: "storage",
-      plugins: [fs({ dir: "/tmp" })],
+      plugins: [fs({ dir: DIR })],
     },
     {
       port: "search",
