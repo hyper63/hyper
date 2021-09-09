@@ -31,6 +31,7 @@ export function search(adapter) {
     updateDoc: z.function()
       .args(z.object({
         index: z.string(),
+        key: z.string(),
         doc: z.any(),
       }))
       .returns(z.promise(z.object({
