@@ -30,7 +30,7 @@ const events = {
 test(
   "create cache doc",
   fork(
-    doc.create("store", "key", { hello: "world" }, '20s').runWith({
+    doc.create("store", "key", { hello: "world" }, "20s").runWith({
       svc: mockService,
       events,
     }),
