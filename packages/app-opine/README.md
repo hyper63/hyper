@@ -1,7 +1,7 @@
 <h1 align="center">⚡️ hyper-app-opine ⚡️</h1>
 <p align="center">
-hyper is a modular service framework that allows you to plug and play service adapters, `hyper-app-opine` is 
-an `app` adapter that provides a REST endpoints for interacting with hyper. You can map hyper's ports to any 
+hyper is a modular service framework that allows you to plug and play service adapters, `hyper-app-opine` is
+an `app` adapter that provides a REST endpoints for interacting with hyper. You can map hyper's ports to any
 kind of API front-end, app-opine uses REST. You can find our more about the REST API here: https://doc.hyper.io
 </p>
 <p align="center">
