@@ -16,7 +16,7 @@ const fork = (m) =>
   () => {
     m.fork(
       (e) => {
-        console.log(e);
+        console.log("ERROR", e.message);
         assertEquals(false, true);
       },
       () => assertEquals(true, true),
@@ -66,5 +66,5 @@ test(
 
 test(
   "delete cache document",
-  fork(doc.update("store", "key-1234").runWith({ svc: mockService, events })),
+  fork(doc.del("store", "key-1234").runWith({ svc: mockService, events })),
 );
