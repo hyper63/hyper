@@ -70,8 +70,16 @@ export const del = (store, key) =>
 
 // validators predicate functions
 
-function validKey(doc) {
-  return /^[a-z0-9-]+$/.test(doc.key);
+function validKey({ key }) {
+  /**
+   * rules:
+   * must begin with lowercase letter
+   * rest of the name must be a combination of:
+   * lowercase letters
+   * digits 0-9
+   * or any of these characters - _ $ +
+   */
+  return /^[a-z]+$/.test(key[0]) && /^[a-z0-9-~_/$/+]+$/.test(key);
 }
 
 function validResult(result) {
