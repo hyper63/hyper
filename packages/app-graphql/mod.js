@@ -2,9 +2,9 @@
 import { lookup as getMimeType } from "https://deno.land/x/media_types@v2.8.4/mod.ts";
 import { default as helmet } from "https://cdn.skypack.dev/helmet@^4.6.0";
 import { opineCors as cors } from "https://deno.land/x/cors@v1.2.1/mod.ts";
-import { Buffer } from "https://deno.land/std@0.99.0/io/buffer.ts";
-import { MultipartReader } from "https://deno.land/std@0.99.0/mime/mod.ts";
-import { exists } from "https://deno.land/std@0.99.0/fs/exists.ts";
+import { Buffer } from "https://deno.land/std@0.106.0/io/buffer.ts";
+import { MultipartReader } from "https://deno.land/std@0.106.0/mime/mod.ts";
+import { exists } from "https://deno.land/std@0.106.0/fs/exists.ts";
 
 import { crocks, opine } from "./deps.js";
 
