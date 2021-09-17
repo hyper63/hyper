@@ -25,10 +25,12 @@ export const buildRequest = (cs) =>
       )
       .map(({ headers, isHyperCloud }) =>
         new Request(
-          `${isHyperCloud
-            ? "https:"
-            : cs.protocol
-          }//${cs.host}${isHyperCloud ? cs.pathname : ""}${"/" + service}${!isHyperCloud ? cs.pathname : ""
+          `${
+            isHyperCloud
+              ? "https:"
+              : cs.protocol
+          }//${cs.host}${isHyperCloud ? cs.pathname : ""}${"/" + service}${
+            !isHyperCloud ? cs.pathname : ""
           }`,
           {
             headers,

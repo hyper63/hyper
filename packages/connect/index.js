@@ -1,6 +1,6 @@
-import { Request } from 'node-fetch'
-import connect from './connect'
+import { Request } from "node-fetch";
+import connect from "./connect";
 
-globalThis.Request = Request
+globalThis.Request = Request;
 
-export default connect
+export default connect;
