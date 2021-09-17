@@ -14,7 +14,7 @@ export default function (connectionString) {
   /**
    * @param {string} domain
    */
-  return function (domain = "default") {
+  return function (_domain = "default") {
     return {
       data: {
         add: (body) => $("data", data, "add", body),
@@ -50,7 +50,7 @@ export default function (connectionString) {
         load: (docs) => $("search", search, "load", docs),
       },
       info: {
-        isCloud: isHyperCloud,
+        isCloud: cs.protocol === "cloud:",
       },
     };
   };

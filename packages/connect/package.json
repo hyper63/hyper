@@ -1,6 +1,6 @@
 {
-  "name": "@hyper.io/connect",
-  "version": "1.0.0",
+  "name": "hyper-connect",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "type": "module",
