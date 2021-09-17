@@ -1,32 +1,14 @@
 import data from './lib/data.js'
 import cache from './lib/cache.js'
+import search from './lib/search.js'
+import { buildRequest } from './utils.js'
 
 export default function (connectionString) {
   const cs = new URL(connectionString);
-  const createToken = (u, p) => `${u}:${p}`; // need to change to create jwt
-  const isHyperCloud = cs.protocol === "cloud:";
+  const br = buildRequest(cs)
 
-  const buildRequest = (service) => {
-    const protocol = isHyperCloud ? "https:" : cs.protocol;
-
-    let headers = {
-      "Content-Type": "application/json",
-    };
-
-    headers = cs.password !== ""
-      ? {
-        ...headers,
-        Authorization: `Bearer ${createToken(cs.username, cs.password)}`,
-      }
-      : headers;
-
-    return new Request(
-      `${protocol}//${cs.host}${isHyperCloud ? cs.pathname : ""}${"/" +
-      service}${!isHyperCloud ? cs.pathname : ""}`,
-      {
-        headers,
-      },
-    );
+  const $ = (svc, client, action, ...args) => {
+    return client[action](...args).runWith(br(svc)).toPromise();
   };
 
   /**
@@ -35,35 +17,35 @@ export default function (connectionString) {
   return function (domain = "default") {
     return {
       data: {
-        add: (body) => data.add(body).runWith(buildRequest("data")),
-        list: (params) => data.list(params).runWith(buildRequest("data")),
-        get: (id) => data.get(id).runWith(buildRequest("data")),
-        update: (id, body) =>
-          data.update(id, body).runWith(buildRequest("data")),
-        remove: (id) => data.remove(id).runWith(buildRequest("data")),
-        query: (selector, options) =>
-          data.query(selector, options).runWith(buildRequest("data")),
-        bulk: (docs) => data.bulk(docs).runWith(buildRequest("data")),
-        create: () => data.create().runWith(buildRequest("data")),
-        destroy: (confirm) =>
-          data.destroy(confirm).runWith(buildRequest("data")),
-        index: (name, fields) =>
-          data.index(name, fields).runWith(buildRequest("data")),
+        add: (body) => $('data', data, 'add', body),
+        list: (params) => $('data', data, 'list', params),
+        get: (id) => $('data', data, 'get', id),
+        update: (id, body) => $('data', data, 'update', id, body),
+        remove: (id) => $('data', data, 'remove', id),
+        query: (selector, options) => $('data', data, 'query', selector, options),
+        bulk: (docs) => $('data', data, 'bulk', docs),
+        create: () => $('data', data, 'create'),
+        destroy: (confirm) => $('data', data, 'destroy', confirm),
+        index: (name, fields) => $('data', data, 'index', name, fields),
       },
       cache: {
-        create: () => cache.create().runWith(buildRequest("cache")),
-        destroy: (confirm) =>
-          cache.destroy(confirm).runWith(buildRequest("cache")),
-        add: (key, value, ttl) =>
-          cache.add(key, value, ttl).runWith(buildRequest("cache")),
-        remove: (key) => cache.remove(key).runWith(buildRequest("cache")),
-        get: (key) => cache.get(key).runWith(buildRequest("cache")),
-        set: (key, value, ttl) => cache.set(key, value, ttl).runWith(buildRequest('cache')),
-        query: (pattern) => cache.query(pattern).runWith(buildRequest('cache'))
+        create: () => $('cache', cache, 'create'),
+        destroy: (confirm) => $('cache', cache, 'destroy', confirm),
+        add: (key, value, ttl) => $('cache', cache, 'add', key, value, ttl),
+        remove: (key) => $('cache', cache, 'remove', key),
+        get: (key) => $('cache', cache, 'get', key),
+        set: (key, value, ttl) => $('cache', cache, 'set', key, value, ttl),
+        query: (pattern) => $('cache', cache, 'query', pattern)
       },
       search: {
-        create: (fields, storeFields) => search.create(fields, storeFields).runWith(buildRequest('search')),
-        destroy: (confirm) => search.destroy(confirm).runWith(buildRequest('search'))
+        create: (fields, storeFields) => $('search', search, 'create', fields, storeFields),
+        destroy: (confirm) => $('search', search, 'destroy', confirm),
+        add: (key, doc) => $('search', search, 'add', key, doc),
+        remove: (key) => $('search', search, 'remove', key),
+        get: (key) => $('search', search, 'get', key),
+        update: (key, doc) => $("search", search, "update", key, doc),
+        query: (query, options) => $("search", search, "query", query, options),
+        load: (docs) => $("search", search, "load", docs),
       },
       info: {
         isCloud: isHyperCloud,
