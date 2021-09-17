@@ -154,6 +154,4 @@ to call. This table breaks down the service and action with description of the a
 
 ### License
 
-
-
-
+Apache 2.0
