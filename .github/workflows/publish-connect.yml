@@ -1,0 +1,33 @@
+name: publish connect
+
+on:
+  push:
+    tags:
+      - "hyper-connect@*"
+
+jobs:
+  publish-egg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.6/eggs.ts
+      - run: |
+          export PATH="/home/runner/.deno/bin:$PATH"
+          eggs link ${{ secrets.NESTAPIKEY }}
+          cd packages/connect
+          eggs publish --yes
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: cd packages/connect && yarn
+      - run: cd packages/connect && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

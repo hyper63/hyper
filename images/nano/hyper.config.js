@@ -19,7 +19,7 @@ export default {
     },
     {
       port: "search",
-      plugins: [minisearch()],
+      plugins: [minisearch({ dir: DIR })],
     },
   ],
 };
