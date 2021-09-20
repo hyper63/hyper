@@ -2,10 +2,10 @@ import Ask from "ask";
 import connect from "hyper-connect";
 
 const ask = new Ask();
-const ci = Boolean(Deno.env.get('CI')) || false
+const ci = Boolean(Deno.env.get("CI")) || false;
 const cs = Deno.env.get("HYPER") || "http://localhost:6363/test";
 console.log("hyper test suite ⚡️");
-let answers = { hyper: cs }
+let answers = { hyper: cs };
 if (!ci) {
   answers = await ask.prompt([
     {
