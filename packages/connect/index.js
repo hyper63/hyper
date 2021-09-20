@@ -1,5 +1,5 @@
 import { Request } from "node-fetch";
-import connect from "./connect";
+import connect from "./connect.js";
 
 globalThis.Request = Request;
 
