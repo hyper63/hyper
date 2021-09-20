@@ -37,11 +37,11 @@ function linkPlugins(plugins, adapterConfig) {
     (links) =>
       links.reduce((a, b) => ({
         /**
-       * We spread here, so that plugins may just partially implement
-       * a port interface. This allows the use of multiple plugins
-       * to produce the *complete* port interface, while also achieving the
-       * "Onion" wrapping of each method
-       */
+         * We spread here, so that plugins may just partially implement
+         * a port interface. This allows the use of multiple plugins
+         * to produce the *complete* port interface, while also achieving the
+         * "Onion" wrapping of each method
+         */
         ...a,
         ...b(a),
       }), {}),

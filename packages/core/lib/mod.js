@@ -11,7 +11,6 @@ import crawlerCore from "./crawler/mod.js";
  *
  * this module takes services and environment
  * and passes them to each core module
- *
  */
 export default function (services) {
   return Object.freeze({

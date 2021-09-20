@@ -21,7 +21,6 @@ export const removeBucket = ({ params, storage }, res) =>
  * fields: file, [path]
  */
 /**
- *
  * @param {*} param0
  * @param {*} res
  * @returns
