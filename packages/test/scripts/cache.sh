@@ -1,0 +1,1 @@
+deno cache --lock=mod_lock.json --import-map import_map.json --lock-write --no-check mod.js

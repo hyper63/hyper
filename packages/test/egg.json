@@ -1,0 +1,27 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
+  "name": "hyper-test",
+  "entry": "./mod.js",
+  "description": "hyper test suite",
+  "homepage": "https://github.com/hyper63/hyper",
+  "repo": "https://github.com/hyper63/hyper",
+  "version": "0.0.0",
+  "unstable": false,
+  "unlisted": false,
+  "files": [
+    "./*",
+    "./cache/*.js",
+    "./data/*.js",
+    "./search/*.js",
+    "./lib/*.js"
+  ],
+  "ignore": [
+    "./package.json",
+    "./scripts/*",
+    "./.git*"
+  ],
+  "checkFormat": false,
+  "checkTests": false,
+  "checkInstallation": false,
+  "check": false
+}

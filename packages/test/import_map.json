@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "asserts": "https://deno.land/std@0.106.0/testing/asserts.ts",
+    "ask": "https://deno.land/x/ask@1.0.6/mod.ts",
+    "flags": "https://deno.land/std@0.106.0/flags/mod.ts",
+    "base64url": "https://deno.land/std@0.106.0/encoding/base64url.ts",
+    "sha256": "https://deno.land/std@0.106.0/hash/sha256.ts",
+    "crocks": "https://cdn.skypack.dev/crocks@0.12.4",
+    "ramda": "https://cdn.skypack.dev/ramda@0.27.1",
+    "hyper-connect": "https://x.nest.land/hyper-connect@0.0.2/mod.js"
+  }
+}
