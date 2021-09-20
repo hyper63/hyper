@@ -1,9 +1,8 @@
-import crocks from "crocks";
 import { assoc, compose, map } from "ramda";
 import { $fetch, toJSON } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
-const { Async } = crocks;
+//const { Async } = crocks;
 const test = Deno.test;
 
 const teams = [

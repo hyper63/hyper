@@ -1,5 +1,5 @@
 import { $fetch, toJSON } from "../lib/utils.js";
-import { assert, assertEquals } from "asserts";
+import { assertEquals } from "asserts";
 
 const test = Deno.test;
 

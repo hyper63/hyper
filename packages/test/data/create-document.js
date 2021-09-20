@@ -9,8 +9,8 @@ export default function (data) {
   const cleanUp = (id) => $fetch(data.remove(id)).chain(toJSON);
 
   const createDocForDb = async (doc) => {
-    let req = await data.add(doc);
-    let _req = new Request(req.url + "db", {
+    const req = await data.add(doc);
+    const _req = new Request(req.url + "db", {
       method: "POST",
       headers: req.headers,
       body: JSON.stringify(doc),

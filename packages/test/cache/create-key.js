@@ -1,4 +1,4 @@
-import { $, $fetch, toJSON } from "../lib/utils.js";
+import { $fetch, toJSON } from "../lib/utils.js";
 import { assert, assertEquals } from "asserts";
 
 const test = Deno.test;
@@ -10,8 +10,8 @@ export default function (cache) {
   const cleanUp = (key) => $fetch(cache.remove(key)).chain(toJSON);
 
   const createDocForDb = async (key, value) => {
-    let req = await cache.add(key, value);
-    let _req = new Request(req.url + "db", {
+    const req = await cache.add(key, value);
+    const _req = new Request(req.url + "db", {
       method: "POST",
       headers: req.headers,
       body: JSON.stringify({ key, value }),

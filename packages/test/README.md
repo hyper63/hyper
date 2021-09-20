@@ -31,7 +31,6 @@ Coming Soon
 - Storage Adapter Test Suite
 - Queue Adapter Test Suite
 
-
 ## License
 
 Apache 2.0 (SEE LICENSE)

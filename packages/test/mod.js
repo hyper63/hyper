@@ -1,7 +1,6 @@
 import Ask from "ask";
 import connect from "hyper-connect";
 
-const test = Deno.test;
 const ask = new Ask();
 const cs = Deno.env.get("HYPER") || "http://localhost:6363/test";
 console.log("hyper test suite ⚡️");
@@ -16,7 +15,11 @@ const answers = await ask.prompt([
 const hyperCS = answers.hyper === "" ? cs : answers.hyper;
 const hyper = connect(hyperCS)();
 
-const services = ['data', 'cache', 'search', 'storage', 'queue']
+// get services that are active on the hyper instance
+const services = await fetch(await hyper.info.services()).then((res) =>
+  res.json()
+).then((r) => r.services);
+
 //const services = await hyper.info.services
 const runTest = (svc) => (x) => x.default(hyper[svc]);
 

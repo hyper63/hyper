@@ -1,5 +1,5 @@
 // index search document tests
-import { $, $fetch, toJSON } from "../lib/utils.js";
+import { $fetch, toJSON } from "../lib/utils.js";
 import { assert, assertEquals } from "asserts";
 
 const test = Deno.test;
@@ -15,14 +15,14 @@ const doEquals = (prop, value) =>
     return obj;
   };
 
-const doError = (code) =>
-  (res) => {
-    assert(!res.ok);
-    assertEquals(res.status, 404);
-    return res;
-  };
+// const doError = (code) =>
+//   (res) => {
+//     assert(!res.ok);
+//     assertEquals(res.status, 404);
+//     return res;
+//   };
 
-const log = (_) => (console.log(_), _);
+//const log = (_) => (console.log(_), _);
 
 export default function (search) {
   const setup = () =>

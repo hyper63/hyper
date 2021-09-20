@@ -1,5 +1,5 @@
 import { $fetch, toJSON } from "../lib/utils.js";
-import { assert, assertEquals } from "asserts";
+import { assertEquals } from "asserts";
 
 const test = Deno.test;
 
@@ -10,7 +10,9 @@ export default function (cache) {
 
   test("PUT /cache/:store/:key - set key", () =>
     add("test-100", { type: "movie", title: "Alien" })
-      .chain(() => set("test-100", { type: "movie", title: "Alien", year: "1979" }))
+      .chain(() =>
+        set("test-100", { type: "movie", title: "Alien", year: "1979" })
+      )
       .map((r) => (assertEquals(r.ok, true), r))
       .chain(() => remove("test-100"))
       .toPromise());

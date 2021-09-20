@@ -51,6 +51,7 @@ export default function (connectionString) {
       },
       info: {
         isCloud: cs.protocol === "cloud:",
+        services: () => br("_root").toPromise(),
       },
     };
   };
