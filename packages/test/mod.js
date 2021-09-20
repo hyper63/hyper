@@ -1,5 +1,5 @@
 import Ask from "ask";
-import { default as connect } from "hyper-connect";
+import connect from "hyper-connect";
 
 const test = Deno.test;
 const ask = new Ask();
