@@ -1,0 +1,1 @@
+deno lint && deno fmt --check
