@@ -1,5 +1,5 @@
-import { $, $fetch, toJSON } from "../lib/utils.js";
-import { assert, assertEquals } from "asserts";
+import { $fetch, toJSON } from "../lib/utils.js";
+import { assert } from "asserts";
 
 const test = Deno.test;
 const doAssert = (prop) =>
@@ -9,31 +9,31 @@ const doAssert = (prop) =>
   };
 
 export default function (search) {
-  const setup = () =>
-    $fetch(
-      search.add("movie-3", { id: "movie-3", type: "movie", title: "Hulk" }),
-    )
-      .chain(toJSON);
+  // const setup = () =>
+  //   $fetch(
+  //     search.add("movie-3", { id: "movie-3", type: "movie", title: "Hulk" }),
+  //   )
+  //     .chain(toJSON);
 
-  const badIndex = async () => {
-    const r = await search.update("movie-5", {
-      id: "movie-5",
-      type: "movie",
-      title: "Captain Carter",
-    });
-    return Promise.resolve(
-      new Request(
-        r.url.replace("test", "none"),
-        {
-          method: "PUT",
-          headers: r.headers,
-          body: await r.json(),
-        },
-      ),
-    );
-  };
+  // const badIndex = async () => {
+  //   const r = await search.update("movie-5", {
+  //     id: "movie-5",
+  //     type: "movie",
+  //     title: "Captain Carter",
+  //   });
+  //   return Promise.resolve(
+  //     new Request(
+  //       r.url.replace("test", "none"),
+  //       {
+  //         method: "PUT",
+  //         headers: r.headers,
+  //         body: await r.json(),
+  //       },
+  //     ),
+  //   );
+  // };
 
-  const cleanUp = (key) => () => $fetch(search.remove("movie-3")).chain(toJSON);
+  //const cleanUp = (key) => () => $fetch(search.remove(key)).chain(toJSON);
   /*
   test('PUT /search/:index/:key - update search document successfully', () =>
     setup()

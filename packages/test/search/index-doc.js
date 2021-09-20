@@ -1,10 +1,10 @@
 // index search document tests
-import { $, $fetch, toJSON } from "../lib/utils.js";
-import { assert, assertEquals } from "asserts";
+import { $fetch, toJSON } from "../lib/utils.js";
+import { assert } from "asserts";
 
 const test = Deno.test;
 const doAssert = (prop) => (obj) => assert(obj[prop]);
-const log = (_) => (console.log(_), _);
+//const log = (_) => (console.log(_), _);
 
 export default function (search) {
   const cleanUp = (key) =>

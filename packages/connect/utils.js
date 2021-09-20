@@ -7,6 +7,11 @@ export const buildRequest = (cs) =>
   (service) => {
     const createToken = (u, p) =>
       signJWT({ alg: "HS256", type: "JWT" }, { sub: u }, p);
+    let app = cs.pathname;
+    if (service === "_root") {
+      app = "";
+      service = "";
+    }
 
     return Async.of({
       url: "",
@@ -29,9 +34,9 @@ export const buildRequest = (cs) =>
             isHyperCloud
               ? "https:"
               : cs.protocol
-          }//${cs.host}${isHyperCloud ? cs.pathname : ""}${"/" + service}${
-            !isHyperCloud ? cs.pathname : ""
-          }`,
+          }//${cs.host}${isHyperCloud ? app : ""}${
+            service !== "" ? "/" + service : ""
+          }${!isHyperCloud ? app : ""}`,
           {
             headers,
           },

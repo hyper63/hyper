@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-deno fmt --check
+deno lint && \
+deno fmt --check && \
 deno test

@@ -12,7 +12,6 @@ export default function ({ cache, events }) {
     store.create(name).runWith({ svc: cache, events });
 
   /**
-   *
    * @param {string} name
    * @returns {Async}
    */
