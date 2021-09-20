@@ -18,7 +18,7 @@ export default function (cache) {
       .chain(() => add("album-1", { title: "The Doors" }))
       // test
       .chain(() => query())
-      .map((r) => (console.log(r), r))
+      //.map((r) => (console.log(r), r))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 4), r))
       // clean up

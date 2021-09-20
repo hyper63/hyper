@@ -27,7 +27,7 @@ export default function (search) {
         )
       )
       .chain(toJSON)
-      .map(log)
+      //.map(log)
       .map((res) => assert(!res.ok))
       .chain(cleanUp("2"))
       .toPromise());
