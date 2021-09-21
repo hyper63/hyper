@@ -17,6 +17,12 @@ Deno.test("GET /", async () => {
   assertEquals(res.body.name, "hyper63");
 });
 
+Deno.test("GET /foobarbaz", async () => {
+  await superdeno(app)
+    .get("/foobarbaz")
+    .expect(404);
+});
+
 /*
 Deno.test("GET /graphql", async () => {
   await superdeno(app)
