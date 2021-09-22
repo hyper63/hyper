@@ -113,8 +113,8 @@ export function hyperRouter(services) {
 
   app.get("/", (_req, res) => {
     res.send({
-      name: "hyper63",
-      version: "unstable",
+      name: "hyper",
+      version: "1.0-alpha",
       services: Object
         .keys(services)
         .filter((k) => k !== "events")
@@ -124,7 +124,6 @@ export function hyperRouter(services) {
     });
   });
 
-  // TODO: Tyler. Add a favicon?
   app.get("/favicon.ico", (_req, res) => res.sendStatus(204));
 
   // All of these args need to be specified, or it won't be invoked on error

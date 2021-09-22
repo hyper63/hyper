@@ -1,18 +1,11 @@
 {
-  "name": "@hyper63/monorepo",
+  "name": "hyper/monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "service gateway",
-  "repository": "git@github.com:hyper63/hyper63.git",
+  "description": "one api, many services...",
+  "repository": "git@github.com:hyper63/hyper.git",
   "license": "MIT",
-  "author": "Tom Wilson <twilson63@gmail.com>",
-  "workspaces": [
-    "images/dev",
-    "images/couchdb",
-    "images/micro",
-    "images/test",
-    "launcher"
-  ],
+  "author": "hyper <team@hyper.io>",
   "scripts": {
     "prepare": "husky install"
   },
