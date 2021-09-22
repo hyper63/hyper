@@ -1,5 +1,5 @@
 export { default as hyper } from "https://x.nest.land/hyper@1.4.9/mod.js";
-export { default as app } from "https://x.nest.land/hyper-app-opine@1.2.4/mod.js";
+export { default as app } from "https://x.nest.land/hyper-app-opine@1.2.5/mod.js";
 //export { default as app } from "../../packages/app-opine/mod.js";
 
 // adapters
