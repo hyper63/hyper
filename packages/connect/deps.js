@@ -9,7 +9,7 @@ const jwtLib = globalThis.Deno
   : "jsonwebtoken";
 
 if (globalThis.Deno) {
-  crocks = (await import(crockLib)).default;
+  crocks = (await import(crocksLib)).default;
   R = await import(RLib);
   signJWT = (await import(jwtLib)).create;
 } else {
@@ -19,5 +19,5 @@ if (globalThis.Deno) {
   signJWT = (headers, payload, secret) =>
     jwt(payload, secret, { algorithm: headers.alg });
 }
-  
+
 export { crocks, R, signJWT };
