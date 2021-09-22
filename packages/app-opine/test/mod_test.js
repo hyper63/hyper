@@ -14,7 +14,7 @@ Deno.test("GET /", async () => {
     .get("/")
     .expect(200);
 
-  assertEquals(res.body.name, "hyper63");
+  assertEquals(res.body.name, "hyper");
 });
 
 Deno.test("GET /foobarbaz", async () => {
