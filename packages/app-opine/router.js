@@ -139,5 +139,10 @@ export function hyperRouter(services) {
     }
   });
 
+  // handle fall through case, if not handled above then return 404
+  app.use((_req, res) => {
+    res.setStatus(404).json({ ok: false, msg: "not found!" });
+  });
+
   return app;
 }
