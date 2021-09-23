@@ -17,7 +17,7 @@ if (globalThis.Deno) {
   R = (await import(RLib)).default;
   jwt = (await import(jwtLib));
   signJWT = (headers, payload, secret) =>
-    jwt(payload, secret, { algorithm: headers.alg });
+    Promise.resolve(jwt.sign(payload, secret, { algorithm: headers.alg }));
 }
 
 export { crocks, R, signJWT };
