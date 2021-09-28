@@ -1,5 +1,5 @@
 import crocks from "crocks";
-import { assoc, map } from "ramda";
+import { assoc, map, over, lensProp, concat } from "ramda";
 import { $fetch, toJSON } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
@@ -18,72 +18,73 @@ const docs = [
   { id: "1009", type: "movie", title: "Life Aquatic" },
 ];
 
+const getDocs = prefix => map(over(lensProp('id'), concat(prefix)))
 export default function (data) {
-  const setup = () =>
-    $fetch(data.bulk(docs))
+  const setup = (prefix) =>
+    $fetch(data.bulk(getDocs(prefix)(docs)))
       .chain(toJSON);
 
   const listDocuments = (flags = {}) => $fetch(data.list(flags)).chain(toJSON);
 
-  const tearDown = () =>
-    Async.of(docs)
+  const tearDown = (prefix) => () =>
+    Async.of(getDocs(prefix)(docs))
       .map(map(assoc("_deleted", true)))
       .chain((docs) => $fetch(data.bulk(docs)))
       .chain(toJSON);
 
   test("GET /data/test - get docs with no flags", () =>
-    setup()
+    setup('a')
       .chain(listDocuments)
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 9), r))
-      .chain(tearDown)
+      .chain(tearDown('a'))
       .toPromise());
 
   test("GET /data/test?keys=['1002', '1005', '1008']", () =>
-    setup()
+    setup('b')
       .chain(() => listDocuments({ keys: ["1002", "1005", "1008"] }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 3), r))
-      .chain(tearDown)
+      .chain(tearDown('b'))
       .toPromise());
 
   test("GET /data/test?startkey=1004", () =>
-    setup()
-      .chain(() => listDocuments({ startkey: "1004" }))
+    setup('c')
+      .chain(() => listDocuments({ startkey: "c1004" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 6), r))
-      .chain(tearDown)
+      .chain(tearDown('c'))
       .toPromise());
 
   test("GET /data/test?endkey=1008", () =>
-    setup()
-      .chain(() => listDocuments({ endkey: "1008" }))
+    setup('d')
+      .chain(() => listDocuments({ endkey: "d1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 8), r))
-      .chain(tearDown)
+      .chain(tearDown('d'))
       .toPromise());
 
   test("GET /data/test?startkey=1004&endkey=1008", () =>
-    setup()
-      .chain(() => listDocuments({ startkey: "1004", endkey: "1008" }))
+    setup('e')
+      .chain(() => listDocuments({ startkey: "e1004", endkey: "e1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 5), r))
-      .chain(tearDown)
+      .chain(tearDown('e'))
       .toPromise());
 
   test("GET /data/test?limt=2", () =>
-    setup()
+    setup('f')
       .chain(() => listDocuments({ limit: 2 }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 2), r))
-      .chain(tearDown)
+      .chain(tearDown('f'))
       .toPromise());
 
   test("GET /data/test?descending=true", () =>
-    setup()
+    setup('g')
       .chain(() => listDocuments({ descending: true }))
       .map((r) => (assertEquals(r.ok, true), r))
-      .map((r) => (assertEquals(r.docs[r.docs.length - 1].id, "1001"), r))
-      .chain(tearDown)
+      .map((r) => (assertEquals(r.docs[r.docs.length - 1].id, "g1001"), r))
+      .chain(tearDown('g'))
       .toPromise());
 }
