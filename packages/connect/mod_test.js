@@ -63,6 +63,17 @@ test("DATA: bulk documents", async () => {
   assertEquals(await req.json(), [{ id: "x-1" }, { id: "x-2" }]);
 });
 
+test("DATA: index database", async () => {
+  const req = await hyper.data.index("idx-name", ["type", "title"]);
+  assertEquals(req.url, "http://localhost:6363/data/test/_index");
+  assertEquals(req.method, "POST");
+  assertEquals(await req.json(), {
+    fields: ["type", "title"],
+    name: "idx-name",
+    type: "json",
+  });
+});
+
 test("CACHE: add key/value", async () => {
   const req = await hyper.cache.add("x-1", {
     type: "test",

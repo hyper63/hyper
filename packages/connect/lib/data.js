@@ -62,11 +62,11 @@ const index = (name, fields) =>
     .map((req) =>
       new Request(req, {
         method: "POST",
-        body: {
-          index: { fields },
+        body: JSON.stringify({
+          fields,
           name,
           type: "json",
-        },
+        }),
       })
     );
 
