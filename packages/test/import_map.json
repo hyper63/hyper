@@ -7,6 +7,6 @@
     "sha256": "https://deno.land/std@0.107.0/hash/sha256.ts",
     "crocks": "https://cdn.skypack.dev/crocks@0.12.4",
     "ramda": "https://cdn.skypack.dev/ramda@0.27.1",
-    "hyper-connect": "https://x.nest.land/hyper-connect@0.0.4/mod.js"
+    "hyper-connect": "https://x.nest.land/hyper-connect@0.0.6/mod.js"
   }
 }
