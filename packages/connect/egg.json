@@ -13,6 +13,7 @@
     "./deps.js",
     "./egg.json",
     "./mod.js",
+    "./proxy.js",
     "./README.md",
     "./utils.js",
     "./lib/*.js"
