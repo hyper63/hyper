@@ -1,5 +1,5 @@
 {
-  "name": "hyper/monorepo",
+  "name": "@hyper/monorepo",
   "version": "1.0.0",
   "private": true,
   "description": "one api, many services...",
