@@ -25,7 +25,7 @@ export default function (services) {
 
   if (env !== "test") {
     app.listen(port);
-    console.log("hyper63 service listening on port ", port);
+    console.log("hyper service listening on port ", port);
   }
 
   return app;
