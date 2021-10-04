@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        deno-version: [1.13.x, 1.14.x]
+        deno-version: [1.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Deno ${{ matrix.deno-version }}

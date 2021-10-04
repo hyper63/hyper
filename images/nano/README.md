@@ -1,4 +1,4 @@
-<h1 align="center">hyper {nano}</h1>
+<h1 align="center">⚡️ hyper {nano} ⚡️</h1>
 <p align="center">
   hyper nano version is a standalone developer instance of hyper, this version gives you
   the ability to run hyper locally with no config setup.
