@@ -38,10 +38,11 @@ export const apply = (method) =>
         } catch (e) {
           let msg = "";
           console.log(e);
+          // TODO: Tyler. Is this handling still in use?
           if (e.errors) {
             msg = e.errors.map((x) => x.code).join(",");
           }
-          return reject({ ok: false, msg });
+          return reject({ ok: false, status: e.status, msg });
         }
       });
       // return async(data)
