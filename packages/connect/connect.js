@@ -7,47 +7,58 @@ export default function (connectionString) {
   const cs = new URL(connectionString);
   const br = buildRequest(cs);
 
-  const $ = (svc, client, action, ...args) => {
-    return client[action](...args).runWith(br(svc)).toPromise();
+  const $ = ({ svc, domain }, client, action, ...args) => {
+    return client[action](...args).runWith(br(svc, domain)).toPromise();
   };
 
   /**
    * @param {string} domain
    */
-  return function (_domain = "default") {
+  return function (domain) {
     return {
       data: {
-        add: (body) => $("data", data, "add", body),
-        list: (params) => $("data", data, "list", params),
-        get: (id) => $("data", data, "get", id),
-        update: (id, body) => $("data", data, "update", id, body),
-        remove: (id) => $("data", data, "remove", id),
+        add: (body) => $({ svc: "data", domain }, data, "add", body),
+        list: (params) => $({ svc: "data", domain }, data, "list", params),
+        get: (id) => $({ svc: "data", domain }, data, "get", id),
+        update: (id, body) =>
+          $({ svc: "data", domain }, data, "update", id, body),
+        remove: (id) => $({ svc: "data", domain }, data, "remove", id),
         query: (selector, options) =>
-          $("data", data, "query", selector, options),
-        bulk: (docs) => $("data", data, "bulk", docs),
-        create: () => $("data", data, "create"),
-        destroy: (confirm) => $("data", data, "destroy", confirm),
-        index: (name, fields) => $("data", data, "index", name, fields),
+          $({ svc: "data", domain }, data, "query", selector, options),
+        bulk: (docs) => $({ svc: "data", domain }, data, "bulk", docs),
+        create: () => $({ svc: "data", domain }, data, "create"),
+        destroy: (confirm) =>
+          $({ svc: "data", domain }, data, "destroy", confirm),
+        index: (name, fields) =>
+          $({ svc: "data", domain }, data, "index", name, fields),
       },
       cache: {
-        create: () => $("cache", cache, "create"),
-        destroy: (confirm) => $("cache", cache, "destroy", confirm),
-        add: (key, value, ttl) => $("cache", cache, "add", key, value, ttl),
-        remove: (key) => $("cache", cache, "remove", key),
-        get: (key) => $("cache", cache, "get", key),
-        set: (key, value, ttl) => $("cache", cache, "set", key, value, ttl),
-        query: (pattern) => $("cache", cache, "query", pattern),
+        create: () => $({ svc: "cache", domain }, cache, "create"),
+        destroy: (confirm) =>
+          $({ svc: "cache", domain }, cache, "destroy", confirm),
+        add: (key, value, ttl) =>
+          $({ svc: "cache", domain }, cache, "add", key, value, ttl),
+        remove: (key) => $({ svc: "cache", domain }, cache, "remove", key),
+        get: (key) => $({ svc: "cache", domain }, cache, "get", key),
+        set: (key, value, ttl) =>
+          $({ svc: "cache", domain }, cache, "set", key, value, ttl),
+        query: (pattern) =>
+          $({ svc: "cache", domain }, cache, "query", pattern),
       },
       search: {
         create: (fields, storeFields) =>
-          $("search", search, "create", fields, storeFields),
-        destroy: (confirm) => $("search", search, "destroy", confirm),
-        add: (key, doc) => $("search", search, "add", key, doc),
-        remove: (key) => $("search", search, "remove", key),
-        get: (key) => $("search", search, "get", key),
-        update: (key, doc) => $("search", search, "update", key, doc),
-        query: (query, options) => $("search", search, "query", query, options),
-        load: (docs) => $("search", search, "load", docs),
+          $({ svc: "search", domain }, search, "create", fields, storeFields),
+        destroy: (confirm) =>
+          $({ svc: "search", domain }, search, "destroy", confirm),
+        add: (key, doc) =>
+          $({ svc: "search", domain }, search, "add", key, doc),
+        remove: (key) => $({ svc: "search", domain }, search, "remove", key),
+        get: (key) => $({ svc: "search", domain }, search, "get", key),
+        update: (key, doc) =>
+          $({ svc: "search", domain }, search, "update", key, doc),
+        query: (query, options) =>
+          $({ svc: "search", domain }, search, "query", query, options),
+        load: (docs) => $({ svc: "search", domain }, search, "load", docs),
       },
       info: {
         isCloud: cs.protocol === "cloud:",

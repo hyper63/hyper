@@ -8,6 +8,18 @@ const test = Deno.test;
 
 const hyper = connect("http://localhost:6363/test")();
 
+test("CLOUD: build cloud url", async () => {
+  let hyper = connect("cloud://cloud.hyper.io/app")();
+  let req = await hyper.data.list();
+  assertEquals(req.url, "https://cloud.hyper.io/app/data/default?");
+  assertEquals(req.method, "GET");
+
+  hyper = connect("cloud://cloud.hyper.io/app")("domain");
+  req = await hyper.data.list();
+  assertEquals(req.url, "https://cloud.hyper.io/app/data/domain?");
+  assertEquals(req.method, "GET");
+});
+
 test("HYPER: get info", () => {
   assert(!hyper.info.isCloud);
 });
