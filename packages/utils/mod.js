@@ -1,1 +1,1 @@
-export { deepSwap } from './deep-swap.js'
+export { deepSwap } from "./deep-swap.js";
