@@ -25,9 +25,9 @@ test("HYPER: get info", () => {
 });
 
 test("HYPER: build url", async () => {
-  const hyper = connect("http://localhost:6363")("domain");
+  const hyper = connect("cloud://cloud.hyper.io/app")("domain");
   const req = await hyper.data.list();
-  assertEquals(req.url, "http://localhost:6363/data/domain?");
+  assertEquals(req.url, "https://cloud.hyper.io/app/data/domain?");
   assertEquals(req.method, "GET");
 });
 
