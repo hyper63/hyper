@@ -43,7 +43,7 @@ export default function (data) {
 
   test("GET /data/test?keys=['1002', '1005', '1008']", () =>
     setup("b")
-      .chain(() => listDocuments({ keys: ["1002", "1005", "1008"] }))
+      .chain(() => listDocuments({ keys: ["b1002", "b1005", "b1008"] }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 3), r))
       .chain(tearDown("b"))
