@@ -1,5 +1,5 @@
 <h1 align="center">⚡️ hyper-utils ⚡️</h1>
-<p align="center">hyper utillity functions</p>
+<p align="center">hyper utility functions</p>
 
 ---
 
