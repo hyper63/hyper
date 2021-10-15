@@ -5,7 +5,7 @@
   "description": "hyper client to connect to hyper services",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "unstable": false,
   "unlisted": false,
   "files": [
