@@ -13,7 +13,7 @@ if (globalThis.Deno) {
   R = await import(RLib);
   signJWT = (await import(jwtLib)).create;
 } else {
-  crocks = (await import(crockLib)).default;
+  crocks = (await import(crocksLib)).default;
   R = (await import(RLib)).default;
   jwt = (await import(jwtLib));
   signJWT = (headers, payload, secret) =>

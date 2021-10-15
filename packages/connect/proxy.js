@@ -1,6 +1,11 @@
 import connect from "./connect.js";
 
-const h = connect(Deno.env.get("HYPER") || "http://localhost:6363/app")();
+let h;
+if (globalThis.Deno) {
+  h = connect(Deno.env.get("HYPER") || "http://localhost:6363/app")();
+} else {
+  h = connect(process.env.HYPER || "http://localhost:6363/app")();
+}
 
 const SERVICES = ["data", "storage", "search", "cache", "queue"];
 const ACTIONS = [
