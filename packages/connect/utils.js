@@ -5,8 +5,13 @@ const { assoc, lensPath, over, ifElse, defaultTo, identity } = R;
 
 export const buildRequest = (cs) =>
   (service, domain) => {
-    const createToken = (u, p) =>
-      signJWT({ alg: "HS256", type: "JWT" }, { sub: u }, p);
+    const createToken = (u, p) => {
+      // JWT defines exp as IEEE Std 1003.1, 2013 Edition [POSIX.1] definition "Seconds Since the Epoch"
+      // expires in 5 minutes
+      const exp = Math.floor(Date.now() / 1000) + (60 * 5);
+      return signJWT({ alg: "HS256", type: "JWT" }, { sub: u, exp }, p);
+    };
+
     let app = cs.pathname;
     if (service === "_root") {
       app = "";
