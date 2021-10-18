@@ -2,6 +2,9 @@ import {
   assert,
   assertEquals,
 } from "https://deno.land/std@0.107.0/testing/asserts.ts";
+
+import { decode } from "https://deno.land/x/djwt@v2.1/mod.ts";
+
 import connect from "./mod.js";
 
 const test = Deno.test;
@@ -18,6 +21,17 @@ test("CLOUD: build cloud url", async () => {
   req = await hyper.data.list();
   assertEquals(req.url, "https://cloud.hyper.io/app/data/domain?");
   assertEquals(req.method, "GET");
+});
+
+test("HYPER: generates short lived bearer token", async () => {
+  const fiveMin = (60 * 5) + 10; // 5:10 in seconds
+  const hyper = connect("cloud://foo:password@cloud.hyper.io/app")();
+  const { headers } = await hyper.data.list();
+
+  assert(headers.get("authorization"));
+
+  const jwt = headers.get("authorization").split(" ").pop();
+  assert(decode(jwt).payload.exp - (Date.now() / 1000) < fiveMin);
 });
 
 test("HYPER: get info", () => {
