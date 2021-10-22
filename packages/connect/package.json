@@ -5,8 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "jose": "^4.1.1",
-    "node-fetch": "^3.0.0"
+    "jose": "^4.1.1"
   },
   "engines": {
     "node": "^16.x.x"
