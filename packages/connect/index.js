@@ -1,6 +1,7 @@
-import { Request } from "node-fetch";
-import connect from "./connect.js";
+import fetch, { Request } from "node-fetch";
+import connect from "./nodejs/index.js";
 
-globalThis.Request = Request;
+if (!globalThis.Request) globalThis.Request = Request;
+if (!globalThis.fetch) globalThis.fetch = fetch;
 
 export default connect;
