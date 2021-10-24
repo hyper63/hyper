@@ -5,10 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "crocks": "^0.12.4",
-    "jsonwebtoken": "^8.5.1",
-    "node-fetch": "^3.0.0",
-    "ramda": "^0.27.1"
+    "jose": "^4.1.1"
   },
   "engines": {
     "node": "^16.x.x"
