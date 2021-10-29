@@ -49,19 +49,17 @@ call to invoke your request and receive a response.
 
 ```js
 import connect from "hyper-connect";
-import fetch from "node-fetch";
+
+// > NOTE: You need to make fetch and Request available globally
 
 const HYPER = process.env.get["HYPER"]; // connect string: cloud://key:secret@cloud.hyper.io/:app
 
 const hyper = connect(HYPER)();
 
-const docs = await fetch(await hyper.data.list()).then((r) => r.json());
-const userSession = await fetch(await hyper.cache.get(user)).then((r) =>
-  r.json()
-);
-const result = await fetch(await hyper.search.query(criteria)).then((r) =>
-  r.json()
-);
+const docs = await hyper.data.list();
+const userSession = await hyper.cache.get(user));
+
+const result = await hyper.search.query(criteria);
 ```
 
 ---
