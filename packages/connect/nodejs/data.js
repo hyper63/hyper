@@ -43,5 +43,20 @@ export default function (hyper) {
      */
     bulk: (docs) =>
       hyper({ service, method: "POST", action: "_bulk", body: docs }),
+    /**
+     * @param {string} indexName
+     * @param {Array<String>} fields
+     */
+    index: (indexName, fields) =>
+      hyper({
+        service,
+        method: "POST",
+        action: "_index",
+        body: {
+          fields,
+          name: indexName,
+          type: "JSON",
+        },
+      }),
   });
 }
