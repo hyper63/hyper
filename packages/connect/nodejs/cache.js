@@ -20,16 +20,26 @@ export default function (hyper) {
     /**
      * @param {string} key
      * @param {Object} value
-     * @param {string} ttl
+     * @param {string} [ttl]
      */
-    set: (key, value, ttl) =>
-      hyper({
-        service,
-        method: "PUT",
-        resource: key,
-        params: { ttl },
-        body: value,
-      }),
+    set: (key, value, ttl) => {
+      if (ttl) {
+        return hyper({
+          service,
+          method: "PUT",
+          resource: key,
+          params: { ttl },
+          body: value,
+        });
+      } else {
+        return hyper({
+          service,
+          method: "PUT",
+          resource: key,
+          body: value,
+        });
+      }
+    },
     /**
      * @param {string} pattern
      */
