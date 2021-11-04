@@ -18,6 +18,9 @@ export default function connect(s) {
         if (r.ok) {
           return r.json();
         } else {
+          if (r.headers.get("content-type").includes("application/json")) {
+            return r.json();
+          }
           return r.text().then((txt) => ({
             ok: r.ok,
             code: r.status,
