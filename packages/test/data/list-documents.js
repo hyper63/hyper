@@ -1,5 +1,5 @@
 import crocks from "crocks";
-import { assoc, concat, lensProp, map, over } from "ramda";
+import { assoc, map } from "ramda";
 import { $fetch, toJSON } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
