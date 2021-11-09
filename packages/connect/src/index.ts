@@ -78,6 +78,26 @@ export function connect(
           .then(cache.add(key, value, ttl))
           .then(fetch)
           .then(handleResponse),
+      get: (key) =>
+        Promise.resolve(h)
+          .then(cache.get(key))
+          .then(fetch)
+          .then(handleResponse),
+      remove: (key) =>
+        Promise.resolve(h)
+          .then(cache.remove(key))
+          .then(fetch)
+          .then(handleResponse),
+      set: (key, value, ttl) =>
+        Promise.resolve(h)
+          .then(cache.set(key, value, ttl))
+          .then(fetch)
+          .then(handleResponse),
+      query: (pattern) =>
+        Promise.resolve(h)
+          .then(cache.query(pattern))
+          .then(fetch)
+          .then(handleResponse),
     },
   };
 }

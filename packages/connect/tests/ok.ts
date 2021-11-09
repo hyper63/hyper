@@ -1,8 +1,8 @@
-import { test } from 'uvu'
-import * as assert from 'uvu/assert'
+import { test } from "uvu";
+import * as assert from "uvu/assert";
 
-test('ok', () => {
-  assert.ok(true)
-})
+test("ok", () => {
+  assert.ok(true);
+});
 
-test.run()
+test.run();

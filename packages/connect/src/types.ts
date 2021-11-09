@@ -43,6 +43,10 @@ export interface HyperData {
 
 export interface HyperCache {
   add: <Type>(key: string, value: Type, ttl?: string) => Promise<Result>;
+  get: <Type>(key: string) => Promise<Type>;
+  remove: (key: string) => Promise<Result>;
+  set: <Type>(key: string, value: Type, ttl?: string) => Promise<Result>;
+  query: <Type>(pattern: string) => Promise<Results<Type>>;
 }
 
 export interface Hyper {

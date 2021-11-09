@@ -1,6 +1,6 @@
 import { SignJWT } from "jose";
 import { assoc } from "ramda";
-import { Method, HyperRequest } from '../types'
+import { HyperRequest, Method } from "../types";
 import { Headers } from "node-fetch";
 
 // deno-lint-ignore no-explicit-any
