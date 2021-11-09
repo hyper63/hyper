@@ -1,5 +1,3 @@
-import { Request } from "node-fetch";
-
 export enum SortOptions {
   DESC = "DESC",
   ASC = "ASC",

@@ -24,7 +24,7 @@ INSERT BADGES HERE
 
 ### NodeJS
 
-``` sh
+```sh
 npm install hyper-connect
 ```
 
@@ -33,45 +33,43 @@ npm install hyper-connect
 ### NodeJS (TypeScript)
 
 ```ts
-import { connect } from 'hyper-connect'
+import { connect } from "hyper-connect";
 
-const hyper = connect(process.env.HYPER as string)
+const hyper = connect(process.env.HYPER as string);
 
-await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
-await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
-await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
+await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
+await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 
-const results = await hyper.data.query({type: 'game'})
-
+const results = await hyper.data.query({ type: "game" });
 ```
 
 ### NodeJS (ESM)
 
 ```js
-import { connect } from 'hyper-connect'
+import { connect } from "hyper-connect";
 
-const hyper = connect(process.env.HYPER)
+const hyper = connect(process.env.HYPER);
 
-await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
-await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
-await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
+await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
+await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 
-const results = await hyper.data.query({type: 'game'})
-
+const results = await hyper.data.query({ type: "game" });
 ```
 
 ### NodeJS (CJS)
 
 ```js
-const { connect } = require('hyper-connect')
+const { connect } = require("hyper-connect");
 
-const hyper = connect(process.env.HYPER)
+const hyper = connect(process.env.HYPER);
 
-await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
-await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
-await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
+await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
+await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 
-const results = await hyper.data.query({type: 'game'})
+const results = await hyper.data.query({ type: "game" });
 ```
 
 ### Deno
@@ -83,18 +81,16 @@ const HYPER = Deno.env.get("HYPER"); // connect string: cloud://key:secret@cloud
 
 const hyper = connect(HYPER)();
 
-await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
-await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
-await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
+await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
+await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 
-const results = await hyper.data.query({type: 'game'})
-
+const results = await hyper.data.query({ type: "game" });
 ```
 
 With hyper-connect you can access all of the hyper services and get back a
 Request object via a promise, then you can add that request object to your fetch
 call to invoke your request and receive a response.
-
 
 ## Examples
 
@@ -109,21 +105,21 @@ const doc = {
 };
 
 const result = await hyper.data.add(doc);
-console.log(result) // {ok: true, id: "movie-1"}
+console.log(result); // {ok: true, id: "movie-1"}
 ```
 
 ### How to get all the documents of type 'movie'?
 
 ```js
 const result = await hyper.data.query({ type: "movie" });
-console.log(result) // {ok: true, docs: [...]}
+console.log(result); // {ok: true, docs: [...]}
 ```
 
 ### How to add a cache key/value pair to hyper cache?
 
 ```js
 const result = await hyper.cache.add("key", { counter: 1 });
-console.log(result) // {ok: true}
+console.log(result); // {ok: true}
 ```
 
 ## Documentation
@@ -164,8 +160,8 @@ of the action.
 | search  | add    | indexes a json document in the hyper search index |
 | search  | get    | retrieves a document from index                   |
 | search  | remove | removes a document from the index                 |
-| search  | query | searches index by text                             |
-| search  | load | loads a batch of documents                          |
+| search  | query  | searches index by text                            |
+| search  | load   | loads a batch of documents                        |
 
 ---
 
