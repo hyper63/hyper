@@ -13,7 +13,7 @@
   "unpkg": "./dist/index.umd.js",
   "scripts": {
     "build": "microbundle",
-    "test": "loadr -- uvu tests"
+    "test": "deno lint src && deno fmt --check src && loadr -- uvu tests"
   },
   "license": "MIT",
   "dependencies": {

@@ -1,3 +1,4 @@
+import { Request } from "node-fetch";
 import { ListOptions, QueryOptions } from "./services/data";
 
 export enum Method {
@@ -8,15 +9,10 @@ export enum Method {
   PATCH = "PATCH",
 }
 
-enum Action {
+export enum Action {
   QUERY = "_query",
   BULK = "_bulk",
   INDEX = "_index",
-}
-
-enum Service {
-  DATA = "data",
-  CACHE = "cache",
 }
 
 export interface Result {
@@ -55,12 +51,13 @@ export interface Hyper {
 }
 
 export interface HyperRequest {
-  service: Service;
+  service: "data" | "cache" | "storage" | "search" | "queue";
   method: Method;
   resource?: string;
   body?: unknown;
-  params?: unknown;
+  // deno-lint-ignore no-explicit-any
+  params?: undefined | Record<string, any>;
   action?: Action;
 }
 
-export type HyperRequestFunction = (request: HyperRequest) => Request;
+export type HyperRequestFunction = (request: HyperRequest) => Promise<Request>;

@@ -1,1 +1,1 @@
-export const loaders = ['tsm'];
+export const loaders = ["tsm"];

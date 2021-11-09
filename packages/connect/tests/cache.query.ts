@@ -8,7 +8,7 @@ test("cache.query", () => {
   assert.is(request.service, "cache");
   assert.is(request.method, "POST");
   assert.is(request.action, "_query");
-  assert.is(request.params.pattern, "game*")
+  assert.is(request.params.pattern, "game*");
 });
 
 test.run();
