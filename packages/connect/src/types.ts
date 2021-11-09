@@ -102,7 +102,7 @@ export interface Hyper {
 }
 
 export interface HyperRequest {
-  service: "data" | "cache" | "storage" | "search" | "queue";
+  service: "data" | "cache" | "storage" | "search" | "queue" | "info";
   method: Method;
   resource?: string;
   body?: unknown;

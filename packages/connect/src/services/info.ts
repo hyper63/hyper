@@ -1,4 +1,4 @@
-import { HyperRequestFunction, Method } from "../types.ts";
+import { HyperRequestFunction, Method } from "../types";
 
 const service = "info" as const;
 
