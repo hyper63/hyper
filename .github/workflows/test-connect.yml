@@ -20,3 +20,12 @@ jobs:
       - run: cd packages/connect && ./scripts/test.sh
         env:
           CI: true
+  build-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: cd packages/connect && yarn && yarn test && yarn build
