@@ -1,35 +1,9 @@
 import * as data from "./services/data";
-import { ListOptions, QueryOptions } from "./services/data";
-import { hyper, HyperRequest } from "./utils/hyper-request";
+import * as cache from "./services/cache";
+import { Hyper, HyperRequest } from "./types";
+import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
 import { ifElse } from "ramda";
-
-interface Result {
-  ok: boolean;
-  id?: string;
-  msg?: string;
-}
-
-interface Results<Type> {
-  ok: boolean;
-  docs: Type[];
-}
-
-export interface HyperData {
-  add: <Type>(body: Type) => Promise<Result>;
-  get: <Type>(id: string) => Promise<Type | Result>;
-  list: <T>(options?: ListOptions) => Promise<Results<T>>;
-  update: <Type>(id: string, doc: Type) => Promise<Result>;
-  remove: (id: string) => Promise<Result>;
-  query: <T>(selector: unknown, options?: QueryOptions) => Promise<Results<T>>;
-  index: (name: string, fields: string[]) => Promise<Result>;
-  bulk: <Type>(docs: Array<Type>) => Promise<Result>;
-}
-
-interface Hyper {
-  data: HyperData;
-}
-
 
 export function connect(
   CONNECTION_STRING: string,
@@ -95,6 +69,13 @@ export function connect(
       index: (indexName, fields) =>
         Promise.resolve(h)
           .then(data.index(indexName, fields))
+          .then(fetch)
+          .then(handleResponse),
+    },
+    cache: {
+      add: (key, value, ttl) =>
+        Promise.resolve(h)
+          .then(cache.add(key, value, ttl))
           .then(fetch)
           .then(handleResponse),
     },

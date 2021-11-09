@@ -1,34 +1,7 @@
 import { SignJWT } from "jose";
 import { assoc } from "ramda";
+import { Method, HyperRequest } from '../types'
 import { Headers } from "node-fetch";
-
-enum Service {
-  DATA = "data",
-  CACHE = "cache",
-}
-
-enum Method {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  DELETE = "DELETE",
-  PATCH = "PATCH",
-}
-
-enum Action {
-  QUERY = "_query",
-  BULK = "_bulk",
-  INDEX = "_index",
-}
-
-export interface HyperRequest {
-  service: Service;
-  method: Method;
-  resource?: string;
-  body?: unknown;
-  params?: unknown;
-  action?: Action;
-}
 
 // deno-lint-ignore no-explicit-any
 const generateToken = async (sub: string, secret: any) => {
