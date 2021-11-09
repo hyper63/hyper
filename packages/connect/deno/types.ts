@@ -82,14 +82,25 @@ export interface HyperSearch {
   load: <Type>(docs: Type[]) => Promise<Result>;
 }
 
+interface HyperInfoServicesResult {
+  name: string;
+  version: string;
+  services: string[];
+}
+
+export interface HyperInfo {
+  services: () => Promise<HyperInfoServicesResult>;
+}
+
 export interface Hyper {
   data: HyperData;
   cache: HyperCache;
   search: HyperSearch;
+  info: HyperInfo;
 }
 
 export interface HyperRequest {
-  service: "data" | "cache" | "storage" | "search" | "queue";
+  service: "data" | "cache" | "storage" | "search" | "queue" | "info";
   method: Method;
   resource?: string;
   body?: unknown;

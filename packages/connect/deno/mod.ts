@@ -1,6 +1,7 @@
 import * as data from "./services/data.ts";
 import * as cache from "./services/cache.ts";
 import * as search from "./services/search.ts";
+import * as info from "./services/info.ts";
 import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 import { R } from "./deps.ts";
@@ -133,6 +134,13 @@ export function connect(
       load: (docs) =>
         Promise.resolve(h)
           .then(search.load(docs))
+          .then(fetch)
+          .then(handleResponse),
+    },
+    info: {
+      services: () =>
+        Promise.resolve(h)
+          .then(info.services())
           .then(fetch)
           .then(handleResponse),
     },

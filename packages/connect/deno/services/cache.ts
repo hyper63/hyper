@@ -1,4 +1,9 @@
-import { Action, HyperRequest, HyperRequestFunction, Method } from "../types";
+import {
+  Action,
+  HyperRequest,
+  HyperRequestFunction,
+  Method,
+} from "../types.ts";
 
 const service = "cache" as const;
 

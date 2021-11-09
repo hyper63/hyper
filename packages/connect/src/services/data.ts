@@ -1,4 +1,10 @@
-import { Action, HyperRequestFunction, Method, ListOptions, QueryOptions } from "../types";
+import {
+  Action,
+  HyperRequestFunction,
+  ListOptions,
+  Method,
+  QueryOptions,
+} from "../types";
 
 const service = "data" as const;
 

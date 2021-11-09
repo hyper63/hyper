@@ -24,17 +24,17 @@ export const update = (key: string, doc: unknown) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.PUT, resource: key, body: doc });
 
-export const query = (query: string, options: SearchQueryOptions) =>
+export const query = (query: string, options?: SearchQueryOptions) =>
   (hyper: HyperRequestFunction) =>
     hyper(
       [{ service, method: Method.POST, action: Action.QUERY, body: { query } }]
         .map((r) =>
-          options.fields
+          options && options.fields
             ? set(lensPath(["body", "fields"]), options.fields, r)
             : r
         )
         .map((r) =>
-          options.filter
+          options && options.filter
             ? set(lensPath(["body", "filter"]), options.filter, r)
             : r
         )[0],

@@ -1,6 +1,8 @@
 import * as data from "./services/data";
 import * as cache from "./services/cache";
 import * as search from "./services/search";
+import * as info from "./services/info";
+
 import { Hyper, HyperRequest } from "./types";
 import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
@@ -129,6 +131,13 @@ export function connect(
       load: (docs) =>
         Promise.resolve(h)
           .then(search.load(docs))
+          .then(fetch)
+          .then(handleResponse),
+    },
+    info: {
+      services: () =>
+        Promise.resolve(h)
+          .then(info.services())
           .then(fetch)
           .then(handleResponse),
     },

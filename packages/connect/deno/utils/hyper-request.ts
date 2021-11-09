@@ -48,6 +48,10 @@ export const hyper = (conn: URL, domain: string) =>
 
     let url = `${protocol}//${conn.host}${conn.pathname}/${service}/${domain}`;
 
+    if (service === "info") {
+      url = `${protocol}//${conn.host}`;
+    }
+
     if (resource) url += `/${resource}`;
     else if (action) url += `/${action}`;
 
