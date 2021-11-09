@@ -10,6 +10,7 @@ INSERT BADGES HERE
 
 ## Table of Contents
 
+- [Install](#install)
 - [Getting Started](#getting-started)
 - [Examples](#examples)
 - [Documentation](#documentation)
@@ -19,50 +20,81 @@ INSERT BADGES HERE
 
 ---
 
+## Install
+
+### NodeJS
+
+``` sh
+npm install hyper-connect
+```
+
 ## Getting Started
+
+### NodeJS (TypeScript)
+
+```ts
+import { connect } from 'hyper-connect'
+
+const hyper = connect(process.env.HYPER as string)
+
+await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
+await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
+await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+
+const results = await hyper.data.query({type: 'game'})
+
+```
+
+### NodeJS (ESM)
+
+```js
+import { connect } from 'hyper-connect'
+
+const hyper = connect(process.env.HYPER)
+
+await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
+await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
+await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+
+const results = await hyper.data.query({type: 'game'})
+
+```
+
+### NodeJS (CJS)
+
+```js
+const { connect } = require('hyper-connect')
+
+const hyper = connect(process.env.HYPER)
+
+await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
+await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
+await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+
+const results = await hyper.data.query({type: 'game'})
+```
 
 ### Deno
 
 ```js
-import connect from "https://x.nest.land/hyper-connect@VERSION/mod.js";
+import { connect } from "https://x.nest.land/hyper-connect@VERSION/mod.js";
 
 const HYPER = Deno.env.get("HYPER"); // connect string: cloud://key:secret@cloud.hyper.io/:app
 
 const hyper = connect(HYPER)();
 
-const docs = await fetch(await hyper.data.list()).then((r) => r.json());
-const userSession = await fetch(await hyper.cache.get(user)).then((r) =>
-  r.json()
-);
-const result = await fetch(await hyper.search.query(criteria)).then((r) =>
-  r.json()
-);
+await hyper.data.add({id: 'game-1', type: 'game', name: 'Donkey Kong'})
+await hyper.data.add({id: 'game-2', type: 'game', name: 'Pac Man'})
+await hyper.data.add({id: 'game-3', type: 'game', name: 'Galaga'})
+
+const results = await hyper.data.query({type: 'game'})
+
 ```
 
 With hyper-connect you can access all of the hyper services and get back a
 Request object via a promise, then you can add that request object to your fetch
 call to invoke your request and receive a response.
 
-### NodeJS
-
-`npm install hyper-connect`
-
-```js
-import connect from "hyper-connect";
-
-// > NOTE: You need to make fetch and Request available globally
-
-const HYPER = process.env.get["HYPER"]; // connect string: cloud://key:secret@cloud.hyper.io/:app
-
-const hyper = connect(HYPER)();
-
-const docs = await hyper.data.list();
-const userSession = await hyper.cache.get(user));
-
-const result = await hyper.search.query(criteria);
-```
-
----
 
 ## Examples
 
@@ -70,40 +102,28 @@ const result = await hyper.search.query(criteria);
 
 ```js
 const doc = {
-  id: "1",
+  id: "movie-1",
   type: "movie",
   title: "Dune",
   year: "2021",
 };
 
-const req = await hyper.data.add(doc);
-const response = await fetch(req);
-if (response.ok) {
-  const result = await response.json();
-  console.log(result);
-}
+const result = await hyper.data.add(doc);
+console.log(result) // {ok: true, id: "movie-1"}
 ```
 
 ### How to get all the documents of type 'movie'?
 
 ```js
-const req = await hyper.data.query({ type: "movie" });
-const response = await fetch(req);
-if (response.ok) {
-  const result = await response.json();
-  console.log(result);
-}
+const result = await hyper.data.query({ type: "movie" });
+console.log(result) // {ok: true, docs: [...]}
 ```
 
 ### How to add a cache key/value pair to hyper cache?
 
 ```js
-const req = await hyper.cache.add("key", { counter: 1 });
-const response = await fetch(req);
-if (response.ok) {
-  const result = await response.json();
-  console.log(result);
-}
+const result = await hyper.cache.add("key", { counter: 1 });
+console.log(result) // {ok: true}
 ```
 
 ## Documentation
@@ -144,7 +164,8 @@ of the action.
 | search  | add    | indexes a json document in the hyper search index |
 | search  | get    | retrieves a document from index                   |
 | search  | remove | removes a document from the index                 |
-| search  | search | searches index by text                            |
+| search  | query | searches index by text                             |
+| search  | load | loads a batch of documents                          |
 
 ---
 

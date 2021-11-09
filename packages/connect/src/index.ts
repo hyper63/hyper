@@ -1,5 +1,6 @@
 import * as data from "./services/data";
 import * as cache from "./services/cache";
+import * as search from "./services/search";
 import { Hyper, HyperRequest } from "./types";
 import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
@@ -96,6 +97,38 @@ export function connect(
       query: (pattern) =>
         Promise.resolve(h)
           .then(cache.query(pattern))
+          .then(fetch)
+          .then(handleResponse),
+    },
+    search: {
+      add: (key, doc) =>
+        Promise.resolve(h)
+          .then(search.add(key, doc))
+          .then(fetch)
+          .then(handleResponse),
+      remove: (key) =>
+        Promise.resolve(h)
+          .then(search.remove(key))
+          .then(fetch)
+          .then(handleResponse),
+      get: (key) =>
+        Promise.resolve(h)
+          .then(search.get(key))
+          .then(fetch)
+          .then(handleResponse),
+      update: (key, doc) =>
+        Promise.resolve(h)
+          .then(search.update(key, doc))
+          .then(fetch)
+          .then(handleResponse),
+      query: (query, options) =>
+        Promise.resolve(h)
+          .then(search.query(query, options))
+          .then(fetch)
+          .then(handleResponse),
+      load: (docs) =>
+        Promise.resolve(h)
+          .then(search.load(docs))
           .then(fetch)
           .then(handleResponse),
     },

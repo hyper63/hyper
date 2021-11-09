@@ -1,6 +1,6 @@
 import { Action, HyperRequestFunction, Method } from "../types";
 
-const service = "data";
+const service = "data" as const;
 
 export interface ListOptions {
   limit?: number;

@@ -26,13 +26,21 @@ export interface Results<Type> {
   docs: Type[];
 }
 
+export interface SearchQueryOptions {
+  fields: string[];
+  filter: Record<string, string>;
+}
+
 export interface HyperData {
   add: <Type>(body: Type) => Promise<Result>;
   get: <Type>(id: string) => Promise<Type | Result>;
-  list: <T>(options?: ListOptions) => Promise<Results<T>>;
+  list: <Type>(options?: ListOptions) => Promise<Results<Type>>;
   update: <Type>(id: string, doc: Type) => Promise<Result>;
   remove: (id: string) => Promise<Result>;
-  query: <T>(selector: unknown, options?: QueryOptions) => Promise<Results<T>>;
+  query: <Type>(
+    selector: unknown,
+    options?: QueryOptions,
+  ) => Promise<Results<Type>>;
   index: (name: string, fields: string[]) => Promise<Result>;
   bulk: <Type>(docs: Array<Type>) => Promise<Result>;
 }
@@ -45,9 +53,22 @@ export interface HyperCache {
   query: <Type>(pattern: string) => Promise<Results<Type>>;
 }
 
+export interface HyperSearch {
+  add: <Type>(key: string, doc: Type) => Promise<Result>;
+  remove: (key: string) => Promise<Result>;
+  get: <Type>(key: string) => Promise<Type>;
+  update: <Type>(key: string, doc: Type) => Promise<Result>;
+  query: <Type>(
+    query: string,
+    options: SearchQueryOptions,
+  ) => Promise<Results<Type>>;
+  load: <Type>(docs: Type[]) => Promise<Result>;
+}
+
 export interface Hyper {
   data: HyperData;
   cache: HyperCache;
+  search: HyperSearch;
 }
 
 export interface HyperRequest {
