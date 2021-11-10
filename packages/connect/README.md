@@ -75,7 +75,7 @@ const results = await hyper.data.query({ type: "game" });
 ### Deno
 
 ```js
-import { connect } from "https://x.nest.land/hyper-connect@VERSION/mod.js";
+import { connect } from "https://x.nest.land/hyper-connect@VERSION/deno/mod.ts";
 
 const HYPER = Deno.env.get("HYPER"); // connect string: cloud://key:secret@cloud.hyper.io/:app
 
@@ -88,9 +88,8 @@ await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 const results = await hyper.data.query({ type: "game" });
 ```
 
-With hyper-connect you can access all of the hyper services and get back a
-Request object via a promise, then you can add that request object to your fetch
-call to invoke your request and receive a response.
+With hyper-connect, you can access all of the hyper services. hyper-connect uses
+the fetch library to execute REST requests for you.
 
 ## Examples
 

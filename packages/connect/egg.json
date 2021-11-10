@@ -1,7 +1,7 @@
 {
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
   "name": "hyper-connect",
-  "entry": "./deno/mod.js",
+  "entry": "./deno/mod.ts",
   "description": "hyper client to connect to hyper services",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
@@ -11,7 +11,6 @@
   "files": [
     "./deno/*",
     "./egg.json",
-    "./deno/mod.js",
     "./README.md"
   ],
   "ignore": [
