@@ -1,3 +1,5 @@
+import { Request } from 'node-fetch'
+
 import { Action, HyperRequest, HyperRequestFunction, Method } from "../types";
 
 const service = "cache" as const;

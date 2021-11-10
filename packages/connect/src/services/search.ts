@@ -1,3 +1,5 @@
+import { Request } from 'node-fetch'
+
 import {
   Action,
   HyperRequestFunction,
