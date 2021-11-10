@@ -3,7 +3,8 @@
 hyper-connect is a client for [hyper](https://docs.hyper.io) - the client leverages the `Request` object from the fetch specification to construct a http request to send to the hyper server. The hyper-connect library handles all of the redundant details of a fetch request, so you can just specify the unique differences of your request.
 </p>
 <p align="center">
-INSERT BADGES HERE
+<a href="https://nest.land/package/hyper-connect"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
+  <a href="https://github.com/hyper63/hyper63/actions/workflows/test-connect.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/test-connect.yml/badge.svg" alt="Test" /></a>
 </p>
 
 ---
