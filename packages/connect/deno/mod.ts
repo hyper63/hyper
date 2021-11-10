@@ -21,7 +21,7 @@ export function connect(
   };
 
   // deno-lint-ignore no-explicit-any
-  const handleResponse : any = (response: Response) =>
+  const handleResponse: any = (response: Response) =>
     Promise.resolve(response)
       .then(
         ifElse(
