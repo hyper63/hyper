@@ -6,7 +6,7 @@ import * as info from "./services/info";
 import { Hyper, HyperRequest } from "./types";
 import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
-import { ifElse } from "ramda";
+import { assoc, contains, ifElse } from "ramda";
 
 export function connect(
   CONNECTION_STRING: string,
@@ -24,11 +24,13 @@ export function connect(
     Promise.resolve(response)
       .then(
         ifElse(
-          (r) => r.headers.get("content-type").includes("application/json"),
-          (r) => r.json(),
-          (r) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
+          (r : Response) => contains("application/json", r.headers.get("content-type") as string),
+          (r : Response) => r.json(),
+          (r : Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
         ),
-      );
+      )
+      .then((r) => response.ok ? r : assoc("status", response.status, r))
+      .then((r) => response.status >= 500 ? Promise.reject(r) : r);
 
   //const log = (x: any) => (console.log(x), x);
 

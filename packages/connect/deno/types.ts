@@ -29,10 +29,12 @@ export interface Result {
   ok: boolean;
   id?: string;
   msg?: string;
+  status?: number;
 }
 
 export interface Results<Type> {
   ok: boolean;
+  status?: number;
   docs: Type[];
 }
 
