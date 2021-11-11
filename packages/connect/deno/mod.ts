@@ -6,7 +6,7 @@ import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 import { R } from "./deps.ts";
 
-const { ifElse } = R;
+const { assoc, contains, ifElse } = R;
 
 export function connect(
   CONNECTION_STRING: string,
@@ -26,13 +26,16 @@ export function connect(
       .then(
         ifElse(
           (r: Response) =>
-            r?.headers?.get("content-type")
-              ? r?.headers?.get("content-type")?.includes("application/json")
-              : false,
+            contains(
+              "application/json",
+              r.headers.get("content-type") as string,
+            ),
           (r: Response) => r.json(),
           (r: Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
         ),
-      );
+      )
+      .then((r) => response.ok ? r : assoc("status", response.status, r))
+      .then((r) => response.status >= 500 ? Promise.reject(r) : r);
 
   //const log = (x: any) => (console.log(x), x);
 
