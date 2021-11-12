@@ -29,3 +29,27 @@ test('deep swap "id" for "_id"', () => {
   const newSelector = deepSwap("id", "_id", selector);
   assertEquals(newSelector, answer);
 });
+
+test("deep swap using $in", () => {
+  const selector = {
+    type: {
+      $in: ["game", "character"],
+    },
+  };
+  const answer = selector;
+
+  const newSelector = deepSwap("id", "_id", selector);
+  assertEquals(newSelector, answer);
+});
+
+test("deep swap using $in", () => {
+  const selector = {
+    type: {
+      $in: [1, 2],
+    },
+  };
+  const answer = selector;
+
+  const newSelector = deepSwap("id", "_id", selector);
+  assertEquals(newSelector, answer);
+});

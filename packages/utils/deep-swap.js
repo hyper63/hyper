@@ -36,6 +36,10 @@ const keySwap = curry((a, b, o) => {
   )(o);
 });
 
+const handleArrayProp = (a, b) =>
+  (k) =>
+    (is(String, k) || is(Number, k) || is(Boolean, k)) ? k : deepSwap(a, b, k);
+
 /**
  * @param {string} - source key
  * @param {string} - dest key
@@ -45,8 +49,9 @@ export const deepSwap = curry(function (a, b, obj) {
   const _reducer = (acc, v) => {
     v[1] = cond([
       [is(Function), identity],
-      [is(Array), map(deepSwap(a, b))],
+      [is(Array), map(handleArrayProp(a, b))],
       [is(Object), deepSwap(a, b)],
+
       [T, identity],
     ])(v[1]);
 
