@@ -24,9 +24,13 @@ export function connect(
     Promise.resolve(response)
       .then(
         ifElse(
-          (r : Response) => contains("application/json", r.headers.get("content-type") as string),
-          (r : Response) => r.json(),
-          (r : Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
+          (r: Response) =>
+            contains(
+              "application/json",
+              r.headers.get("content-type") as string,
+            ),
+          (r: Response) => r.json(),
+          (r: Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
         ),
       )
       .then((r) => response.ok ? r : assoc("status", response.status, r))
@@ -76,6 +80,16 @@ export function connect(
           .then(data.index(indexName, fields))
           .then(fetch)
           .then(handleResponse),
+      create: () =>
+        Promise.resolve(h)
+          .then(data.create())
+          .then(fetch)
+          .then(handleResponse),
+      destroy: (confirm) =>
+        Promise.resolve(h)
+          .then(data.destroy(confirm))
+          .then(fetch)
+          .then(handleResponse),
     },
     cache: {
       add: (key, value, ttl) =>
@@ -101,6 +115,16 @@ export function connect(
       query: (pattern) =>
         Promise.resolve(h)
           .then(cache.query(pattern))
+          .then(fetch)
+          .then(handleResponse),
+      create: () =>
+        Promise.resolve(h)
+          .then(cache.create())
+          .then(fetch)
+          .then(handleResponse),
+      destroy: (confirm) =>
+        Promise.resolve(h)
+          .then(cache.destroy(confirm))
           .then(fetch)
           .then(handleResponse),
     },
@@ -133,6 +157,16 @@ export function connect(
       load: (docs) =>
         Promise.resolve(h)
           .then(search.load(docs))
+          .then(fetch)
+          .then(handleResponse),
+      create: (fields, storeFields) =>
+        Promise.resolve(h)
+          .then(search.create(fields, storeFields))
+          .then(fetch)
+          .then(handleResponse),
+      destroy: (confirm) =>
+        Promise.resolve(h)
+          .then(search.destroy(confirm))
           .then(fetch)
           .then(handleResponse),
     },

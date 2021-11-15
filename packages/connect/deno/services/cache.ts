@@ -38,3 +38,12 @@ export const query = (pattern: string = "*") =>
       action: Action.QUERY,
       params: { pattern },
     });
+
+export const create = () =>
+  (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT });
+
+export const destroy = (confirm = true) =>
+  (hyper: HyperRequestFunction) =>
+    confirm
+      ? hyper({ service, method: Method.DELETE })
+      : Promise.reject({ ok: false, msg: "request not confirmed!" });
