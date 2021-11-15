@@ -5,6 +5,8 @@ import { assertEquals } from "../dev_deps.ts";
 import {
   add,
   bulk,
+  create,
+  destroy,
   get,
   index,
   query,
@@ -121,4 +123,26 @@ test("data.index", async () => {
   const body = await result.json();
   assertEquals(body.name, "foo");
   assertEquals(body.fields[0], "type");
+});
+
+test("data.create", async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, "data");
+    assertEquals(h.method, "PUT");
+    return Promise.resolve(new Request("http://localhost", { method: "PUT" }));
+  };
+
+  await create()(mockRequest);
+});
+
+test("data.destroy", async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, "data");
+    assertEquals(h.method, "DELETE");
+    return Promise.resolve(
+      new Request("http://localhost", { method: "DELETE" }),
+    );
+  };
+
+  await destroy(true)(mockRequest);
 });

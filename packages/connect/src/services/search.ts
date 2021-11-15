@@ -1,4 +1,4 @@
-import { Request } from "node-fetch";
+//import { Request } from "node-fetch";
 
 import {
   Action,
@@ -6,6 +6,7 @@ import {
   Method,
   SearchQueryOptions,
 } from "../types";
+
 import { lensPath, set } from "ramda";
 
 const service = "search" as const;
@@ -46,7 +47,7 @@ export const load = (docs: unknown[]) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.POST, action: Action.BULK, body: docs });
 
-export const create = (fields: string[], storeFields: string[]) =>
+export const create = (fields: string[], storeFields?: string[]) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.PUT, body: { fields, storeFields } });
 

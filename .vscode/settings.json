@@ -1,5 +1,5 @@
 {
-  "deno.lint": true,
   "deno.unstable": true,
-  "deno.enable": true
+  "deno.suggest.autoImports": false,
+  "deno.suggest.imports.autoDiscover": false
 }

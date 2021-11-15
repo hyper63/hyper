@@ -1,13 +1,19 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import { add } from "../src/services/cache";
-import { identity } from "ramda";
+import { Request } from "node-fetch";
+import { HyperRequest } from "../src/types"
 
-test("cache.add", () => {
-  const request = add("game-1", { id: "game-1", type: "game" })(identity);
-  assert.is(request.service, "cache");
-  assert.is(request.method, "POST");
-  assert.is(request.body.key, "game-1");
+
+test("cache.add", async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assert.is(h.service, "cache");
+    assert.is(h.method, "POST");
+    return Promise.resolve(new Request('http://localhost/cache/app', {method: 'POST', body: JSON.stringify(h.body)}))
+  }
+  const result = await add("game-1", { id: "game-1", type: "game" })(mockRequest)
+  const body = await result.json()
+  assert.is(body.key, "game-1");
 });
 
 test.run();

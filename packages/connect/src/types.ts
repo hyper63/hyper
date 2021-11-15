@@ -90,7 +90,7 @@ export interface HyperSearch {
   load: <Type>(docs: Type[]) => Promise<Result>;
   create: (
     fields: Array<string>,
-    storeFields: Array<string>,
+    storeFields?: Array<string>,
   ) => Promise<Result>;
   destroy: (confirm: boolean) => Promise<Result>;
 }

@@ -1,17 +1,18 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
-import { remove } from "../src/services/search";
 import { HyperRequest } from "../src/types"
+import { destroy } from "../src/services/search";
 import { Request } from "node-fetch";
 
-test("search.remove", async () => {
+test("search.destroy", async () => {
   const mockRequest = (h: HyperRequest) => {
     assert.is(h.service, "search");
     assert.is(h.method, "DELETE");
-    assert.is(h.resource, "game-1");
-    return Promise.resolve(new Request('http://localhost'))
+    return Promise.resolve(new Request('http://localhost', { method: 'DELETE'}))
   }
-  await remove("game-1")(mockRequest);
+
+  await destroy(true)(mockRequest)
+
   
 });
 

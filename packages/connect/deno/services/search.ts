@@ -47,7 +47,7 @@ export const load = (docs: unknown[]) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.POST, action: Action.BULK, body: docs });
 
-export const create = (fields: string[], storeFields: string[]) =>
+export const create = (fields: string[], storeFields?: string[]) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.PUT, body: { fields, storeFields } });
 
