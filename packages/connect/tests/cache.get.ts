@@ -1,19 +1,13 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import { get } from "../src/services/cache";
-import { HyperRequest } from "../src/types"
-import { Request } from "node-fetch";
+import { identity } from "ramda";
 
-test("cache.get", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assert.is(h.service, "cache");
-    assert.is(h.method, "GET");
-    return Promise.resolve(new Request('http://localhost/cache/1', { method: 'GET'}))
-  }
-
-  await get('game-1')(mockRequest)
-
-  
+test("cache.get", () => {
+  const request = get("game-1")(identity);
+  assert.is(request.service, "cache");
+  assert.is(request.method, "GET");
+  assert.is(request.resource, "game-1");
 });
 
 test.run();

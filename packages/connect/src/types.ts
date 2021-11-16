@@ -64,8 +64,6 @@ export interface HyperData {
   ) => Promise<Results<Type>>;
   index: (name: string, fields: string[]) => Promise<Result>;
   bulk: <Type>(docs: Array<Type>) => Promise<Result>;
-  create: () => Promise<Result>;
-  destroy: (confirm: boolean) => Promise<Result>;
 }
 
 export interface HyperCache {
@@ -74,8 +72,6 @@ export interface HyperCache {
   remove: (key: string) => Promise<Result>;
   set: <Type>(key: string, value: Type, ttl?: string) => Promise<Result>;
   query: <Type>(pattern: string) => Promise<Results<Type>>;
-  create: () => Promise<Result>;
-  destroy: (confirm: boolean) => Promise<Result>;
 }
 
 export interface HyperSearch {
@@ -88,11 +84,6 @@ export interface HyperSearch {
     options: SearchQueryOptions,
   ) => Promise<Results<Type>>;
   load: <Type>(docs: Type[]) => Promise<Result>;
-  create: (
-    fields: Array<string>,
-    storeFields?: Array<string>,
-  ) => Promise<Result>;
-  destroy: (confirm: boolean) => Promise<Result>;
 }
 
 interface HyperInfoServicesResult {

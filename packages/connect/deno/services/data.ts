@@ -46,12 +46,3 @@ export const index = (indexName: string, fields: string[]) =>
         type: "JSON",
       },
     });
-
-export const create = () =>
-  (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT });
-
-export const destroy = (confirm = true) =>
-  (hyper: HyperRequestFunction) =>
-    confirm
-      ? hyper({ service, method: Method.DELETE })
-      : Promise.reject({ ok: false, msg: "request not confirmed!" });

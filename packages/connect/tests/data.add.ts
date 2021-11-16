@@ -1,18 +1,13 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import { add } from "../src/services/data";
-import { HyperRequest } from "../src/types"
-import { Request } from "node-fetch";
-import { path } from 'ramda'
+import { identity } from "ramda";
 
-test("data.add", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assert.is(h.service, "data");
-    assert.is(h.method, "POST");
-    assert.is(path(['body', 'foo'], h), "bar");
-    return Promise.resolve(new Request('http://localhost'))
-  }
-  await add({ foo: "bar" })(mockRequest);
+test("data.add", () => {
+  const request = add({ foo: "bar" })(identity);
+  assert.is(request.service, "data");
+  assert.is(request.method, "POST");
+  assert.is(request.body.foo, "bar");
 });
 
 test.run();

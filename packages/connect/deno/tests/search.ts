@@ -2,16 +2,7 @@ import { HyperRequest } from "../types.ts";
 
 import { assertEquals } from "../dev_deps.ts";
 
-import {
-  add,
-  create,
-  destroy,
-  get,
-  load,
-  query,
-  remove,
-  update,
-} from "../services/search.ts";
+import { add, get, load, query, remove, update } from "../services/search.ts";
 
 const test = Deno.test;
 
@@ -107,33 +98,4 @@ test("search.load", async () => {
   const body = await result.json();
   assertEquals(body[0].id, "game-1");
   assertEquals(body[0].type, "game");
-});
-
-test("search.create", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "search");
-    assertEquals(h.method, "PUT");
-    return Promise.resolve(
-      new Request("http://localhost", {
-        method: "PUT",
-        body: JSON.stringify(h.body),
-      }),
-    );
-  };
-
-  const result = await create(["title"])(mockRequest);
-  const body = await result.json();
-  assertEquals(body.fields[0], "title");
-});
-
-test("search.destroy", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "search");
-    assertEquals(h.method, "DELETE");
-    return Promise.resolve(
-      new Request("http://localhost", { method: "DELETE" }),
-    );
-  };
-
-  await destroy(true)(mockRequest);
 });

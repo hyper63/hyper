@@ -2,15 +2,7 @@ import { HyperRequest } from "../types.ts";
 
 import { assertEquals } from "../dev_deps.ts";
 
-import {
-  add,
-  create,
-  destroy,
-  get,
-  query,
-  remove,
-  set,
-} from "../services/cache.ts";
+import { add, get, query, remove, set } from "../services/cache.ts";
 
 const test = Deno.test;
 
@@ -80,26 +72,4 @@ test("cache.query", async () => {
     return Promise.resolve(new Request("http://localhost"));
   };
   await query("game*")(mockRequest);
-});
-
-test("cache.create", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "cache");
-    assertEquals(h.method, "PUT");
-    return Promise.resolve(new Request("http://localhost", { method: "PUT" }));
-  };
-
-  await create()(mockRequest);
-});
-
-test("cache.destroy", async () => {
-  const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "cache");
-    assertEquals(h.method, "DELETE");
-    return Promise.resolve(
-      new Request("http://localhost", { method: "DELETE" }),
-    );
-  };
-
-  await destroy(true)(mockRequest);
 });

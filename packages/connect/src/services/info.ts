@@ -1,4 +1,4 @@
-//import { Request } from "node-fetch";
+import { Request } from 'node-fetch'
 
 import { HyperRequestFunction, Method } from "../types";
 
