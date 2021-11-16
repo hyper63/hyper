@@ -1,12 +1,12 @@
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 const test = Deno.test;
 
 export default function (cache) {
-  const add = (key, value) => $fetch(cache.add(key, value)).chain(toJSON);
-  const get = (key) => $fetch(cache.get(key)).chain(toJSON);
-  const remove = (key) => $fetch(cache.remove(key)).chain(toJSON);
+  const add = (key, value) => $fetch(() => cache.add(key, value));
+  const get = (key) => $fetch(() => cache.get(key));
+  const remove = (key) => $fetch(() => cache.remove(key));
 
   test("GET /cache/:store/:key - get value from key", () =>
     add("test-20", { type: "movie", title: "Batman" })

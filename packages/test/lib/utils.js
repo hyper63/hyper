@@ -1,17 +1,16 @@
 import crocks from "crocks";
 
-const { Async, chain, compose } = crocks;
-const identity = (x) => x;
+const { Async } = crocks;
 
-export const $fetch = compose(
-  chain(Async.fromPromise(fetch)),
-  Async.fromPromise(identity),
-);
+export const $fetch = (fn) => Async.fromPromise(fn)();
 
-export const toJSON = (res) =>
-  res.ok
+export const toJSON = (res) => {
+  console.log(res);
+  return res.ok
     ? Async.fromPromise(res.json.bind(res))()
     : Async.fromPromise(res.json.bind(res))()
       .map((r) => ({ ok: false, status: res.status, ...r }));
+};
+
 //: Async.Resolved({ ok: false, status: res.status })
 export const $ = Async;

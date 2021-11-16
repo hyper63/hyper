@@ -1,14 +1,12 @@
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 const test = Deno.test;
 
 export default function (data) {
-  const update = ({ id, doc }) => $fetch(data.update(id, doc)).chain(toJSON);
-
-  const create = (doc) => $fetch(data.add(doc)).chain(toJSON);
-
-  const remove = (id) => $fetch(data.remove(id)).chain(toJSON);
+  const update = ({ id, doc }) => $fetch(() => data.update(id, doc));
+  const create = (doc) => $fetch(() => data.add(doc));
+  const remove = (id) => $fetch(() => data.remove(id));
 
   /*
   test("PUT /data/:store/:id - update document should fail if db does not exist", () =>

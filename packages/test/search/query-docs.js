@@ -1,4 +1,4 @@
-import { $, $fetch, toJSON } from "../lib/utils.js";
+import { $, $fetch } from "../lib/utils.js";
 import { assert } from "asserts";
 
 const test = Deno.test;
@@ -45,14 +45,12 @@ const movies = [{
 
 export default function (search) {
   // add 5 searchable docs
-  const setup = () =>
-    $fetch(search.load(movies))
-      .chain(toJSON);
+  const setup = () => $fetch(() => search.load(movies));
 
   const cleanUp = () =>
     $.all(map(
       compose(
-        (id) => $fetch(search.remove(id)).chain(toJSON),
+        (id) => $fetch(() => search.remove(id)),
         prop("id"),
       ),
       movies,
@@ -62,14 +60,13 @@ export default function (search) {
   test("POST /search/:index/_query - find movie successfully using fields and filter", () =>
     setup()
       .chain(() =>
-        $fetch(
+        $fetch(() =>
           search.query("Ironman", {
             fields: ["title"],
             filter: { type: "movie" },
-          }),
+          })
         )
       )
-      .chain(toJSON)
       //.map(log)
       .map(doAssert("ok"))
       .chain(cleanUp)
@@ -78,9 +75,8 @@ export default function (search) {
   test("POST /search/:index/_query - find movie successfully filter", () =>
     setup()
       .chain(() =>
-        $fetch(search.query("Spiderman", { filter: { type: "movie" } }))
+        $fetch(() => search.query("Spiderman", { filter: { type: "movie" } }))
       )
-      .chain(toJSON)
       //.map(log)
       .map(doAssert("ok"))
       .chain(cleanUp)
@@ -88,8 +84,7 @@ export default function (search) {
 
   test("POST /search/:index/_query - find movie successfully", () =>
     setup()
-      .chain(() => $fetch(search.query("Jaws")))
-      .chain(toJSON)
+      .chain(() => $fetch(() => search.query("Jaws")))
       //.map(log)
       .map(doAssert("ok"))
       .chain(cleanUp)

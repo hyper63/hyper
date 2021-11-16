@@ -1,6 +1,6 @@
 import crocks from "crocks";
 import { assoc, map } from "ramda";
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 const { Async } = crocks;
@@ -20,17 +20,14 @@ const docs = [
 
 //const getDocs = (prefix) => map(over(lensProp("id"), concat(prefix)));
 export default function (data) {
-  const setup = () =>
-    $fetch(data.bulk(docs))
-      .chain(toJSON);
+  const setup = () => $fetch(() => data.bulk(docs));
 
-  const listDocuments = (flags = {}) => $fetch(data.list(flags)).chain(toJSON);
+  const listDocuments = (flags = {}) => $fetch(() => data.list(flags));
 
   const tearDown = () =>
     Async.of(docs)
       .map(map(assoc("_deleted", true)))
-      .chain((docs) => $fetch(data.bulk(docs)))
-      .chain(toJSON);
+      .chain((docs) => $fetch(() => data.bulk(docs)));
 
   test("GET /data/test - get docs with no flags", () =>
     setup()

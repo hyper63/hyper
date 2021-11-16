@@ -1,11 +1,14 @@
 import Ask from "ask";
-import connect from "hyper-connect";
+import { connect } from "hyper-connect";
+import { prop } from "ramda";
 
 const ask = new Ask();
 const ci = Boolean(Deno.env.get("CI")) || false;
 const cs = Deno.env.get("HYPER") || "http://localhost:6363/test";
 console.log("hyper test suite ⚡️");
 let answers = { hyper: cs };
+const isCloud = /^cloud/.test(answers.hyper);
+
 if (!ci) {
   answers = await ask.prompt([
     {
@@ -16,21 +19,19 @@ if (!ci) {
   ]);
 }
 const hyperCS = answers.hyper === "" ? cs : answers.hyper;
-const hyper = connect(hyperCS)();
+const hyper = connect(hyperCS);
 
 // get services that are active on the hyper instance
-const services = await fetch(await hyper.info.services()).then((res) =>
-  res.json()
-).then((r) => r.services);
+const services = prop("services", await hyper.info.services());
 
 //const services = await hyper.info.services
 const runTest = (svc) => (x) => x.default(hyper[svc]);
 
 if (services.includes("data")) {
-  if (!hyper.info.isCloud) {
+  if (!isCloud) {
     // create app/domain instance
-    await fetch(await hyper.data.destroy(true));
-    await fetch(await hyper.data.create());
+    await hyper.data.destroy(true);
+    await hyper.data.create();
   }
 
   await import("./data/create-document.js").then(runTest("data"));
@@ -43,9 +44,9 @@ if (services.includes("data")) {
 }
 
 if (services.includes("cache")) {
-  if (!hyper.info.isCloud) {
-    await fetch(await hyper.cache.destroy(true));
-    await fetch(await hyper.cache.create());
+  if (!isCloud) {
+    await hyper.cache.destroy(true).catch(console.log);
+    await hyper.cache.create();
   }
   await import("./cache/create-key.js").then(runTest("cache"));
   await import("./cache/get-key.js").then(runTest("cache"));
@@ -55,14 +56,15 @@ if (services.includes("cache")) {
 }
 
 if (services.includes("search")) {
-  if (!hyper.info.isCloud) {
-    await fetch(await hyper.search.destroy(true));
-    await fetch(
-      await hyper.search.create(["title", "type"], ["title", "type"]),
-    );
+  if (!isCloud) {
+    await hyper.search.destroy(true).catch(console.log);
+    await hyper.search.create(["title", "type"], ["title", "type"]);
   }
+
   await import("./search/index-doc.js").then(runTest("search"));
   await import("./search/get-doc.js").then(runTest("search"));
-  //await import("./search/update-doc.js").then(runTest("search"))
   await import("./search/query-docs.js").then(runTest("search"));
+  /*
+  //await import("./search/update-doc.js").then(runTest("search"))
+  */
 }

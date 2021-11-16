@@ -1,6 +1,6 @@
 import crocks from "crocks";
 import { assoc, concat, keys, lensProp, map, over } from "ramda";
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 const { Async } = crocks;
@@ -27,25 +27,18 @@ const albums = [
 const getAlbums = (prefix) => map(over(lensProp("id"), concat(prefix)));
 
 export default function (data) {
-  const setup = (prefix) =>
-    $fetch(data.bulk(getAlbums(prefix)(albums)))
-      .chain(toJSON);
+  const setup = (prefix) => $fetch(() => data.bulk(getAlbums(prefix)(albums)));
 
   const query = (selector, options) =>
-    () =>
-      $fetch(data.query(selector, options))
-        .chain(toJSON);
+    () => $fetch(() => data.query(selector, options));
 
   const tearDown = (prefix) =>
     () =>
       Async.of(getAlbums(prefix)(albums))
         .map(map(assoc("_deleted", true)))
-        .chain((docs) => $fetch(data.bulk(docs)))
-        .chain(toJSON);
+        .chain((docs) => $fetch(() => data.bulk(docs)));
 
-  const createIndex = () =>
-    $fetch(data.index("idx-title", ["title"]))
-      .chain(toJSON);
+  const createIndex = () => $fetch(() => data.index("idx-title", ["title"]));
 
   test("POST /data/:store/_query - query documents of type album", () =>
     setup("a")
