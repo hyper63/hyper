@@ -1,4 +1,4 @@
-import { Request } from 'node-fetch'
+//import { Request } from "node-fetch";
 
 import {
   Action,
@@ -6,6 +6,7 @@ import {
   Method,
   SearchQueryOptions,
 } from "../types";
+
 import { lensPath, set } from "ramda";
 
 const service = "search" as const;
@@ -45,3 +46,13 @@ export const query = (query: string, options?: SearchQueryOptions) =>
 export const load = (docs: unknown[]) =>
   (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.POST, action: Action.BULK, body: docs });
+
+export const create = (fields: string[], storeFields?: string[]) =>
+  (hyper: HyperRequestFunction) =>
+    hyper({ service, method: Method.PUT, body: { fields, storeFields } });
+
+export const destroy = (confirm = true) =>
+  (hyper: HyperRequestFunction) =>
+    confirm
+      ? hyper({ service, method: Method.DELETE })
+      : Promise.reject({ ok: false, msg: "request not confirmed!" });
