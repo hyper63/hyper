@@ -1,4 +1,4 @@
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 const test = Deno.test;
@@ -6,16 +6,15 @@ const test = Deno.test;
 export default function (data) {
   const setup = () =>
     $fetch(
-      data.add({ id: "42", type: "test" }),
-    ).chain(toJSON);
+      () => data.add({ id: "42", type: "test" }),
+    );
 
-  const tearDown = () => $fetch(data.remove("42")).chain(toJSON);
+  const tearDown = () => $fetch(() => data.remove("42"));
 
-  const retrieve = (id) => () => $fetch(data.get(id)).chain(toJSON);
+  const retrieve = (id) => () => $fetch(() => data.get(id));
 
   test("GET /data/:store/:id - get document that does not exist", () =>
-    $fetch(data.get("99"))
-      .chain(toJSON)
+    $fetch(() => data.get("99"))
       .map((result) => (assertEquals(result.status, 404), result))
       .toPromise());
 

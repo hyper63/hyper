@@ -29,6 +29,7 @@ export const hyper = (conn: URL, domain: string) =>
   async (
     { service, method, resource, body, params, action }: HyperRequest,
   ): Promise<HyperRequestParams> => {
+    const isCloud = /^cloud/.test(conn.protocol);
     const protocol = conn.protocol === "cloud:" ? "https:" : conn.protocol;
 
     let options = {
@@ -51,7 +52,10 @@ export const hyper = (conn: URL, domain: string) =>
       });
     }
 
-    let url = `${protocol}//${conn.host}${conn.pathname}/${service}/${domain}`;
+    const pathname = isCloud ? conn.pathname : "";
+    const appdomain = isCloud ? "/" + domain : conn.pathname;
+
+    let url = `${protocol}//${conn.host}${pathname}/${service}${appdomain}`;
 
     if (service === "info") {
       url = `${protocol}//${conn.host}`;

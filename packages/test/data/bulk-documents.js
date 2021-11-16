@@ -1,5 +1,5 @@
 import { assoc, compose, map } from "ramda";
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
 //const { Async } = crocks;
@@ -15,22 +15,24 @@ const teams = [
 ];
 
 export default function (data) {
-  const loadTeams = () => $fetch(data.bulk(teams)).chain(toJSON);
+  const loadTeams = () => $fetch(() => data.bulk(teams));
 
   const updateTeams = () =>
-    $fetch(data.bulk(map(
-      compose(
-        assoc("_update", true),
-        assoc("active", true),
-      ),
-      teams,
-    ))).chain(toJSON);
+    $fetch(() =>
+      data.bulk(map(
+        compose(
+          assoc("_update", true),
+          assoc("active", true),
+        ),
+        teams,
+      ))
+    );
 
   const tearDown = () =>
-    $fetch(data.bulk(map(assoc("_deleted", true), teams))).chain(toJSON);
+    $fetch(() => data.bulk(map(assoc("_deleted", true), teams)));
 
   test("POST /data/:store/_bulk - insert documents", () =>
-    $fetch(data.bulk(teams)).chain(toJSON)
+    $fetch(() => data.bulk(teams))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.results.length, 6), r))
       .chain(tearDown)
@@ -40,9 +42,7 @@ export default function (data) {
     loadTeams()
       .chain(updateTeams)
       .map((r) => (assertEquals(r.ok, true), r))
-      .chain(() => $fetch(data.query({ type: "team", active: true }))).chain(
-        toJSON,
-      )
+      .chain(() => $fetch(() => data.query({ type: "team", active: true })))
       .map((r) => (assertEquals(r.docs.length, 6), r))
       .chain(tearDown)
       .toPromise());

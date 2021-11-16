@@ -1,24 +1,13 @@
-import { $fetch, toJSON } from "../lib/utils.js";
+import { $fetch } from "../lib/utils.js";
 import { assert, assertEquals } from "asserts";
 
 const test = Deno.test;
 
 export default function (cache) {
   const createKV = (key, value, ttl) =>
-    $fetch(cache.add(key, value, ttl)).chain(toJSON);
+    $fetch(() => cache.add(key, value, ttl));
 
-  const cleanUp = (key) => $fetch(cache.remove(key)).chain(toJSON);
-
-  const createDocForDb = async (key, value) => {
-    const req = await cache.add(key, value);
-    const _req = new Request(req.url + "db", {
-      method: "POST",
-      headers: req.headers,
-      body: JSON.stringify({ key, value }),
-    });
-
-    return $fetch(Promise.resolve(_req)).chain(toJSON);
-  };
+  const cleanUp = (key) => $fetch(() => cache.remove(key));
 
   test("POST /cache/:store successfully", () =>
     createKV("test-1", { type: "movie", title: "Ghostbusters" })
@@ -32,23 +21,6 @@ export default function (cache) {
       .map((r) => (assertEquals(r.ok, false), r))
       .map((r) => (assertEquals(r.status, 409), r.id))
       .chain(() => cleanUp("test-2"))
-      .toPromise());
-
-  // return error if store does not exist
-  test("POST /cache/:store error if store does not exist", async () =>
-    (await createDocForDb("test-30", { type: "badfood" }))
-      .map((r) => {
-        assertEquals(r.ok, false);
-        assertEquals(r.status, 400);
-        return r;
-      })
-      .toPromise());
-
-  test("POST /cache/:store with no document", () =>
-    createKV()
-      .map((r) => (assertEquals(r.ok, false), r))
-      .map((r) => (assertEquals(r.status, 500), r))
-      //.map(r => (assertEquals(r.msg, 'empty document not allowed'), r))
       .toPromise());
 
   /*
