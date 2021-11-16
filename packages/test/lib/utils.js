@@ -1,12 +1,8 @@
 import crocks from "crocks";
 
-const { Async, chain, compose } = crocks;
-const identity = (x) => x;
+const { Async } = crocks;
 
-export const $fetch = compose(
-  chain(Async.fromPromise(fetch)),
-  Async.fromPromise(identity),
-);
+export const $fetch = Async.fromPromise;
 
 export const toJSON = (res) =>
   res.ok
