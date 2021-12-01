@@ -1,9 +1,14 @@
-import connect from "./mod.ts";
+import engine from "./mod.ts";
+import connect from "../deno/mod.ts";
 
 import { dataCachePlugin } from "./engine.ts";
 
-// deno-lint-ignore no-explicit-any
-const hyper = connect("http://localhost:6363", [dataCachePlugin]) as any;
+const hyper = engine(
+  "http://localhost:6363",
+  [dataCachePlugin],
+  connect,
+  // deno-lint-ignore no-explicit-any
+) as any;
 
 // Should simply cache
 console.log("Add foo-2 to cache");

@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import connect from "../connect.js";
 import { engine, HyperPlugin } from "./engine.ts";
 
 const SERVICES = ["data", "storage", "search", "cache", "queue"] as const;
@@ -18,9 +17,13 @@ const ACTIONS = [
   "bulk",
 ] as const;
 
-export default function (connectString: string, plugins: HyperPlugin[]) {
+export default function (
+  connectionString: string,
+  plugins: HyperPlugin[],
+  connect: any,
+) {
   return function (domain: string) {
-    const h = connect(connectString);
+    const h = connect(connectionString, domain);
     const chain = engine({ hyper: h })(plugins);
 
     return new Proxy({}, {

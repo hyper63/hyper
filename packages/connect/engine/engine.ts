@@ -58,9 +58,7 @@ export const engine = (env: HyperPluginEnvironment) =>
       // make the actual call to hyper as last 'plugin' in the request chain
       async (eventToSendToHyper: HyperPluginEventWithRequest) => {
         const res = await fetch(
-          await env.hyper(
-            eventToSendToHyper.request.domain,
-          )[eventToSendToHyper.request.service]
+          await env.hyper[eventToSendToHyper.request.service]
             [eventToSendToHyper.request.command](
               ...eventToSendToHyper.request.payload,
             ),
@@ -173,7 +171,7 @@ export const dataCachePlugin: HyperPlugin = ({ hyper }) =>
     if (event.request) {
       if (event.request.service === "data" && event.request.command === "get") {
         const res = await fetch(
-          await hyper(event.request.domain).cache.get(...event.request.payload),
+          await hyper.cache.get(...event.request.payload),
         );
 
         // bailout
@@ -207,13 +205,13 @@ export const dataCachePlugin: HyperPlugin = ({ hyper }) =>
           console.log(`saving data response in cache for 2 minutes`, body);
           // already have object, so just cache
           await fetch(
-            await hyper(event.response.domain).cache.set(body.id, body, "2m"),
+            await hyper.cache.set(body.id, body, "2m"),
           );
         } else {
           const body = await event.response.body();
           // fetch from data store and cache
           const res = await fetch(
-            await hyper(event.response.domain).data.get(body.id),
+            await hyper.data.get(body.id),
           );
           const json = await res.json();
 
@@ -222,7 +220,7 @@ export const dataCachePlugin: HyperPlugin = ({ hyper }) =>
             json,
           );
           await fetch(
-            await hyper(event.response.domain).cache.set(json.id, json, "2m"),
+            await hyper.cache.set(json.id, json, "2m"),
           );
         }
       }
