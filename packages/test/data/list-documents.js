@@ -30,7 +30,8 @@ export default function (data) {
       .chain((docs) => $fetch(() => data.bulk(docs)));
 
   test("GET /data/test - get docs with no flags", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(listDocuments)
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 9), r))
@@ -38,7 +39,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?keys=['1002', '1005', '1008']", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ keys: ["1002", "1005", "1008"] }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 3), r))
@@ -46,7 +48,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?startkey=1004", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ startkey: "1004" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 6), r))
@@ -54,7 +57,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?endkey=1008", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ endkey: "1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 8), r))
@@ -62,7 +66,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?startkey=1004&endkey=1008", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ startkey: "1004", endkey: "1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 5), r))
@@ -70,7 +75,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?limt=2", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ limit: 2 }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 2), r))
@@ -78,7 +84,8 @@ export default function (data) {
       .toPromise());
 
   test("GET /data/test?descending=true", () =>
-    setup()
+    tearDown()
+      .chain(setup)
       .chain(() => listDocuments({ descending: true }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs[r.docs.length - 1].id, "1001"), r))
