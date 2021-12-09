@@ -1,5 +1,5 @@
 import crocks from "crocks";
-import { assoc, concat, keys, lensProp, map, over } from "ramda";
+import { assoc, keys, map } from "ramda";
 import { $fetch } from "../lib/utils.js";
 import { assertEquals } from "asserts";
 
@@ -24,19 +24,16 @@ const albums = [
   { id: "2005", type: "album", title: "Nevermind", band: "Nirvana" },
 ];
 
-const getAlbums = (prefix) => map(over(lensProp("id"), concat(prefix)));
-
 export default function (data) {
   const setup = () => $fetch(() => data.bulk(albums));
 
   const query = (selector, options) =>
     () => $fetch(() => data.query(selector, options));
 
-  const tearDown = 
-    () =>
-      Async.of(albums)
-        .map(map(assoc("_deleted", true)))
-        .chain((docs) => $fetch(() => data.bulk(docs)));
+  const tearDown = () =>
+    Async.of(albums)
+      .map(map(assoc("_deleted", true)))
+      .chain((docs) => $fetch(() => data.bulk(docs)));
 
   const createIndex = () => $fetch(() => data.index("idx-title", ["title"]));
 
