@@ -5,7 +5,6 @@ const { Async } = crocks;
 export const $fetch = (fn) => Async.fromPromise(fn)();
 
 export const toJSON = (res) => {
-  console.log(res);
   return res.ok
     ? Async.fromPromise(res.json.bind(res))()
     : Async.fromPromise(res.json.bind(res))()

@@ -30,7 +30,7 @@ const runTest = (svc) => (x) => x.default(hyper[svc]);
 if (services.includes("data")) {
   if (!isCloud) {
     // create app/domain instance
-    await hyper.data.destroy(true);
+    await hyper.data.destroy(true).catch(() => console.log("ok"));
     await hyper.data.create();
   }
 
