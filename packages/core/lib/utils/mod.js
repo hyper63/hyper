@@ -66,3 +66,13 @@ export const triggerEvent = (event) =>
  * constructor for an AsyncReader monad
  */
 export const of = ReaderAsync.of;
+
+/**
+ * Apricot: support both _id and id, incoming, and outgoing
+ * Blueberry: support _id incoming, and id and _id outgoing
+ */
+export const mapId = (doc) => ({
+  ...doc,
+  id: doc.id || doc._id,
+  _id: doc._id || doc.id,
+});

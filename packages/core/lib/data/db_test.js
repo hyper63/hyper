@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import { assertEquals } from "../../dev_deps.js";
+import { assert, assertEquals } from "../../dev_deps.js";
 import * as db from "./db.js";
 const test = Deno.test;
 
@@ -21,6 +21,9 @@ const mockDb = {
     }
   },
   listDocuments({ db, limit, start, end, keys, descending }) {
+    return Promise.resolve({ ok: true, docs: [{ id: "1" }, { id: "2" }] });
+  },
+  queryDocuments({ db, query }) {
     return Promise.resolve({ ok: true, docs: [{ id: "1" }, { id: "2" }] });
   },
 };
@@ -55,7 +58,15 @@ test(
 test(
   "bulk documents",
   fork(
-    db.bulk("foo", [{ id: "1" }, { id: "2" }]).runWith({ svc: mockDb, events }),
+    db.bulk("foo", [{ id: "1" }, { id: "2" }])
+      .map((res) => {
+        res.results.forEach((r) => {
+          assert(r.id);
+          assert(r._id);
+        });
+        return res;
+      })
+      .runWith({ svc: mockDb, events }),
   ),
 );
 test(
@@ -66,7 +77,15 @@ test(
 test(
   "list docs",
   fork(
-    db.list("foo", { limit: "2" }).runWith({ svc: mockDb, events }),
+    db.list("foo", { limit: "2" })
+      .map((res) => {
+        res.docs.forEach((r) => {
+          assert(r.id);
+          assert(r._id);
+        });
+        return res;
+      })
+      .runWith({ svc: mockDb, events }),
   ),
 );
 
@@ -76,5 +95,20 @@ test(
     db.list("foo", { descending: true }).runWith({ svc: mockDb, events }),
   ),
 );
-// test("query database");
+
+test(
+  "query docs",
+  fork(
+    db.query("foo", { selector: { id: "foo" } })
+      .map((res) => {
+        res.docs.forEach((r) => {
+          assert(r.id);
+          assert(r._id);
+        });
+        return res;
+      })
+      .runWith({ svc: mockDb, events }),
+  ),
+);
+
 // test("index database");
