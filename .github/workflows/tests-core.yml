@@ -1,9 +1,7 @@
 name: test core
 on:
   push:
-    tags-ignore: '*'
     branches:
-      - main
       - '**'
     paths:
       - "packages/core/**"
@@ -12,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        deno: [1.12.2]
+        deno-version: [1.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Deno ${{ matrix.deno-version }}
