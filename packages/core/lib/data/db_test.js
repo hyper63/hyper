@@ -14,17 +14,17 @@ const mockDb = {
     if (docs.length === 2) {
       return Promise.resolve({
         ok: true,
-        results: [{ ok: true, id: "1" }, { ok: true, id: "2" }],
+        results: [{ ok: true, _id: "1" }, { ok: true, _id: "2" }],
       });
     } else {
       return Promise.reject({ ok: false });
     }
   },
   listDocuments({ db, limit, start, end, keys, descending }) {
-    return Promise.resolve({ ok: true, docs: [{ id: "1" }, { id: "2" }] });
+    return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
   },
   queryDocuments({ db, query }) {
-    return Promise.resolve({ ok: true, docs: [{ id: "1" }, { id: "2" }] });
+    return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
   },
 };
 
@@ -58,7 +58,7 @@ test(
 test(
   "bulk documents",
   fork(
-    db.bulk("foo", [{ id: "1" }, { id: "2" }])
+    db.bulk("foo", [{ _id: "1" }, { _id: "2" }])
       .map((res) => {
         res.results.forEach((r) => {
           assert(r.id);

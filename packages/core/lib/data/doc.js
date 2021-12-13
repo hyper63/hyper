@@ -1,5 +1,12 @@
 import { cuid } from "../../deps.js";
-import { apply, is, mapId, of, triggerEvent } from "../utils/mod.js";
+import {
+  apply,
+  is,
+  mapId,
+  monitorIdUsage,
+  of,
+  triggerEvent,
+} from "../utils/mod.js";
 
 // const INVALID_ID_MSG = 'doc id is not valid'
 const INVALID_RESPONSE = "response is not valid";
@@ -8,6 +15,10 @@ const createGUID = (doc) => (doc._id || doc.id || cuid());
 
 export const create = (db, doc) =>
   of({ db, id: createGUID(doc), doc })
+    .map((args) => {
+      monitorIdUsage("createDocument - args", args.db)(args.doc);
+      return args;
+    })
     .chain(apply("createDocument"))
     .chain(triggerEvent("DATA:CREATE"))
     .map(mapId)
@@ -17,10 +28,15 @@ export const get = (db, id) =>
   of({ db, id })
     .chain(apply("retrieveDocument"))
     .chain(triggerEvent("DATA:GET"))
+    .map(monitorIdUsage("retrieveDocument - result", db))
     .map(mapId);
 
 export const update = (db, id, doc) =>
   of({ db, id, doc })
+    .map((args) => {
+      monitorIdUsage("updateDocument - args", args.db)(args.doc);
+      return args;
+    })
     .chain(apply("updateDocument"))
     .chain(triggerEvent("DATA:UPDATE"))
     .map(mapId);
