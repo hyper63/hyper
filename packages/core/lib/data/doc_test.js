@@ -5,13 +5,13 @@ const test = Deno.test;
 
 const mock = {
   createDocument({ db, id, doc }) {
-    return Promise.resolve({ ok: true, id });
+    return Promise.resolve({ ok: true, _id: id });
   },
   retrieveDocument({ db, id }) {
-    return Promise.resolve({ ok: true });
+    return Promise.resolve({ _id: id });
   },
   updateDocument({ db, id, doc }) {
-    return Promise.resolve({ ok: true });
+    return Promise.resolve({ ok: true, _id: id });
   },
   removeDocument({ db, id }) {
     return Promise.resolve({ ok: true });
@@ -40,7 +40,7 @@ test(
   fork(
     doc.create("foo", { hello: "world", _id: "foo", id: "should_be_ignored" })
       .map((res) => {
-        assertEquals(res.id, "foo");
+        assertEquals(res._id, "foo");
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -52,7 +52,7 @@ test(
   fork(
     doc.create("foo", { hello: "world", id: "no _id" })
       .map((res) => {
-        assertEquals(res.id, "no _id");
+        assertEquals(res._id, "no _id");
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -64,7 +64,7 @@ test(
   fork(
     doc.create("foo", { hello: "world" })
       .map((res) => {
-        assert(res.id);
+        assert(res._id);
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -75,7 +75,7 @@ test("get document", fork(doc.get("foo", "1").runWith({ svc: mock, events })));
 test(
   "update document",
   fork(
-    doc.update("foo", "1", { id: "1", goodbye: "moon" }).runWith({
+    doc.update("foo", "1", { _id: "1", goodbye: "moon" }).runWith({
       svc: mock,
       events,
     }),

@@ -1,4 +1,11 @@
-import { apply, is, mapId, of, triggerEvent } from "../utils/mod.js";
+import {
+  apply,
+  is,
+  mapId,
+  monitorIdUsage,
+  of,
+  triggerEvent,
+} from "../utils/mod.js";
 import { R } from "../../deps.js";
 
 const { lensProp, over, evolve, map } = R;
@@ -23,6 +30,10 @@ export const query = (db, query) =>
   of({ db, query })
     .chain(apply("queryDocuments"))
     .chain(triggerEvent("DATA:QUERY"))
+    .map((res) => {
+      res.docs.forEach(monitorIdUsage("queryDocuments - result", db));
+      return res;
+    })
     .map(evolve({ docs: map(mapId) }));
 
 export const index = (db, name, fields) =>
@@ -35,12 +46,24 @@ export const list = (db, options) =>
     .map(over(lensProp("descending"), Boolean))
     .chain(apply("listDocuments"))
     .chain(triggerEvent("DATA:LIST"))
+    .map((res) => {
+      res.docs.forEach(monitorIdUsage("listDocuments - result", db));
+      return res;
+    })
     .map(evolve({ docs: map(mapId) }));
 
 export const bulk = (db, docs) =>
   of({ db, docs })
+    .map((args) => {
+      args.docs.forEach(monitorIdUsage("bulkDocuments - args", db));
+      return args;
+    })
     .chain(apply("bulkDocuments"))
     .chain(triggerEvent("DATA:BULK"))
+    .map((res) => {
+      res.results.forEach(monitorIdUsage("bulkDocuments - result", db));
+      return res;
+    })
     .map(evolve({ results: map(mapId) }));
 
 function validDbName() {

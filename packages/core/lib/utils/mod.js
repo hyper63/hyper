@@ -76,3 +76,14 @@ export const mapId = (doc) => ({
   id: doc.id || doc._id,
   _id: doc._id || doc.id,
 });
+
+export const monitorIdUsage = (method, db) =>
+  (doc) => {
+    if (doc && doc.id && !doc._id) {
+      console.warn(
+        `MIGRATION ALERT (${method}) on ${db}: doc with id "${doc.id}" missing _id field`,
+      );
+    }
+
+    return doc;
+  };
