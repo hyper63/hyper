@@ -5,7 +5,7 @@ const test = Deno.test;
 
 const mock = {
   createDocument({ db, id, doc }) {
-    return Promise.resolve({ ok: true, _id: id });
+    return Promise.resolve({ ok: true, _id: id, doc });
   },
   retrieveDocument({ db, id }) {
     return Promise.resolve({ _id: id });
@@ -65,6 +65,20 @@ test(
     doc.create("foo", { hello: "world" })
       .map((res) => {
         assert(res._id);
+        return res;
+      })
+      .runWith({ svc: mock, events }),
+  ),
+);
+
+test(
+  "create document - set ids on doc",
+  fork(
+    doc.create("foo", { hello: "world", _id: "foo" })
+      .map((res) => {
+        assert(res.doc._id);
+        assert(res.doc.id);
+        assertEquals(res.doc.id, res.doc._id);
         return res;
       })
       .runWith({ svc: mock, events }),
