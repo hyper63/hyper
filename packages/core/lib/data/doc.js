@@ -1,4 +1,4 @@
-import { cuid } from "../../deps.js";
+import { cuid, R } from "../../deps.js";
 import {
   apply,
   is,
@@ -8,17 +8,21 @@ import {
   triggerEvent,
 } from "../utils/mod.js";
 
+const { compose, assoc } = R;
+
 // const INVALID_ID_MSG = 'doc id is not valid'
 const INVALID_RESPONSE = "response is not valid";
 
-const createGUID = (doc) => (doc._id || doc.id || cuid());
+const setIds = compose(
+  (doc) => assoc("id", doc.id || doc._id)(doc), // _id is guaranteed to be set
+  (doc) => assoc("_id", doc._id || doc.id || cuid())(doc),
+);
 
 export const create = (db, doc) =>
-  of({ db, id: createGUID(doc), doc })
-    .map((args) => {
-      monitorIdUsage("createDocument - args", args.db)(args.doc);
-      return args;
-    })
+  of(doc)
+    .map(monitorIdUsage("createDocument - args", db))
+    .map(setIds)
+    .map((doc) => ({ db, id: doc._id, doc })) // _id is guaranteed to be set from setIds
     .chain(apply("createDocument"))
     .chain(triggerEvent("DATA:CREATE"))
     .map(mapId)
