@@ -8,7 +8,7 @@ import {
 } from "../utils/mod.js";
 import { R } from "../../deps.js";
 
-const { lensProp, over, evolve, map } = R;
+const { lensProp, over, evolve, map, compose, omit } = R;
 
 const INVALID_DB_MSG = "database name is not valid";
 const INVALID_RESPONSE = "response is not valid";
@@ -64,7 +64,12 @@ export const bulk = (db, docs) =>
       res.results.forEach(monitorIdUsage("bulkDocuments - result", db));
       return res;
     })
-    .map(evolve({ results: map(mapId) }));
+    .map(evolve({
+      results: compose(
+        map(omit(["_id"])),
+        map(mapId),
+      ),
+    }));
 
 function validDbName() {
   return true;
