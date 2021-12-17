@@ -62,7 +62,6 @@ test(
       .map((res) => {
         res.results.forEach((r) => {
           assert(r.id);
-          assert(r._id);
         });
         return res;
       })

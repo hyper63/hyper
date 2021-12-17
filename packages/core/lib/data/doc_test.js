@@ -40,7 +40,7 @@ test(
   fork(
     doc.create("foo", { hello: "world", _id: "foo", id: "should_be_ignored" })
       .map((res) => {
-        assertEquals(res._id, "foo");
+        assertEquals(res.id, "foo");
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -52,7 +52,7 @@ test(
   fork(
     doc.create("foo", { hello: "world", id: "no _id" })
       .map((res) => {
-        assertEquals(res._id, "no _id");
+        assertEquals(res.id, "no _id");
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -64,7 +64,7 @@ test(
   fork(
     doc.create("foo", { hello: "world" })
       .map((res) => {
-        assert(res._id);
+        assert(res.id);
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -79,6 +79,18 @@ test(
         assert(res.doc._id);
         assert(res.doc.id);
         assertEquals(res.doc.id, res.doc._id);
+        return res;
+      })
+      .runWith({ svc: mock, events }),
+  ),
+);
+
+test(
+  "create document - no document",
+  fork(
+    doc.create("foo")
+      .map((res) => {
+        assertEquals(Object.keys(res.doc).length, 0);
         return res;
       })
       .runWith({ svc: mock, events }),
@@ -103,7 +115,7 @@ test(
 test(
   "apricot - both id and _id",
   fork(
-    doc.create("foo", { hello: "world" })
+    doc.get("foo", "1")
       .map((res) => {
         assert(res.id);
         assert(res._id);
