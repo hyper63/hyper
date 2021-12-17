@@ -1,5 +1,10 @@
 name: test nodejs client
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/nodejs-client/**"
   push:
     branches:
       - "**"

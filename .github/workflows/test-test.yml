@@ -1,5 +1,10 @@
 name: test hyper test
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/test/**"
   push:
     branches:
       - "**"

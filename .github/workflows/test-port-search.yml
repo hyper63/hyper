@@ -1,5 +1,10 @@
 name: test search port
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-search/**"
   push:
     branches:
       - "**"
