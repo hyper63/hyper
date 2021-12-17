@@ -85,6 +85,18 @@ test(
   ),
 );
 
+test(
+  "create document - no document",
+  fork(
+    doc.create("foo")
+      .map((res) => {
+        assertEquals(Object.keys(res.doc).length, 0);
+        return res;
+      })
+      .runWith({ svc: mock, events }),
+  ),
+);
+
 test("get document", fork(doc.get("foo", "1").runWith({ svc: mock, events })));
 test(
   "update document",
