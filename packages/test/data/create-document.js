@@ -15,14 +15,14 @@ export default function (data) {
       .toPromise());
 
   test("POST /data/:store with id successfully", () =>
-    createDocument({ id: "10", type: "test" })
+    createDocument({ _id: "10", type: "test" })
       .map((r) => (assert(r.id === "10"), r.id))
       .chain(cleanUp)
       .toPromise());
 
   test("POST /data/:store document conflict", () =>
-    createDocument({ id: "2", type: "test" })
-      .chain(() => createDocument({ id: "2", type: "test" }))
+    createDocument({ _id: "2", type: "test" })
+      .chain(() => createDocument({ _id: "2", type: "test" }))
       .map((r) => (assertEquals(r.ok, false), r))
       .map((r) => (assertEquals(r.status, 409), r.id))
       .chain(() => cleanUp("2"))
