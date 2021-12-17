@@ -73,7 +73,7 @@ export default function (data) {
     tearDown().chain(setup)
       .chain(query({ type: "album" }, { fields: ["id", "band"] }))
       .map((r) => (assertEquals(r.ok, true), r))
-      .map((r) => (assertEquals(keys(r.docs[0]).length, 2), r))
+      .map((r) => (assertEquals(keys(r.docs[0]).length, 2 + 1), r)) // +1 because _id and id are being added to result by core
       .chain(tearDown)
       .toPromise());
 }
