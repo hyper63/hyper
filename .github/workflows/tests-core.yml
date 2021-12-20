@@ -1,5 +1,10 @@
 name: test core
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/core/**"
   push:
     branches:
       - '**'

@@ -1,5 +1,10 @@
 name: test cache port
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-cache/**"
   push:
     branches:
       - "**"

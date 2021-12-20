@@ -1,5 +1,10 @@
 name: test data port
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-data/**"
   push:
     branches:
       - "**"

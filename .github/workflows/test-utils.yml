@@ -1,5 +1,10 @@
 name: test hyper utils
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/utils/**"
   push:
     branches:
       - "**"

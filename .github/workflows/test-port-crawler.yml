@@ -1,5 +1,10 @@
 name: test crawler port
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-crawler/**"
   push:
     branches:
       - "**"

@@ -1,5 +1,10 @@
 name: test queue port
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-queue/**"
   push:
     branches:
       - "**"

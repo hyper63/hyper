@@ -1,5 +1,10 @@
 name: test image nano
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "images/nano/**"
   push:
     branches:
       - "**"

@@ -1,5 +1,10 @@
 name: test connect
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/connect/**"
   push:
     branches:
       - "**"
