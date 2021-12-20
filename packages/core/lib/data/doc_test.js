@@ -5,13 +5,13 @@ const test = Deno.test;
 
 const mock = {
   createDocument({ db, id, doc }) {
-    return Promise.resolve({ ok: true, _id: id, doc });
+    return Promise.resolve({ ok: true, id: id, doc });
   },
   retrieveDocument({ db, id }) {
     return Promise.resolve({ _id: id });
   },
   updateDocument({ db, id, doc }) {
-    return Promise.resolve({ ok: true, _id: id });
+    return Promise.resolve({ ok: true, id: id });
   },
   removeDocument({ db, id }) {
     return Promise.resolve({ ok: true });
