@@ -4,9 +4,9 @@ import { HyperRequest, Method } from "../types";
 import { BodyInit, Headers } from "node-fetch";
 
 // deno-lint-ignore no-explicit-any
-const generateToken = async (sub: string, secret: any) => {
+export const generateToken = async (sub: string, secret: any) => {
   const crypto = await import("crypto");
-  const key = crypto.createSecretKey(secret);
+  const key = crypto.createSecretKey(Buffer.from(secret, "utf-8"));
   const token = await new SignJWT({ sub })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("10m")
