@@ -30,8 +30,6 @@ export const create = (db, doc) =>
     .map((doc) => ({ db, id: doc._id || cuid(), doc }))
     .chain(apply("createDocument"))
     .chain(triggerEvent("DATA:CREATE"))
-    .map(mapId)
-    .map(omit(["_id"])) // only id is on the api
     .chain(is(validResponse, INVALID_RESPONSE));
 
 export const get = (db, id) =>
@@ -49,15 +47,15 @@ export const update = (db, id, doc) =>
     })
     .chain(apply("updateDocument"))
     .chain(triggerEvent("DATA:UPDATE"))
+    // TODO: id not enforced on port. Should it be?
+    // For now, just mapping to id to match docs
     .map(mapId)
-    .map(omit(["_id"])); // only id is on the api
+    .map(omit(["_id"]));
 
 export const remove = (db, id) =>
   of({ db, id })
     .chain(apply("removeDocument"))
-    .chain(triggerEvent("DATA:DELETE"))
-    .map(mapId)
-    .map(omit(["_id"])); // only id is on the api
+    .chain(triggerEvent("DATA:DELETE"));
 
 function validResponse() {
   return true;

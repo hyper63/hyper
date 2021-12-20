@@ -14,7 +14,7 @@ const mockDb = {
     if (docs.length === 2) {
       return Promise.resolve({
         ok: true,
-        results: [{ ok: true, _id: "1" }, { ok: true, _id: "2" }],
+        results: [{ ok: true, id: "1" }, { ok: true, id: "2" }],
       });
     } else {
       return Promise.reject({ ok: false });
