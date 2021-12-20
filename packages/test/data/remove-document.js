@@ -23,11 +23,11 @@ export default function (data) {
   */
 
   test("DELETE /data/:store/:id - delete document successfully", () =>
-    createDocument({ id: "DELETE", type: "test" })
+    createDocument({ _id: "DELETE", type: "test" })
       .chain(() => retrieveDocument("DELETE"))
-      .map((r) => (assertEquals(r.id, "DELETE"), r))
+      .map((r) => (assertEquals(r._id, "DELETE"), r))
       .map((r) => (assertEquals(r.type, "test"), r))
-      .map(prop("id"))
+      .map(prop("_id"))
       .chain(removeDocument)
       .map((r) => (assertEquals(r.ok, true), r))
       .toPromise());

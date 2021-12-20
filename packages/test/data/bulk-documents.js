@@ -6,12 +6,12 @@ import { assertEquals } from "asserts";
 const test = Deno.test;
 
 const teams = [
-  { id: "3001", type: "team", name: "Falcons", region: "Atlanta" },
-  { id: "3002", type: "team", name: "Panthers", region: "Carolina" },
-  { id: "3003", type: "team", name: "Cardinals", region: "Arizona" },
-  { id: "3004", type: "team", name: "Bears", region: "Chicago" },
-  { id: "3005", type: "team", name: "Eagles", region: "Philidelphia" },
-  { id: "3006", type: "team", name: "Giants", region: "New York" },
+  { _id: "3001", type: "team", name: "Falcons", region: "Atlanta" },
+  { _id: "3002", type: "team", name: "Panthers", region: "Carolina" },
+  { _id: "3003", type: "team", name: "Cardinals", region: "Arizona" },
+  { _id: "3004", type: "team", name: "Bears", region: "Chicago" },
+  { _id: "3005", type: "team", name: "Eagles", region: "Philidelphia" },
+  { _id: "3006", type: "team", name: "Giants", region: "New York" },
 ];
 
 export default function (data) {

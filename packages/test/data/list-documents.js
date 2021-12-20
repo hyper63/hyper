@@ -1,21 +1,21 @@
 import crocks from "crocks";
 import { assoc, map } from "ramda";
 import { $fetch } from "../lib/utils.js";
-import { assertEquals } from "asserts";
+import { assert, assertEquals } from "asserts";
 
 const { Async } = crocks;
 const test = Deno.test;
 
 const docs = [
-  { id: "1001", type: "movie", title: "Ghostbusters" },
-  { id: "1002", type: "movie", title: "Ghostbusters 2" },
-  { id: "1003", type: "movie", title: "Groundhog Day" },
-  { id: "1004", type: "movie", title: "Scrooged" },
-  { id: "1005", type: "movie", title: "Caddyshack" },
-  { id: "1006", type: "movie", title: "Meatballs" },
-  { id: "1007", type: "movie", title: "Stripes" },
-  { id: "1008", type: "movie", title: "What about Bob?" },
-  { id: "1009", type: "movie", title: "Life Aquatic" },
+  { _id: "1001", type: "movie", title: "Ghostbusters" },
+  { _id: "1002", type: "movie", title: "Ghostbusters 2" },
+  { _id: "1003", type: "movie", title: "Groundhog Day" },
+  { _id: "1004", type: "movie", title: "Scrooged" },
+  { _id: "1005", type: "movie", title: "Caddyshack" },
+  { _id: "1006", type: "movie", title: "Meatballs" },
+  { _id: "1007", type: "movie", title: "Stripes" },
+  { _id: "1008", type: "movie", title: "What about Bob?" },
+  { _id: "1009", type: "movie", title: "Life Aquatic" },
 ];
 
 //const getDocs = (prefix) => map(over(lensProp("id"), concat(prefix)));
@@ -35,6 +35,7 @@ export default function (data) {
       .chain(listDocuments)
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 9), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -44,6 +45,7 @@ export default function (data) {
       .chain(() => listDocuments({ keys: ["1002", "1005", "1008"] }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 3), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -53,6 +55,7 @@ export default function (data) {
       .chain(() => listDocuments({ startkey: "1004" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 6), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -62,6 +65,7 @@ export default function (data) {
       .chain(() => listDocuments({ endkey: "1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 8), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -71,6 +75,7 @@ export default function (data) {
       .chain(() => listDocuments({ startkey: "1004", endkey: "1008" }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 5), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -80,6 +85,7 @@ export default function (data) {
       .chain(() => listDocuments({ limit: 2 }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs.length, 2), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
       .chain(tearDown)
       .toPromise());
 
@@ -88,7 +94,8 @@ export default function (data) {
       .chain(setup)
       .chain(() => listDocuments({ descending: true }))
       .map((r) => (assertEquals(r.ok, true), r))
-      .map((r) => (assertEquals(r.docs[r.docs.length - 1].id, "1001"), r))
+      .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
+      .map((r) => (assertEquals(r.docs[r.docs.length - 1]._id, "1001"), r))
       .chain(tearDown)
       .toPromise());
 }

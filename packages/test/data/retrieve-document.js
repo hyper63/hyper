@@ -6,7 +6,7 @@ const test = Deno.test;
 export default function (data) {
   const setup = () =>
     $fetch(
-      () => data.add({ id: "42", type: "test" }),
+      () => data.add({ _id: "42", type: "test" }),
     );
 
   const tearDown = () => $fetch(() => data.remove("42"));
@@ -21,7 +21,7 @@ export default function (data) {
   test("GET /data/:store/:id - success", () =>
     setup()
       .chain(retrieve("42"))
-      .map((result) => (assertEquals(result.id, "42"), result))
+      .map((result) => (assertEquals(result._id, "42"), result))
       .chain(tearDown)
       .toPromise());
 }
