@@ -8,25 +8,15 @@ import {
   triggerEvent,
 } from "../utils/mod.js";
 
-const { compose, assoc, ifElse, isNil, isEmpty, omit, always } = R;
+const { omit, defaultTo } = R;
 
 // const INVALID_ID_MSG = 'doc id is not valid'
 const INVALID_RESPONSE = "response is not valid";
 
-// If no document, just passthrough
-const setIds = ifElse(
-  (doc) => isNil(doc) || isEmpty(doc),
-  always({}),
-  compose(
-    (doc) => assoc("id", doc.id || doc._id)(doc), // _id is guaranteed to be set
-    (doc) => assoc("_id", doc._id || doc.id || cuid())(doc),
-  ),
-);
-
 export const create = (db, doc) =>
   of(doc)
     .map(monitorIdUsage("createDocument - args", db))
-    .map(setIds)
+    .map(defaultTo({}))
     .map((doc) => ({ db, id: doc._id || cuid(), doc }))
     .chain(apply("createDocument"))
     .chain(triggerEvent("DATA:CREATE"))
