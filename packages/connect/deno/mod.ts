@@ -6,7 +6,7 @@ import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 import { R } from "./deps.ts";
 
-const { assoc, contains, ifElse } = R;
+const { assoc, includes, ifElse } = R;
 
 export function connect(
   CONNECTION_STRING: string,
@@ -26,7 +26,7 @@ export function connect(
       .then(
         ifElse(
           (r: Response) =>
-            contains(
+            includes(
               "application/json",
               r.headers.get("content-type") as string,
             ),
