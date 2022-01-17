@@ -1,2 +1,2 @@
-export * as R from "https://cdn.skypack.dev/ramda";
+export * as R from "https://cdn.skypack.dev/ramda@0.27.1";
 export { create as signJWT } from "https://deno.land/x/djwt@v2.1/mod.ts";
