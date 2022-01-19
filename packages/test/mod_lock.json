@@ -1,0 +1,22 @@
+{
+  "https://cdn.skypack.dev/-/crocks@v0.12.4-Mje8nEhNx2rmIpwz3ROp/dist=es2019,mode=imports/optimized/crocks.js": "93d587d18dc5f124f30e5b38de37a6471eb65309c94ef2ffc7a36dc40ab394da",
+  "https://cdn.skypack.dev/-/ramda@v0.27.1-3ePaNsppsnXYRcaNcaWn/dist=es2019,mode=imports/optimized/ramda.js": "0e51cd76039fc9669f9179d935b261bcbb19ecbb11d49e7e60cfbc14360a85d2",
+  "https://cdn.skypack.dev/crocks@0.12.4": "fc624b776247aa182539fed6fe1b21a578609d1c2c0e31830c4469f2bcd099cd",
+  "https://cdn.skypack.dev/ramda@0.27.1": "a87add6080b004efb8072f81063306b03dac107cd2b6e5fca726f1a8bbb969b4",
+  "https://deno.land/std@0.106.0/fmt/colors.ts": "d2f8355f00a74404668fc5a1e4a92983ce1a9b0a6ac1d40efbd681cb8f519586",
+  "https://deno.land/std@0.106.0/testing/_diff.ts": "5d3693155f561d1a5443ac751ac70aab9f5d67b4819a621d4b96b8a1a1c89620",
+  "https://deno.land/std@0.106.0/testing/asserts.ts": "5f3a0fddb15a9733e44737e2d52be8e696bb79bc4e3830a9f246c5b8f3b29b31",
+  "https://deno.land/std@0.87.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
+  "https://deno.land/std@0.87.0/bytes/mod.ts": "1ae1ccfe98c4b979f12b015982c7444f81fcb921bea7aa215bf37d84f46e1e13",
+  "https://deno.land/std@0.87.0/io/bufio.ts": "60d292248c8b32b3d8d13a4336b0c381b2dce5b9c9b50a4930205dea87eaf456",
+  "https://deno.land/x/ask@1.0.6/mod.ts": "96539a1177ec2dd009920d9d91078950645e65e06619055925e08c96915d7e9a",
+  "https://deno.land/x/ask@1.0.6/src/core/prompt.ts": "909276150e08013b61b6f5625cdb9918bc93e91b2f06a3ecf02e754745104d45",
+  "https://deno.land/x/ask@1.0.6/src/core/result.ts": "d3f1ed5f670a76349b07453d34de2ebdd6940487a796ae00dbdde7f3a6ac9989",
+  "https://deno.land/x/ask@1.0.6/src/core/text.ts": "3978b9f2b9b7c824582ee760138e1de4cd9c7cfc91aec75cebabf05cf27c29b9",
+  "https://deno.land/x/ask@1.0.6/src/types/confirm.ts": "5e2ab79809a070e715a02da7f4a403209b07ff4a799befde5f3e258172c990ef",
+  "https://deno.land/x/ask@1.0.6/src/types/input.ts": "3ebbdfdcffa6e5bfc88e47bb7bf4c8e3454c566534e2dbe7f75aefa89029c5bb",
+  "https://deno.land/x/ask@1.0.6/src/types/number.ts": "5356ce3a7f357aec2775a6c939b73ccae2437757fd6acdb6c30eeabb190aefca",
+  "https://deno.land/x/iro@1.0.3/mod.ts": "ac3bdb5d5373a0b623652bd79ab552c1305e5eabb2872438dfef9c1499611676",
+  "https://deno.land/x/iro@1.0.3/src/iro.ts": "b1791e78b57defbd22263a5976da1865873501a6033d2e51070919ad97646995",
+  "https://x.nest.land/hyper-connect@0.1.10/deno/mod.ts": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

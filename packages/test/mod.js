@@ -1,5 +1,6 @@
 import Ask from "ask";
-import { connect } from "hyper-connect";
+// import { connect } from "hyper-connect";
+import { connect } from "../connect/deno/mod.ts";
 import { prop } from "ramda";
 
 const ask = new Ask();
@@ -64,6 +65,7 @@ if (services.includes("search")) {
   await import("./search/index-doc.js").then(runTest("search"));
   await import("./search/get-doc.js").then(runTest("search"));
   await import("./search/query-docs.js").then(runTest("search"));
+  await import("./search/bulk.js").then(runTest("search"));
   /*
   //await import("./search/update-doc.js").then(runTest("search"))
   */
