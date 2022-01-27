@@ -1,13 +1,12 @@
 export const fork = (res, code, m) =>
   m.fork(
     (error) => {
-      if (error.status) {
-        return res.setStatus(error.status).send({
-          ok: false,
-          msg: error.message,
-        });
-      }
-      res.setStatus(500).send(error);
+      const status = error.status || 500;
+      res.setStatus(status).send({
+        ...error,
+        ok: false,
+        msg: error.msg || error.message,
+      });
     },
     (result) => res.setStatus(code).send(result),
   );
