@@ -58,22 +58,21 @@ export const putObject = async ({ file, params, body, storage }, res) => {
   );
 };
 
-export const getObject = ({ params, storage }, res) => {
-  storage.getObject(params.name, params[0]).fork(
-    (e) => res.setStatus(500).send({ ok: false, msg: e.message }),
-    async (fileReader) => {
-      // get mime type
+export const getObject = ({ params, storage }, res) =>
+  fork(
+    res,
+    200,
+    storage.getObject(params.name, params[0]).map((fileReader) => {
+      // get mime type and set response
       const mimeType = getMimeType(params[0].split(".")[1]);
       res.set({
         "Content-Type": mimeType,
         "Transfer-Encoding": "chunked",
       });
-      res.setStatus(200);
 
-      await res.send(fileReader);
-    },
+      return fileReader;
+    }),
   );
-};
 
 export const removeObject = ({ params, storage }, res) =>
   fork(res, 201, storage.removeObject(params.name, params[0]));
