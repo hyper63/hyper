@@ -2,6 +2,8 @@ import * as data from "./services/data.ts";
 import * as cache from "./services/cache.ts";
 import * as search from "./services/search.ts";
 import * as info from "./services/info.ts";
+import * as storage from "./services/storage.ts";
+import * as queue from "./services/queue.ts";
 import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 import { R } from "./deps.ts";
@@ -170,6 +172,24 @@ export function connect(
           .then(search.destroy(confirm))
           .then(fetch)
           .then(handleResponse),
+    },
+    storage: {
+      upload: (name, data) =>
+        Promise.resolve(h)
+          .then(storage.upload(name, data))
+          .then(handleResponse),
+      download: (name) =>
+        Promise.resolve(h)
+          .then(storage.download(name))
+          .then(handleResponse),
+    },
+    queue: {
+      enqueue: (job) =>
+        Promise.resolve(h).then(queue.enqueue(job)).then(handleResponse),
+      errors: () =>
+        Promise.resolve(h).then(queue.errors()).then(handleResponse),
+      queued: () =>
+        Promise.resolve(h).then(queue.queued()).then(handleResponse),
     },
     info: {
       services: () =>

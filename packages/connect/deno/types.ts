@@ -1,21 +1,30 @@
-export enum SortOptions {
-  DESC = "DESC",
-  ASC = "ASC",
-}
+export type SortOptions = "DESC" | "ASC";
+export const SortOptions = {
+  DESC: "DESC" as SortOptions,
+  ASC: "ASC" as SortOptions,
+};
 
-export enum Method {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  DELETE = "DELETE",
-  PATCH = "PATCH",
-}
+export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export const Method = {
+  GET: "GET" as Method,
+  POST: "POST" as Method,
+  PUT: "PUT" as Method,
+  DELETE: "DELETE" as Method,
+  PATCH: "PATCH" as Method,
+};
 
-export enum Action {
-  QUERY = "_query",
-  BULK = "_bulk",
-  INDEX = "_index",
-}
+export type Action = "_query" | "_bulk" | "_index";
+export const Action = {
+  QUERY: "_query" as Action,
+  BULK: "_bulk" as Action,
+  INDEX: "_index" as Action,
+};
+
+export type QueueStatus = "ERROR" | "READY";
+export const QueueStatus = {
+  ERROR: "ERROR" as QueueStatus,
+  READY: "READY" as QueueStatus,
+};
 
 export interface ListOptions {
   limit?: number;
@@ -93,6 +102,17 @@ export interface HyperSearch {
   destroy: (confirm: boolean) => Promise<Result>;
 }
 
+export interface HyperStorage {
+  upload: (name: string, data: ReadableStream) => Promise<Result>;
+  download: (name: string) => Promise<ReadableStream>;
+}
+
+export interface HyperQueue {
+  enqueue: <Job>(job: Job) => Promise<Result>;
+  errors: <Job>() => Promise<Job[]>;
+  queued: <Job>() => Promise<Job[]>;
+}
+
 interface HyperInfoServicesResult {
   name: string;
   version: string;
@@ -107,6 +127,8 @@ export interface Hyper {
   data: HyperData;
   cache: HyperCache;
   search: HyperSearch;
+  storage: HyperStorage;
+  queue: HyperQueue;
   info: HyperInfo;
 }
 
