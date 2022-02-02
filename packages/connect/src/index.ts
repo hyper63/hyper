@@ -2,6 +2,8 @@ import * as data from "./services/data";
 import * as cache from "./services/cache";
 import * as search from "./services/search";
 import * as info from "./services/info";
+import * as storage from "./services/storage";
+import * as queue from "./services/queue";
 
 import { Hyper, HyperRequest } from "./types";
 import { hyper } from "./utils/hyper-request";
@@ -175,6 +177,32 @@ export function connect(
         Promise.resolve(h)
           .then(info.services())
           .then(fetch)
+          .then(handleResponse),
+    },
+    storage: {
+      upload: (name, data) =>
+        Promise.resolve(h)
+          .then(storage.upload(name, data))
+          // @ts-ignore don't know why this is breaking
+          .then(handleResponse),
+      download: (name) =>
+        Promise.resolve(h)
+          .then(storage.download(name))
+          // @ts-ignore don't know why this is breaking
+          .then(handleResponse),
+    },
+    queue: {
+      enqueue: (job) =>
+        Promise.resolve(h).then(queue.enqueue(job))
+          // @ts-ignore don't know why this is breaking
+          .then(handleResponse),
+      errors: () =>
+        Promise.resolve(h).then(queue.errors())
+          // @ts-ignore don't know why this is breaking
+          .then(handleResponse),
+      queued: () =>
+        Promise.resolve(h).then(queue.queued())
+          // @ts-ignore don't know why this is breaking
           .then(handleResponse),
     },
   };
