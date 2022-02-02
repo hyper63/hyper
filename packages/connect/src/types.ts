@@ -22,6 +22,12 @@ export const Action = {
   INDEX: "_index" as Action,
 };
 
+export type QueueStatus = "ERROR" | "READY";
+export const QueueStatus = {
+  ERROR: "ERROR" as QueueStatus,
+  READY: "READY" as QueueStatus,
+};
+
 export interface ListOptions {
   limit?: number;
   startkey?: string;
