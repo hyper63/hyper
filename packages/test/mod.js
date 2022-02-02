@@ -27,7 +27,7 @@ const services = prop("services", await hyper.info.services());
 
 //const services = await hyper.info.services
 const runTest = (svc) => (x) => x.default(hyper[svc]);
-
+/*
 if (services.includes("data")) {
   if (!isCloud) {
     // create app/domain instance
@@ -66,7 +66,21 @@ if (services.includes("search")) {
   await import("./search/get-doc.js").then(runTest("search"));
   await import("./search/query-docs.js").then(runTest("search"));
   await import("./search/bulk.js").then(runTest("search"));
-  /*
+  
   //await import("./search/update-doc.js").then(runTest("search"))
-  */
+  
+}
+*/
+
+if (services.includes('storage')) {
+  if (!isCloud) {
+    const url = new URL(hyperCS)
+    const route = `${url.protocol}//${url.hostname}:${url.port}/storage${url.pathname}`
+    // drop bucket
+    await fetch(route, { method: 'DELETE'}).catch(console.log)
+    // create bucket
+    await fetch(route, { method: 'PUT' }).catch(console.log)
+  }
+
+  await import("./storage/upload.js").then(runTest("storage"))
 }
