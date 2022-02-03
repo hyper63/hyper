@@ -19,8 +19,28 @@ export const upload = (name: string, data: ReadableStream) =>
     Promise.resolve({ name, data })
       .then(createFormData)
       // need to override header to send content-type: multipart/form-data
-      .then((fd) => h({ service, method: Method.POST, body: fd }));
+      .then(async (fd) => {
+        const req = await h({ service, method: Method.POST, body: fd });
+        const headers = new Headers();
+        headers.set(
+          "Authorization",
+          req.headers.get("authorization") as string,
+        );
+        return new Request(req.url, {
+          method: Method.POST,
+          body: fd,
+          headers,
+        });
+      });
 
 export const download = (name: string) =>
-  (h: HyperRequestFunction) =>
-    h({ service, method: Method.GET, resource: name });
+  async (h: HyperRequestFunction) => {
+    const req = await h({ service, method: Method.GET, resource: name });
+    const headers = new Headers();
+    headers.set("Authorization", req.headers.get("authorization") as string);
+
+    return new Request(req.url, {
+      method: Method.GET,
+      headers,
+    });
+  };
