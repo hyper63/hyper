@@ -60,7 +60,7 @@ Deno.test("validate putObject - always validate 'bucket' and 'object' params", a
   err = await adapter.putObject({
     no_bucket: "foo",
     object: "bar.jpg",
-    doReturnUrl: true,
+    useSignedUrl: true,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);
@@ -89,12 +89,12 @@ Deno.test("validate putObject upload - no stream", async () => {
 });
 
 Deno.test("validate putObject upload - conflicting params", async () => {
-  // conflicting params by passing both doReturnUrl: true and stream
+  // conflicting params by passing both useSignedUrl: true and stream
   const err = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
     stream: new Buffer(new Uint8Array(4).buffer),
-    doReturnUrl: true,
+    useSignedUrl: true,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);
@@ -104,7 +104,7 @@ Deno.test("validate putObject upload - invalid return", async () => {
   // invalid return
   adapter = storagePort({
     ...wrap,
-    putObject: ({ bucket, object, doReturnUrl }) =>
+    putObject: ({ bucket, object, useSignedUrl }) =>
       Promise.resolve({ ok: true, url: "https://foo.ar" }),
   });
 
@@ -123,7 +123,7 @@ Deno.test("validate putObject upload - invalid return", async () => {
 Deno.test("validate putObject signedUrl", async () => {
   adapter = storagePort({
     ...wrap,
-    putObject: ({ bucket, object, doReturnUrl }) =>
+    putObject: ({ bucket, object, useSignedUrl }) =>
       Promise.resolve({ ok: true, url: "https://foo.ar" }),
   });
 
@@ -131,7 +131,7 @@ Deno.test("validate putObject signedUrl", async () => {
   const res = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
-    doReturnUrl: true,
+    useSignedUrl: true,
   });
 
   assert(res.ok);
@@ -141,18 +141,18 @@ Deno.test("validate putObject signedUrl", async () => {
   adapter = storagePort(wrap);
 });
 
-Deno.test("validate putObject signedUrl - invalid doReturnUrl false", async () => {
+Deno.test("validate putObject signedUrl - invalid useSignedUrl false", async () => {
   adapter = storagePort({
     ...wrap,
-    putObject: ({ bucket, object, doReturnUrl }) =>
+    putObject: ({ bucket, object, useSignedUrl }) =>
       Promise.resolve({ ok: true, url: "https://foo.ar" }),
   });
 
-  // doReturnUrl false
+  // useSignedUrl false
   const err = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
-    doReturnUrl: false,
+    useSignedUrl: false,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);
@@ -164,16 +164,16 @@ Deno.test("validate putObject signedUrl - invalid doReturnUrl false", async () =
 Deno.test("validate putObject signedUrl - conflicting params", async () => {
   adapter = storagePort({
     ...wrap,
-    putObject: ({ bucket, object, doReturnUrl }) =>
+    putObject: ({ bucket, object, useSignedUrl }) =>
       Promise.resolve({ ok: true, url: "https://foo.ar" }),
   });
 
-  // conflicting params by passing both doReturnUrl: true and stream
+  // conflicting params by passing both useSignedUrl: true and stream
   const err = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
     stream: new Buffer(new Uint8Array(4).buffer),
-    doReturnUrl: true,
+    useSignedUrl: true,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);
@@ -185,14 +185,14 @@ Deno.test("validate putObject signedUrl - conflicting params", async () => {
 Deno.test("validate putObject signedUrl - invalid url in return", async () => {
   adapter = storagePort({
     ...wrap,
-    putObject: ({ bucket, object, doReturnUrl }) =>
+    putObject: ({ bucket, object, useSignedUrl }) =>
       Promise.resolve({ ok: true, url: "not.a.url" }),
   });
 
   const err = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
-    doReturnUrl: true,
+    useSignedUrl: true,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);
@@ -205,7 +205,7 @@ Deno.test("validate putObject signedUrl - no url in return", async () => {
   const err = await adapter.putObject({
     bucket: "foo",
     object: "bar.jpg",
-    doReturnUrl: true,
+    useSignedUrl: true,
   }).catch(() => ({ ok: false }));
 
   assert(!err.ok);

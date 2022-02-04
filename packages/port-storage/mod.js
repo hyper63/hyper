@@ -5,7 +5,7 @@ const putObjectUploadSchemaArgs = z.object({
   object: z.string(),
   stream: z.object({}).passthrough(),
   // omitting is falsey, so make it optional, but MUST be false if defined
-  doReturnUrl: z.literal(false).optional(),
+  useSignedUrl: z.literal(false).optional(),
 });
 const putObjectUploadSchema = z.function()
   .args(putObjectUploadSchemaArgs)
@@ -14,9 +14,9 @@ const putObjectUploadSchema = z.function()
 const putObjectSignedUrlSchemaArgs = z.object({
   bucket: z.string(),
   object: z.string(),
-  // MUST NOT be provided alongside doReturnUrl
+  // MUST NOT be provided alongside useSignedUrl
   stream: z.void(),
-  doReturnUrl: z.literal(true),
+  useSignedUrl: z.literal(true),
 });
 const putObjectSignedUrlSchema = z.function()
   .args(putObjectSignedUrlSchemaArgs)
@@ -88,7 +88,7 @@ export function storage(adapter) {
      * so now determine which function type to use for full
      * end-to-end validation
      */
-    if (!params.doReturnUrl) {
+    if (!params.useSignedUrl) {
       // upload request
       return putObjectUploadSchema.validate(original)(params);
     }
