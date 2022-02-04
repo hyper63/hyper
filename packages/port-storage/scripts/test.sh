@@ -2,4 +2,4 @@
 
 deno lint && \
 deno fmt --check && \
-deno test
+deno test --no-check
