@@ -107,7 +107,7 @@ interface Reader {
 }
 
 export interface HyperStorage {
-  upload: (name: string, data: ReadableStream) => Promise<Result>;
+  upload: (name: string, data: Uint8Array) => Promise<Result>;
   download: (name: string) => Promise<Reader | ReadableStream>;
 }
 

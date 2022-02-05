@@ -4,17 +4,17 @@ const service = "storage" as const;
 
 interface Form {
   name: string;
-  data: ReadableStream;
+  data: Uint8Array;
 }
 
 const createFormData = ({ name, data }: Form) => {
   const fd = new FormData();
   // @ts-ignore dont know how to deal with data to assign to wanted type
-  fd.append("file", data, name);
+  fd.append("file", new File([data.buffer], name));
   return fd;
 };
 
-export const upload = (name: string, data: ReadableStream) =>
+export const upload = (name: string, data: Uint8Array) =>
   (h: HyperRequestFunction) =>
     Promise.resolve({ name, data })
       .then(createFormData)

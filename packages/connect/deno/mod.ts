@@ -188,8 +188,7 @@ export function connect(
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          .then(toStream)
-          ,
+          .then(toStream),
     },
     queue: {
       enqueue: (job) =>
