@@ -6,7 +6,7 @@ import * as storage from "./services/storage.ts";
 import * as queue from "./services/queue.ts";
 import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
-import { R } from "./deps.ts";
+import { R, readerFromStreamReader } from "./deps.ts";
 
 const { assoc, includes, ifElse } = R;
 
@@ -21,6 +21,11 @@ export function connect(
     const { url, options } = await hyper(config, domain)(hyperRequest);
     return new Request(url, options);
   };
+
+  const toStream = (r: Response) =>
+    readerFromStreamReader(
+      r.body?.getReader() as ReadableStreamDefaultReader<Uint8Array>,
+    );
 
   // deno-lint-ignore no-explicit-any
   const handleResponse: any = (response: Response) =>
@@ -177,19 +182,27 @@ export function connect(
       upload: (name, data) =>
         Promise.resolve(h)
           .then(storage.upload(name, data))
+          .then(fetch)
           .then(handleResponse),
       download: (name) =>
         Promise.resolve(h)
           .then(storage.download(name))
-          .then(handleResponse),
+          .then(fetch)
+          .then(toStream),
     },
     queue: {
       enqueue: (job) =>
-        Promise.resolve(h).then(queue.enqueue(job)).then(handleResponse),
+        Promise.resolve(h).then(queue.enqueue(job)).then(fetch).then(
+          handleResponse,
+        ),
       errors: () =>
-        Promise.resolve(h).then(queue.errors()).then(handleResponse),
+        Promise.resolve(h).then(queue.errors()).then(fetch).then(
+          handleResponse,
+        ),
       queued: () =>
-        Promise.resolve(h).then(queue.queued()).then(handleResponse),
+        Promise.resolve(h).then(queue.queued()).then(fetch).then(
+          handleResponse,
+        ),
     },
     info: {
       services: () =>

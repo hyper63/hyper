@@ -16,7 +16,7 @@ test("storage.upload", async () => {
       }),
     );
   };
-  const req = await upload("avatar.png", new ReadableStream())(
+  const req = await upload("avatar.png", new Uint8Array())(
     mockRequest,
   );
   assertEquals(req.url, "http://localhost/storage/bucket");

@@ -102,9 +102,13 @@ export interface HyperSearch {
   destroy: (confirm: boolean) => Promise<Result>;
 }
 
+interface Reader {
+  read(p: Uint8Array): Promise<number | null>;
+}
+
 export interface HyperStorage {
-  upload: (name: string, data: ReadableStream) => Promise<Result>;
-  download: (name: string) => Promise<ReadableStream>;
+  upload: (name: string, data: Uint8Array) => Promise<Result>;
+  download: (name: string) => Promise<Reader | ReadableStream>;
 }
 
 export interface HyperQueue {

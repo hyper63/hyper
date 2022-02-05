@@ -183,26 +183,27 @@ export function connect(
       upload: (name, data) =>
         Promise.resolve(h)
           .then(storage.upload(name, data))
-          // @ts-ignore don't know why this is breaking
+          .then(fetch)
           .then(handleResponse),
       download: (name) =>
+        // @ts-ignore weird error
         Promise.resolve(h)
           .then(storage.download(name))
-          // @ts-ignore don't know why this is breaking
-          .then(handleResponse),
+          .then(fetch)
+          .then((r: Response) => r.body),
     },
     queue: {
       enqueue: (job) =>
         Promise.resolve(h).then(queue.enqueue(job))
-          // @ts-ignore don't know why this is breaking
+          .then(fetch)
           .then(handleResponse),
       errors: () =>
         Promise.resolve(h).then(queue.errors())
-          // @ts-ignore don't know why this is breaking
+          .then(fetch)
           .then(handleResponse),
       queued: () =>
         Promise.resolve(h).then(queue.queued())
-          // @ts-ignore don't know why this is breaking
+          .then(fetch)
           .then(handleResponse),
     },
   };
