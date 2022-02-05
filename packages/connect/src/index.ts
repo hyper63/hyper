@@ -190,8 +190,7 @@ export function connect(
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          .then((r: Response) => r.body)
-        ,
+          .then((r: Response) => r.body),
     },
     queue: {
       enqueue: (job) =>

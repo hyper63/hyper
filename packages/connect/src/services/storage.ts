@@ -1,6 +1,6 @@
 import { HyperRequestFunction, Method } from "../types";
 import FormData from "form-data";
-import { Request, Headers } from 'node-fetch';
+import { Headers, Request } from "node-fetch";
 
 const service = "storage" as const;
 
@@ -15,15 +15,18 @@ const createFormData = ({ name, data }: Form) => {
   return fd;
 };
 
-export const upload = (name: string, data: string | ReadableStream  | Buffer) =>
+export const upload = (name: string, data: string | ReadableStream | Buffer) =>
   (h: HyperRequestFunction) =>
     Promise.resolve({ name, data })
       .then(createFormData)
       // need to override header to send content-type: multipart/form-data
       .then(async (fd) => {
         const req = await h({ service, method: Method.POST, body: fd });
-        const headers = new Headers()
-        headers.set('Authorization', req.headers.get('Authorization') as string)
+        const headers = new Headers();
+        headers.set(
+          "Authorization",
+          req.headers.get("Authorization") as string,
+        );
         return new Request(req.url, {
           method: Method.POST,
           headers,
@@ -41,5 +44,4 @@ export const download = (name: string) =>
       method: Method.GET,
       headers,
     });
-  }
-   
+  };
