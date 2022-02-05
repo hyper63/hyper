@@ -115,7 +115,7 @@ export interface HyperInfo {
 }
 
 export interface HyperStorage {
-  upload: (name: string, data: ReadableStream) => Promise<Result>;
+  upload: (name: string, data: string | ReadableStream  | Buffer) => Promise<Result>;
   download: (name: string) => Promise<ReadableStream>;
 }
 

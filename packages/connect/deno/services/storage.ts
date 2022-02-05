@@ -9,7 +9,6 @@ interface Form {
 
 const createFormData = ({ name, data }: Form) => {
   const fd = new FormData();
-  // @ts-ignore dont know how to deal with data to assign to wanted type
   fd.append("file", new File([data.buffer], name));
   return fd;
 };
