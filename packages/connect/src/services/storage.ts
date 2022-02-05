@@ -11,7 +11,6 @@ interface Form {
 
 const createFormData = ({ name, data }: Form) => {
   const fd = new FormData();
-  // @ts-ignore dont know how to deal with data to assign to wanted type
   fd.append("file", data, name);
   return fd;
 };
@@ -33,5 +32,14 @@ export const upload = (name: string, data: string | ReadableStream  | Buffer) =>
       });
 
 export const download = (name: string) =>
-  (h: HyperRequestFunction) =>
-    h({ service, method: Method.GET, resource: name });
+  async (h: HyperRequestFunction) => {
+    const req = await h({ service, method: Method.GET, resource: name });
+    const headers = new Headers();
+    headers.set("Authorization", req.headers.get("authorization") as string);
+
+    return new Request(req.url, {
+      method: Method.GET,
+      headers,
+    });
+  }
+   

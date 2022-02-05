@@ -186,10 +186,12 @@ export function connect(
           .then(fetch)
           .then(handleResponse),
       download: (name) =>
+        // @ts-ignore weird error
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          .then(handleResponse),
+          .then((r: Response) => r.body)
+        ,
     },
     queue: {
       enqueue: (job) =>
