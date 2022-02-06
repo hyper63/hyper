@@ -1,6 +1,5 @@
 import Ask from "ask";
-// import { connect } from "hyper-connect";
-import { connect } from "../connect/deno/mod.ts";
+import { connect } from "hyper-connect";
 import { prop } from "ramda";
 
 const ask = new Ask();
@@ -71,7 +70,6 @@ if (services.includes("search")) {
   //await import("./search/update-doc.js").then(runTest("search"))
   
 }
-
 
 if (services.includes("storage")) {
   if (!isCloud) {
