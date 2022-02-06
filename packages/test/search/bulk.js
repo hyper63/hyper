@@ -20,6 +20,7 @@ export default function (search) {
   test("POST /search/:index/_bulk", () =>
     $fetch(() => search.load(docs))
       .map((r) => {
+        console.log('bulk', r)
         assert(r.ok);
         assert(r.results[0].ok);
         assert(r.results[1].ok);

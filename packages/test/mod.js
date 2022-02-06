@@ -56,6 +56,7 @@ if (services.includes("cache")) {
   await import("./cache/query-keys.js").then(runTest("cache"));
 }
 
+
 if (services.includes("search")) {
   if (!isCloud) {
     await hyper.search.destroy(true).catch(console.log);
@@ -66,7 +67,24 @@ if (services.includes("search")) {
   await import("./search/get-doc.js").then(runTest("search"));
   await import("./search/query-docs.js").then(runTest("search"));
   await import("./search/bulk.js").then(runTest("search"));
-  /*
+
   //await import("./search/update-doc.js").then(runTest("search"))
-  */
+  
+}
+
+
+if (services.includes("storage")) {
+  if (!isCloud) {
+    const _ = new URL(hyperCS)
+    const url = `${_.protocol}//${_.hostname}:${_.port}/storage${_.pathname}`
+    console.log(url)
+    await fetch(url, {
+      method: 'DELETE'
+    }).then(r => r.json())
+    await fetch(url, {
+      method: 'PUT'
+    }).then(r => r.json())
+  }
+  await import("./storage/upload.js").then(runTest("storage"));
+  await import("./storage/download.js").then(runTest("storage"));
 }
