@@ -1,4 +1,4 @@
-import { app, cache, dndb, fs, minisearch } from "./deps.js";
+import { app, cache, dndb, fs, minisearch, queue } from "./deps.js";
 
 const DIR = "/tmp";
 
@@ -20,6 +20,10 @@ export default {
     {
       port: "search",
       plugins: [minisearch({ dir: DIR })],
+    },
+    {
+      port: "queue",
+      plugins: [queue(DIR + "/hyper-queue.db")],
     },
   ],
 };
