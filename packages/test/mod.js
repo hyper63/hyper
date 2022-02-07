@@ -19,7 +19,6 @@ if (!ci) {
 }
 const hyperCS = answers.hyper === "" ? cs : answers.hyper;
 const isCloud = /^cloud/.test(answers.hyper);
-console.log("isCloud", isCloud);
 
 const hyper = connect(hyperCS);
 

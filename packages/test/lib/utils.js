@@ -8,7 +8,6 @@ export const toJSON = (res) => {
   return res.ok
     ? Async.fromPromise(res.json.bind(res))()
     : Async.fromPromise(res.json.bind(res))()
-      .map((r) => (console.log(r), r))
       .map((r) => ({ ok: false, status: res.status, ...r }));
 };
 
