@@ -163,6 +163,22 @@ of the action.
 | search  | query  | searches index by text                            |
 | search  | load   | loads a batch of documents                        |
 
+### storage
+
+| Service | Action   | Description                              |
+| ------- | -------- | ---------------------------------------- |
+| storage | upload   | adds object/file to hyper storage bucket |
+| storage | download | retrieves a object/file from bucket      |
+| storage | remove   | removes a object/file from the bucket    |
+
+### queue
+
+| Service | Action  | Description                                                |
+| ------- | ------- | ---------------------------------------------------------- |
+| queue   | enqueue | posts object to queue                                      |
+| queue   | errors  | gets list of errors occured with queue                     |
+| queue   | queued  | gets list of objects that are queued and ready to be sent. |
+
 ---
 
 ### Contributing
