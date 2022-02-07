@@ -8,7 +8,6 @@ export default function (queue) {
 
   test("POST /queue/:name successfully", () =>
     enqueue("Hello World")
-      .map(r => assertEquals(r.ok, true))
-      .toPromise()
-  );
+      .map((r) => assertEquals(r.ok, true))
+      .toPromise());
 }

@@ -19,7 +19,7 @@ if (!ci) {
 }
 const hyperCS = answers.hyper === "" ? cs : answers.hyper;
 const isCloud = /^cloud/.test(answers.hyper);
-console.log('isCloud', isCloud)
+console.log("isCloud", isCloud);
 
 const hyper = connect(hyperCS);
 
@@ -104,5 +104,4 @@ if (services.includes("queue")) {
   await import("./queue/enqueue.js").then(runTest("queue"));
   await import("./queue/errors.js").then(runTest("queue"));
   await import("./queue/queued.js").then(runTest("queue"));
-
 }

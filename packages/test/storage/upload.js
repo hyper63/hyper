@@ -1,5 +1,5 @@
 import { $fetch } from "../lib/utils.js";
-import { assert, assertEquals } from "asserts";
+import { assertEquals } from "asserts";
 
 const test = Deno.test;
 
@@ -11,5 +11,6 @@ export default function (storage) {
   test("POST /storage/:bucket successfully", () =>
     upload("logo.png", Deno.readFileSync("logo.png"))
       .map((r) => assertEquals(r.ok, true))
-      .chain(() => cleanUp("logo.png")));
+      .chain(() => cleanUp("logo.png"))
+      .toPromise());
 }

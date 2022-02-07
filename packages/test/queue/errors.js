@@ -9,7 +9,5 @@ export default function (queue) {
   test("GET /queue/:name successfully", () =>
     errors()
       .map((r) => assertEquals(r.ok, true))
-      .toPromise()
-
-  );
+      .toPromise());
 }

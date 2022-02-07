@@ -22,8 +22,8 @@ export default {
       plugins: [minisearch({ dir: DIR })],
     },
     {
-      port: 'queue',
-      plugins: [queue(DIR + '/hyper-queue.db')]
-    }
+      port: "queue",
+      plugins: [queue(DIR + "/hyper-queue.db")],
+    },
   ],
 };
