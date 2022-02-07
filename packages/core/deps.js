@@ -10,7 +10,7 @@ export { exists } from "https://deno.land/std@0.125.0/fs/mod.ts";
 export { queue } from "https://x.nest.land/hyper-port-queue@0.1.4/mod.js";
 export { cache } from "https://x.nest.land/hyper-port-cache@1.1.4/mod.js";
 export { data } from "https://x.nest.land/hyper-port-data@1.0.13/mod.js";
-export { storage } from "https://x.nest.land/hyper-port-storage@1.0.2/mod.js";
+export { storage } from "https://x.nest.land/hyper-port-storage@1.1.0/mod.js";
 export { search } from "https://x.nest.land/hyper-port-search@1.0.6/mod.js";
 export { hooks } from "https://x.nest.land/hyper-port-hooks@1.0.2/mod.js";
 export { crawler } from "https://x.nest.land/hyper-port-crawler@0.0.2/mod.js";
