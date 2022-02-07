@@ -1,7 +1,9 @@
 import { cors, helmet, json, opine, R } from "./deps.js";
 
 // middleware
-import upload from "./lib/upload.js";
+import formData from "./lib/formData.js";
+
+import { isMultipartFormData } from "./utils.js";
 
 // route handlers
 import * as cache from "./api/cache.js";
@@ -77,7 +79,25 @@ export function hyperRouter(services) {
   app.get("/storage", storage.index);
   app.put("/storage/:name", bindCore, storage.makeBucket);
   app.delete("/storage/:name", bindCore, storage.removeBucket);
-  app.post("/storage/:name", upload("file"), bindCore, storage.putObject);
+
+  // Wildcard route for if consumers specifies path in url or useSignedUrl flow
+  app.post(
+    "/storage/:name/*",
+    (req, res, next) => {
+      // useSignedUrl
+      if (!isMultipartFormData(req.get("content-type"))) {
+        return next();
+      }
+
+      // upload
+      return formData(req, res, next);
+    },
+    bindCore,
+    storage.putObject("file"),
+  );
+  // This MUST be multipart/form-data (original behavior)
+  app.post("/storage/:name", formData, bindCore, storage.putObject("file"));
+
   app.get("/storage/:name/*", bindCore, storage.getObject);
   app.delete("/storage/:name/*", bindCore, storage.removeObject);
 
