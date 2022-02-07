@@ -17,3 +17,12 @@ export const fork = (res, code, m) =>
     },
     (result) => res.setStatus(code).send(result),
   );
+
+export const isMultipartFormData = (contentType) => {
+  contentType = contentType || "";
+  return contentType.startsWith("multipart/form-data");
+};
+
+export const isFile = (path) => {
+  return path.split("/").pop().indexOf(".") > -1;
+};

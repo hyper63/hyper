@@ -1,0 +1,34 @@
+import { exists, MultipartReader, R } from "../deps.js";
+import { isMultipartFormData } from "../utils.js";
+
+const { compose, nth, split } = R;
+const TMP_DIR = "/tmp/hyper/uploads";
+
+const getBoundary = compose(
+  nth(1),
+  split("="),
+  nth(1),
+  split(";"),
+);
+
+export default async (req, _res, next) => {
+  let boundary;
+
+  const contentType = req.get("content-type");
+  if (isMultipartFormData(contentType)) {
+    boundary = getBoundary(contentType);
+  }
+
+  if (!(await exists(TMP_DIR))) {
+    await Deno.mkdir(TMP_DIR, { recursive: true });
+  }
+
+  const form = await new MultipartReader(req.body, boundary).readForm({
+    maxMemory: 10 << 20,
+    dir: TMP_DIR,
+  });
+
+  req.form = form;
+
+  next();
+};
