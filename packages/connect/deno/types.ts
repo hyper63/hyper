@@ -109,6 +109,7 @@ interface Reader {
 export interface HyperStorage {
   upload: (name: string, data: Uint8Array) => Promise<Result>;
   download: (name: string) => Promise<Reader | ReadableStream>;
+  remove: (name: string) => Promise<Result>;
 }
 
 export interface HyperQueue {

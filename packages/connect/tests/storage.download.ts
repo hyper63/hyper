@@ -4,7 +4,7 @@ import { download } from "../src/services/storage";
 import { HyperRequest } from "../src/types";
 import { Request } from "node-fetch";
 
-test("storage.upload", async () => {
+test("storage.download", async () => {
   const mockRequest = (h: HyperRequest) => {
     assert.is(h.service, "storage");
     assert.is(h.method, "GET");

@@ -120,6 +120,7 @@ export interface HyperStorage {
     data: string | ReadableStream | Buffer,
   ) => Promise<Result>;
   download: (name: string) => Promise<ReadableStream>;
+  remove: (name: string) => Promise<Result>;
 }
 
 export interface HyperQueue {
