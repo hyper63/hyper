@@ -45,3 +45,7 @@ export const download = (name: string) =>
       headers,
     });
   };
+
+export const remove = (name: string) =>
+  (h: HyperRequestFunction) =>
+    h({ service, method: Method.DELETE, resource: name });

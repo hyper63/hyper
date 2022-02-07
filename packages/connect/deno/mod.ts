@@ -189,6 +189,11 @@ export function connect(
           .then(storage.download(name))
           .then(fetch)
           .then(toStream),
+      remove: (name) =>
+        Promise.resolve(h)
+          .then(storage.remove(name))
+          .then(fetch)
+          .then(handleResponse),
     },
     queue: {
       enqueue: (job) =>
