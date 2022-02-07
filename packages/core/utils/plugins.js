@@ -1,6 +1,7 @@
 import { R } from "../deps.js";
 
 const {
+  unapply,
   applyTo,
   filter,
   compose,
@@ -8,9 +9,16 @@ const {
   mergeAll,
   is,
   pluck,
-  pipeP,
+  pipeWith,
   reverse,
 } = R;
+
+/**
+ * @param  {...() => Promise<any>} fns - variadic args of functions
+ * @returns a pipeP function that can be used to compose Promise returning functions,
+ * similar to calling .then or .chain
+ */
+const pipeP = unapply(pipeWith((fn, p) => Promise.resolve(p).then(fn)));
 
 /**
  * Given a list of plugins, compose the plugin.load()
