@@ -95,7 +95,7 @@ if (services.includes("queue")) {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        target: "https://jsonplaceholder.typicode.com/posts",
+        target: "http://localhost:8000/",
       }),
     }).then((r) => r.json());
   }

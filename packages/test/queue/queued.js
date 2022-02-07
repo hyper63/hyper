@@ -7,6 +7,9 @@ export default function (queue) {
   const queued = () => $fetch(() => queue.queued());
 
   test("GET /queue/:name successfully", () =>
-    queued()
-      .map((r) => assertEquals(r.ok, true)));
+    queued() 
+    .map((r) => assertEquals(r.ok, true))
+    .toPromise()
+
+    );
 }
