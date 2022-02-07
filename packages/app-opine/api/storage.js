@@ -1,5 +1,5 @@
 import { Buffer, crocks, getMimeType } from "../deps.js";
-import { fork } from "../utils.js";
+import { fork, isFile, isMultipartFormData } from "../utils.js";
 
 const { Async } = crocks;
 
@@ -25,38 +25,87 @@ export const removeBucket = ({ params, storage }, res) =>
  * @param {*} res
  * @returns
  */
-export const putObject = async ({ file, params, body, storage }, res) => {
-  let object = file.filename;
-  if (body.path) {
-    object = `${body.path}/${file.filename}`;
-  }
+export const putObject = (fieldName = "file") =>
+  async (req, res) => {
+    /**
+     * Ensure reader is closed, if defined, to prevent leaks
+     * in the case of a tempfile being created
+     */
+    const cleanup = (m) =>
+      Async.fromPromise(async (res) => {
+        if (!reader || typeof reader.close !== "function") {
+          return res;
+        }
 
-  const reader = file.content
-    ? new Buffer(file.content.buffer) // from memory
-    : await Deno.open(file.tempfile, { read: true }); // from tempfile if too large for memory buffer
-
-  /**
-   * Ensure reader is closed to prevent leaks
-   * in the case of a tempfile being created
-   */
-  const cleanup = (_constructor) =>
-    Async.fromPromise(async (res) => {
-      if (typeof reader.close === "function") {
         await reader.close();
+        return res;
+      })
+        .chain(m);
+
+    const { params, storage } = req;
+
+    let reader = undefined;
+
+    const bucket = params.name;
+    let object = "";
+    let useSignedUrl = false;
+
+    // Upload
+    if (isMultipartFormData(req.get("content-type"))) {
+      const form = req.form;
+      const file = form.files(fieldName)[0];
+      reader = file.content
+        ? new Buffer(file.content.buffer) // from memory
+        : await Deno.open(file.tempfile, { read: true }); // from tempfile if too large for memory buffer
+
+      // object is placed at root of bucket, by default
+      object = file.filename;
+
+      // object can be placed in "subdirectories within the bucket"
+      const path = form.values("path")
+        ? form.values("path")[0]
+        : params[0] || undefined; // fallback to url path, if defined, if form data path is not defined
+
+      if (path) {
+        /**
+         * The filename, from FormData file, takes precedent over any filename in path,
+         *
+         * Examples:
+         *
+         * POST /bucket/foo/bar.jpg form-data: (file: actual.jpg) will
+         * ignore `bar.jpg` and use `actual.jpg` for the filename
+         * effectively acting as POST /bucket/foo form-data: (file: actual.jpg)
+         *
+         * POST /bucket form-data: (file: actual.jpg, path: foo/bar.jpg) will
+         * ignore `bar.jpg` and use `actual.jpg` for the filename
+         * effectively acting as POST /bucket/foo form-data: (file: actual.jpg)
+         */
+        if (isFile(path)) {
+          path = path.split("/").slice(0, -1).join("/");
+        }
+
+        if (path.endsWith("/")) {
+          path = path.slice(0, -1);
+        }
+
+        object = `${path}/${object}`;
       }
+    } else {
+      // useSignedUrl
+      useSignedUrl = true;
+      // TODO: Tyler. should we check if the object is a file name?
+      object = params[0] || undefined; // map all falsey to undefined, then Let Storage port catch
+    }
 
-      return _constructor(res);
-    });
-
-  return fork(
-    res,
-    201,
-    storage.putObject(params.name, object, reader).bichain(
-      cleanup(Promise.reject.bind(Promise)),
-      cleanup(Promise.resolve.bind(Promise)),
-    ),
-  );
-};
+    return fork(
+      res,
+      201,
+      storage.putObject(bucket, object, reader, useSignedUrl).bichain(
+        cleanup(Async.Rejected),
+        cleanup(Async.Resolved),
+      ),
+    );
+  };
 
 export const getObject = ({ params, storage }, res) =>
   fork(
