@@ -18,7 +18,7 @@ export default function (search) {
       .chain(cleanUp("1"))
       .toPromise());
 
-  test("POST /cache/:store - multiples of same key should 409", () =>
+  test("POST /search/:store - multiples of same key should 409", () =>
     $fetch(() => search.add("2", { id: "2", type: "movie", title: "Hackers" }))
       .map(doAssert("ok"))
       .chain(() =>

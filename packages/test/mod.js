@@ -7,7 +7,6 @@ const ci = Boolean(Deno.env.get("CI")) || false;
 const cs = Deno.env.get("HYPER") || "http://localhost:6363/test";
 console.log("hyper test suite ⚡️");
 let answers = { hyper: cs };
-const isCloud = /^cloud/.test(answers.hyper);
 
 if (!ci) {
   answers = await ask.prompt([
@@ -19,6 +18,9 @@ if (!ci) {
   ]);
 }
 const hyperCS = answers.hyper === "" ? cs : answers.hyper;
+const isCloud = /^cloud/.test(answers.hyper);
+console.log('isCloud', isCloud)
+
 const hyper = connect(hyperCS);
 
 // get services that are active on the hyper instance
