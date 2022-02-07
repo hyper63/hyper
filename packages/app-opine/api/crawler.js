@@ -1,14 +1,14 @@
 import { R } from "../deps.js";
 import { fork } from "../utils.js";
 
-const { merge } = R;
+const { mergeRight } = R;
 
 export const upsert = ({ crawler, params, body }, res) =>
   fork(
     res,
     201,
     crawler.upsert(
-      merge(body, { app: params.bucket, name: params.name }),
+      mergeRight(body, { app: params.bucket, name: params.name }),
     ),
   );
 
