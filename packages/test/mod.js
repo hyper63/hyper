@@ -55,7 +55,6 @@ if (services.includes("cache")) {
   await import("./cache/query-keys.js").then(runTest("cache"));
 }
 
-
 if (services.includes("search")) {
   if (!isCloud) {
     await hyper.search.destroy(true).catch(console.log);
@@ -68,21 +67,40 @@ if (services.includes("search")) {
   await import("./search/bulk.js").then(runTest("search"));
 
   //await import("./search/update-doc.js").then(runTest("search"))
-  
 }
 
 if (services.includes("storage")) {
   if (!isCloud) {
-    const _ = new URL(hyperCS)
-    const url = `${_.protocol}//${_.hostname}:${_.port}/storage${_.pathname}`
-    console.log(url)
+    const _ = new URL(hyperCS);
+    const url = `${_.protocol}//${_.hostname}:${_.port}/storage${_.pathname}`;
     await fetch(url, {
-      method: 'DELETE'
-    }).then(r => r.json())
+      method: "DELETE",
+    }).then((r) => r.json());
     await fetch(url, {
-      method: 'PUT'
-    }).then(r => r.json())
+      method: "PUT",
+    }).then((r) => r.json());
   }
   await import("./storage/upload.js").then(runTest("storage"));
   await import("./storage/download.js").then(runTest("storage"));
+}
+
+if (services.includes("queue")) {
+  if (!isCloud) {
+    const _ = new URL(hyperCS);
+    const url = `${_.protocol}//${_.hostname}:${_.port}/queue${_.pathname}`;
+    await fetch(url, {
+      method: "DELETE",
+    }).then((r) => r.json());
+    await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        target: "https://jsonplaceholder.typicode.com/posts",
+      }),
+    }).then((r) => r.json());
+  }
+  await import("./queue/enqueue.js").then(runTest("queue"));
+  await import("./queue/errors.js").then(runTest("queue"));
+  await import("./queue/queued.js").then(runTest("queue"));
+
 }
