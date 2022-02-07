@@ -1,11 +1,15 @@
 // deno-lint-ignore-file no-unused-vars
+import { R } from "../../deps.js";
 import { assertEquals } from "../../dev_deps.js";
 import * as objects from "./objects.js";
+
+const { tap } = R;
+
 const test = Deno.test;
 
 const mock = {
-  putObject({ bucket, object, stream }) {
-    return Promise.resolve({ ok: true });
+  putObject({ bucket, object, stream, useSignedUrl }) {
+    return Promise.resolve({ ok: true, stream, useSignedUrl });
   },
   getObject({ bucket, object }) {
     return Promise.resolve({ ok: true });
@@ -35,15 +39,38 @@ const events = {
 
 test(
   "put object",
-  fork(
-    objects
-      .put(
-        "test",
-        "README.md",
-        null, // fs.createReadStream(path.resolve('../../README.md'))
-      )
-      .runWith({ svc: mock, events }),
-  ),
+  () => {
+    // upload
+    fork(
+      objects
+        .put(
+          "test",
+          "README.md",
+          "foo", // fs.createReadStream(path.resolve('../../README.md'))
+        )
+        .map(tap(({ stream, useSignedUrl }) => {
+          assertEquals(stream, "foo");
+          assertEquals(useSignedUrl, undefined);
+        }))
+        .runWith({ svc: mock, events }),
+    );
+
+    // useSignedUrl
+    fork(
+      objects
+        .put(
+          "test",
+          "README.md",
+          undefined,
+          true,
+        )
+        .map(tap(({ stream, useSignedUrl }) => {
+          assertEquals(stream, undefined);
+          assertEquals(useSignedUrl, true);
+        }))
+        .runWith({ svc: mock, events }),
+    );
+  },
 );
 
 test(

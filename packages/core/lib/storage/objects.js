@@ -1,10 +1,11 @@
 import { apply, of, triggerEvent } from "../utils/mod.js";
 
-export const put = (bucket, object, stream) =>
+export const put = (bucket, object, stream, useSignedUrl) =>
   of({
     bucket,
     object,
     stream,
+    useSignedUrl,
   }).chain(apply("putObject"))
     .chain(triggerEvent("STORAGE:PUT"));
 

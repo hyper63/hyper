@@ -28,8 +28,8 @@ export default function ({ storage, events }) {
    * @param {stream} stream
    * @returns {Async}
    */
-  const putObject = (bucketName, objectName, stream) =>
-    objects.put(bucketName, objectName, stream).runWith({
+  const putObject = (bucketName, objectName, stream, useSignedUrl) =>
+    objects.put(bucketName, objectName, stream, useSignedUrl).runWith({
       svc: storage,
       events,
     });

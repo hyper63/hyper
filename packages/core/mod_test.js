@@ -1,8 +1,8 @@
-import opine from "https://x.nest.land/hyper-app-opine@1.1.2/mod.js";
-import dndb from "https://x.nest.land/hyper-adapter-dndb@0.0.3/mod.js";
+import opine from "https://x.nest.land/hyper-app-opine@1.2.10/mod.js";
+import dndb from "https://x.nest.land/hyper-adapter-dndb@2.0.0/mod.js";
 import memory from "https://x.nest.land/hyper-adapter-memory@1.2.6/mod.js";
-import { superdeno } from "https://deno.land/x/superdeno@4.4.0/mod.ts";
-import { assertEquals } from "https://deno.land/std@0.104.0/testing/asserts.ts";
+import { superdeno } from "https://deno.land/x/superdeno@4.7.2/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.125.0/testing/asserts.ts";
 
 import core from "./mod.js";
 
