@@ -3,7 +3,8 @@ import { z } from "./deps.js";
 const putObjectUploadSchemaArgs = z.object({
   bucket: z.string(),
   object: z.string(),
-  stream: z.object({}).passthrough(),
+  // TODO: make it so this isn't nullable, while not stripping keys. z.object().passthrough() doesn't seem to work
+  stream: z.any(),
   // omitting is falsey, so make it optional, but MUST be false if defined
   useSignedUrl: z.literal(false).optional(),
 });
