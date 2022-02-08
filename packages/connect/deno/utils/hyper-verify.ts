@@ -1,6 +1,15 @@
 import { crocks, hmac, ms, R } from "../deps.ts";
-const { assoc, compose, over, ifElse, lensPath, nth, split, path, identity } =
-  R;
+const {
+  assoc,
+  compose,
+  over,
+  ifElse,
+  lensPath,
+  nth,
+  split,
+  path,
+  identity,
+} = R;
 const { of, Left, Right } = crocks.Either;
 
 interface Parsed {
@@ -63,7 +72,9 @@ const verifyTimeGap = (delay: string) =>
   ifElse(
     compose(
       (x: number) => x < 0 || x > (ms(delay) as number),
-      (time: number) => new Date().getTime() - new Date(time).getTime(),
+      (time: number) =>
+        new Date().getTime() -
+        new Date(time).getTime(),
       path(["input", "signature", 0]),
     ),
     () =>
