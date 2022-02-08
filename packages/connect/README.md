@@ -31,6 +31,9 @@ npm install hyper-connect
 
 ## Getting Started
 
+> New Experimental Feature: hyper Queue worker support,
+> [see below](#verify-signature)
+
 ### NodeJS (TypeScript)
 
 ```ts
@@ -181,6 +184,29 @@ of the action.
 
 ---
 
+### Verify Signature
+
+hyper Queue allows you to create a target web hook endpoint to receive jobs, in
+order to secure that endpoint to only receive jobs from hyper, you can implement
+a secret, this secret using sha256 to encode a `nounce` timestamp and a
+signature of the job payload. We created a function on `hyper-connect` to make
+it easier to implement your own middleware to validate these incoming jobs in a
+secure way.
+
+```js
+import { createHyperVerify } from 'hyper-connect'
+
+const signatureVerify = createHyperVerify(process.env.QUEUE_SECRET, '1m')
+
+export const validateSignature(req, res, next) {
+  const result = signatureVerify(req.headers.get('x-hyper-signature'), req.body))
+  if (!result.ok) {
+    return res.setStatus(result.status).send({msg: result.msg})
+  }
+  next()
+}
+```
+
 ### Contributing
 
 ---
@@ -188,3 +214,6 @@ of the action.
 ### License
 
 Apache 2.0
+
+```
+```
