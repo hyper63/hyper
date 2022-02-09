@@ -7,6 +7,7 @@ import * as queue from "./services/queue.ts";
 import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 import { R, readerFromStreamReader } from "./deps.ts";
+export { createHyperVerify } from "./utils/hyper-verify.ts";
 
 const { assoc, includes, ifElse } = R;
 
