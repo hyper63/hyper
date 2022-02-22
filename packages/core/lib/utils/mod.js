@@ -32,7 +32,7 @@ export const apply = (method) =>
         )
         .bichain(
           (err) => {
-            console.log(e);
+            console.log(err);
             // fuzzy map
             const hyperErr = HyperErrFrom(err);
             return Async.Resolved(hyperErr);
