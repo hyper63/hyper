@@ -269,7 +269,15 @@ const zodErrToHyperErr = compose(
   (zodErr) => gatherZodIssues(zodErr, ""),
 );
 
-export const isHyperErr = propEq("ok", false);
+export const isHyperErr = allPass([
+  propEq("ok", false),
+  /**
+   * should not have an _id.
+   * Otherwise it's a document ie data.retrieveDocument
+   * or cache.getDoc
+   */
+  complement(has("_id")),
+]);
 
 // { ok: false } solely
 const isBaseHyperErr = allPass([
