@@ -269,17 +269,27 @@ const zodErrToHyperErr = compose(
   (zodErr) => gatherZodIssues(zodErr, ""),
 );
 
+export const isHyperErr = propEq("ok", false);
+
+// { ok: false } solely
+const isBaseHyperErr = allPass([
+  isHyperErr,
+  (err) => Object.keys(err).length === 1,
+]);
+
 export const HyperErrFrom = (err) =>
   compose(
     assoc("originalErr", err),
     ifElse(
-      is(ZodError),
-      // handle ZodErrors mapped to HyperErr
-      zodErrToHyperErr,
-      // fuzzy mapping to HyperErr
-      (err) => HyperErr({ msg: mapErr(err), status: mapStatus(err) }),
+      isBaseHyperErr, // simply return errors of shape { ok: false }
+      identity,
+      ifElse(
+        is(ZodError),
+        // handle ZodErrors mapped to HyperErr
+        zodErrToHyperErr,
+        // fuzzy mapping to HyperErr
+        (err) => HyperErr({ msg: mapErr(err), status: mapStatus(err) }),
+      ),
     ),
     defaultTo({ msg: "An error occurred" }),
   )(err);
-
-export const isHyperErr = propEq("ok", false);

@@ -32,7 +32,19 @@ export const apply = (method) =>
         )
         .bichain(
           (err) => {
+            /**
+             * A hyper error should be returned in a resolved Promise, but
+             * in the case that is returned in a rejected Promise,
+             * we log it as a concern, as it probably indicates incorrect handling
+             * in the adapter
+             */
+            if (isHyperErr(err)) {
+              console.warn(
+                `Rejected hyper error returned from operation ${method}. Should this have been Resolved?`,
+              );
+            }
             console.log(err);
+
             // fuzzy map
             const hyperErr = HyperErrFrom(err);
             return Async.Resolved(hyperErr);

@@ -101,6 +101,7 @@ test("HyperErrFrom - should map ZodError to HyperErr", async () => {
 
 test("HyperErrFrom - should set fields", () => {
   const base = HyperErrFrom();
+  const withBase = HyperErrFrom({ ok: false });
   const withStatus = HyperErrFrom({ status: 404 });
   const fromStr = HyperErrFrom("foo");
   const fromObj = HyperErrFrom({ msg: "foo" });
@@ -108,6 +109,9 @@ test("HyperErrFrom - should set fields", () => {
   const withInvalidStatus = HyperErrFrom({ status: "not_parseable" });
 
   assertEquals(base.ok, false); // all should have ok false
+
+  assertEquals(withBase.ok, false);
+  assert(!withBase.msg);
 
   assertEquals(withStatus.status, 404);
   assert(withStatus.originalErr); // all should have orignalErr
