@@ -34,16 +34,34 @@ test("mapErr - should map the error", () => {
   // generic
   res = mapErr(undefined);
   assertEquals(res, "An error occurred");
+
+  // field preference
+  res = mapErr({ msg: "foo", error: { msg: "bar" } });
+  assertEquals(res, "foo");
+
+  res = mapErr({ msg: { error: "foo" }, error: { msg: "bar" } });
+  assertEquals(res, "foo");
 });
 
 test("mapStatus - should parse status", () => {
-  assertEquals(mapStatus("200"), 200);
-});
+  assertEquals(mapStatus(200), 200);
+  assertEquals(mapStatus({ status: 200 }), 200);
+  assertEquals(mapStatus({ statusCode: 200 }), 200);
 
-test("mapStatus - should not set status", () => {
+  // parseable
+  assertEquals(mapStatus("200"), 200);
+
+  // not parseable
   assertEquals(mapStatus("foo"), undefined);
   assertEquals(mapStatus(undefined), undefined);
   assertEquals(mapStatus({}), undefined);
+
+  // field preference
+  assertEquals(mapStatus({ status: 200, statusCode: 400 }), 200);
+  assertEquals(
+    mapStatus({ status: { statusCode: 200 }, statusCode: 400 }),
+    200,
+  );
 });
 
 test("HyperErrFrom - should accept nil, string, object, array, function, basically should never throw", () => {

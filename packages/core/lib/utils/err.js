@@ -5,7 +5,12 @@ const { ZodError, ZodIssueCode } = z;
 const {
   __,
   compose,
+  concat,
+  curry,
+  converge,
+  find,
   prop,
+  propEq,
   cond,
   complement,
   isNil,
@@ -25,6 +30,8 @@ const {
   equals,
   reduce,
   isEmpty,
+  unapply,
+  map,
 } = R;
 
 const isDefined = complement(isNil);
@@ -34,8 +41,7 @@ const isEmptyObject = allPass([
   is(Object),
   isEmpty,
 ]);
-
-const ifPropTuple = (fn) =>
+const toPropTuple = (fn) =>
   (propName) => [
     compose(
       isDefined,
@@ -44,51 +50,104 @@ const ifPropTuple = (fn) =>
     (val) => fn(prop(propName, val)),
   ];
 
-const mapErrPropTuple = ifPropTuple((err) => mapErr(err));
+const mapErrPropTuple = toPropTuple((err) => mapErr(err));
 
-// always return a string
-export const mapErr = cond([
-  // string
-  [is(String), identity],
-  // { message } catches both Error, and Object with message prop
-  mapErrPropTuple("message"),
-  // { msg } catches HyperErr, ie. it was inadvertantly thrown instead of resolved from adapter
-  mapErrPropTuple("msg"),
-  // { error } subkey
-  mapErrPropTuple("error"),
-  // { errors } subkey
-  mapErrPropTuple("errors"),
-  // []
-  [
-    is(Array),
-    compose(
-      join(", "),
-      (errs) => errs.map(mapErr), // recurse
-    ),
-  ],
-  // any non nil
-  [isDefined, (val) => JSON.stringify(val)],
-  // nil
-  [T, () => "An error occurred"],
-]);
+const condElseUndefined = (tuple) =>
+  cond([
+    tuple,
+    [T, () => undefined],
+  ]);
 
-// always return a number or undefined
-export const mapStatus = cond([
-  [is(Number), identity],
+/**
+ * Takes a value and attempts to traverse it and produce
+ * a string.
+ *
+ * If an object is received, this fn will recursively depth-first traverse multiple fields
+ * on the object in an attempt to find a value.
+ *
+ * If more than one value is resolved in that traversal,
+ * then this fn will prefer values resolved from fields according to this order:
+ * - msg
+ * - message
+ * - error
+ * - errors
+ *
+ * ie { msg: 'foo', error: 'bar' } will resolve to 'foo'
+ * this also applies to all recursive traversals, regardless of depth
+ * ie { msg: { msg: 'fizz', error: 'foo' }, error: 'bar' } will resolve to 'fizz'
+ *
+ * always return a string
+ */
+export const mapErr = converge(
+  compose(
+    defaultTo("An error occurred"),
+    unapply(find(isDefined)),
+  ),
   [
-    is(String),
-    compose(
-      ifElse(
-        isNaN,
-        always(undefined),
-        identity,
+    // string
+    condElseUndefined([is(String), identity]),
+    // { msg } catches HyperErr, ie. it was inadvertantly thrown instead of resolved from adapter
+    condElseUndefined(mapErrPropTuple("msg")),
+    // { message } catches both Error, and Object with message prop
+    condElseUndefined(mapErrPropTuple("message")),
+    // { error } subkey
+    condElseUndefined(mapErrPropTuple("error")),
+    // { errors } subkey
+    condElseUndefined(mapErrPropTuple("errors")),
+    // []
+    condElseUndefined([
+      is(Array),
+      compose(
+        join(", "),
+        map((err) => mapErr(err)), // recurse
       ),
-      (status) => parseInt(status, 10),
-    ),
+    ]),
+    // any non nil
+    condElseUndefined([isDefined, (val) => JSON.stringify(val)]),
   ],
-  // anything else
-  [T, always(undefined)],
-]);
+);
+
+const mapStatusPropTuple = toPropTuple((err) => mapStatus(err));
+
+/**
+ * Takes a value and attempts to traverse it and produce
+ * a number status code.
+ *
+ * If an object is received, this fn will recursively depth-first traverse multiple fields
+ * on the object in an attempt to find a value.
+ *
+ * If more than one value is resolved in that traversal,
+ * then this fn will prefer values resolved from fields according to this order:
+ * - status
+ * - statusCode
+ *
+ * ie { status: 200, statusCode: 400 } will resolve to 200
+ * this also applies to all recursive traversals, regardless of depth
+ * ie { status: { statusCode: 200 }, statusCode: 400 } will resolve to 200
+ *
+ * always return a number or undefined
+ */
+export const mapStatus = converge(
+  unapply(find(isDefined)), // undefined if nothing found,
+  [
+    condElseUndefined([is(Number), identity]),
+    condElseUndefined([
+      is(String),
+      compose(
+        ifElse(
+          isNaN,
+          always(undefined),
+          identity,
+        ),
+        (status) => parseInt(status, 10),
+      ),
+    ]),
+    // { status }
+    condElseUndefined(mapStatusPropTuple("status")),
+    // { statusCode }
+    condElseUndefined(mapStatusPropTuple("statusCode")),
+  ],
+);
 
 /**
  * Constructs a hyper-esque error
@@ -138,42 +197,42 @@ const HyperErr = (argsOrMsg) =>
  * @param {ZodError} zodErr
  * @returns {[ZodError]} - all errors
  */
-const gatherZodIssues = (zodErr, contextCode) =>
+const gatherZodIssues = curry((zodErr, contextCode) =>
   reduce(
-    (issues, issue) => {
-      const _issues = cond([
-        /**
-         * These issue codes indicate nested ZodErrors
-         * so we resursively gather those
-         *
-         * See https://github.com/colinhacks/zod/blob/HEAD/ERROR_HANDLING.md#zodissuecode
-         */
-        [equals(ZodIssueCode.invalid_arguments), () =>
-          gatherZodIssues(
-            issue.argumentsError,
-            ZodIssueCode.invalid_arguments,
-          )],
-        [equals(ZodIssueCode.invalid_return_type), () =>
-          gatherZodIssues(
-            issue.returnTypeError,
-            ZodIssueCode.invalid_return_type,
-          )],
-        [
-          equals(ZodIssueCode.invalid_union),
-          // An array of ZodErrors, so map over and flatten them all
-          () =>
-            flatten(issue.unionErrors.map((i) =>
-              gatherZodIssues(i, ZodIssueCode.invalid_union)
-            )),
-        ],
-        [T, () => [{ ...issue, contextCode }]],
-      ])(issue.code);
-
-      return issues.concat(_issues);
-    },
+    (issues, issue) =>
+      compose(
+        concat(issues),
+        cond([
+          /**
+           * These issue codes indicate nested ZodErrors
+           * so we resursively gather those
+           *
+           * See https://github.com/colinhacks/zod/blob/HEAD/ERROR_HANDLING.md#zodissuecode
+           */
+          [
+            equals(ZodIssueCode.invalid_arguments),
+            gatherZodIssues(issue.argumentsError),
+          ],
+          [
+            equals(ZodIssueCode.invalid_return_type),
+            gatherZodIssues(issue.returnTypeError),
+          ],
+          [
+            equals(ZodIssueCode.invalid_union),
+            // An array of ZodErrors, so map over and flatten them all
+            (code) =>
+              compose(
+                flatten,
+                map((i) => gatherZodIssues(i, code)),
+              )(issue.unionErrors),
+          ],
+          [T, () => [{ ...issue, contextCode }]],
+        ]),
+      )(issue.code),
     [],
     zodErr.issues,
-  );
+  )
+);
 
 const zodErrToHyperErr = compose(
   HyperErr,
@@ -202,7 +261,7 @@ const zodErrToHyperErr = compose(
         contextCode = contextCode ? `${contextCode}: ` : "";
 
         // TODO: is this formatting okay?
-        return acc.concat([`${contextCode}${_path}(${code}) - ${message}`]);
+        return concat(acc, [`${contextCode}${_path}(${code}) - ${message}`]);
       },
       [],
       zodIssues,
@@ -218,12 +277,9 @@ export const HyperErrFrom = (err) =>
       // handle ZodErrors mapped to HyperErr
       zodErrToHyperErr,
       // fuzzy mapping to HyperErr
-      (err) => HyperErr({ msg: mapErr(err), status: mapStatus(err.status) }),
+      (err) => HyperErr({ msg: mapErr(err), status: mapStatus(err) }),
     ),
     defaultTo({ msg: "An error occurred" }),
   )(err);
 
-export const isHyperErr = allPass([
-  has("ok"), // { ok }
-  complement(prop("ok")), // { ok: false }
-]);
+export const isHyperErr = propEq("ok", false);
