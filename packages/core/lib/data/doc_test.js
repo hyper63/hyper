@@ -77,6 +77,7 @@ test(
   fork(
     doc.create("foo")
       .map((res) => {
+        assert(res.id);
         assertEquals(Object.keys(res.doc).length, 0);
         return res;
       })

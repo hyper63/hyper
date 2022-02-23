@@ -1,4 +1,5 @@
 import { crocks } from "../../deps.js";
+import { HyperErrFrom, isHyperErr } from "./err.js";
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks;
 
@@ -25,26 +26,37 @@ export const is = (fn, msg) =>
 export const apply = (method) =>
   (data) =>
     ask(({ svc }) => {
-      // const async = Async.fromPromise(svc[method])
-      return Async(function (reject, resolve) {
-        // NOTE: maybe consider using an Either here?
-        try {
-          const p = data ? svc[method](data) : svc[method]();
-          return p.then(resolve)
-            .catch((e) => {
-              console.log(e);
-              return reject(e);
-            });
-        } catch (e) {
-          let msg = "";
-          console.log(e);
-          if (e.errors) {
-            msg = e.errors.map((x) => x.code).join(",");
-          }
-          return reject({ ok: false, msg });
-        }
-      });
-      // return async(data)
+      return Async.of(data)
+        .chain(
+          Async.fromPromise((data) => data ? svc[method](data) : svc[method]()),
+        )
+        .bichain(
+          (err) => {
+            /**
+             * A hyper error should be returned in a resolved Promise, but
+             * in the case that is returned in a rejected Promise,
+             * we log it as a concern, as it probably indicates incorrect handling
+             * in the adapter
+             */
+            if (isHyperErr(err)) {
+              console.warn(
+                `Rejected hyper error returned from operation ${method}. Should this have been Resolved?`,
+              );
+            }
+            console.log(err);
+
+            // fuzzy map
+            const hyperErr = HyperErrFrom(err);
+            return Async.Resolved(hyperErr);
+          },
+          (res) => {
+            if (isHyperErr(res)) {
+              console.log(res);
+            }
+
+            return Async.Resolved(res);
+          },
+        );
     }).chain(lift);
 
 export const triggerEvent = (event) =>

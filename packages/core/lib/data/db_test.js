@@ -38,8 +38,11 @@ const fork = (m) =>
 const handleFail = (m) =>
   () => {
     return m.bimap(
-      () => assertEquals(true, true),
-      () => assertEquals(false, true),
+      () => assertEquals(false, true), // catastrophic error shouldn't happen
+      (err) => {
+        assertEquals(err.ok, false);
+        assert(err.originalErr);
+      },
     ).toPromise().catch((e) => e);
   };
 
@@ -69,7 +72,7 @@ test(
   ),
 );
 test(
-  "bulk docs failure",
+  "bulk docs - resolve failure",
   handleFail(db.bulk("foo", []).runWith({ svc: mockDb, events })),
 );
 
