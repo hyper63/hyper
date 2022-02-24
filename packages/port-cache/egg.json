@@ -5,7 +5,7 @@
   "description": "Hyper service framework port for Cache adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "unstable": false,
   "unlisted": false,
   "files": [
