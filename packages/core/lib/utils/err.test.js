@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "../../dev_deps.js";
 import { z } from "../../deps.js";
 
-import { HyperErrFrom, mapErr, mapStatus } from "./err.js";
+import { HyperErrFrom, isHyperErr, mapErr, mapStatus } from "./err.js";
 
 const { test } = Deno;
 
@@ -62,6 +62,12 @@ test("mapStatus - should parse status", () => {
     mapStatus({ status: { statusCode: 200 }, statusCode: 400 }),
     200,
   );
+});
+
+test("isHyperErr - should match hyper err shapes", () => {
+  assert(isHyperErr({ ok: false }));
+  assert(!isHyperErr({ ok: true }));
+  assert(!isHyperErr({ ok: false, _id: "foo" }));
 });
 
 test("HyperErrFrom - should accept nil, string, object, array, function, basically should never throw", () => {
