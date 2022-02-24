@@ -6,8 +6,8 @@ export { MultipartReader } from "https://deno.land/std@0.125.0/mime/mod.ts";
 export { Buffer } from "https://deno.land/std@0.125.0/io/buffer.ts";
 export { exists } from "https://deno.land/std@0.125.0/fs/exists.ts";
 
-export { default as helmet } from "https://cdn.skypack.dev/helmet@^5.0.2";
-export * as R from "https://cdn.skypack.dev/ramda@^0.28.0";
-export { default as crocks } from "https://cdn.skypack.dev/crocks@^0.12.4";
+export { default as helmet } from "https://cdn.skypack.dev/helmet@5.0.2";
+export * as R from "https://cdn.skypack.dev/ramda@0.28.0";
+export { default as crocks } from "https://cdn.skypack.dev/crocks@0.12.4";
 
 //export { hyperGqlRouter } from "https://x.nest.land/hyper-app-graphql@0.3.0/router.js";
