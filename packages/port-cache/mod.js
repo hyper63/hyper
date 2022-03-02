@@ -1,6 +1,35 @@
 import { z } from "./deps.js";
 
 /**
+ * The hyper response schema. MOST adapter methods return this shape.
+ * The ones that do not will be refactored to do so in upcoming major releases
+ *
+ * basically, there are two distinct types, each identifiable
+ * by the ok field. This is precisely the use case for Zod's discriminated Union
+ * Otherwise, all fields would be optional which isn't much of a schema
+ *
+ * @argument {z.ZodSchema} - the schema for the success response, it is extended to ensure
+ * ok: true is always parsed
+ */
+const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
+  z.discriminatedUnion("ok", [
+    // ok: true
+    schema.extend({
+      ok: z.literal(true),
+      // TODO: These two fields ought not come back for ok: true responses
+      // but are kept for backwards compatibility.
+      msg: z.string().optional(),
+      status: z.number().optional(),
+    }),
+    // ok: false aka. HyperErr
+    z.object({
+      ok: z.literal(false),
+      msg: z.string().optional(),
+      status: z.number().optional(),
+    }),
+  ]);
+
+/**
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
  */
@@ -10,24 +39,26 @@ export function cache(adapter) {
     index: z.function()
       .args()
       .returns(
-        z.promise(z.string().array()),
+        // TODO: this needs to follow the hyper response format.
+        z.promise(z.union([
+          z.string().array(),
+          hyperResSchema(z.object({
+            caches: z.string().array(),
+          })),
+        ])),
       ),
     createStore: z.function()
       .args(z.string())
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
-          }),
+          hyperResSchema(),
         ),
       ),
     destroyStore: z.function()
       .args(z.string())
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
-          }),
+          hyperResSchema(),
         ),
       ),
     createDoc: z.function()
@@ -39,10 +70,7 @@ export function cache(adapter) {
       }))
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
-            error: z.string().optional(),
-          }),
+          hyperResSchema(),
         ),
       ),
     getDoc: z.function()
@@ -52,13 +80,12 @@ export function cache(adapter) {
       }))
       .returns(
         z.promise(
+          // TODO: this needs to follow the hyper response format.
           z.union([
-            z.object({
-              ok: z.boolean(),
-              status: z.number().optional(),
-              msg: z.string(),
-            }),
             z.object({}).passthrough(),
+            hyperResSchema(z.object({
+              doc: z.object({}).passthrough(),
+            })),
           ]),
         ),
       ),
@@ -71,10 +98,7 @@ export function cache(adapter) {
       }))
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
-            error: z.string().optional(),
-          }),
+          hyperResSchema(),
         ),
       ),
     deleteDoc: z.function()
@@ -84,10 +108,7 @@ export function cache(adapter) {
       }))
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
-            error: z.string().optional(),
-          }),
+          hyperResSchema(),
         ),
       ),
     listDocs: z.function()
@@ -97,12 +118,11 @@ export function cache(adapter) {
       }))
       .returns(
         z.promise(
-          z.object({
-            ok: z.boolean(),
+          hyperResSchema(z.object({
             docs: z.array(
-              z.any(),
+              z.any(), // TODO: should this be z.object({}).passthrough() ?
             ),
-          }),
+          })),
         ),
       ),
   });

@@ -78,6 +78,16 @@ Deno.test("validate putObject upload", async () => {
   assert(!res.url);
 });
 
+Deno.test("validate putObject upload - nil stream", async () => {
+  const err = await adapter.putObject({
+    bucket: "foo",
+    object: "bar.jpg",
+    stream: null,
+  }).catch(() => ({ ok: false }));
+
+  assert(!err.ok);
+});
+
 Deno.test("validate putObject upload - conflicting params", async () => {
   // conflicting params by passing both useSignedUrl: true and stream
   const err = await adapter.putObject({
