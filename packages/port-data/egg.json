@@ -5,7 +5,7 @@
   "description": "Hyper service framework port for Data adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "1.0.14",
+  "version": "1.2.0",
   "unstable": false,
   "unlisted": false,
   "files": [
