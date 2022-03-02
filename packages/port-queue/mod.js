@@ -8,16 +8,11 @@ import { z } from "./deps.js";
  * by the ok field. This is precisely the use case for Zod's discriminated Union
  * Otherwise, all fields would be optional which isn't much of a schema
  *
- * See https://github.com/colinhacks/zod#discriminated-unions
- * NOTE: using discriminated union is blocked by https://github.com/colinhacks/zod/issues/965
- * for now, just using a regular union :(
- * TODO: use discriminated when issue above is fixed
- *
  * @argument {z.ZodSchema} - the schema for the success response, it is extended to ensure
  * ok: true is always parsed
  */
 const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
-  z.union([
+  z.discriminatedUnion("ok", [
     // ok: true
     schema.extend({
       ok: z.literal(true),
