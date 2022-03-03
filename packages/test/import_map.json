@@ -1,12 +1,12 @@
 {
   "imports": {
-    "asserts": "https://deno.land/std@0.125.0/testing/asserts.ts",
+    "asserts": "https://deno.land/std@0.127.0/testing/asserts.ts",
     "ask": "https://deno.land/x/ask@1.0.6/mod.ts",
-    "flags": "https://deno.land/std@0.125.0/flags/mod.ts",
-    "base64url": "https://deno.land/std@0.125.0/encoding/base64url.ts",
-    "sha256": "https://deno.land/std@0.125.0/hash/sha256.ts",
+    "flags": "https://deno.land/std@0.127.0/flags/mod.ts",
+    "base64url": "https://deno.land/std@0.127.0/encoding/base64url.ts",
+    "sha256": "https://deno.land/std@0.127.0/hash/sha256.ts",
     "crocks": "https://cdn.skypack.dev/crocks@0.12.4",
     "ramda": "https://cdn.skypack.dev/ramda@0.28.0",
-    "hyper-connect": "https://x.nest.land/hyper-connect@0.1.13/deno/mod.ts"
+    "hyper-connect": "https://x.nest.land/hyper-connect@0.1.14/deno/mod.ts"
   }
 }
