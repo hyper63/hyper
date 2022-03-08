@@ -13,6 +13,8 @@
     "./cache/*.js",
     "./data/*.js",
     "./search/*.js",
+    "./storage/*.js",
+    "./queue/*.js",
     "./lib/*.js"
   ],
   "ignore": [
