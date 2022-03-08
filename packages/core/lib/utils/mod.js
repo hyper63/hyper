@@ -1,5 +1,5 @@
-import { crocks } from "../../deps.js";
-import { HyperErrFrom, isHyperErr } from "./err.js";
+import { crocks, isHyperErr } from "../../deps.js";
+import { HyperErrFrom } from "./err.js";
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks;
 
