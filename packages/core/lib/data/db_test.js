@@ -21,9 +21,15 @@ const mockDb = {
     }
   },
   listDocuments({ db, limit, start, end, keys, descending }) {
+    if (db === "err") {
+      return Promise.resolve({ ok: false, status: 400 });
+    }
     return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
   },
   queryDocuments({ db, query }) {
+    if (query.selector === "err") {
+      return Promise.resolve({ ok: false, status: 400 });
+    }
     return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
   },
 };
@@ -99,6 +105,17 @@ test(
 );
 
 test(
+  "list docs - err",
+  fork(
+    db.list("err", { descending: true })
+      .map((res) => {
+        assert(!res.ok);
+        assert(!res.docs);
+      }).runWith({ svc: mockDb, events }),
+  ),
+);
+
+test(
   "query docs",
   fork(
     db.query("foo", { selector: { id: "foo" } })
@@ -108,6 +125,18 @@ test(
           assert(r._id);
         });
         return res;
+      })
+      .runWith({ svc: mockDb, events }),
+  ),
+);
+
+test(
+  "query docs - err",
+  fork(
+    db.query("foo", { selector: "err" })
+      .map((res) => {
+        assert(!res.ok);
+        assert(!res.docs);
       })
       .runWith({ svc: mockDb, events }),
   ),

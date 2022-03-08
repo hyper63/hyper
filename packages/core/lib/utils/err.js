@@ -1,6 +1,15 @@
-import { HyperErr, isBaseHyperErr, R, z } from "../../deps.js";
+import {
+  crocks,
+  HyperErr,
+  isBaseHyperErr,
+  isHyperErr,
+  R,
+  z,
+} from "../../deps.js";
 
 const { ZodError, ZodIssueCode } = z;
+
+const { Async } = crocks;
 
 const {
   compose,
@@ -233,3 +242,15 @@ export const HyperErrFrom = (err) =>
     ),
     defaultTo({ msg: "An error occurred" }),
   )(err);
+
+export const rejectHyperErr = ifElse(
+  isHyperErr,
+  Async.Rejected,
+  Async.Resolved,
+);
+
+export const handleHyperErr = ifElse(
+  isHyperErr,
+  Async.Resolved,
+  Async.Rejected,
+);

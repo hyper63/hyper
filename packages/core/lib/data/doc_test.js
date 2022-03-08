@@ -8,9 +8,16 @@ const mock = {
     return Promise.resolve({ ok: true, id, doc });
   },
   retrieveDocument({ db, id }) {
+    if (id === "err") {
+      return Promise.resolve({ ok: false });
+    }
+
     return Promise.resolve({ _id: id });
   },
   updateDocument({ db, id, doc }) {
+    if (id === "err") {
+      return Promise.resolve({ ok: false });
+    }
     return Promise.resolve({ ok: true, id: id });
   },
   removeDocument({ db, id }) {
@@ -86,6 +93,17 @@ test(
 );
 
 test("get document", fork(doc.get("foo", "1").runWith({ svc: mock, events })));
+
+test(
+  "get document - err",
+  fork(
+    doc.get("foo", "err")
+      .map((res) => {
+        assert(!res.ok);
+      }).runWith({ svc: mock, events }),
+  ),
+);
+
 test(
   "update document",
   fork(
@@ -93,6 +111,19 @@ test(
       svc: mock,
       events,
     }),
+  ),
+);
+
+test(
+  "update document - err",
+  fork(
+    doc.update("foo", "err", { _id: "1", goodbye: "moon" })
+      .map((res) => {
+        assert(!res.ok);
+      }).runWith({
+        svc: mock,
+        events,
+      }),
   ),
 );
 test(
