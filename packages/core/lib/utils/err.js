@@ -1,16 +1,23 @@
-import { R, z } from "../../deps.js";
+import {
+  crocks,
+  HyperErr,
+  isBaseHyperErr,
+  isHyperErr,
+  R,
+  z,
+} from "../../deps.js";
 
 const { ZodError, ZodIssueCode } = z;
 
+const { Async } = crocks;
+
 const {
-  __,
   compose,
   concat,
   curry,
   converge,
   find,
   prop,
-  propEq,
   cond,
   complement,
   isNil,
@@ -20,27 +27,16 @@ const {
   T,
   ifElse,
   always,
-  filter,
   flatten,
   assoc,
-  has,
   defaultTo,
-  anyPass,
-  allPass,
   equals,
   reduce,
-  isEmpty,
   unapply,
   map,
 } = R;
 
 const isDefined = complement(isNil);
-const rejectNil = filter(isDefined);
-const isEmptyObject = allPass([
-  complement(is(Array)), // not an array
-  is(Object),
-  isEmpty,
-]);
 const toPropTuple = (fn) =>
   (propName) => [
     compose(
@@ -150,45 +146,6 @@ export const mapStatus = converge(
 );
 
 /**
- * Constructs a hyper-esque error
- *
- * @typedef {Object} HyperErrArgs
- * @property {string} msg
- * @property {string?} status
- *
- * @typedef {Object} NotOk
- * @property {false} ok
- *
- * @param {(HyperErrArgs | string)} argsOrMsg
- * @returns {NotOk & HyperErrArgs} - the hyper-esque error
- */
-const HyperErr = (argsOrMsg) =>
-  compose(
-    ({ ok, msg, status }) => rejectNil({ ok, msg, status: mapStatus(status) }), // pick and filter nil
-    assoc("ok", false),
-    cond([
-      // string
-      [is(String), assoc("msg", __, {})],
-      // { msg?, status? }
-      [
-        anyPass([
-          isEmptyObject,
-          has("msg"),
-          has("status"),
-        ]),
-        identity,
-      ],
-      // Fallthrough to error
-      [T, () => {
-        throw new Error(
-          "HyperErr args must be a string or an object with msg or status",
-        );
-      }],
-    ]),
-    defaultTo({}),
-  )(argsOrMsg);
-
-/**
  * Take a ZodError and flatten it's issues into a single depth array
  *
  * Some ZodErrors can have nested ZodErrors within it's issues,
@@ -269,22 +226,6 @@ const zodErrToHyperErr = compose(
   (zodErr) => gatherZodIssues(zodErr, ""),
 );
 
-export const isHyperErr = allPass([
-  propEq("ok", false),
-  /**
-   * should not have an _id.
-   * Otherwise it's a document ie data.retrieveDocument
-   * or cache.getDoc
-   */
-  complement(has("_id")),
-]);
-
-// { ok: false } solely
-const isBaseHyperErr = allPass([
-  isHyperErr,
-  (err) => Object.keys(err).length === 1,
-]);
-
 export const HyperErrFrom = (err) =>
   compose(
     assoc("originalErr", err),
@@ -301,3 +242,15 @@ export const HyperErrFrom = (err) =>
     ),
     defaultTo({ msg: "An error occurred" }),
   )(err);
+
+export const rejectHyperErr = ifElse(
+  isHyperErr,
+  Async.Rejected,
+  Async.Resolved,
+);
+
+export const handleHyperErr = ifElse(
+  isHyperErr,
+  Async.Resolved,
+  Async.Rejected,
+);

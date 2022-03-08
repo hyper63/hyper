@@ -1,15 +1,19 @@
-import { crocks } from "../../deps.js";
-import { HyperErrFrom, isHyperErr } from "./err.js";
+import { crocks, isHyperErr } from "../../deps.js";
+import { HyperErrFrom } from "./err.js";
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks;
 
 const ReaderAsync = ReaderT(Async);
-const { ask, lift } = ReaderAsync;
+const { ask, lift, liftFn } = ReaderAsync;
 
 const { Left, Right } = Either;
 
 const doValidate = (pred, msg) =>
   (value) => pred(value) ? Right(value) : Left({ ok: false, msg });
+
+export { liftFn };
+
+export * from "./err.js";
 
 /**
  * takes a predicate function and error message

@@ -1,7 +1,9 @@
 import { assert, assertEquals } from "../../dev_deps.js";
-import { z } from "../../deps.js";
+import { R, z } from "../../deps.js";
 
-import { HyperErrFrom, isHyperErr, mapErr, mapStatus } from "./err.js";
+import { HyperErrFrom, mapErr, mapStatus } from "./err.js";
+
+const { has } = R;
 
 const { test } = Deno;
 
@@ -64,12 +66,6 @@ test("mapStatus - should parse status", () => {
   );
 });
 
-test("isHyperErr - should match hyper err shapes", () => {
-  assert(isHyperErr({ ok: false }));
-  assert(!isHyperErr({ ok: true }));
-  assert(!isHyperErr({ ok: false, _id: "foo" }));
-});
-
 test("HyperErrFrom - should accept nil, string, object, array, function, basically should never throw", () => {
   assert(HyperErrFrom());
   assert(HyperErrFrom({}));
@@ -105,7 +101,7 @@ test("HyperErrFrom - should map ZodError to HyperErr", async () => {
   );
 });
 
-test("HyperErrFrom - should set fields", () => {
+test("HyperErrFrom - should set originalErr", () => {
   const base = HyperErrFrom();
   const withBase = HyperErrFrom({ ok: false });
   const withStatus = HyperErrFrom({ status: 404 });
@@ -114,18 +110,8 @@ test("HyperErrFrom - should set fields", () => {
   const strip = HyperErrFrom({ msg: "foo", omit: "me" });
   const withInvalidStatus = HyperErrFrom({ status: "not_parseable" });
 
-  assertEquals(base.ok, false); // all should have ok false
-
-  assertEquals(withBase.ok, false);
-  assert(!withBase.msg);
-
-  assertEquals(withStatus.status, 404);
-  assert(withStatus.originalErr); // all should have orignalErr
-
-  assert(!Object.keys(fromStr).includes("status"));
-  assert(!withInvalidStatus.status);
-
-  assertEquals(fromStr.msg, "foo");
-  assertEquals(fromObj.msg, "foo");
-  assert(!strip.omit);
+  [base, withBase, withStatus, fromStr, fromObj, strip, withInvalidStatus]
+    .forEach(
+      (err) => assert(has("originalErr", err)),
+    );
 });

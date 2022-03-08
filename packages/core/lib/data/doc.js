@@ -1,13 +1,17 @@
-import { cuid, R } from "../../deps.js";
+import { crocks, cuid, R } from "../../deps.js";
 import {
   apply,
+  handleHyperErr,
   is,
+  liftFn,
   mapId,
   monitorIdUsage,
   of,
+  rejectHyperErr,
   triggerEvent,
 } from "../utils/mod.js";
 
+const { Async } = crocks;
 const { omit, defaultTo } = R;
 
 // const INVALID_ID_MSG = 'doc id is not valid'
@@ -26,8 +30,15 @@ export const get = (db, id) =>
   of({ db, id })
     .chain(apply("retrieveDocument"))
     .chain(triggerEvent("DATA:GET"))
-    .map(monitorIdUsage("retrieveDocument - result", db))
-    .map(mapId);
+    .chain(liftFn((res) =>
+      rejectHyperErr(res)
+        .map(monitorIdUsage("retrieveDocument - result", db))
+        .map(mapId)
+        .bichain(
+          handleHyperErr,
+          Async.Resolved,
+        )
+    ));
 
 export const update = (db, id, doc) =>
   of({ db, id, doc })
@@ -37,10 +48,17 @@ export const update = (db, id, doc) =>
     })
     .chain(apply("updateDocument"))
     .chain(triggerEvent("DATA:UPDATE"))
-    // TODO: id not enforced on port. Should it be?
-    // For now, just mapping to id to match docs
-    .map(mapId)
-    .map(omit(["_id"]));
+    .chain(liftFn((res) =>
+      rejectHyperErr(res)
+        // TODO: id not enforced on port. Should it be?
+        // For now, just mapping to id to match docs
+        .map(mapId)
+        .map(omit(["_id"]))
+        .bichain(
+          handleHyperErr,
+          Async.Resolved,
+        )
+    ));
 
 export const remove = (db, id) =>
   of({ db, id })
