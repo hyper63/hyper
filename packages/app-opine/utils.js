@@ -1,6 +1,6 @@
-import { R } from "./deps.js";
+import { isHyperErr, R } from "./deps.js";
 
-const { propEq, allPass, complement, has, pick } = R;
+const { pick } = R;
 
 const sanitizeErr = pick(["ok", "status", "msg"]);
 
@@ -17,7 +17,9 @@ const isProduction = () => {
 export const fork = (res, code, m) =>
   m.fork(
     (err) => {
-      res.setStatus(500).send(isProduction() ? sanitizeErr(err) : err);
+      console.log("fatal error received from core");
+      console.log(err);
+      res.setStatus(500).send(isProduction() ? "Internal Server Error" : err);
     },
     (result) => {
       let status = code || 200; // fallback to 200
@@ -27,6 +29,7 @@ export const fork = (res, code, m) =>
        */
       if (isHyperErr(result)) {
         status = result.status || 500; // fallback to 500 for HyperErr
+        result = isProduction() ? sanitizeErr(result) : result; // sanitize the HyperErr
       }
 
       res.setStatus(status).send(result);
@@ -41,13 +44,3 @@ export const isMultipartFormData = (contentType) => {
 export const isFile = (path) => {
   return path.split("/").pop().indexOf(".") > -1;
 };
-
-export const isHyperErr = allPass([
-  propEq("ok", false),
-  /**
-   * should not have an _id.
-   * Otherwise it's a document ie data.retrieveDocument
-   * or cache.getDoc
-   */
-  complement(has("_id")),
-]);
