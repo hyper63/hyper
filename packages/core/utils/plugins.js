@@ -40,7 +40,7 @@ async function loadAdapterConfig(plugins = []) {
  * @param {[]} plugins - a list of plugins
  * @param {{}} adapterConfig - the config obj for the adapter
  */
-function linkPlugins(plugins, adapterConfig) {
+function linkPlugins(plugins, adapterConfig, dispatch) {
   return compose(
     (links) =>
       links.reduce((a, b) => ({
@@ -55,17 +55,17 @@ function linkPlugins(plugins, adapterConfig) {
       }), {}),
     reverse,
     map(
-      applyTo(adapterConfig),
+      applyTo({ ...adapterConfig, dispatch }), // every link method receives bootstrap
     ),
     map((plugin) => plugin.link.bind(plugin)),
     filter((plugin) => is(Function, plugin.link)),
   )(plugins);
 }
 
-async function initAdapter(portAdapter) {
-  const { plugins } = portAdapter;
+export async function initAdapter(portAdapter) {
+  const { plugins, dispatch } = portAdapter;
   const env = await loadAdapterConfig(plugins || []);
-  return linkPlugins(plugins, env);
+  return linkPlugins(plugins, env, dispatch);
 }
 
 /**
