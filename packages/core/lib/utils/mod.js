@@ -67,6 +67,11 @@ export const triggerEvent = (event) =>
   (data) =>
     ask(({ events }) => {
       const payload = { date: new Date().toISOString() };
+      if (isHyperErr(data)) {
+        payload.ok = false;
+        payload.status = data.status;
+        payload.msg = data.msg;
+      }
       if (data.name) payload.name = data.name;
       if (data.id) payload.id = data.id;
       if (data.type) payload.type = data.type;
