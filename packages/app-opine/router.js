@@ -134,7 +134,7 @@ export function hyperRouter(services) {
   app.get("/", (_req, res) => {
     res.send({
       name: "hyper",
-      version: "1.0-alpha",
+      version: "1.0-beta",
       services: Object
         .keys(services)
         .filter((k) => k !== "events")
