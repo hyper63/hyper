@@ -1,6 +1,6 @@
 {
   "name": "hyper-connect",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "types": "dist/index.d.ts",
   "source": "src/index.ts",
