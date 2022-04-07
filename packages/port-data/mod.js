@@ -1,5 +1,7 @@
 import { z } from "./deps.js";
 
+const SortEnum = z.enum(["ASC", "DESC"]);
+
 /**
  * The hyper response schema. MOST adapter methods return this shape.
  * The ones that do not will be refactored to do so in upcoming major releases
@@ -104,7 +106,7 @@ export function data(adapter) {
           selector: z.any(),
           fields: z.array(z.string()).optional(),
           sort: z.array(
-            z.object({}).passthrough().or(z.string()),
+            z.union([SortEnum, z.record(SortEnum)]),
           ).optional(),
           limit: z.number().optional(),
           use_index: z.string().optional(),

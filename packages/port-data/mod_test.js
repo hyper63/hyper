@@ -4,24 +4,24 @@ import { assert } from "./dev_deps.js";
 
 import { data as dataPort } from "./mod.js";
 
-Deno.test("data port tests", async () => {
-  const adapter = dataPort({
-    createDatabase: (name) => Promise.resolve({ ok: true }),
-    removeDatabase: (name) => Promise.resolve({ ok: true }),
-    createDocument: ({ db, id, doc }) => Promise.resolve({ ok: true, id }),
-    retrieveDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
-    updateDocument: ({ db, id, doc }) => Promise.resolve({ ok: true, id }),
-    removeDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
-    listDocuments: ({ db, limit, startkey, endkey, keys, descending }) =>
-      Promise.resolve({ ok: true, docs: [] }),
-    queryDocuments: (
-      { db, query },
-    ) => (console.log(query), Promise.resolve({ ok: true, docs: [] })),
-    indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
-    bulkDocuments: ({ db, docs }) =>
-      Promise.resolve({ ok: true, results: [{ ok: true, id: "1" }] }),
-  });
+const adapter = dataPort({
+  createDatabase: (name) => Promise.resolve({ ok: true }),
+  removeDatabase: (name) => Promise.resolve({ ok: true }),
+  createDocument: ({ db, id, doc }) => Promise.resolve({ ok: true, id }),
+  retrieveDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
+  updateDocument: ({ db, id, doc }) => Promise.resolve({ ok: true, id }),
+  removeDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
+  listDocuments: ({ db, limit, startkey, endkey, keys, descending }) =>
+    Promise.resolve({ ok: true, docs: [] }),
+  queryDocuments: (
+    { db, query },
+  ) => (console.log(query), Promise.resolve({ ok: true, docs: [] })),
+  indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
+  bulkDocuments: ({ db, docs }) =>
+    Promise.resolve({ ok: true, results: [{ ok: true, id: "1" }] }),
+});
 
+Deno.test("data port tests", async () => {
   const results = await Promise.all([
     adapter.createDatabase("foo"),
     adapter.removeDatabase("foo"),
@@ -51,4 +51,34 @@ Deno.test("data port tests", async () => {
     });
 
   assert(results.ok);
+});
+
+Deno.test("data port - only accepts ASC or DESC for queryDocuments sort", async () => {
+  const { err: errFromObject } = await adapter.queryDocuments({
+    db: "foo",
+    query: {
+      selector: {
+        id: "bar",
+      },
+      fields: ["id"],
+      sort: [{ id: "FOOOO" }],
+      limit: 10,
+    },
+  }).catch(() => ({ err: true }));
+
+  assert(errFromObject);
+
+  const { err: errFromString } = await adapter.queryDocuments({
+    db: "foo",
+    query: {
+      selector: {
+        id: "bar",
+      },
+      fields: ["id"],
+      sort: ["FOOOOO"],
+      limit: 10,
+    },
+  }).catch(() => ({ err: true }));
+
+  assert(errFromString);
 });
