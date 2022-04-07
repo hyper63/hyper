@@ -7,7 +7,7 @@ on:
       - "packages/utils/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "packages/utils/**"
 jobs:

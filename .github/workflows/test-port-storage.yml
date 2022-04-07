@@ -7,7 +7,7 @@ on:
       - "packages/port-storage/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "packages/port-storage/**"
 jobs:

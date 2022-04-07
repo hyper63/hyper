@@ -7,7 +7,7 @@ on:
       - "packages/port-cache/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "packages/port-cache/**"
 jobs:

@@ -7,7 +7,7 @@ on:
       - "packages/app-opine/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "packages/app-opine/**"
 jobs:

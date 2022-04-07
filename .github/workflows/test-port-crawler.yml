@@ -7,7 +7,7 @@ on:
       - "packages/port-crawler/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "packages/port-crawler/**"
 jobs:

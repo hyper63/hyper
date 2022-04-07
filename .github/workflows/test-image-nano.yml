@@ -7,7 +7,7 @@ on:
       - "images/nano/**"
   push:
     branches:
-      - "**"
+      - "main"
     paths:
       - "images/nano/**"
 jobs:
