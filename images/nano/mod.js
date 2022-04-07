@@ -1,4 +1,3 @@
-import { hyper } from "./deps.js";
-import config from "./hyper.config.js";
+import { main } from "./main.js";
 
-await hyper(config);
+await main();

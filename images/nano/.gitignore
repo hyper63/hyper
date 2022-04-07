@@ -1,2 +1,4 @@
 data
 .env
+hyper
+.sqlite
