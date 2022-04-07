@@ -1,4 +1,5 @@
 //import { Request } from "node-fetch";
+import { toDataQuery } from "../utils/hyper-query";
 
 import {
   Action,
@@ -31,7 +32,7 @@ export const query = (selector: unknown, options?: QueryOptions) =>
       service,
       method: Method.POST,
       action: Action.QUERY,
-      body: { selector, ...options },
+      body: toDataQuery(selector, options),
     });
 export const bulk = (docs: unknown[]) =>
   (hyper: HyperRequestFunction) =>

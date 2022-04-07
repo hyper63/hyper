@@ -3,7 +3,7 @@ import * as assert from "uvu/assert";
 import { upload } from "../src/services/storage";
 import { HyperRequest } from "../src/types";
 import { Request } from "node-fetch";
-import stream from 'stream';
+import stream from "stream";
 //import { path } from "ramda";
 
 test("storage.upload", async () => {
