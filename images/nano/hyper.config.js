@@ -1,4 +1,4 @@
-import { app, cache, dndb, fs, minisearch, queue } from "./deps.js";
+import { app, cache, fs, minisearch, pouchdb, queue } from "./deps.js";
 
 const DIR = "/tmp";
 
@@ -7,7 +7,7 @@ export default {
   adapters: [
     {
       port: "data",
-      plugins: [dndb({ dir: DIR })],
+      plugins: [pouchdb()],
     },
     {
       port: "cache",
