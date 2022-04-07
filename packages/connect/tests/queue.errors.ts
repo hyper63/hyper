@@ -9,10 +9,12 @@ test("queue.errors", async () => {
     assert.is(h.service, "queue");
     assert.is(h.method, "GET");
     //assert.is(path(["body", "key"], h), "game-1");
-    return Promise.resolve(new Request(`http://localhost/?${new URLSearchParams(h.params)}`));
+    return Promise.resolve(
+      new Request(`http://localhost/?${new URLSearchParams(h.params)}`),
+    );
   };
   const req = await errors()(mockRequest);
-  assert.is(req.url, 'http://localhost/?status=ERROR')
+  assert.is(req.url, "http://localhost/?status=ERROR");
 });
 
 test.run();

@@ -11,7 +11,7 @@ test("queue.enqueue", async () => {
     //assert.is(path(["body", "key"], h), "game-1");
     return Promise.resolve(new Request("http://localhost"));
   };
-  await enqueue({type: 'job', action: 'roadhouse'})(mockRequest);
+  await enqueue({ type: "job", action: "roadhouse" })(mockRequest);
 });
 
 test.run();
