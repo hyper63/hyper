@@ -25,5 +25,5 @@ test("build hyper core", async () => {
     .get("/");
   //console.log(res.body)
 
-  assertEquals(res.body.name, "hyper63");
+  assertEquals(res.body.name, "hyper");
 });
