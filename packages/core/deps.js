@@ -4,8 +4,8 @@ export * as z from "https://cdn.skypack.dev/zod@3.12.1";
 export { ms } from "https://deno.land/x/ms@v0.1.0/ms.ts";
 
 export { cuid } from "https://deno.land/x/cuid@v1.0.0/index.js";
-export { join } from "https://deno.land/std@0.128.0/path/mod.ts";
-export { exists } from "https://deno.land/std@0.128.0/fs/mod.ts";
+export { join } from "https://deno.land/std@0.134.0/path/mod.ts";
+export { exists } from "https://deno.land/std@0.134.0/fs/mod.ts";
 
 export {
   HyperErr,
@@ -15,7 +15,7 @@ export {
 
 export { queue } from "https://x.nest.land/hyper-port-queue@0.2.0/mod.js";
 export { cache } from "https://x.nest.land/hyper-port-cache@1.2.0/mod.js";
-export { data } from "https://x.nest.land/hyper-port-data@1.2.0/mod.js";
+export { data } from "https://x.nest.land/hyper-port-data@1.2.1/mod.js";
 export { storage } from "https://x.nest.land/hyper-port-storage@1.2.0/mod.js";
 export { search } from "https://x.nest.land/hyper-port-search@1.1.0/mod.js";
 export { hooks } from "https://x.nest.land/hyper-port-hooks@1.1.0/mod.js";
