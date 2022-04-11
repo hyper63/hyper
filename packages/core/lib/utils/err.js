@@ -14,7 +14,6 @@ const { Async } = crocks;
 const {
   compose,
   concat,
-  curry,
   converge,
   find,
   prop,
@@ -34,6 +33,9 @@ const {
   reduce,
   unapply,
   map,
+  apply,
+  pluck,
+  applySpec,
 } = R;
 
 const isDefined = complement(isNil);
@@ -154,7 +156,7 @@ export const mapStatus = converge(
  * @param {ZodError} zodErr
  * @returns {[ZodError]} - all errors
  */
-const gatherZodIssues = curry((zodErr, contextCode) =>
+const gatherZodIssues = (zodErr, status, contextCode) =>
   reduce(
     (issues, issue) =>
       compose(
@@ -168,33 +170,49 @@ const gatherZodIssues = curry((zodErr, contextCode) =>
            */
           [
             equals(ZodIssueCode.invalid_arguments),
-            gatherZodIssues(issue.argumentsError),
+            () =>
+              gatherZodIssues(issue.argumentsError, 422, "Invalid Arguments"),
           ],
           [
             equals(ZodIssueCode.invalid_return_type),
-            gatherZodIssues(issue.returnTypeError),
+            () =>
+              gatherZodIssues(
+                issue.returnTypeError,
+                500,
+                "Invalid Return",
+              ),
           ],
           [
             equals(ZodIssueCode.invalid_union),
             // An array of ZodErrors, so map over and flatten them all
-            (code) =>
+            () =>
               compose(
                 flatten,
-                map((i) => gatherZodIssues(i, code)),
+                map((i) => gatherZodIssues(i, 400, "Invalid Union")),
               )(issue.unionErrors),
           ],
-          [T, () => [{ ...issue, contextCode }]],
+          [T, () => [{ ...issue, status, contextCode }]],
         ]),
       )(issue.code),
     [],
     zodErr.issues,
-  )
-);
+  );
 
 const zodErrToHyperErr = compose(
   HyperErr,
-  join(" | "),
-  // combine all zod errors into a list of string summaries of each error
+  applySpec({
+    status: compose(
+      // 500 > 422 > 400 (choose the most high priority status code)
+      apply(Math.max),
+      pluck("status"),
+    ),
+    // combine all errors
+    msg: compose(
+      join(" | "),
+      pluck("msg"),
+    ),
+  }),
+  // combine all zod errors into a list of { msg, status } summaries of each error
   (zodIssues) =>
     reduce(
       (acc, zodIssue) => {
@@ -206,7 +224,7 @@ const zodErrToHyperErr = compose(
          * For now, just focus on shared props
          * See https://github.com/colinhacks/zod/blob/HEAD/ERROR_HANDLING.md#zodissue
          */
-        let { code, message, path, contextCode } = zodIssue;
+        const { status, message, path, contextCode } = zodIssue;
 
         /**
          * all hyper adapter methods receive either a single string or single object
@@ -215,15 +233,20 @@ const zodErrToHyperErr = compose(
          * if string, path[0] will be the string and path[1] undefined
          */
         const _path = path[1] || path[0];
-        contextCode = contextCode ? `${contextCode}: ` : "";
+        const _contextCode = contextCode ? `${contextCode} ` : "";
 
         // TODO: is this formatting okay?
-        return concat(acc, [`${contextCode}${_path}(${code}) - ${message}`]);
+        return concat(acc, [
+          {
+            status,
+            msg: `${_contextCode}'${_path}': ${message}.`,
+          },
+        ]);
       },
       [],
       zodIssues,
     ),
-  (zodErr) => gatherZodIssues(zodErr, ""),
+  (zodErr) => gatherZodIssues(zodErr, 400, ""),
 );
 
 export const HyperErrFrom = (err) =>

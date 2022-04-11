@@ -77,7 +77,7 @@ test("HyperErrFrom - should accept nil, string, object, array, function, basical
 });
 
 test("HyperErrFrom - should map ZodError to HyperErr", async () => {
-  const schema = z.function().args(z.string()).returns(
+  const schema = z.function().args(z.object({ name: z.string() })).returns(
     z.promise(z.object({ ok: z.boolean() })),
   );
 
@@ -85,19 +85,19 @@ test("HyperErrFrom - should map ZodError to HyperErr", async () => {
     return Promise.resolve({ not: "ok" });
   });
 
-  const err = await fn("string").catch(HyperErrFrom);
+  const err = await fn({ name: "string" }).catch(HyperErrFrom);
 
   assertEquals(err.ok, false);
-  assert(!err.status);
-  assertEquals(err.msg, "invalid_return_type: ok(invalid_type) - Required");
+  assertEquals(err.status, 500);
+  assertEquals(err.msg, "Invalid Return 'ok': Required.");
 
-  const errWrongArgs = await fn(123).catch(HyperErrFrom);
+  const errWrongArgs = await fn({ name: 123 }).catch(HyperErrFrom);
 
   assertEquals(errWrongArgs.ok, false);
-  assert(!errWrongArgs.status);
+  assertEquals(errWrongArgs.status, 422);
   assertEquals(
     errWrongArgs.msg,
-    "invalid_arguments: 0(invalid_type) - Expected string, received number",
+    "Invalid Arguments 'name': Expected string, received number.",
   );
 });
 
