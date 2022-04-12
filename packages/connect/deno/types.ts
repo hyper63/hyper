@@ -1,30 +1,30 @@
-export type SortOptions = "DESC" | "ASC";
+export type SortOptions = typeof SortOptions[keyof typeof SortOptions];
 export const SortOptions = {
-  DESC: "DESC" as SortOptions,
-  ASC: "ASC" as SortOptions,
-};
+  DESC: "DESC",
+  ASC: "ASC",
+} as const;
 
-export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type Method = typeof Method[keyof typeof Method];
 export const Method = {
-  GET: "GET" as Method,
-  POST: "POST" as Method,
-  PUT: "PUT" as Method,
-  DELETE: "DELETE" as Method,
-  PATCH: "PATCH" as Method,
-};
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+  PATCH: "PATCH",
+} as const;
 
-export type Action = "_query" | "_bulk" | "_index";
+export type Action = typeof Action[keyof typeof Action];
 export const Action = {
-  QUERY: "_query" as Action,
-  BULK: "_bulk" as Action,
-  INDEX: "_index" as Action,
-};
+  QUERY: "_query",
+  BULK: "_bulk",
+  INDEX: "_index",
+} as const;
 
-export type QueueStatus = "ERROR" | "READY";
+export type QueueStatus = typeof QueueStatus[keyof typeof QueueStatus];
 export const QueueStatus = {
-  ERROR: "ERROR" as QueueStatus,
-  READY: "READY" as QueueStatus,
-};
+  ERROR: "ERROR",
+  READY: "READY",
+} as const;
 
 export interface ListOptions {
   limit?: number;
@@ -34,18 +34,21 @@ export interface ListOptions {
   descending?: boolean;
 }
 
-export interface Result {
-  ok: boolean;
-  id?: string;
+// deno-lint-ignore no-explicit-any
+export type Obj = { [key: string]: any };
+export interface OkResult {
+  ok: true;
+}
+
+export interface NotOkResult {
+  ok: false;
   msg?: string;
   status?: number;
 }
 
-export interface Results<Type> {
-  ok: boolean;
-  status?: number;
-  docs: Type[];
-}
+export type Result = OkResult | NotOkResult;
+export type OkIdResult = OkResult & { id: string };
+export type IdResult = OkIdResult | NotOkResult;
 
 export interface SearchQueryOptions {
   fields: string[];
@@ -59,63 +62,76 @@ export interface QueryOptions {
   useIndex?: string;
 }
 
+// TODO: exception to the rule of returning a Result shape.
+// TODO: This will change to be just a regular result in a major version
+export type HyperGetResult<Type extends Obj = Obj> = Type | NotOkResult;
+
+export type HyperDocsResult<Type extends Obj = Obj> =
+  | OkResult & { docs: Type[] }
+  | NotOkResult & { docs: Type[] };
 export interface HyperData {
-  add: <Type>(body: Type) => Promise<Result>;
-  get: <Type>(id: string) => Promise<Type | Result>;
-  list: <Type>(options?: ListOptions) => Promise<Results<Type>>;
-  update: <Type>(id: string, doc: Type) => Promise<Result>;
-  remove: (id: string) => Promise<Result>;
-  query: <Type>(
+  add: <Type extends Obj = Obj>(doc: Type) => Promise<IdResult>;
+  get: <Type extends Obj = Obj>(id: string) => Promise<HyperGetResult<Type>>;
+  list: <Type extends Obj = Obj>(
+    options?: ListOptions,
+  ) => Promise<HyperDocsResult<Type>>;
+  update: <Type extends Obj = Obj>(id: string, doc: Type) => Promise<IdResult>;
+  remove: (id: string) => Promise<IdResult>;
+  query: <Type extends Obj = Obj>(
     selector: unknown,
     options?: QueryOptions,
-  ) => Promise<Results<Type>>;
+  ) => Promise<HyperDocsResult<Type>>;
   index: (name: string, fields: string[]) => Promise<Result>;
-  bulk: <Type>(docs: Array<Type>) => Promise<Result>;
-  create: () => Promise<Result>;
+  bulk: <Type extends Obj = Obj>(
+    docs: Array<Type>,
+  ) => Promise<HyperDocsResult<IdResult>>;
+  create: () => Promise<IdResult>;
   destroy: (confirm: boolean) => Promise<Result>;
 }
 
 export interface HyperCache {
-  add: <Type>(key: string, value: Type, ttl?: string) => Promise<Result>;
-  get: <Type>(key: string) => Promise<Type>;
+  add: <Type extends Obj = Obj>(
+    key: string,
+    value: Type,
+    ttl?: string,
+  ) => Promise<Result>;
+  get: <Type extends Obj = Obj>(key: string) => Promise<HyperGetResult<Type>>;
   remove: (key: string) => Promise<Result>;
-  set: <Type>(key: string, value: Type, ttl?: string) => Promise<Result>;
-  query: <Type>(pattern: string) => Promise<Results<Type>>;
+  set: <Type extends Obj = Obj>(
+    key: string,
+    value: Type,
+    ttl?: string,
+  ) => Promise<Result>;
+  query: <Type extends Obj = Obj>(
+    pattern: string,
+  ) => Promise<HyperDocsResult<Type>>;
   create: () => Promise<Result>;
   destroy: (confirm: boolean) => Promise<Result>;
 }
 
+export type HyperSearchQueryResult<Type extends Obj = Obj> =
+  | OkResult & { matches: Type[] }
+  | NotOkResult;
+export type HyperSearchLoadResult<Type extends Obj = Obj> =
+  | OkResult & { results: Type[] }
+  | NotOkResult;
 export interface HyperSearch {
-  add: <Type>(key: string, doc: Type) => Promise<Result>;
+  add: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
   remove: (key: string) => Promise<Result>;
-  get: <Type>(key: string) => Promise<Type>;
-  update: <Type>(key: string, doc: Type) => Promise<Result>;
-  query: <Type>(
+  get: <Type extends Obj = Obj>(key: string) => Promise<HyperGetResult<Type>>;
+  update: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
+  query: <Type extends Obj = Obj>(
     query: string,
     options: SearchQueryOptions,
-  ) => Promise<Results<Type>>;
-  load: <Type>(docs: Type[]) => Promise<Result>;
+  ) => Promise<HyperSearchQueryResult<Type>>;
+  load: <Type extends Obj = Obj>(
+    docs: Type[],
+  ) => Promise<HyperSearchLoadResult<Type>>;
   create: (
     fields: Array<string>,
     storeFields?: Array<string>,
   ) => Promise<Result>;
   destroy: (confirm: boolean) => Promise<Result>;
-}
-
-interface Reader {
-  read(p: Uint8Array): Promise<number | null>;
-}
-
-export interface HyperStorage {
-  upload: (name: string, data: Uint8Array) => Promise<Result>;
-  download: (name: string) => Promise<Reader | ReadableStream>;
-  remove: (name: string) => Promise<Result>;
-}
-
-export interface HyperQueue {
-  enqueue: <Job>(job: Job) => Promise<Result>;
-  errors: <Job>() => Promise<Job[]>;
-  queued: <Job>() => Promise<Job[]>;
 }
 
 interface HyperInfoServicesResult {
@@ -126,6 +142,21 @@ interface HyperInfoServicesResult {
 
 export interface HyperInfo {
   services: () => Promise<HyperInfoServicesResult>;
+}
+
+export interface HyperStorage {
+  upload: (
+    name: string,
+    data: string | ReadableStream | Uint8Array,
+  ) => Promise<Result>;
+  download: (name: string) => Promise<ReadableStream>;
+  remove: (name: string) => Promise<Result>;
+}
+
+export interface HyperQueue {
+  enqueue: <Job>(job: Job) => Promise<Result>;
+  errors: <Job>() => Promise<Job[]>;
+  queued: <Job>() => Promise<Job[]>;
 }
 
 export interface Hyper {
