@@ -184,10 +184,14 @@ export function connect(
     storage: {
       upload: (name, data) =>
         Promise.resolve(h)
+          // deno-lint-ignore ban-ts-comment
+          // @ts-ignore
           .then(storage.upload(name, data))
           .then(fetch)
           .then(handleResponse),
       download: (name) =>
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
