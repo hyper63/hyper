@@ -8,7 +8,9 @@ import * as queue from "./services/queue";
 import { Hyper, HyperRequest } from "./types";
 import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
-import { assoc, contains, ifElse } from "ramda";
+import { assoc, ifElse, includes } from "ramda";
+
+export * from "./types";
 
 export function connect(
   CONNECTION_STRING: string,
@@ -27,7 +29,7 @@ export function connect(
       .then(
         ifElse(
           (r: Response) =>
-            contains(
+            includes(
               "application/json",
               r.headers.get("content-type") as string,
             ),

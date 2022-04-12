@@ -20,18 +20,18 @@
   "dependencies": {
     "crocks": "^0.12.4",
     "form-data": "^4.0.0",
-    "jose": "^4.1.5",
+    "jose": "^4.6.1",
     "ms": "^2.1.3",
     "node-fetch": "2",
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
     "@types/node-fetch": "2",
-    "@types/ramda": "^0.27.46",
+    "@types/ramda": "^0.28.8",
     "loadr": "^0.1.1",
-    "microbundle": "^0.14.1",
-    "tsm": "^2.1.4",
-    "typescript": "^4.4.4",
-    "uvu": "^0.5.2"
+    "microbundle": "^0.14.2",
+    "tsm": "^2.2.1",
+    "typescript": "^4.6.3",
+    "uvu": "^0.5.3"
   }
 }
