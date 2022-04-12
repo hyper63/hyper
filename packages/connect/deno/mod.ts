@@ -11,6 +11,8 @@ export { createHyperVerify } from "./utils/hyper-verify.ts";
 
 const { assoc, includes, ifElse } = R;
 
+export * from "./types.ts";
+
 export function connect(
   CONNECTION_STRING: string,
   // deno-lint-ignore no-inferrable-types

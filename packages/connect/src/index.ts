@@ -10,6 +10,8 @@ import { hyper } from "./utils/hyper-request";
 import fetch, { Request, Response } from "node-fetch";
 import { assoc, ifElse, includes } from "ramda";
 
+export * from "./types";
+
 export function connect(
   CONNECTION_STRING: string,
   // deno-lint-ignore no-inferrable-types
