@@ -1,6 +1,6 @@
 <h1 align="center">⚡️ hyper-connect ⚡️</h1>
 <p align="center">
-hyper-connect is a client for [hyper](https://docs.hyper.io) - the client leverages the `Request` object from the fetch specification to construct a http request to send to the hyper server. The hyper-connect library handles all of the redundant details of a fetch request, so you can just specify the unique differences of your request.
+hyper-connect is a client for <a href="https://docs.hyper.io">hyper</a>
 </p>
 <p align="center">
 <a href="https://nest.land/package/hyper-connect"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
@@ -28,6 +28,12 @@ hyper-connect is a client for [hyper](https://docs.hyper.io) - the client levera
 ```sh
 npm install hyper-connect
 ```
+
+`hyper-connect` constructs a
+[Request Object](https://developer.mozilla.org/en-US/docs/Web/API/Request) and
+sends it to the hyper server using `fetch`. `hyper-connect` wraps your hyper
+app's REST API, generating short-lived JWTs using the provided connection
+string.
 
 ## Getting Started
 

@@ -1,22 +1,28 @@
 {
   "name": "hyper-connect",
   "version": "0.1.16",
+  "license": "Apache-2.0",
   "type": "module",
-  "types": "dist/index.d.ts",
-  "source": "src/index.ts",
+  "description": "A client built on fetch to consume hyper services",
+  "homepage": "https://github.com/hyper63/hyper/tree/main/packages/connect",
+  "repository": "https://github.com/hyper63/hyper",
   "exports": {
     "require": "./dist/index.cjs",
     "default": "./dist/index.modern.js"
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
+  "module": "./dist/index.module.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "microbundle",
     "lint": "deno lint src && deno fmt --check src",
     "test": "loadr -- uvu tests"
   },
-  "license": "MIT",
   "dependencies": {
     "crocks": "^0.12.4",
     "form-data": "^4.0.0",
