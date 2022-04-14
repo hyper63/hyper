@@ -25,7 +25,7 @@ export function connect(
     return new Request(url, options);
   };
 
-  const toStream = (r: Response) =>
+  const _toStream = (r: Response) =>
     readerFromStreamReader(
       r.body?.getReader() as ReadableStreamDefaultReader<Uint8Array>,
     );
@@ -190,12 +190,10 @@ export function connect(
           .then(fetch)
           .then(handleResponse),
       download: (name) =>
-        // deno-lint-ignore ban-ts-comment
-        // @ts-ignore
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          .then(toStream),
+          .then((res) => res.body as ReadableStream),
       remove: (name) =>
         Promise.resolve(h)
           .then(storage.remove(name))
