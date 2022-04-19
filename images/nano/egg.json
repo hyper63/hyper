@@ -1,0 +1,11 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.10/src/schema.json",
+  "name": "hyper-nano",
+  "entry": "./mod.js",
+  "description": "In-Memory hyper server using in-memory adapters",
+  "homepage": "https://github.com/hyper63/hyper",
+  "repo": "https://github.com/hyper63/hyper",
+  "version": "1.0.0",
+  "unstable": false,
+  "unlisted": false
+}

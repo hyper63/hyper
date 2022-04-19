@@ -1,11 +1,9 @@
 name: publish nano
 
-on:
+on: 
   push:
-    branches:
-      - "main"
-    paths:
-      - "images/nano/**"
+    tags:
+      - 'image-nano@*'
 
 jobs:
   build:
