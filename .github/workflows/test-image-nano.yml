@@ -22,6 +22,6 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd images/nano && ./scripts/test.sh
+      - run: cd images/nano && make test
         env:
           CI: true

@@ -1,11 +1,9 @@
 name: publish nano
 
-on:
+on: 
   push:
-    branches:
-      - "main"
-    paths:
-      - "images/nano/**"
+    tags:
+      - 'image-nano@*'
 
 jobs:
   build:
@@ -19,7 +17,7 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd images/nano && ./scripts/compile.sh
+      - run: cd images/nano && make compile
         env:
           CI: true
       - name: Configure AWS Credentials

@@ -6,9 +6,11 @@ const test = Deno.test;
 test({
   name: "GET /",
   async fn() {
-    const app = await main([
-      (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
-    ]);
+    const app = await main({
+      middleware: [
+        (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
+      ],
+    });
 
     await superdeno(app)
       .get("/")
@@ -22,9 +24,11 @@ test({
 test({
   name: "with middleware: GET /foobar",
   async fn() {
-    const app = await main([
-      (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
-    ]);
+    const app = await main({
+      middleware: [
+        (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
+      ],
+    });
 
     await superdeno(app)
       .get("/foobar")
