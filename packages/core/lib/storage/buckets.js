@@ -21,7 +21,7 @@ export const make = (name) =>
 export const remove = (name) =>
   of(name)
     .chain(apply("removeBucket"))
-    .chain(triggerEvent("STORAGE:DELTE_BUCKET"));
+    .chain(triggerEvent("STORAGE:DELETE_BUCKET"));
 
 /**
  * @returns {AsyncReader}
