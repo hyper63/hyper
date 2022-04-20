@@ -1,6 +1,6 @@
 import { app, cache, fs, minisearch, pouchdb, queue } from "./deps.js";
 
-const DIR = "/tmp";
+import { DIR } from "./dir.js";
 
 export default {
   app,
@@ -23,7 +23,7 @@ export default {
     },
     {
       port: "queue",
-      plugins: [queue(DIR + "/hyper-queue.db")],
+      plugins: [queue({ dir: DIR })],
     },
   ],
 };
