@@ -1,7 +1,6 @@
 import { join } from "./deps.js";
 
-const TMPDIR = Deno.env.get("TMPDIR") || "/tmp";
-export const DIR = join(TMPDIR, "hyper");
+export const DIR = join(".", "__hyper__");
 
 export async function reload(purge = false) {
   if (purge) {
