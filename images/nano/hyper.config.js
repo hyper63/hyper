@@ -7,7 +7,7 @@ export default {
   adapters: [
     {
       port: "data",
-      plugins: [pouchdb()],
+      plugins: [pouchdb({ dir: DIR })],
     },
     {
       port: "cache",
