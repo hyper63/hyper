@@ -88,7 +88,6 @@ test(
     db.list("foo", { limit: "2" })
       .map((res) => {
         res.docs.forEach((r) => {
-          assert(r.id);
           assert(r._id);
         });
         return res;
@@ -121,7 +120,6 @@ test(
     db.query("foo", { selector: { id: "foo" } })
       .map((res) => {
         res.docs.forEach((r) => {
-          assert(r.id);
           assert(r._id);
         });
         return res;
