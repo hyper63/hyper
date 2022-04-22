@@ -130,16 +130,3 @@ test(
   "remove document",
   fork(doc.remove("foo", "1").runWith({ svc: mock, events })),
 );
-
-test(
-  "corncob - keep outbound id and _id",
-  fork(
-    doc.get("foo", "1")
-      .map((res) => {
-        assert(res.id);
-        assert(res._id);
-        return res;
-      })
-      .runWith({ svc: mock, events }),
-  ),
-);
