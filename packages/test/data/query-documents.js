@@ -78,8 +78,7 @@ export default function (data) {
       .chain(query({ type: "album" }, { fields: ["_id", "band"] }))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
-      // TODO: remove +1 in corncob
-      .map((r) => (assertEquals(keys(r.docs[0]).length, 2 + 1), r)) // +1 because _id and id are being added to result by core
+      .map((r) => (assertEquals(keys(r.docs[0]).length, 2), r))
       .chain(tearDown)
       .toPromise());
 }
