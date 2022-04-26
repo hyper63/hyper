@@ -67,7 +67,7 @@ Alternatively, if you use `Deno` you may run `hyper nano` directly from the
 source:
 
 ```sh
-deno run --allow-env --allow-read --allow-write=/tmp,. --allow-net --unstable --no-check=remote https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/mod.js
+deno run --allow-env --allow-read --allow-write=__hyper__ --allow-net --unstable --no-check=remote https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/mod.js
 ```
 
 If you'd like to programmatically start `hyper nano`, you can import `main.js`
@@ -77,6 +77,12 @@ and run `main`:
 import { main } from "https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/main.js";
 
 await main();
+```
+
+and then run:
+
+```sh
+deno run --allow-env --allow-read --allow-write=__hyper__ --allow-net --unstable --no-check=remote foo.js
 ```
 
 All of these examples above will start a `hyper nano` instance, listening on
