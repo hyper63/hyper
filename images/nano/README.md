@@ -63,6 +63,13 @@ chmod +x nano
 ./nano
 ```
 
+There are binaries built for each major platform:
+
+- [Linux](https://hyperland.s3.amazonaws.com/hyper)
+- [Darwin (Mac)](https://hyperland.s3.amazonaws.com/hyper-x86_64-apple-darwin)
+- [Darwin ARM (Mac M1)](https://hyperland.s3.amazonaws.com/hyper-aarch64-apple-darwin)
+- [Windows](https://hyperland.s3.amazonaws.com/hyper-x86_64-pc-windows-msvc.exe)
+
 Alternatively, if you use `Deno` you may run `hyper nano` directly from the
 source:
 
