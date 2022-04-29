@@ -1,4 +1,5 @@
 import { crocks, hmac, ms, R } from "../deps.ts";
+import { Result } from "../types.ts";
 const {
   assoc,
   compose,
@@ -89,15 +90,18 @@ const verifyTimeGap = (delay: string) =>
 const handleSuccess = () => ({ ok: true });
 
 /**
- * createHyperVerify is a function that provides applications
- * looking to be hyper queue workers a function that can verify
- * the signature of an incoming worker queue request. This
- * check can let the worker endpoint be secure so that it only
- * accepts incoming jobs from a hyper queue source.
+ * Verify a job received from a hyper queue.
+ * See https://docs.hyper.io/post-a-jobtask#sz-verifying-jobs-from-hyper-queue
+ *
+ * @param {string} secret - the secret you provided when creating the queue.
+ * your hyper queue adds a signature to all job requests, using this secret.
+ * @param {string} ttl - the maximum age of a job, in the case of your worker having a constraint
+ * where it should only process jobs if the job was sent within the last 5 minutes
+ * @returns - a function that, given the X-HYPER-SIGNATURE and job payload,
+ * will verify the signature and payload and return a hyper OK response
  */
-
 export function createHyperVerify(secret: string, ttl?: string) {
-  return function (signature: string, payload: Record<string, unknown>) {
+  return function (signature: string, payload: unknown): Result {
     return of({ input: { signature, payload }, secret, ttl })
       .map(splitHyperSignature)
       .chain(createHmacSignature)
