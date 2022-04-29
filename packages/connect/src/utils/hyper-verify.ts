@@ -3,6 +3,8 @@ import * as R from "ramda";
 import ms from "ms";
 import { createHmac } from "crypto";
 
+import type { Result } from "../types";
+
 const {
   assoc,
   compose,
@@ -37,11 +39,13 @@ const hmac = (alg: "sha256", secret: string, data: string) => {
   return result.digest("hex");
 };
 
-const splitHyperSignature = over(
+const splitHyperSignature = over<any, any>(
   lensPath(["input", "signature"]),
   compose(
     (pair: Array<string | number>) => ({
+      // @ts-ignore
       time: compose(nth(1), split("t="))(nth(0, pair)),
+      // @ts-ignore
       sig: compose(nth(1), split("sig="))(nth(1, pair)),
     }),
     split(","),
@@ -78,6 +82,7 @@ const compareSignatures = (ctx: Context) =>
 
 const verifyTimeGap = (delay: string) =>
   ifElse(
+    // @ts-ignore
     compose(
       (x: number) => x < 0 || x > (ms(delay) as number),
       (time: number) =>
@@ -97,15 +102,18 @@ const verifyTimeGap = (delay: string) =>
 const handleSuccess = () => ({ ok: true });
 
 /**
- * createHyperVerify is a function that provides applications
- * looking to be hyper queue workers a function that can verify
- * the signature of an incoming worker queue request. This
- * check can let the worker endpoint be secure so that it only
- * accepts incoming jobs from a hyper queue source.
+ * Verify a job received from a hyper queue.
+ * See https://docs.hyper.io/post-a-jobtask#sz-verifying-jobs-from-hyper-queue
+ *
+ * @param {string} secret - the secret you provided when creating the queue.
+ * your hyper queue adds a signature to all job requests, using this secret.
+ * @param {string} ttl - the maximum age of a job, in the case of your worker having a constraint
+ * where it should only process jobs if the job was sent within the last 5 minutes
+ * @returns - a function that, given the X-HYPER-SIGNATURE and job payload,
+ * will verify the signature and payload and return a hyper OK response
  */
-
 export function createHyperVerify(secret: string, ttl?: string) {
-  return function (signature: string, payload: Record<string, unknown>) {
+  return function (signature: string, payload: unknown): Result {
     return of({ input: { signature, payload }, secret, ttl })
       .map(splitHyperSignature)
       .chain(createHmacSignature)

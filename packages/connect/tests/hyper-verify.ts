@@ -1,7 +1,8 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import { createHmac } from "crypto";
-import { createHyperVerify } from "../src/utils/hyper-verify.ts";
+import { createHyperVerify } from "../src/utils/hyper-verify";
+import { NotOkResult } from "../src/types";
 
 const hmac = (alg: "sha256", secret: string, data: string) => {
   const result = createHmac(alg, secret);
@@ -31,7 +32,7 @@ test("Verify: Compare Signatures that don't match ", () => {
   );
   const sig = `t=${time},sig=${s}`;
   const verifySignature = createHyperVerify("joker", "5m");
-  const result = verifySignature(sig, { ok: true, type: "msg" });
+  const result = verifySignature(sig, { ok: true, type: "msg" }) as NotOkResult;
   assert.is(result.ok, false);
   assert.is(result.status, 401);
 });

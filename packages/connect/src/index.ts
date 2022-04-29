@@ -12,6 +12,8 @@ import { assoc, ifElse, includes } from "ramda";
 
 export * from "./types";
 
+export { createHyperVerify } from "./utils/hyper-verify";
+
 export function connect(
   CONNECTION_STRING: string,
   // deno-lint-ignore no-inferrable-types
