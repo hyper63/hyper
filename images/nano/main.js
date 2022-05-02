@@ -100,7 +100,7 @@ export async function main(args = {}) {
           Log.info(
             `Purged ${style[type][1](type)} ${style[type][0]} service in ${
               Colors.green(domain)
-            } domain ❌`,
+            } domain ✅`,
           );
         }
 
