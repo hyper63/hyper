@@ -66,7 +66,12 @@ export default function (data) {
   test("POST /data/:store/_query - query selector with sort", () =>
     tearDown().chain(setup)
       .chain(createIndex)
-      .chain(query({ type: "album" }, { sort: [{ title: "DESC" }] }))
+      .chain(
+        query({ type: "album" }, {
+          sort: [{ title: "DESC" }],
+          useIndex: "idx-title",
+        }),
+      )
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.docs[0]._id, "2004"), r))
       .map((r) => (r.docs.forEach((doc) => assert(doc._id)), r))
