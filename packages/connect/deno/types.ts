@@ -144,28 +144,10 @@ export interface HyperInfo {
   services: () => Promise<HyperInfoServicesResult>;
 }
 
-export interface HyperStorage {
-  upload: (
-    name: string,
-    data: string | ReadableStream | Uint8Array,
-  ) => Promise<Result>;
-  download: (name: string) => Promise<ReadableStream>;
-  remove: (name: string) => Promise<Result>;
-}
-
 export interface HyperQueue {
   enqueue: <Job>(job: Job) => Promise<Result>;
   errors: <Job>() => Promise<Job[]>;
   queued: <Job>() => Promise<Job[]>;
-}
-
-export interface Hyper {
-  data: HyperData;
-  cache: HyperCache;
-  search: HyperSearch;
-  storage: HyperStorage;
-  queue: HyperQueue;
-  info: HyperInfo;
 }
 
 export interface HyperRequest {
