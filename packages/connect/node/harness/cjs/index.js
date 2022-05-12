@@ -12,4 +12,6 @@ async function run() {
   console.log("hyper-connect transpiled to Node CJS succeessfully ⚡️✅");
 }
 
-run();
+run().catch((err) => {
+  assert(false, err);
+});
