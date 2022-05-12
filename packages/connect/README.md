@@ -215,11 +215,12 @@ export const validateSignature(req, res, next) {
 
 ### Contributing
 
+- `make test` to run unit tests
+- `make test-integration` to run integration tests. This ensures the Deno code
+  is properly transformed into Node code.
+
 ---
 
 ### License
 
 Apache 2.0
-
-```
-```

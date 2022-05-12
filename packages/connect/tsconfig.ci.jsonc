@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.to-node.jsonc",
+  "compilerOptions": {
+    "declaration": false,
+    "declarationDir": null
+  },
+  "include": [
+    "to-node"
+  ]
+}

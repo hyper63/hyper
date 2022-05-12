@@ -1,0 +1,12 @@
+{
+  "name": "node",
+  "type": "module",
+  "scripts": {
+    "test": "uvu tests && yarn test:cjs && yarn test:esm",
+    "test:cjs": "cd ./harness/cjs && yarn && yarn start",
+    "test:esm": "cd ./harness/esm && yarn && yarn start"
+  },
+  "devDependencies": {
+    "uvu": "^0.5.3"
+  }
+}
