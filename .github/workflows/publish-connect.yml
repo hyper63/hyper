@@ -27,6 +27,6 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: cd packages/connect && yarn && yarn test && yarn build && npm publish
+      - run: cd packages/connect && yarn && make test-integration && make clean to-node && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

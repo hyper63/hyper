@@ -22,7 +22,7 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd packages/connect && ./scripts/test.sh
+      - run: cd packages/connect && make test
         env:
           CI: true
   build-node:
@@ -36,4 +36,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: "https://registry.npmjs.org"
-      - run: cd packages/connect && yarn && yarn test && yarn build
+      - run: cd packages/connect && yarn && make clean test test-integration
