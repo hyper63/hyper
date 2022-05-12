@@ -1,0 +1,12 @@
+{
+  "name": "esm",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "preinstall": "cd ../../../ && yarn link",
+    "postinstall": "yarn link hyper-connect"
+  },
+  "dependencies": {
+    "hyper-connect": "*"
+  }
+}

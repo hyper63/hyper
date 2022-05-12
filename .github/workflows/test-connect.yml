@@ -22,18 +22,23 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd packages/connect && ./scripts/test.sh
+      - run: cd packages/connect && make test
         env:
           CI: true
   build-node:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [14.x, 17.x]
+        deno-version: [1.x]
     steps:
       - uses: actions/checkout@v2
+      - name: Use Deno ${{ matrix.deno-version }}
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: "https://registry.npmjs.org"
-      - run: cd packages/connect && yarn && yarn test && yarn build
+      - run: cd packages/connect && yarn && make clean test test-integration

@@ -1,0 +1,12 @@
+{
+  "name": "cjs",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "preinstall": "cd ../../../ && yarn link",
+    "postinstall": "yarn link hyper-connect"
+  },
+  "dependencies": {
+    "hyper-connect": "*"
+  }
+}

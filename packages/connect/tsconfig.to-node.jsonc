@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "to-node"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib",
+    // exclude deno dev deps
+    "deno/dev_deps.ts",
+    "deno/tests"
+  ],
+  "deno2node": {
+    "shim": "deno/shim.node.ts"
+  }
+}

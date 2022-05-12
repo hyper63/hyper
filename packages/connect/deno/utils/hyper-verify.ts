@@ -1,4 +1,5 @@
-import { crocks, hmac, ms, R } from "../deps.ts";
+// deno-lint-ignore-file ban-ts-comment
+import { crocks, hmac, ms, R } from "../deps.deno.ts";
 import { Result } from "../types.ts";
 const {
   assoc,
@@ -30,9 +31,12 @@ interface Context {
 
 const splitHyperSignature = over(
   lensPath(["input", "signature"]),
+  // @ts-ignore
   compose(
     (pair: Array<string | number>) => ({
+      // @ts-ignore
       time: compose(nth(1), split("t="))(nth(0, pair)),
+      // @ts-ignore
       sig: compose(nth(1), split("sig="))(nth(1, pair)),
     }),
     split(","),
@@ -71,6 +75,7 @@ const compareSignatures = (ctx: Context) =>
 
 const verifyTimeGap = (delay: string) =>
   ifElse(
+    // @ts-ignore
     compose(
       (x: number) => x < 0 || x > (ms(delay) as number),
       (time: number) =>

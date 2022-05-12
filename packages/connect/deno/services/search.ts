@@ -5,7 +5,7 @@ import {
   SearchQueryOptions,
 } from "../types.ts";
 
-import { R } from "../deps.ts";
+import { R } from "../deps.deno.ts";
 
 const { lensPath, set } = R;
 
