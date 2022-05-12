@@ -9,7 +9,9 @@ interface Form {
 
 const createFormData = ({ name, data }: Form) => {
   const fd = new FormData();
-  fd.append("file", new File([data.buffer], name));
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  fd.append("file", new File([data.buffer as ArrayBuffer], name));
   return fd;
 };
 

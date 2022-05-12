@@ -1,3 +1,5 @@
+import { R } from "./deps.deno.ts";
+
 import * as data from "./services/data.ts";
 import * as cache from "./services/cache.ts";
 import * as search from "./services/search.ts";
@@ -6,7 +8,6 @@ import * as storage from "./services/storage.ts";
 import * as queue from "./services/queue.ts";
 import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
-import { R, readerFromStreamReader } from "./deps.ts";
 
 const { assoc, includes, ifElse } = R;
 
@@ -23,13 +24,10 @@ export function connect(
 
   const h = async (hyperRequest: HyperRequest) => {
     const { url, options } = await hyper(config, domain)(hyperRequest);
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     return new Request(url, options);
   };
-
-  const _toStream = (r: Response) =>
-    readerFromStreamReader(
-      r.body?.getReader() as ReadableStreamDefaultReader<Uint8Array>,
-    );
 
   // deno-lint-ignore no-explicit-any
   const handleResponse: any = (response: Response) =>

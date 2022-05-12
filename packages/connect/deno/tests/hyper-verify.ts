@@ -1,4 +1,4 @@
-import { hmac } from "../deps.ts";
+import { hmac } from "../deps.deno.ts";
 import { assertEquals } from "../dev_deps.ts";
 import { NotOkResult } from "../types.ts";
 import { createHyperVerify } from "../utils/hyper-verify.ts";

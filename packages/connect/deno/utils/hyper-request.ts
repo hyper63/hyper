@@ -1,13 +1,7 @@
 import { HyperRequest, Method } from "../types.ts";
-import { R, signJWT } from "../deps.ts";
+import { generateToken, R } from "../deps.deno.ts";
 
 const { assoc } = R;
-
-// deno-lint-ignore no-explicit-any
-const generateToken = (sub: string, secret: any) => {
-  const exp = Math.floor(Date.now() / 1000) + (60 * 5);
-  return signJWT({ alg: "HS256", type: "JWT" }, { sub: sub, exp }, secret);
-};
 
 interface RequestOptions {
   body?: BodyInit;
@@ -35,8 +29,7 @@ export const hyper = (conn: URL, domain: string) =>
     } as RequestOptions;
 
     if (body) {
-      // deno-lint-ignore no-explicit-any
-      options = assoc("body", JSON.stringify(body), options) as any;
+      options = assoc("body", JSON.stringify(body), options) as RequestOptions;
     }
 
     if (conn.username && conn.password) {

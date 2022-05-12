@@ -1,4 +1,4 @@
-import { R } from "../deps.ts";
+import { R } from "../deps.deno.ts";
 
 import { QueryOptions } from "../types.ts";
 
