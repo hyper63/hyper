@@ -6,10 +6,28 @@ import * as search from "./services/search.ts";
 import * as info from "./services/info.ts";
 import * as storage from "./services/storage.ts";
 import * as queue from "./services/queue.ts";
-import { Hyper, HyperRequest } from "./types.ts";
 import { hyper } from "./utils/hyper-request.ts";
 
+import type {
+  HyperCache,
+  HyperData,
+  HyperInfo,
+  HyperQueue,
+  HyperRequest,
+  HyperSearch,
+} from "./types.ts";
+import type { HyperStorage } from "./types.storage.deno.ts";
+
 const { assoc, includes, ifElse } = R;
+
+export interface Hyper {
+  data: HyperData;
+  cache: HyperCache;
+  search: HyperSearch;
+  storage: HyperStorage;
+  queue: HyperQueue;
+  info: HyperInfo;
+}
 
 export * from "./types.ts";
 
@@ -192,7 +210,17 @@ export function connect(
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          .then((res) => res.body as ReadableStream),
+          /**
+           * Deno's Response.body is a Web ReadableStream (https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
+           * node-fetch's Response.body is Node ReadableStream (https://nodejs.org/api/stream.html#readable-streams)
+           *
+           * This matches convention for both platforms, and the separate types are addressed with
+           * types.storage.{platform}.ts files, but we are typing as `any` here to get around TS being angry
+           */
+          // deno-lint-ignore ban-ts-comment
+          // @ts-ignore
+          // deno-lint-ignore no-explicit-any
+          .then((res) => res.body as any),
       remove: (name) =>
         Promise.resolve(h)
           .then(storage.remove(name))

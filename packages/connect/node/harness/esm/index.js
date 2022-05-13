@@ -12,4 +12,6 @@ async function run() {
   console.log("hyper-connect transpiled to Node ESM succeessfully ⚡️✅");
 }
 
-run();
+run().catch((err) => {
+  assert(false, err);
+});

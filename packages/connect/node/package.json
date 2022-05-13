@@ -1,6 +1,7 @@
 {
   "name": "node",
   "type": "module",
+  "license": "Apache-2.0",
   "scripts": {
     "test": "uvu tests && yarn test:cjs && yarn test:esm",
     "test:cjs": "cd ./harness/cjs && yarn && yarn start",

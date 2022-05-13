@@ -1,8 +1,9 @@
 {
   "name": "esm",
   "type": "module",
+  "license": "Apache-2.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "node --enable-source-maps index.js",
     "preinstall": "cd ../../../ && yarn link",
     "postinstall": "yarn link hyper-connect"
   },
