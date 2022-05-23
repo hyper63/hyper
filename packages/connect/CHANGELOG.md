@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.0...hyper-connect@v0.2.1) (2022-05-23)
+
+
+### Bug Fixes
+
+* **connect:** add sideEffects: false to support treeshaking bundlers ([497fcc6](https://github.com/hyper63/hyper/commit/497fcc6855e1f7462832d90c6fd78c981b4c2edf))
+
 ## [0.2.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.1.20...hyper-connect@v0.2.0) (2022-05-13)
 
 
