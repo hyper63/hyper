@@ -6,6 +6,7 @@
   "description": "A client built on fetch to consume hyper services",
   "homepage": "https://github.com/hyper63/hyper/tree/main/packages/connect",
   "repository": "https://github.com/hyper63/hyper",
+  "sideEffects": false,
   "source": "to-node/index.js",
   "exports": {
     "require": "./dist/index.cjs",
