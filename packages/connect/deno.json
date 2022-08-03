@@ -2,6 +2,7 @@
   "fmt": {
     "files": {
       "exclude": [
+        "./CHANGELOG.md",
         "./dist",
         "./to-node",
         "node_modules/",
@@ -15,6 +16,7 @@
   "lint": {
     "files": {
       "exclude": [
+        "./CHANGELOG.md",
         "./dist",
         "./to-node",
         "node_modules/",

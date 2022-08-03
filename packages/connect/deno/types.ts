@@ -67,8 +67,8 @@ export interface QueryOptions {
 export type HyperGetResult<Type extends Obj = Obj> = Type | NotOkResult;
 
 export type HyperDocsResult<Type extends Obj = Obj> =
-  | OkResult & { docs: Type[] }
-  | NotOkResult & { docs: Type[] };
+  | (OkResult & { docs: Type[] })
+  | NotOkResult;
 export interface HyperData {
   add: <Type extends Obj = Obj>(doc: Type) => Promise<IdResult>;
   get: <Type extends Obj = Obj>(id: string) => Promise<HyperGetResult<Type>>;
@@ -110,10 +110,10 @@ export interface HyperCache {
 }
 
 export type HyperSearchQueryResult<Type extends Obj = Obj> =
-  | OkResult & { matches: Type[] }
+  | (OkResult & { matches: Type[] })
   | NotOkResult;
 export type HyperSearchLoadResult<Type extends Obj = Obj> =
-  | OkResult & { results: Type[] }
+  | (OkResult & { results: Type[] })
   | NotOkResult;
 export interface HyperSearch {
   add: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
