@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.1...hyper-connect@v0.2.2) (2022-08-03)
+
+
+### Bug Fixes
+
+* **connect:** remove docs from NotOkResult for data.query ([a2b688e](https://github.com/hyper63/hyper/commit/a2b688eb268cfe07b967f286df77bac1b5cb56e1))
+
 ### [0.2.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.0...hyper-connect@v0.2.1) (2022-05-23)
 
 
