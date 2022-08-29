@@ -48,165 +48,270 @@ Deno.test("validate adapter", async () => {
   assert(results.ok);
 });
 
-Deno.test("validate putObject - always validate 'bucket' and 'object' params", async () => {
-  let err = await adapter.putObject({
-    bucket: "foo",
-    no_object: "bar.jpg",
-    stream: new Buffer(new Uint8Array(4).buffer),
-  }).catch(() => ({ ok: false }));
+Deno.test("putObject", async (t) => {
+  await t.step("always validate 'bucket' and 'object' params", async () => {
+    let err = await adapter.putObject({
+      bucket: "foo",
+      no_object: "bar.jpg",
+      stream: new Buffer(new Uint8Array(4).buffer),
+    }).catch(() => ({ ok: false }));
 
-  assert(!err.ok);
+    assert(!err.ok);
 
-  err = await adapter.putObject({
-    no_bucket: "foo",
-    object: "bar.jpg",
-    useSignedUrl: true,
-  }).catch(() => ({ ok: false }));
+    err = await adapter.putObject({
+      no_bucket: "foo",
+      object: "bar.jpg",
+      useSignedUrl: true,
+    }).catch(() => ({ ok: false }));
 
-  assert(!err.ok);
-});
-
-Deno.test("validate putObject upload", async () => {
-  // happy
-  const res = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    stream: new Buffer(new Uint8Array(4).buffer),
+    assert(!err.ok);
   });
 
-  assert(res.ok);
-  assert(!res.url);
-});
+  await t.step("upload", async (t) => {
+    // happy
+    await t.step("happy", async () => {
+      const res = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        stream: new Buffer(new Uint8Array(4).buffer),
+      });
 
-Deno.test("validate putObject upload - nil stream", async () => {
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    stream: null,
-  }).catch(() => ({ ok: false }));
+      assert(res.ok);
+      assert(!res.url);
+    });
 
-  assert(!err.ok);
-});
+    await t.step("nil stream", async () => {
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        stream: null,
+      }).catch(() => ({ ok: false }));
 
-Deno.test("validate putObject upload - conflicting params", async () => {
-  // conflicting params by passing both useSignedUrl: true and stream
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    stream: new Buffer(new Uint8Array(4).buffer),
-    useSignedUrl: true,
-  }).catch(() => ({ ok: false }));
+      assert(!err.ok);
+    });
 
-  assert(!err.ok);
-});
+    await t.step("conflicting params", async () => {
+      // conflicting params by passing both useSignedUrl: true and stream
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        stream: new Buffer(new Uint8Array(4).buffer),
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
 
-Deno.test("validate putObject upload - invalid return", async () => {
-  // invalid return
-  adapter = storagePort({
-    ...wrap,
-    putObject: ({ bucket, object, useSignedUrl }) =>
-      Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      assert(!err.ok);
+    });
+
+    await t.step("invalid return", async () => {
+      // invalid return
+      adapter = storagePort({
+        ...wrap,
+        putObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      });
+
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        stream: new Buffer(new Uint8Array(4).buffer),
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
   });
 
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    stream: new Buffer(new Uint8Array(4).buffer),
-  }).catch(() => ({ ok: false }));
+  await t.step("signedUrl", async (t) => {
+    await t.step("happy", async () => {
+      adapter = storagePort({
+        ...wrap,
+        putObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      });
 
-  assert(!err.ok);
+      // happy
+      const res = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      });
 
-  // cleanup
-  adapter = storagePort(wrap);
+      assert(res.ok);
+      assert(res.url);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
+
+    await t.step("invalid useSignedUrl false", async () => {
+      adapter = storagePort({
+        ...wrap,
+        putObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      });
+
+      // useSignedUrl false
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: false,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
+
+    await t.step("conflicting params", async () => {
+      adapter = storagePort({
+        ...wrap,
+        putObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      });
+
+      // conflicting params by passing both useSignedUrl: true and stream
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        stream: new Buffer(new Uint8Array(4).buffer),
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
+
+    await t.step("invalid url in return", async () => {
+      adapter = storagePort({
+        ...wrap,
+        putObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "not.a.url" }),
+      });
+
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
+
+    await t.step("no url in return", async () => {
+      const err = await adapter.putObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+    });
+  });
 });
 
-Deno.test("validate putObject signedUrl", async () => {
-  adapter = storagePort({
-    ...wrap,
-    putObject: ({ bucket, object, useSignedUrl }) =>
-      Promise.resolve({ ok: true, url: "https://foo.ar" }),
+Deno.test("getObject", async (t) => {
+  await t.step("always validate 'bucket' and 'object' params", async () => {
+    let err = await adapter.getObject({
+      bucket: "foo",
+      no_object: "bar.jpg",
+    }).catch(() => ({ ok: false }));
+
+    assert(!err.ok);
+
+    err = await adapter.getObject({
+      no_bucket: "foo",
+      object: "bar.jpg",
+      useSignedUrl: true,
+    }).catch(() => ({ ok: false }));
+
+    assert(!err.ok);
   });
 
-  // happy
-  const res = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    useSignedUrl: true,
+  await t.step("download", async (t) => {
+    await t.step("happy", async () => {
+      const res = await adapter.getObject({
+        bucket: "foo",
+        object: "bar.jpg",
+      });
+
+      assert(res.ok);
+      assert(!res.url);
+    });
+
+    await t.step("useSignedUrl is false", async () => {
+      const res = await adapter.getObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: false,
+      });
+
+      assert(res.ok);
+      assert(!res.url);
+    });
   });
 
-  assert(res.ok);
-  assert(res.url);
+  await t.step("useSignedUrl", async (t) => {
+    await t.step("happy", async () => {
+      adapter = storagePort({
+        ...wrap,
+        getObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      });
 
-  // cleanup
-  adapter = storagePort(wrap);
-});
+      const res = await adapter.getObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      });
 
-Deno.test("validate putObject signedUrl - invalid useSignedUrl false", async () => {
-  adapter = storagePort({
-    ...wrap,
-    putObject: ({ bucket, object, useSignedUrl }) =>
-      Promise.resolve({ ok: true, url: "https://foo.ar" }),
+      assert(res.ok);
+      assert(res.url);
+    });
+
+    await t.step("invalid url", async () => {
+      adapter = storagePort({
+        ...wrap,
+        getObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true, url: "not.a.url" }),
+      });
+
+      const err = await adapter.getObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
+
+    await t.step("no url", async () => {
+      adapter = storagePort({
+        ...wrap,
+        getObject: ({ bucket, object, useSignedUrl }) =>
+          Promise.resolve({ ok: true }),
+      });
+
+      const err = await adapter.getObject({
+        bucket: "foo",
+        object: "bar.jpg",
+        useSignedUrl: true,
+      }).catch(() => ({ ok: false }));
+
+      assert(!err.ok);
+
+      // cleanup
+      adapter = storagePort(wrap);
+    });
   });
-
-  // useSignedUrl false
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    useSignedUrl: false,
-  }).catch(() => ({ ok: false }));
-
-  assert(!err.ok);
-
-  // cleanup
-  adapter = storagePort(wrap);
-});
-
-Deno.test("validate putObject signedUrl - conflicting params", async () => {
-  adapter = storagePort({
-    ...wrap,
-    putObject: ({ bucket, object, useSignedUrl }) =>
-      Promise.resolve({ ok: true, url: "https://foo.ar" }),
-  });
-
-  // conflicting params by passing both useSignedUrl: true and stream
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    stream: new Buffer(new Uint8Array(4).buffer),
-    useSignedUrl: true,
-  }).catch(() => ({ ok: false }));
-
-  assert(!err.ok);
-
-  // cleanup
-  adapter = storagePort(wrap);
-});
-
-Deno.test("validate putObject signedUrl - invalid url in return", async () => {
-  adapter = storagePort({
-    ...wrap,
-    putObject: ({ bucket, object, useSignedUrl }) =>
-      Promise.resolve({ ok: true, url: "not.a.url" }),
-  });
-
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    useSignedUrl: true,
-  }).catch(() => ({ ok: false }));
-
-  assert(!err.ok);
-
-  // cleanup
-  adapter = storagePort(wrap);
-});
-
-Deno.test("validate putObject signedUrl - no url in return", async () => {
-  const err = await adapter.putObject({
-    bucket: "foo",
-    object: "bar.jpg",
-    useSignedUrl: true,
-  }).catch(() => ({ ok: false }));
-
-  assert(!err.ok);
 });

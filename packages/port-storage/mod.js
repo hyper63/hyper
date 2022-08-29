@@ -66,6 +66,30 @@ const putObjectSignedUrlSchema = z.function()
     ),
   );
 
+const getObjectSignedUrlSchemaArgs = z.object({
+  bucket: z.string(),
+  object: z.string(),
+  useSignedUrl: z.literal(true),
+});
+const getObjectSignedUrlSchema = z.function()
+  .args(getObjectSignedUrlSchemaArgs)
+  .returns(
+    z.promise(
+      hyperResSchema(z.object({
+        url: z.string().url(),
+      })),
+    ),
+  );
+
+const getObjectDownloadSchemaArgs = z.object({
+  bucket: z.string(),
+  object: z.string(),
+  useSignedUrl: z.literal(false).optional(),
+});
+const getObjectDownloadSchema = z.function()
+  .args(getObjectDownloadSchemaArgs)
+  .returns(z.promise(z.any()));
+
 /**
  * @param {function} adapter - implementation detail for this port
  * @param {object} env - environment settings for the adapter
@@ -99,10 +123,11 @@ export function storage(adapter) {
       }))
       .returns(z.promise(hyperResSchema())),
     getObject: z.function()
-      .args(z.object({
-        bucket: z.string(),
-        object: z.string(),
-      }))
+      .args(z.union([
+        getObjectDownloadSchemaArgs,
+        getObjectSignedUrlSchemaArgs,
+      ]))
+      // validation of return is handled by subschemas
       .returns(z.promise(z.any())),
     listObjects: z.function()
       .args(z.object({
@@ -127,7 +152,7 @@ export function storage(adapter) {
   );
   instance.listBuckets = Port.shape.listBuckets.validate(instance.listBuckets);
 
-  const original = instance.putObject;
+  const originalPutObject = instance.putObject;
   instance.putObject = Port.shape.putObject.implement((params) => {
     /**
      * params are already validated against union type
@@ -136,11 +161,20 @@ export function storage(adapter) {
      */
     if (!params.useSignedUrl) {
       // upload request
-      return putObjectUploadSchema.validate(original)(params);
+      return putObjectUploadSchema.validate(originalPutObject)(params);
     }
 
     // signed url request
-    return putObjectSignedUrlSchema.validate(original)(params);
+    return putObjectSignedUrlSchema.validate(originalPutObject)(params);
+  });
+
+  const originalGetObject = instance.getObject;
+  instance.getObject = Port.shape.getObject.implement((params) => {
+    if (!params.useSignedUrl) {
+      return getObjectDownloadSchema.validate(originalGetObject)(params);
+    }
+
+    return getObjectSignedUrlSchema.validate(originalGetObject)(params);
   });
 
   instance.removeObject = Port.shape.removeObject.validate(
