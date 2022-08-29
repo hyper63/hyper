@@ -9,10 +9,11 @@ export const put = (bucket, object, stream, useSignedUrl) =>
   }).chain(apply("putObject"))
     .chain(triggerEvent("STORAGE:PUT"));
 
-export const get = (bucket, object) =>
+export const get = (bucket, object, useSignedUrl) =>
   of({
     bucket,
     object,
+    useSignedUrl,
   }).chain(apply("getObject"))
     .chain(triggerEvent("STORAGE:GET"));
 

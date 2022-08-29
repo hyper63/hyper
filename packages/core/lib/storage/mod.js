@@ -39,8 +39,11 @@ export default function ({ storage, events }) {
    * @param {string} objectName
    * @returns {Async}
    */
-  const getObject = (bucketName, objectName) =>
-    objects.get(bucketName, objectName).runWith({ svc: storage, events });
+  const getObject = (bucketName, objectName, useSignedUrl) =>
+    objects.get(bucketName, objectName, useSignedUrl).runWith({
+      svc: storage,
+      events,
+    });
 
   /**
    * @param {string} bucketName
