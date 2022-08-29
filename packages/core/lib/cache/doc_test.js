@@ -12,16 +12,15 @@ const mockService = {
   deleteDoc: ({ store, key }) => Promise.resolve({ ok: true }),
 };
 
-const fork = (m) =>
-  () => {
-    m.fork(
-      (e) => {
-        console.log("ERROR", e.message);
-        assertEquals(false, true);
-      },
-      () => assertEquals(true, true),
-    );
-  };
+const fork = (m) => () => {
+  m.fork(
+    (e) => {
+      console.log("ERROR", e.message);
+      assertEquals(false, true);
+    },
+    () => assertEquals(true, true),
+  );
+};
 
 const events = {
   dispatch: () => null,

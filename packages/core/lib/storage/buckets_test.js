@@ -17,13 +17,12 @@ const mock = {
   },
 };
 
-const fork = (m) =>
-  () => {
-    m.fork(
-      () => assertEquals(false, true),
-      () => assertEquals(true, true),
-    );
-  };
+const fork = (m) => () => {
+  m.fork(
+    () => assertEquals(false, true),
+    () => assertEquals(true, true),
+  );
+};
 
 const events = {
   dispatch: () => null,

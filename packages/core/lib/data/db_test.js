@@ -34,23 +34,21 @@ const mockDb = {
   },
 };
 
-const fork = (m) =>
-  () => {
-    return m.bimap(
-      () => assertEquals(false, true),
-      () => assertEquals(true, true),
-    ).toPromise();
-  };
-const handleFail = (m) =>
-  () => {
-    return m.bimap(
-      () => assertEquals(false, true), // catastrophic error shouldn't happen
-      (err) => {
-        assertEquals(err.ok, false);
-        assert(err.originalErr);
-      },
-    ).toPromise().catch((e) => e);
-  };
+const fork = (m) => () => {
+  return m.bimap(
+    () => assertEquals(false, true),
+    () => assertEquals(true, true),
+  ).toPromise();
+};
+const handleFail = (m) => () => {
+  return m.bimap(
+    () => assertEquals(false, true), // catastrophic error shouldn't happen
+    (err) => {
+      assertEquals(err.ok, false);
+      assert(err.originalErr);
+    },
+  ).toPromise().catch((e) => e);
+};
 
 const events = {
   dispatch: () => null,

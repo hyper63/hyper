@@ -30,14 +30,13 @@ const {
 } = R;
 
 const isDefined = complement(isNil);
-const toPropTuple = (fn) =>
-  (propName) => [
-    compose(
-      isDefined,
-      prop(propName),
-    ),
-    (val) => fn(prop(propName, val)),
-  ];
+const toPropTuple = (fn) => (propName) => [
+  compose(
+    isDefined,
+    prop(propName),
+  ),
+  (val) => fn(prop(propName, val)),
+];
 
 const mapErrPropTuple = toPropTuple((err) => mapErr(err));
 
