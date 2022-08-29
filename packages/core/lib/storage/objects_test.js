@@ -9,10 +9,10 @@ const test = Deno.test;
 
 const mock = {
   putObject({ bucket, object, stream, useSignedUrl }) {
-    return Promise.resolve({ ok: true, stream, useSignedUrl });
+    return Promise.resolve({ ok: true, stream, useSignedUrl: !!useSignedUrl });
   },
-  getObject({ bucket, object }) {
-    return Promise.resolve({ ok: true });
+  getObject({ bucket, object, useSignedUrl }) {
+    return Promise.resolve({ ok: true, useSignedUrl: !!useSignedUrl });
   },
   removeObject({ bucket, object }) {
     return Promise.resolve({ ok: true });
@@ -25,13 +25,12 @@ const mock = {
   },
 };
 
-const fork = (m) =>
-  () => {
-    m.fork(
-      () => assertEquals(true, false),
-      () => assertEquals(true, true),
-    );
-  };
+const fork = (m) => () => {
+  m.fork(
+    () => assertEquals(true, false),
+    () => assertEquals(true, true),
+  );
+};
 
 const events = {
   dispatch: () => null,
@@ -50,7 +49,7 @@ test(
         )
         .map(tap(({ stream, useSignedUrl }) => {
           assertEquals(stream, "foo");
-          assertEquals(useSignedUrl, undefined);
+          assertEquals(useSignedUrl, false);
         }))
         .runWith({ svc: mock, events }),
     );
@@ -72,6 +71,25 @@ test(
     );
   },
 );
+
+test("get object", () => {
+  // download
+  fork(
+    objects.get("test", "README.md")
+      .map(tap(({ useSignedUrl }) => {
+        assertEquals(useSignedUrl, undefined);
+      }))
+      .runWith({ svc: mock, events }),
+  );
+
+  fork(
+    objects.get("test", "README.md", true)
+      .map(tap(({ useSignedUrl }) => {
+        assertEquals(useSignedUrl, true);
+      }))
+      .runWith({ svc: mock, events }),
+  );
+});
 
 test(
   "remove bucket",
