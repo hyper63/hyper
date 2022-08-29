@@ -42,5 +42,12 @@ export const isMultipartFormData = (contentType) => {
 };
 
 export const isFile = (path) => {
+  path = path || "/";
   return path.split("/").pop().indexOf(".") > -1;
 };
+
+/**
+ * Add an empty string to coerce val to
+ * a string, then compare to string 'true'
+ */
+export const isTrue = (val) => (val + "").trim() === "true";
