@@ -25,13 +25,12 @@ const mock = {
   },
 };
 
-const fork = (m) =>
-  () => {
-    return m.bimap(
-      () => assertEquals(false, true),
-      () => assertEquals(true, true),
-    ).toPromise();
-  };
+const fork = (m) => () => {
+  return m.bimap(
+    () => assertEquals(false, true),
+    () => assertEquals(true, true),
+  ).toPromise();
+};
 
 const events = {
   dispatch: () => null,
