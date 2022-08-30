@@ -149,6 +149,16 @@ export interface HyperInfo {
   services: () => Promise<HyperInfoServicesResult>;
 }
 
+export interface HyperStorage {
+  upload: (name: string, data: string | Uint8Array) => Promise<Result>;
+  download: (name: string) => Promise<ReadableStream>;
+  signedUrl: (
+    name: string,
+    options: StorageSignedUrlOptions,
+  ) => Promise<OkUrlResult | NotOkResult>;
+  remove: (name: string) => Promise<Result>;
+}
+
 export interface HyperQueue {
   enqueue: <Job>(job: Job) => Promise<Result>;
   errors: <Job>() => Promise<Job[]>;

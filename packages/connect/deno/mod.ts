@@ -15,8 +15,8 @@ import type {
   HyperQueue,
   HyperRequest,
   HyperSearch,
+  HyperStorage,
 } from "./types.ts";
-import type { HyperStorage } from "./types.storage.deno.ts";
 
 const { assoc, includes, ifElse } = R;
 
