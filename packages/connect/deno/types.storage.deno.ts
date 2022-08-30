@@ -1,10 +1,10 @@
-import { Result } from "./types.ts";
+import { Result, StorageDownloadOptions } from "./types.ts";
 
 export interface HyperStorage {
-  upload: (
+  upload: (name: string, data: string | Uint8Array) => Promise<Result>;
+  download: (
     name: string,
-    data: string | Uint8Array,
-  ) => Promise<Result>;
-  download: (name: string) => Promise<ReadableStream>;
+    options?: StorageDownloadOptions,
+  ) => Promise<ReadableStream>;
   remove: (name: string) => Promise<Result>;
 }
