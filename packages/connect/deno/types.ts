@@ -62,6 +62,10 @@ export interface QueryOptions {
   useIndex?: string;
 }
 
+export interface StorageDownloadOptions {
+  useSignedUrl?: boolean;
+}
+
 // TODO: exception to the rule of returning a Result shape.
 // TODO: This will change to be just a regular result in a major version
 export type HyperGetResult<Type extends Obj = Obj> = Type | NotOkResult;

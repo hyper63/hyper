@@ -1,4 +1,8 @@
-import { HyperRequestFunction, Method } from "../types.ts";
+import {
+  HyperRequestFunction,
+  Method,
+  StorageDownloadOptions,
+} from "../types.ts";
 
 const service = "storage" as const;
 
@@ -15,8 +19,8 @@ const createFormData = ({ name, data }: Form) => {
   return fd;
 };
 
-export const upload = (name: string, data: Uint8Array) =>
-  (h: HyperRequestFunction) =>
+export const upload =
+  (name: string, data: Uint8Array) => (h: HyperRequestFunction) =>
     Promise.resolve({ name, data })
       .then(createFormData)
       // need to override header to send content-type: multipart/form-data
@@ -34,9 +38,19 @@ export const upload = (name: string, data: Uint8Array) =>
         });
       });
 
-export const download = (name: string) =>
-  async (h: HyperRequestFunction) => {
-    const req = await h({ service, method: Method.GET, resource: name });
+export const download =
+  (name: string, options: StorageDownloadOptions = {}) =>
+  async (hyper: HyperRequestFunction) => {
+    const req = await hyper({
+      service,
+      method: Method.GET,
+      resource: name,
+      params: options,
+    });
+    /**
+     * remove the  "Content-Type": "application/json" header,
+     * but keep the Authorization header
+     */
     const headers = new Headers();
     headers.set("Authorization", req.headers.get("authorization") as string);
 
@@ -46,6 +60,5 @@ export const download = (name: string) =>
     });
   };
 
-export const remove = (name: string) =>
-  (h: HyperRequestFunction) =>
-    h({ service, method: Method.DELETE, resource: name });
+export const remove = (name: string) => (h: HyperRequestFunction) =>
+  h({ service, method: Method.DELETE, resource: name });
