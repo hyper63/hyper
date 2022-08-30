@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.3.0...hyper-connect@v0.4.0) (2022-08-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **connect:** removed `StorageDownloadOptions` from `storage.download`.
+Consumers should instead use `storage.signedUrl(name, { type: 'download' })
+
+### Features
+
+* **connect:** add signedUrl api on storage service [#524](https://github.com/hyper63/hyper/issues/524) ([7d6af43](https://github.com/hyper63/hyper/commit/7d6af43a3112fcde944c25e37ddde11265750b61))
+
 ## [0.3.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.2...hyper-connect@v0.3.0) (2022-08-30)
 
 
