@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.2...hyper-connect@v0.3.0) (2022-08-30)
+
+
+### Features
+
+* **app-opine:** add support for useSignedUrl for getObject [#519](https://github.com/hyper63/hyper/issues/519) ([df4a63c](https://github.com/hyper63/hyper/commit/df4a63c693f894954f9315b146543a0cb074912d))
+* **connect:** support useSignedUrl for storage.download [#522](https://github.com/hyper63/hyper/issues/522) ([aacb2b0](https://github.com/hyper63/hyper/commit/aacb2b0608ceb829103f7a485eeb04d49392fd73))
+* **core:** add support for useSignedUrl for getObject [#519](https://github.com/hyper63/hyper/issues/519) ([4bec0c4](https://github.com/hyper63/hyper/commit/4bec0c45d36e229804201c426af85ca4816cb77e))
+* **port-storage:** add support for useSignedUrl for getObject [#519](https://github.com/hyper63/hyper/issues/519) ([15f0fdf](https://github.com/hyper63/hyper/commit/15f0fdff97f1b03eb7fcaa400b818403935fc3e6))
+
 ### [0.2.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.2.1...hyper-connect@v0.2.2) (2022-08-03)
 
 
