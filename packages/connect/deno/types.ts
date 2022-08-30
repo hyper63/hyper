@@ -49,6 +49,11 @@ export interface NotOkResult {
 export type Result = OkResult | NotOkResult;
 export type OkIdResult = OkResult & { id: string };
 export type IdResult = OkIdResult | NotOkResult;
+export type OkUrlResult = OkResult & { url: string };
+
+export interface StorageSignedUrlOptions {
+  type: "upload" | "download";
+}
 
 export interface SearchQueryOptions {
   fields: string[];
@@ -60,10 +65,6 @@ export interface QueryOptions {
   sort?: { [k: string]: SortOptions }[];
   limit?: number;
   useIndex?: string;
-}
-
-export interface StorageDownloadOptions {
-  useSignedUrl?: boolean;
 }
 
 // TODO: exception to the rule of returning a Result shape.

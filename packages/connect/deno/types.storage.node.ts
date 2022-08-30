@@ -1,10 +1,16 @@
-import { Result, StorageDownloadOptions } from "./types.ts";
+import {
+  NotOkResult,
+  OkUrlResult,
+  Result,
+  StorageSignedUrlOptions,
+} from "./types.ts";
 
 export interface HyperStorage {
   upload: (name: string, data: string | Uint8Array) => Promise<Result>;
-  download: (
+  download: (name: string) => Promise<NodeJS.ReadableStream>;
+  signedUrl: (
     name: string,
-    options?: StorageDownloadOptions,
-  ) => Promise<NodeJS.ReadableStream>;
+    options: StorageSignedUrlOptions,
+  ) => Promise<OkUrlResult | NotOkResult>;
   remove: (name: string) => Promise<Result>;
 }

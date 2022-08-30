@@ -61,8 +61,8 @@ export function connect(
           (r: Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
         ),
       )
-      .then((r) => response.ok ? r : assoc("status", response.status, r))
-      .then((r) => response.status >= 500 ? Promise.reject(r) : r);
+      .then((r) => (response.ok ? r : assoc("status", response.status, r)))
+      .then((r) => (response.status >= 500 ? Promise.reject(r) : r));
 
   //const log = (x: any) => (console.log(x), x);
 
@@ -74,10 +74,7 @@ export function connect(
           .then(fetch)
           .then(handleResponse),
       get: (id) =>
-        Promise.resolve(h)
-          .then(data.get(id))
-          .then(fetch)
-          .then(handleResponse),
+        Promise.resolve(h).then(data.get(id)).then(fetch).then(handleResponse),
       list: (options) =>
         Promise.resolve(h)
           .then(data.list(options))
@@ -109,10 +106,7 @@ export function connect(
           .then(fetch)
           .then(handleResponse),
       create: () =>
-        Promise.resolve(h)
-          .then(data.create())
-          .then(fetch)
-          .then(handleResponse),
+        Promise.resolve(h).then(data.create()).then(fetch).then(handleResponse),
       destroy: (confirm) =>
         Promise.resolve(h)
           .then(data.destroy(confirm))
@@ -221,6 +215,10 @@ export function connect(
           // @ts-ignore
           // deno-lint-ignore no-explicit-any
           .then((res) => res.body as any),
+      signedUrl: (name, options) =>
+        Promise.resolve(h)
+          .then(storage.signedUrl(name, options))
+          .then(handleResponse),
       remove: (name) =>
         Promise.resolve(h)
           .then(storage.remove(name))
@@ -229,17 +227,20 @@ export function connect(
     },
     queue: {
       enqueue: (job) =>
-        Promise.resolve(h).then(queue.enqueue(job)).then(fetch).then(
-          handleResponse,
-        ),
+        Promise.resolve(h)
+          .then(queue.enqueue(job))
+          .then(fetch)
+          .then(handleResponse),
       errors: () =>
-        Promise.resolve(h).then(queue.errors()).then(fetch).then(
-          handleResponse,
-        ),
+        Promise.resolve(h)
+          .then(queue.errors())
+          .then(fetch)
+          .then(handleResponse),
       queued: () =>
-        Promise.resolve(h).then(queue.queued()).then(fetch).then(
-          handleResponse,
-        ),
+        Promise.resolve(h)
+          .then(queue.queued())
+          .then(fetch)
+          .then(handleResponse),
     },
     info: {
       services: () =>

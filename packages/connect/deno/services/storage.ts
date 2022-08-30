@@ -1,7 +1,7 @@
 import {
   HyperRequestFunction,
   Method,
-  StorageDownloadOptions,
+  StorageSignedUrlOptions,
 } from "../types.ts";
 
 const service = "storage" as const;
@@ -39,13 +39,11 @@ export const upload =
       });
 
 export const download =
-  (name: string, options: StorageDownloadOptions = {}) =>
-  async (hyper: HyperRequestFunction) => {
+  (name: string) => async (hyper: HyperRequestFunction) => {
     const req = await hyper({
       service,
       method: Method.GET,
       resource: name,
-      params: options,
     });
     /**
      * remove the  "Content-Type": "application/json" header,
@@ -59,6 +57,18 @@ export const download =
       headers,
     });
   };
+
+export const signedUrl =
+  (name: string, options: StorageSignedUrlOptions) =>
+  (hyper: HyperRequestFunction) =>
+    hyper({
+      service,
+      resource: name,
+      method: options.type === "download" ? Method.GET : Method.POST,
+      ...(options.type === "download"
+        ? { params: { useSignedUrl: true } }
+        : {}),
+    });
 
 export const remove = (name: string) => (h: HyperRequestFunction) =>
   h({ service, method: Method.DELETE, resource: name });

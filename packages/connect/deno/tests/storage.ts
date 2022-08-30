@@ -1,7 +1,7 @@
 import { HyperRequest } from "../types.ts";
 import { assertEquals } from "../dev_deps.ts";
 
-import { download, remove, upload } from "../services/storage.ts";
+import { download, remove, signedUrl, upload } from "../services/storage.ts";
 
 const test = Deno.test;
 
@@ -37,10 +37,11 @@ test("storage.download", async () => {
   assertEquals(req.url, "http://localhost/storage/bucket/avatar.png");
 });
 
-test("storage.download - useSignedUrl", async () => {
+test("storage.signedUrl(download)", async () => {
   const mockRequest = (h: HyperRequest) => {
     assertEquals(h.service, "storage");
     assertEquals(h.method, "GET");
+    assertEquals(h.body, undefined);
     assertEquals(h.params, { useSignedUrl: true });
 
     let url = `http://localhost/${h.service}/bucket/${h.resource}`;
@@ -51,14 +52,37 @@ test("storage.download - useSignedUrl", async () => {
     return Promise.resolve(
       new Request(url, {
         method: h.method,
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
       }),
     );
   };
-  const req = await download("avatar.png", { useSignedUrl: true })(mockRequest);
+  const req = await signedUrl("avatar.png", { type: "download" })(mockRequest);
   assertEquals(
     req.url,
     "http://localhost/storage/bucket/avatar.png?useSignedUrl=true",
   );
+});
+
+test("storage.signedUrl(upload)", async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, "storage");
+    assertEquals(h.method, "POST");
+    assertEquals(h.body, undefined);
+
+    return Promise.resolve(
+      new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {
+        method: h.method,
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      }),
+    );
+  };
+  const req = await signedUrl("avatar.png", { type: "upload" })(mockRequest);
+  assertEquals(req.headers.get("content-type"), "application/json");
+  assertEquals(req.url, "http://localhost/storage/bucket/avatar.png");
 });
 
 test("storage.remove", async () => {
