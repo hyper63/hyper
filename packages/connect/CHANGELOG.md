@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.0...hyper-connect@v0.5.1) (2022-08-31)
+
+
+### Bug Fixes
+
+* **connect:** add missing fetch ([751bd1b](https://github.com/hyper63/hyper/commit/751bd1be8e17d5e2810081b39330b2af2b835292))
+
 ## [0.5.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.4.0...hyper-connect@v0.5.0) (2022-08-31)
 
 
