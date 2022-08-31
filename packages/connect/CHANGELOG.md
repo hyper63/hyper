@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.4.0...hyper-connect@v0.5.0) (2022-08-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **connect:** the node version of storage.download now returns a web ReadableStream,
+instead of a Node ReadableStream. If you'd like a Node Readable stream, use the `fromWeb`
+provided by node:stream `Readable`.
+
+See: https://undici.nodejs.org/#/?id=responsebody for an example
+
+### Bug Fixes
+
+* **nano:** allow write to tmp directory for hyper app file buffering ([be72f88](https://github.com/hyper63/hyper/commit/be72f882625200770e22f876b638182ffc923ec4))
+
+
+* **connect:** use undici in lieu of node-fetch, form-data, and @web-stf/file ([29d366d](https://github.com/hyper63/hyper/commit/29d366d81d9637a72bde9b6bf7da6c4e47708e73))
+
 ## [0.4.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.3.0...hyper-connect@v0.4.0) (2022-08-30)
 
 
