@@ -60,8 +60,8 @@ export const download =
 
 export const signedUrl =
   (name: string, options: StorageSignedUrlOptions) =>
-  (hyper: HyperRequestFunction) =>
-    hyper({
+  (h: HyperRequestFunction) =>
+    h({
       service,
       resource: name,
       method: options.type === "download" ? Method.GET : Method.POST,

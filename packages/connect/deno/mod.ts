@@ -206,6 +206,7 @@ export function connect(
       signedUrl: (name, options) =>
         Promise.resolve(h)
           .then(storage.signedUrl(name, options))
+          .then(fetch)
           .then(handleResponse),
       remove: (name) =>
         Promise.resolve(h)
