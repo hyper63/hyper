@@ -82,6 +82,29 @@ await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
 const results = await hyper.data.query({ type: "game" });
 ```
 
+### A Note for NodeJS
+
+For Node environments, starting with `v0.5.0`, `hyper-connect`'s Storage service
+api returns a
+[`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
+instead of a `NodeJS.ReadableStream`. If you'd like a `NodeJS.ReadableStream`,
+follow one of the approaches below.
+
+If you're using `node>=17`, you can use Node's built in `fromWeb` to get a Node
+stream:
+
+```js
+import { Readable } from "node:stream";
+
+const res = await hyper.storage.download(name);
+const readableNodeStream = Readable.fromWeb(res);
+```
+
+Otherwise, you will need to use `v0.4.0` or less of `hyper-connect`. Node `18`
+will be in LTS soon, and we recommend upgrading to Node `18` LTS as soon as
+possible, to take advantage of the new Web Standards centric features, like
+global `fetch` and `WebStreams`.
+
 ### Deno
 
 ```js

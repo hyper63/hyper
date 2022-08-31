@@ -29,7 +29,7 @@ export const upload =
         const headers = new Headers();
         headers.set(
           "Authorization",
-          req.headers.get("authorization") as string
+          req.headers.get("authorization") as string,
         );
         return new Request(req.url, {
           method: Method.POST,
