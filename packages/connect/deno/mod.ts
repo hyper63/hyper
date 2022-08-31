@@ -195,8 +195,6 @@ export function connect(
     storage: {
       upload: (name, data) =>
         Promise.resolve(h)
-          // deno-lint-ignore ban-ts-comment
-          // @ts-ignore
           .then(storage.upload(name, data))
           .then(fetch)
           .then(handleResponse),
@@ -204,17 +202,7 @@ export function connect(
         Promise.resolve(h)
           .then(storage.download(name))
           .then(fetch)
-          /**
-           * Deno's Response.body is a Web ReadableStream (https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
-           * node-fetch's Response.body is Node ReadableStream (https://nodejs.org/api/stream.html#readable-streams)
-           *
-           * This matches convention for both platforms, and the separate types are addressed with
-           * types.storage.{platform}.ts files, but we are typing as `any` here to get around TS being angry
-           */
-          // deno-lint-ignore ban-ts-comment
-          // @ts-ignore
-          // deno-lint-ignore no-explicit-any
-          .then((res) => res.body as any),
+          .then((res) => res.body as ReadableStream),
       signedUrl: (name, options) =>
         Promise.resolve(h)
           .then(storage.signedUrl(name, options))
