@@ -70,6 +70,16 @@ There are binaries built for each major platform:
 - [Darwin ARM (Mac M1)](https://hyperland.s3.amazonaws.com/hyper-aarch64-apple-darwin)
 - [Windows](https://hyperland.s3.amazonaws.com/hyper-x86_64-pc-windows-msvc.exe)
 
+### Node Usage
+
+Alternatively, if you use `Node`, you may run `hyper nano` using `npx`:
+
+```sh
+npx hyper-nano --domain=foobar --experimental --data --cache ...
+```
+
+### Deno Usage
+
 Alternatively, if you use `Deno` you may run `hyper nano` directly from the
 source:
 
