@@ -1,0 +1,19 @@
+{
+  "name": "hyper-nano",
+  "version": "1.1.3",
+  "license": "Apache-2.0",
+  "description": "In-Memory hyper http server using in-memory adapters",
+  "homepage": "https://github.com/hyper63/hyper/tree/main/images/nano",
+  "repo": "https://github.com/hyper63/hyper",
+  "sideEffects": false,
+  "bin": {
+    "hyper-nano": "bin/index.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "dependencies": {
+    "chalk": "^4",
+    "ora": "^5"
+  }
+}

@@ -2,3 +2,4 @@ data
 .env
 *.sqlite
 build
+hyper-nano
