@@ -36,3 +36,14 @@ jobs:
           cp ./build/hyper-x86_64-unknown-linux-gnu ./build/hyper
           echo "copying binaries to hyperland s3 ⚡️"
           aws s3 cp --acl public-read --recursive ./build s3://hyperland
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: cd images/nano && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
