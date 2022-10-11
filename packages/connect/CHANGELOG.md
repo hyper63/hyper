@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.1...hyper-connect@v0.5.2) (2022-10-11)
+
+
+### Features
+
+* **nano:** add npx capability [#530](https://github.com/hyper63/hyper/issues/530) ([17de7bc](https://github.com/hyper63/hyper/commit/17de7bcaee43646bd37dfb1b2edcbbe09404e57b))
+
+
+### Bug Fixes
+
+* **connect:** make search.query options optional [#535](https://github.com/hyper63/hyper/issues/535) ([92ae9fb](https://github.com/hyper63/hyper/commit/92ae9fb594cdf61ebeb007af64edb794c364f23f))
+
 ### [0.5.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.0...hyper-connect@v0.5.1) (2022-08-31)
 
 
