@@ -56,8 +56,8 @@ export interface StorageSignedUrlOptions {
 }
 
 export interface SearchQueryOptions {
-  fields: string[];
-  filter: Record<string, string>;
+  fields?: string[];
+  filter?: Record<string, string>;
 }
 
 export interface QueryOptions {
@@ -127,7 +127,7 @@ export interface HyperSearch {
   update: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
   query: <Type extends Obj = Obj>(
     query: string,
-    options: SearchQueryOptions,
+    options?: SearchQueryOptions,
   ) => Promise<HyperSearchQueryResult<Type>>;
   load: <Type extends Obj = Obj>(
     docs: Type[],
