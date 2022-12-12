@@ -1,4 +1,4 @@
-import { exists, MultipartReader, R } from "../deps.js";
+import { MultipartReader, R } from "../deps.js";
 import { isMultipartFormData } from "../utils.js";
 
 const { compose, nth, split } = R;
@@ -15,12 +15,13 @@ export default async (req, _res, next) => {
   let boundary;
 
   const contentType = req.get("content-type");
-  if (isMultipartFormData(contentType)) {
-    boundary = getBoundary(contentType);
-  }
+  if (isMultipartFormData(contentType)) boundary = getBoundary(contentType);
 
-  if (!(await exists(TMP_DIR))) {
+  try {
     await Deno.mkdir(TMP_DIR, { recursive: true });
+  } catch (err) {
+    if (!(err instanceof Deno.errors.AlreadyExists)) throw err;
+    // dir exists, so do nothing
   }
 
   const form = await new MultipartReader(req.body, boundary).readForm({
