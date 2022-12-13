@@ -27,10 +27,13 @@ export default function ({ data, events }) {
   /**
    * @param {string} db
    * @param {string} id
+   * @param {boolean?} isLegacyGetEnabled
    * @returns {Async}
+   *
+   * TODO: LEGACY_GET: set to false on next major version. Then remove on next major version
    */
-  const getDocument = (db, id) =>
-    doc.get(db, id).runWith({ svc: data, events });
+  const getDocument = (db, id, isLegacyGetEnabled = true) =>
+    doc.get(db, id).runWith({ svc: data, events, isLegacyGetEnabled });
 
   /**
    * @param {string} db

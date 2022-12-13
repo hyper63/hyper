@@ -12,6 +12,7 @@ const mock = {
       return Promise.resolve({ ok: false });
     }
 
+    // legacy get response
     return Promise.resolve({ _id: id });
   },
   updateDocument({ db, id, doc }) {
@@ -102,6 +103,89 @@ test(
       }).runWith({ svc: mock, events }),
   ),
 );
+
+test("get document - legacyGet", async (t) => {
+  await t.step("enabled", async (t) => {
+    await t.step(
+      "should passthrough a legacyGet response",
+      fork(
+        doc.get("foo", "1").map((res) => {
+          assert(res._id);
+        }).runWith({ svc: mock, events, isLegacyGetEnabled: true }),
+      ),
+    );
+
+    await t.step(
+      "should map to legacyGet response for backwards compatibility",
+      fork(
+        doc.get("foo", "1").map((res) => {
+          assert(res._id);
+        }).runWith({
+          svc: {
+            ...mock,
+            retrieveDocument({ db, id }) {
+              // NOT legacyGet response
+              return Promise.resolve({ ok: true, doc: { _id: id } });
+            },
+          },
+          events,
+          isLegacyGetEnabled: true,
+        }),
+      ),
+    );
+
+    await t.step(
+      "should passthrough a hyper error shape",
+      fork(
+        doc.get("foo", "err")
+          .map((res) => {
+            assert(!res.ok);
+          }).runWith({ svc: mock, events, isLegacyGetEnabled: true }),
+      ),
+    );
+  });
+
+  await t.step("disabled", async (t) => {
+    await t.step(
+      "should passthrough a get response",
+      fork(
+        doc.get("foo", "1").map((res) => {
+          assert(res.ok);
+          assert(res.doc._id);
+        }).runWith({
+          svc: {
+            ...mock,
+            retrieveDocument({ db, id }) {
+              return Promise.resolve({ ok: true, doc: { _id: id } });
+            },
+          },
+          events,
+          isLegacyGetEnabled: false,
+        }),
+      ),
+    );
+
+    await t.step(
+      "should map to get response for forwards compatibility",
+      fork(
+        doc.get("foo", "1").map((res) => {
+          assert(res.ok);
+          assert(res.doc._id);
+        }).runWith({ svc: mock, events, isLegacyGetEnabled: false }),
+      ),
+    );
+
+    await t.step(
+      "should passthrough a hyper error shape",
+      fork(
+        doc.get("foo", "err")
+          .map((res) => {
+            assert(!res.ok);
+          }).runWith({ svc: mock, events, isLegacyGetEnabled: false }),
+      ),
+    );
+  });
+});
 
 test(
   "update document",

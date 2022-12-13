@@ -1,6 +1,5 @@
 import { crocks, ms, R } from "../../deps.js";
-
-import { apply, is, of, triggerEvent } from "../utils/mod.js";
+import { apply, is, legacyGet, of, triggerEvent } from "../utils/mod.js";
 
 const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = R;
 const { hasProp } = crocks;
@@ -38,7 +37,8 @@ export const get = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
     .chain(apply("getDoc"))
-    .chain(triggerEvent("CACHE:GET"));
+    .chain(triggerEvent("CACHE:GET"))
+    .chain(legacyGet("CACHE:GET"));
 // .chain(is(validResult, INVALID_RESULT));
 
 /**
