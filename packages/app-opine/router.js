@@ -2,6 +2,7 @@ import { cors, helmet, json, opine, R } from "./deps.js";
 
 // middleware
 import formData from "./lib/formData.js";
+import legacyGet from "./lib/legacyGet.js";
 
 import { isMultipartFormData } from "./utils.js";
 
@@ -52,7 +53,7 @@ export function hyperRouter(services) {
   app.delete("/data/:db", bindCore, data.removeDb);
   app.get("/data/:db", bindCore, data.listDocuments);
   app.post("/data/:db", json({ limit: "8mb" }), bindCore, data.createDocument);
-  app.get("/data/:db/:id", bindCore, data.getDocument);
+  app.get("/data/:db/:id", bindCore, legacyGet, data.getDocument);
   app.put(
     "/data/:db/:id",
     json({ limit: "8mb" }),
@@ -71,7 +72,7 @@ export function hyperRouter(services) {
   app.get("/cache/:name/_query", bindCore, cache.queryStore);
   app.post("/cache/:name/_query", bindCore, cache.queryStore);
   app.post("/cache/:name", json(), bindCore, cache.createDocument);
-  app.get("/cache/:name/:key", bindCore, cache.getDocument);
+  app.get("/cache/:name/:key", bindCore, legacyGet, cache.getDocument);
   app.put("/cache/:name/:key", json(), bindCore, cache.updateDocument);
   app.delete("/cache/:name/:key", bindCore, cache.deleteDocument);
 

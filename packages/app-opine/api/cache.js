@@ -25,8 +25,8 @@ export const createDocument = ({ params, body, cache }, res) =>
   fork(res, 201, cache.createDoc(params.name, body.key, body.value, body.ttl));
 
 // GET /cache/:name/:key
-export const getDocument = ({ params, cache }, res) =>
-  fork(res, 200, cache.getDoc(params.name, params.key));
+export const getDocument = ({ params, isLegacyGetEnabled, cache }, res) =>
+  fork(res, 200, cache.getDoc(params.name, params.key, isLegacyGetEnabled));
 
 // PUT /cache/:name/:key
 export const updateDocument = ({ cache, params, body, query }, res) =>
