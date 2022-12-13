@@ -21,8 +21,8 @@ export const createDocument = ({ params, body, data }, res) =>
   fork(res, 201, data.createDocument(params.db, body));
 
 // GET /data/:db/:id
-export const getDocument = ({ params, data }, res) =>
-  fork(res, 200, data.getDocument(params.db, params.id));
+export const getDocument = ({ params, isLegacyGetEnabled, data }, res) =>
+  fork(res, 200, data.getDocument(params.db, params.id, isLegacyGetEnabled));
 
 // PUT /data/:db/:id
 export const updateDocument = ({ data, params, body }, res) =>
