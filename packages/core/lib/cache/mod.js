@@ -39,10 +39,13 @@ export default function ({ cache, events }) {
   /**
    * @param {string} store
    * @param {string} key
+   * @param {boolean?} isLegacyGetEnabled
    * @returns {Async}
+   *
+   * TODO: LEGACY_GET: set to false on next major version. Then remove on next major version
    */
-  const getDoc = (store, key) =>
-    doc.get(store, key).runWith({ svc: cache, events });
+  const getDoc = (store, key, isLegacyGetEnabled = true) =>
+    doc.get(store, key).runWith({ svc: cache, events, isLegacyGetEnabled });
 
   /**
    * @param {string} name

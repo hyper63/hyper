@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import { assertEquals } from "../../dev_deps.js";
+import { assert, assertEquals } from "../../dev_deps.js";
 
 import * as doc from "./doc.js";
 
@@ -15,7 +15,6 @@ const mockService = {
 const fork = (m) => () => {
   m.fork(
     (e) => {
-      console.log("ERROR", e.message);
       assertEquals(false, true);
     },
     () => assertEquals(true, true),
@@ -52,6 +51,110 @@ test(
   "get cache doc",
   fork(doc.get("store", "key-1234").runWith({ svc: mockService, events })),
 );
+
+test("get cache doc - legacyGet", async (t) => {
+  await t.step("enabled", async (t) => {
+    await t.step(
+      "should passthrough a legacyGet response",
+      fork(
+        doc.get("foo", "key").map((res) => {
+          assert(res.hello);
+        }).runWith({ svc: mockService, events, isLegacyGetEnabled: true }),
+      ),
+    );
+
+    await t.step(
+      "should map to legacyGet response for backwards compatibility",
+      fork(
+        doc.get("foo", "key").map((res) => {
+          assert(res.hello);
+        }).runWith({
+          svc: {
+            ...mockService,
+            getDoc({ store, key }) {
+              // NOT legacyGet response
+              return Promise.resolve({ ok: true, doc: { hello: "world" } });
+            },
+          },
+          events,
+          isLegacyGetEnabled: true,
+        }),
+      ),
+    );
+
+    await t.step(
+      "should passthrough a hyper error shape",
+      fork(
+        doc.get("foo", "err")
+          .map((res) => {
+            assert(!res.ok);
+          }).runWith({
+            svc: {
+              ...mockService,
+              getDoc({ store, key }) {
+                // NOT legacyGet response
+                return Promise.resolve({ ok: false, msg: "oops" });
+              },
+            },
+            events,
+            isLegacyGetEnabled: true,
+          }),
+      ),
+    );
+  });
+
+  await t.step("disabled", async (t) => {
+    await t.step(
+      "should passthrough a get response",
+      fork(
+        doc.get("foo", "key").map((res) => {
+          assert(res.ok);
+          assert(res.doc.hello);
+        }).runWith({
+          svc: {
+            ...mockService,
+            getDoc({ store, key }) {
+              // NOT legacyGet response
+              return Promise.resolve({ ok: true, doc: { hello: "world" } });
+            },
+          },
+          events,
+          isLegacyGetEnabled: false,
+        }),
+      ),
+    );
+
+    await t.step(
+      "should map to get response for forwards compatibility",
+      fork(
+        doc.get("foo", "key").map((res) => {
+          assert(res.ok);
+          assert(res.doc.hello);
+        }).runWith({ svc: mockService, events, isLegacyGetEnabled: false }),
+      ),
+    );
+
+    await t.step(
+      "should passthrough a hyper error shape",
+      fork(
+        doc.get("foo", "err")
+          .map((res) => {
+            assert(!res.ok);
+          }).runWith({
+            svc: {
+              ...mockService,
+              getDoc({ store, key }) {
+                // NOT legacyGet response
+                return Promise.resolve({ ok: false, msg: "oops" });
+              },
+            },
+            events,
+            isLegacyGetEnabled: false,
+          }),
+      ),
+    );
+  });
+});
 
 test(
   "update cache document",
