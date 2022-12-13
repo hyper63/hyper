@@ -14,15 +14,24 @@ interface HyperRequestParams {
   options?: RequestOptions;
 }
 
+export const HYPER_LEGACY_GET_HEADER = "X-HYPER-LEGACY-GET";
+
 export const hyper = (conn: URL, domain: string) =>
-async (
-  { service, method, resource, body, params, action }: HyperRequest,
-): Promise<HyperRequestParams> => {
+async ({
+  service,
+  method,
+  headers,
+  resource,
+  body,
+  params,
+  action,
+}: HyperRequest): Promise<HyperRequestParams> => {
   const isCloud = /^cloud/.test(conn.protocol);
   const protocol = isCloud ? "https:" : conn.protocol;
 
   let options = {
     headers: new Headers({
+      ...(headers ? Object.fromEntries(headers.entries()) : {}),
       "Content-Type": "application/json",
     }),
     method: method ? method : Method.GET,

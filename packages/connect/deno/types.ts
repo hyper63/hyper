@@ -169,6 +169,7 @@ export interface HyperRequest {
   service: "data" | "cache" | "storage" | "search" | "queue" | "info";
   method: Method;
   resource?: string;
+  headers?: Headers;
   body?: unknown;
   // deno-lint-ignore no-explicit-any
   params?: undefined | Record<string, any>;
