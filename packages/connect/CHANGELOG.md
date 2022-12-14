@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.3...hyper-connect@v0.6.0) (2022-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **connect:** set legacyGet header to false on cache.get and data.get #531
+
+### Features
+
+* **connect:** set legacyGet header to false on cache.get and data.get [#531](https://github.com/hyper63/hyper/issues/531) ([b9c5bc0](https://github.com/hyper63/hyper/commit/b9c5bc08e1a866e80b988ad0279bb239b4a28de4))
+
 ### [0.5.3](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.2...hyper-connect@v0.5.3) (2022-12-14)
 
 
