@@ -67,16 +67,16 @@ export interface QueryOptions {
   useIndex?: string;
 }
 
-// TODO: exception to the rule of returning a Result shape.
-// TODO: This will change to be just a regular result in a major version
-export type HyperGetResult<Type extends Obj = Obj> = Type | NotOkResult;
+export type HyperGetDocResult<Type extends Obj = Obj> =
+  | (OkResult & { doc: Type })
+  | NotOkResult;
 
 export type HyperDocsResult<Type extends Obj = Obj> =
   | (OkResult & { docs: Type[] })
   | NotOkResult;
 export interface HyperData {
   add: <Type extends Obj = Obj>(doc: Type) => Promise<IdResult>;
-  get: <Type extends Obj = Obj>(id: string) => Promise<HyperGetResult<Type>>;
+  get: <Type extends Obj = Obj>(id: string) => Promise<HyperGetDocResult<Type>>;
   list: <Type extends Obj = Obj>(
     options?: ListOptions,
   ) => Promise<HyperDocsResult<Type>>;
@@ -100,7 +100,9 @@ export interface HyperCache {
     value: Type,
     ttl?: string,
   ) => Promise<Result>;
-  get: <Type extends Obj = Obj>(key: string) => Promise<HyperGetResult<Type>>;
+  get: <Type extends Obj = Obj>(
+    key: string,
+  ) => Promise<HyperGetDocResult<Type>>;
   remove: (key: string) => Promise<Result>;
   set: <Type extends Obj = Obj>(
     key: string,
@@ -123,7 +125,9 @@ export type HyperSearchLoadResult<Type extends Obj = Obj> =
 export interface HyperSearch {
   add: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
   remove: (key: string) => Promise<Result>;
-  get: <Type extends Obj = Obj>(key: string) => Promise<HyperGetResult<Type>>;
+  get: <Type extends Obj = Obj>(
+    key: string,
+  ) => Promise<(OkResult & { key: string; doc: Type }) | NotOkResult>;
   update: <Type extends Obj = Obj>(key: string, doc: Type) => Promise<Result>;
   query: <Type extends Obj = Obj>(
     query: string,

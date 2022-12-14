@@ -20,7 +20,13 @@ export const get = (key: string) => (h: HyperRequestFunction) => {
     service,
     method: Method.GET,
     headers: new Headers({
-      [HYPER_LEGACY_GET_HEADER]: "true",
+      /**
+       * Once the legacy flag is removed hyper,
+       * this will effectively do nothing
+       *
+       * TODO: remove when legacy flag is removed from hyper
+       */
+      [HYPER_LEGACY_GET_HEADER]: "false",
     }),
     resource: key,
   });
