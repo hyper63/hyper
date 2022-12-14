@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.3](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.2...hyper-connect@v0.5.3) (2022-12-14)
+
+
+### Features
+
+* **app-opine:** add legacyGet header support and refine tests [#531](https://github.com/hyper63/hyper/issues/531) ([e1d39d7](https://github.com/hyper63/hyper/commit/e1d39d70403e01659a096dfb88b70a7f22559762))
+* **connect:** allow passing headers to set on request and add test coverage ([4843e27](https://github.com/hyper63/hyper/commit/4843e275951b40d8d8b841907fc4bc7d4246154e))
+* **core:** add legacyGet flag and BL [#531](https://github.com/hyper63/hyper/issues/531) ([5f4ea69](https://github.com/hyper63/hyper/commit/5f4ea69cf0f0a3bdf089c91f545620f4c605f92a))
+
+
+### Bug Fixes
+
+* **connect:** set legacyGet header to true on cache.get and data.get [#531](https://github.com/hyper63/hyper/issues/531) ([31a8615](https://github.com/hyper63/hyper/commit/31a8615f577d1291fb22468cab824e8390877b88))
+* **core:** remove console.log ([4d21b7c](https://github.com/hyper63/hyper/commit/4d21b7c5ce06d1c6ec9dfacd10fe419a5a0c13f9))
+
 ### [0.5.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.1...hyper-connect@v0.5.2) (2022-10-11)
 
 
