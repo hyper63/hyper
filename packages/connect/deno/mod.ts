@@ -33,11 +33,7 @@ export * from "./types.ts";
 
 export { createHyperVerify } from "./utils/hyper-verify.ts";
 
-export function connect(
-  CONNECTION_STRING: string,
-  // deno-lint-ignore no-inferrable-types
-  domain: string = "default",
-): Hyper {
+export function connect(CONNECTION_STRING: string, domain = "default"): Hyper {
   const config = new URL(CONNECTION_STRING);
 
   const h = async (hyperRequest: HyperRequest) => {
@@ -63,8 +59,6 @@ export function connect(
       )
       .then((r) => (response.ok ? r : assoc("status", response.status, r)))
       .then((r) => (response.status >= 500 ? Promise.reject(r) : r));
-
-  //const log = (x: any) => (console.log(x), x);
 
   return {
     data: {
