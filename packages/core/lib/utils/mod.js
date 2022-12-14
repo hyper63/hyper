@@ -108,7 +108,6 @@ export const legacyGet = (service) => (data) =>
     if (isLegacyGetEnabled) {
       // Can use this to monitor usage of legacy
       console.warn(`LEGACY_GET: ${service}`);
-      console.log(data);
       /**
        * If the adapter returned a legacy get shape, just return it.
        * Otherwise, extract the doc from the response to create the legacy get shape.
