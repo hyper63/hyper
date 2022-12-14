@@ -4,6 +4,7 @@ import {
   HyperRequestFunction,
   Method,
 } from "../types.ts";
+import { HYPER_LEGACY_GET_HEADER } from "../utils/hyper-request.ts";
 
 const service = "cache" as const;
 
@@ -14,8 +15,16 @@ export const add =
   (key: string, value: unknown, ttl?: string) => (h: HyperRequestFunction) =>
     h({ service, method: Method.POST, body: { key, value, ttl } });
 
-export const get = (key: string) => (h: HyperRequestFunction) =>
-  h({ service, method: Method.GET, resource: key });
+export const get = (key: string) => (h: HyperRequestFunction) => {
+  return h({
+    service,
+    method: Method.GET,
+    headers: new Headers({
+      [HYPER_LEGACY_GET_HEADER]: "true",
+    }),
+    resource: key,
+  });
+};
 
 export const remove = (key: string) => (h: HyperRequestFunction) =>
   h({ service, method: Method.DELETE, resource: key });
@@ -23,12 +32,12 @@ export const remove = (key: string) => (h: HyperRequestFunction) =>
 export const set =
   (key: string, value: unknown, ttl?: string) => (h: HyperRequestFunction) =>
     h(
-      [{ service, method: Method.PUT, resource: key, body: value }]
-        .map(includeTTL(ttl))[0],
+      [{ service, method: Method.PUT, resource: key, body: value }].map(
+        includeTTL(ttl),
+      )[0],
     );
 
-// deno-lint-ignore no-inferrable-types
-export const query = (pattern: string = "*") => (h: HyperRequestFunction) =>
+export const query = (pattern = "*") => (h: HyperRequestFunction) =>
   h({
     service,
     method: Method.POST,

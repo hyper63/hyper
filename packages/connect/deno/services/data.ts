@@ -7,13 +7,22 @@ import {
   Method,
   QueryOptions,
 } from "../types.ts";
+import { HYPER_LEGACY_GET_HEADER } from "../utils/hyper-request.ts";
 
 const service = "data" as const;
 
 export const add = (body: unknown) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.POST, body });
-export const get = (id: string) => (hyper: HyperRequestFunction) =>
-  hyper({ service, method: Method.GET, resource: id });
+export const get = (id: string) => (hyper: HyperRequestFunction) => {
+  return hyper({
+    service,
+    method: Method.GET,
+    headers: new Headers({
+      [HYPER_LEGACY_GET_HEADER]: "true",
+    }),
+    resource: id,
+  });
+};
 export const list =
   (options: ListOptions = {}) => (hyper: HyperRequestFunction) =>
     hyper({ service, method: Method.GET, params: options });

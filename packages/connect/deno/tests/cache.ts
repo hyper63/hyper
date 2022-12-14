@@ -10,6 +10,7 @@ import {
   remove,
   set,
 } from "../services/cache.ts";
+import { HYPER_LEGACY_GET_HEADER } from "../utils/hyper-request.ts";
 
 const test = Deno.test;
 
@@ -37,8 +38,10 @@ test("cache.get", async () => {
     assertEquals(h.service, "cache");
     assertEquals(h.method, "GET");
     assertEquals(h.resource, "game-1");
+    assertEquals(h.headers?.get(HYPER_LEGACY_GET_HEADER), "true");
     return Promise.resolve(new Request("http://localhost"));
   };
+
   await get("game-1")(mockRequest);
 });
 
