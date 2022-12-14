@@ -38,7 +38,7 @@ test("cache.get", async () => {
     assertEquals(h.service, "cache");
     assertEquals(h.method, "GET");
     assertEquals(h.resource, "game-1");
-    assertEquals(h.headers?.get(HYPER_LEGACY_GET_HEADER), "true");
+    assertEquals(h.headers?.get(HYPER_LEGACY_GET_HEADER), "false");
     return Promise.resolve(new Request("http://localhost"));
   };
 
