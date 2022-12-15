@@ -88,15 +88,14 @@ export const of = ReaderAsync.of;
 
 /**
  * Given the result of a call into a service (data),
- * if legacyGet is enabled, then map the result to
- * the legacyGet shape.
+ * if legacyGet is enabled, then simply return the result
+ * from the adapter
  *
  * Otherwise, map the result to a "hyper shape".
  *
- * NOTE: this isn't full proof, due to conflation of
- * types described in https://github.com/hyper63/hyper/issues/531
- * but it get's us most of the way there, and provides an avenue for adapters
- * to gradually update to a "hyper shape"
+ * NOTE: We will need to update to ports to enforce
+ * a hyper shape from get on adapters, then update those
+ * in tandem with the adapters
  *
  * @param {string} service
  * @returns {AsyncReader}
@@ -108,24 +107,11 @@ export const legacyGet = (service) => (data) =>
     if (isLegacyGetEnabled) {
       // Can use this to monitor usage of legacy
       console.warn(`LEGACY_GET: ${service}`);
-      /**
-       * If the adapter returned a legacy get shape, just return it.
-       * Otherwise, extract the doc from the response to create the legacy get shape.
-       *
-       * This will allows adapters to independently migrate to return a hyper shape,
-       * without breaking legacy for consumers that still want it enabled
-       */
-      return Async.Resolved(data.doc || data);
+      return Async.Resolved(data);
     }
 
     /**
-     * If the adapter returned a hyper shape, just return it. Otherwise, create
-     * the hyper shape.
-     *
-     * This will allow adapters to gradually migrate to return hyper shape,
-     * without breaking "non-legacy" for consumers that want legacy disabled
+     * Create the hyper shape.
      */
-    return Async.Resolved(
-      data.ok && data.doc ? data : { ok: true, doc: data },
-    );
+    return Async.Resolved({ ok: true, doc: data });
   }).chain(lift);

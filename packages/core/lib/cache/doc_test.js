@@ -64,25 +64,6 @@ test("get cache doc - legacyGet", async (t) => {
     );
 
     await t.step(
-      "should map to legacyGet response for backwards compatibility",
-      fork(
-        doc.get("foo", "key").map((res) => {
-          assert(res.hello);
-        }).runWith({
-          svc: {
-            ...mockService,
-            getDoc({ store, key }) {
-              // NOT legacyGet response
-              return Promise.resolve({ ok: true, doc: { hello: "world" } });
-            },
-          },
-          events,
-          isLegacyGetEnabled: true,
-        }),
-      ),
-    );
-
-    await t.step(
       "should passthrough a hyper error shape",
       fork(
         doc.get("foo", "err")
@@ -104,26 +85,6 @@ test("get cache doc - legacyGet", async (t) => {
   });
 
   await t.step("disabled", async (t) => {
-    await t.step(
-      "should passthrough a get response",
-      fork(
-        doc.get("foo", "key").map((res) => {
-          assert(res.ok);
-          assert(res.doc.hello);
-        }).runWith({
-          svc: {
-            ...mockService,
-            getDoc({ store, key }) {
-              // NOT legacyGet response
-              return Promise.resolve({ ok: true, doc: { hello: "world" } });
-            },
-          },
-          events,
-          isLegacyGetEnabled: false,
-        }),
-      ),
-    );
-
     await t.step(
       "should map to get response for forwards compatibility",
       fork(
