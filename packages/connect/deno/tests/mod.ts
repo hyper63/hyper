@@ -11,7 +11,7 @@ test("mod", async (t) => {
         new Response(JSON.stringify({ ok: false }), {
           status: 404,
           headers: { "content-type": "application/json" },
-        })
+        }),
       );
 
     const hyper = connect("http://localhost:6363/test");
@@ -27,7 +27,7 @@ test("mod", async (t) => {
         new Response(JSON.stringify({ ok: true, doc: { _id: "test-1" } }), {
           status: 404,
           headers: { "content-type": "application/json" },
-        })
+        }),
       );
 
     const hyper = connect("http://localhost:6363/test");
