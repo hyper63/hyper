@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.6.0...hyper-connect@v0.6.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* **core:** remove backwards compatibility and passthrough for new get shape [#546](https://github.com/hyper63/hyper/issues/546) ([9b3c97e](https://github.com/hyper63/hyper/commit/9b3c97e86d5febb1fc646a9d01c7481dbdc063bb))
+
 ## [0.6.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.5.3...hyper-connect@v0.6.0) (2022-12-14)
 
 
