@@ -17,7 +17,7 @@ jobs:
       matrix:
         deno-version: [1.x]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Deno ${{ matrix.deno-version }}
         uses: denoland/setup-deno@v1
         with:
@@ -32,12 +32,14 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
         deno-version: [1.x]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Use Deno ${{ matrix.deno-version }}
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - uses: actions/setup-node@v1
+
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: "https://registry.npmjs.org"

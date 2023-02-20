@@ -9,11 +9,11 @@ jobs:
   publish-egg:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.6/eggs.ts
+      - run: deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.10/eggs.ts
       - run: |
           export PATH="/home/runner/.deno/bin:$PATH"
           eggs link ${{ secrets.NESTAPIKEY }}
@@ -22,13 +22,13 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: "17.x"
+          node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
       - run: cd packages/connect && yarn && make test-integration && make clean to-node && npm publish
         env:
