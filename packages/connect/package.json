@@ -23,17 +23,17 @@
     "build": "microbundle --tsconfig tsconfig.ci.jsonc"
   },
   "dependencies": {
-    "@deno/shim-deno": "^0.11.0",
+    "@deno/shim-deno": "^0.13.0",
     "crocks": "^0.12.4",
-    "jose": "^4.11.1",
+    "jose": "^4.12.0",
     "ms": "^2.1.3",
     "ramda": "^0.28.0",
-    "undici": "^5.14.0"
+    "undici": "^5.20.0"
   },
   "devDependencies": {
     "@types/ms": "^0.7.31",
-    "@types/node": "^18.11.14",
-    "@types/ramda": "^0.28.20",
+    "@types/node": "^18.14.0",
+    "@types/ramda": "^0.28.23",
     "microbundle": "^0.15.1"
   }
 }
