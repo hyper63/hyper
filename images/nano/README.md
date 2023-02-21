@@ -129,6 +129,12 @@ Or consume via HTTP
 curl http://localhost:6363/data/test
 ```
 
+> Starting with Node 17, Node has changed how it resolves `localhost`, when
+> using global `fetch` and `fetch` from libraries like `undici`. This may cause
+> requests to `localhost` not to resolve correctly and fail. To get around this,
+> you can use `127.0.0.1` or `0.0.0.0`, in lieu of `localhost`. For more info,
+> See [this issue](https://github.com/nodejs/node/pull/39987)
+
 ## URL Structure Disclaimer
 
 > If you use
