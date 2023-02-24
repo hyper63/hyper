@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-unused-vars
 
-import { assert } from './dev_deps.js';
+import { assert } from './dev_deps.js'
 
-import { search as searchPort } from './mod.js';
+import { search as searchPort } from './mod.js'
 
 Deno.test('port search ok', () => {
   const search = searchPort({
@@ -14,7 +14,7 @@ Deno.test('port search ok', () => {
     removeDoc: ({ index, key }) => Promise.resolve({ ok: true }),
     bulk: ({ index, docs }) => Promise.resolve({ ok: true, results: [] }),
     query: ({ index, q }) => Promise.resolve({ ok: true, matches: [] }),
-  });
+  })
 
   Promise.all([
     search.createIndex({ index: 'foo', mappings: {} }),
@@ -26,9 +26,9 @@ Deno.test('port search ok', () => {
     search.bulk({ index: 'foo', docs: [] }),
     search.query({ index: 'foo', q: { query: 'foo' } }),
   ]).then(() => {
-    assert(true);
+    assert(true)
   }).catch((e) => {
-    console.log(e);
-    assert(false);
-  });
-});
+    console.log(e)
+    assert(false)
+  })
+})

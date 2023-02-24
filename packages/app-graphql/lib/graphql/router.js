@@ -1,10 +1,10 @@
-import { GraphQLHTTP, makeExecutableSchema, R, Router } from '../../deps.js';
+import { GraphQLHTTP, makeExecutableSchema, R, Router } from '../../deps.js'
 
-import { hyper63ServicesContextLens } from '../utils/hyper63-context.lens.js';
+import { hyper63ServicesContextLens } from '../utils/hyper63-context.lens.js'
 
-import { resolvers, typeDefs } from './schema.js';
+import { resolvers, typeDefs } from './schema.js'
 
-const { reduce, set } = R;
+const { reduce, set } = R
 
 function addServicesContexter(services) {
   return (_, prevContext) =>
@@ -12,7 +12,7 @@ function addServicesContexter(services) {
       hyper63ServicesContextLens,
       services,
       prevContext,
-    );
+    )
 }
 
 function addOpineContext({ req, res }, prevContext) {
@@ -20,7 +20,7 @@ function addOpineContext({ req, res }, prevContext) {
     ...prevContext,
     req,
     res,
-  };
+  }
 }
 
 const gqlRouter = ({
@@ -28,9 +28,9 @@ const gqlRouter = ({
   playground = true,
 } = { contexters: [], playground: true }) =>
 (services) => {
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schema = makeExecutableSchema({ typeDefs, resolvers })
 
-  const app = new Router();
+  const app = new Router()
 
   app.use(async (req, res) => {
     // Build graphql context
@@ -38,17 +38,17 @@ const gqlRouter = ({
       async (prevContext, contexter) => contexter({ req, res }, await prevContext),
       {},
       [...contexters, addOpineContext, addServicesContexter(services)],
-    );
+    )
 
     // Mount graphql server and playground
     await GraphQLHTTP({
       schema,
       context: () => context,
       graphiql: playground,
-    })(req, res);
-  });
+    })(req, res)
+  })
 
-  return app;
-};
+  return app
+}
 
-export { gqlRouter };
+export { gqlRouter }

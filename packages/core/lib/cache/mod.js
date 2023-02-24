@@ -1,20 +1,20 @@
-import * as store from './store.js';
-import * as doc from './doc.js';
+import * as store from './store.js'
+import * as doc from './doc.js'
 
 export default function ({ cache, events }) {
-  const index = () => store.index().runWith({ svc: cache, events });
+  const index = () => store.index().runWith({ svc: cache, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const createStore = (name) => store.create(name).runWith({ svc: cache, events });
+  const createStore = (name) => store.create(name).runWith({ svc: cache, events })
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const deleteStore = (name) => store.del(name).runWith({ svc: cache, events });
+  const deleteStore = (name) => store.del(name).runWith({ svc: cache, events })
 
   /**
    * @param {string} store
@@ -24,7 +24,7 @@ export default function ({ cache, events }) {
    * @returns {Async}
    */
   const createDoc = (store, key, value, ttl) =>
-    doc.create(store, key, value, ttl).runWith({ svc: cache, events });
+    doc.create(store, key, value, ttl).runWith({ svc: cache, events })
 
   /**
    * @param {string} store
@@ -33,7 +33,7 @@ export default function ({ cache, events }) {
    * @returns {Async}
    */
   const updateDoc = (store, key, value, ttl) =>
-    doc.update(store, key, value, ttl).runWith({ svc: cache, events });
+    doc.update(store, key, value, ttl).runWith({ svc: cache, events })
 
   /**
    * @param {string} store
@@ -44,21 +44,21 @@ export default function ({ cache, events }) {
    * TODO: LEGACY_GET: set to false on next major version. Then remove on next major version
    */
   const getDoc = (store, key, isLegacyGetEnabled = true) =>
-    doc.get(store, key).runWith({ svc: cache, events, isLegacyGetEnabled });
+    doc.get(store, key).runWith({ svc: cache, events, isLegacyGetEnabled })
 
   /**
    * @param {string} name
    * @param {string} key
    * @returns {Async}
    */
-  const deleteDoc = (store, key) => doc.del(store, key).runWith({ svc: cache, events });
+  const deleteDoc = (store, key) => doc.del(store, key).runWith({ svc: cache, events })
 
   /**
    * @param {string} name
    * @param {string} pattern
    * @returns {Async}
    */
-  const queryStore = (name, pattern) => store.query(name, pattern).runWith({ svc: cache, events });
+  const queryStore = (name, pattern) => store.query(name, pattern).runWith({ svc: cache, events })
 
   return Object.freeze({
     index,
@@ -69,5 +69,5 @@ export default function ({ cache, events }) {
     getDoc,
     deleteDoc,
     queryStore,
-  });
+  })
 }

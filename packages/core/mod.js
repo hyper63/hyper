@@ -1,11 +1,11 @@
-import loadPorts from './ports.js';
-import wrapCore from './lib/mod.js';
-import validateConfig from './utils/config-schema.js';
-import initAdapters from './utils/plugins.js';
-import eventMgr from './utils/event-mgr.js';
-import { exists, join, R } from './deps.js';
+import loadPorts from './ports.js'
+import wrapCore from './lib/mod.js'
+import validateConfig from './utils/config-schema.js'
+import initAdapters from './utils/plugins.js'
+import eventMgr from './utils/event-mgr.js'
+import { exists, join, R } from './deps.js'
 
-const { compose, prop, assoc, propOr } = R;
+const { compose, prop, assoc, propOr } = R
 
 /**
  * @returns {function} - listen function
@@ -13,12 +13,12 @@ const { compose, prop, assoc, propOr } = R;
 export default async function main(config) {
   config = config ||
     await getConfig('hyper.config.js') ||
-    await getConfig('hyper63.config.js');
+    await getConfig('hyper63.config.js')
 
-  config = validateConfig(config);
+  config = validateConfig(config)
 
   //load methods can return promises so entire plugin svc returns a promise -tnw
-  const adapters = await initAdapters(prop('adapters', config));
+  const adapters = await initAdapters(prop('adapters', config))
 
   const services = compose(
     // add eventMgr to services
@@ -26,19 +26,19 @@ export default async function main(config) {
     assoc('middleware', propOr([], 'middleware', config)),
     assoc('events', eventMgr()),
     loadPorts,
-  )(adapters);
+  )(adapters)
 
-  const app = config.app(services);
+  const app = config.app(services)
   // return app
-  return app;
+  return app
 }
 
 async function getConfig(name) {
-  const path = join(Deno.cwd(), name);
+  const path = join(Deno.cwd(), name)
   if (!(await exists(path))) {
-    return;
+    return
   }
 
-  const config = (await import(path)).default;
-  return config;
+  const config = (await import(path)).default
+  return config
 }

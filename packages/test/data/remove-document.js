@@ -1,15 +1,15 @@
-import { $fetch } from '../lib/utils.js';
-import { assertEquals } from 'asserts';
-import { prop } from 'ramda';
+import { $fetch } from '../lib/utils.js'
+import { assertEquals } from 'asserts'
+import { prop } from 'ramda'
 
-const test = Deno.test;
+const test = Deno.test
 
 export default function (data) {
-  const createDocument = (doc) => $fetch(() => data.add(doc));
+  const createDocument = (doc) => $fetch(() => data.add(doc))
 
-  const retrieveDocument = (id) => $fetch(() => data.get(id));
+  const retrieveDocument = (id) => $fetch(() => data.get(id))
 
-  const removeDocument = (id) => $fetch(() => data.remove(id));
+  const removeDocument = (id) => $fetch(() => data.remove(id))
 
   /*
   test("DELETE /data/:store/:id - delete document when db does not exist", () =>
@@ -30,5 +30,5 @@ export default function (data) {
       .map(prop('_id'))
       .chain(removeDocument)
       .map((r) => (assertEquals(r.ok, true), r))
-      .toPromise());
+      .toPromise())
 }

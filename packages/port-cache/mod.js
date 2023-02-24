@@ -1,4 +1,4 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -27,7 +27,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 /**
  * @param {function} adapter - implementation detail for this port
@@ -125,19 +125,19 @@ export function cache(adapter) {
           })),
         ),
       ),
-  });
-  const instance = cachePort.parse(adapter);
+  })
+  const instance = cachePort.parse(adapter)
   instance.createStore = cachePort.shape.createStore.validate(
     instance.createStore,
-  );
+  )
   instance.destroyStore = cachePort.shape.destroyStore.validate(
     instance.destroyStore,
-  );
-  instance.createDoc = cachePort.shape.createDoc.validate(instance.createDoc);
-  instance.getDoc = cachePort.shape.getDoc.validate(instance.getDoc);
-  instance.updateDoc = cachePort.shape.updateDoc.validate(instance.updateDoc);
-  instance.deleteDoc = cachePort.shape.deleteDoc.validate(instance.deleteDoc);
-  instance.listDocs = cachePort.shape.listDocs.validate(instance.listDocs);
+  )
+  instance.createDoc = cachePort.shape.createDoc.validate(instance.createDoc)
+  instance.getDoc = cachePort.shape.getDoc.validate(instance.getDoc)
+  instance.updateDoc = cachePort.shape.updateDoc.validate(instance.updateDoc)
+  instance.deleteDoc = cachePort.shape.deleteDoc.validate(instance.deleteDoc)
+  instance.listDocs = cachePort.shape.listDocs.validate(instance.listDocs)
 
-  return instance;
+  return instance
 }

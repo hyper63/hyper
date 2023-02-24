@@ -1,6 +1,6 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
-const SortEnum = z.enum(['ASC', 'DESC']);
+const SortEnum = z.enum(['ASC', 'DESC'])
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -29,7 +29,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 /**
  * @param {function} adapter - implementation detail for this port
@@ -141,37 +141,37 @@ export function data(adapter) {
           }),
         ),
       )),
-  });
-  const instance = Port.parse(adapter);
+  })
+  const instance = Port.parse(adapter)
   instance.createDatabase = Port.shape.createDatabase.validate(
     instance.createDatabase,
-  );
+  )
   instance.removeDatabase = Port.shape.removeDatabase.validate(
     instance.removeDatabase,
-  );
+  )
   instance.createDocument = Port.shape.createDocument.validate(
     instance.createDocument,
-  );
+  )
   instance.retrieveDocument = Port.shape.retrieveDocument.validate(
     instance.retrieveDocument,
-  );
+  )
   // instance.updateDocument = Port.shape.updateDocument.validate(instance.updateDocument)
-  instance.updateDocument = adapter.updateDocument;
+  instance.updateDocument = adapter.updateDocument
   instance.removeDocument = Port.shape.removeDocument.validate(
     instance.removeDocument,
-  );
+  )
   instance.listDocuments = Port.shape.listDocuments.validate(
     instance.listDocuments,
-  );
+  )
   instance.queryDocuments = Port.shape.queryDocuments.validate(
     instance.queryDocuments,
-  );
+  )
   instance.indexDocuments = Port.shape.indexDocuments.validate(
     instance.indexDocuments,
-  );
+  )
   instance.bulkDocuments = Port.shape.bulkDocuments.validate(
     instance.bulkDocuments,
-  );
+  )
 
-  return instance;
+  return instance
 }

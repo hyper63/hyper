@@ -1,4 +1,4 @@
-import { gql } from '../../../deps.js';
+import { gql } from '../../../deps.js'
 
 const typeDefs = gql`
   """
@@ -8,13 +8,13 @@ const typeDefs = gql`
     name: String!
     ports: PerPortInfo!
   }
-`;
+`
 
 const resolvers = {
   RootInfo: {
     name: () => 'hyper',
     ports: () => ({}),
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

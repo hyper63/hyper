@@ -1,16 +1,16 @@
-import { $, $fetch } from '../lib/utils.js';
-import { assert } from 'asserts';
+import { $, $fetch } from '../lib/utils.js'
+import { assert } from 'asserts'
 
-const test = Deno.test;
+const test = Deno.test
 const doAssert = (prop) => (obj) => {
-  assert(obj[prop]);
-  return obj;
-};
+  assert(obj[prop])
+  return obj
+}
 
 // const log = (_) => (console.log(_), _);
-const map = (fn, items) => items.map(fn);
-const compose = (f, g) => (v) => f(g(v));
-const prop = (key) => (obj) => obj[key];
+const map = (fn, items) => items.map(fn)
+const compose = (f, g) => (v) => f(g(v))
+const prop = (key) => (obj) => obj[key]
 
 const movies = [{
   id: 'movie-1',
@@ -40,11 +40,11 @@ const movies = [{
   id: 'movie-7',
   type: 'movie',
   title: 'Batman',
-}];
+}]
 
 export default function (search) {
   // add 5 searchable docs
-  const setup = () => $fetch(() => search.load(movies));
+  const setup = () => $fetch(() => search.load(movies))
 
   const cleanUp = () =>
     $.all(map(
@@ -53,7 +53,7 @@ export default function (search) {
         prop('id'),
       ),
       movies,
-    ));
+    ))
 
   // search based on content
   test('POST /search/:index/_query - find movie successfully using fields and filter', () =>
@@ -69,7 +69,7 @@ export default function (search) {
       //.map(log)
       .map(doAssert('ok'))
       .chain(cleanUp)
-      .toPromise());
+      .toPromise())
 
   test('POST /search/:index/_query - find movie successfully filter', () =>
     setup()
@@ -77,7 +77,7 @@ export default function (search) {
       //.map(log)
       .map(doAssert('ok'))
       .chain(cleanUp)
-      .toPromise());
+      .toPromise())
 
   test('POST /search/:index/_query - find movie successfully', () =>
     setup()
@@ -85,5 +85,5 @@ export default function (search) {
       //.map(log)
       .map(doAssert('ok'))
       .chain(cleanUp)
-      .toPromise());
+      .toPromise())
 }

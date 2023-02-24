@@ -1,4 +1,4 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -27,7 +27,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 export function search(adapter) {
   const Port = z.object({
@@ -107,18 +107,18 @@ export function search(adapter) {
           }),
         ),
       )),
-  });
+  })
 
-  const instance = Port.parse(adapter);
+  const instance = Port.parse(adapter)
 
-  instance.createIndex = Port.shape.createIndex.validate(instance.createIndex);
-  instance.deleteIndex = Port.shape.deleteIndex.validate(instance.deleteIndex);
-  instance.indexDoc = Port.shape.indexDoc.validate(instance.indexDoc);
-  instance.getDoc = Port.shape.getDoc.validate(instance.getDoc);
-  instance.updateDoc = Port.shape.updateDoc.validate(instance.updateDoc);
-  instance.removeDoc = Port.shape.removeDoc.validate(instance.removeDoc);
+  instance.createIndex = Port.shape.createIndex.validate(instance.createIndex)
+  instance.deleteIndex = Port.shape.deleteIndex.validate(instance.deleteIndex)
+  instance.indexDoc = Port.shape.indexDoc.validate(instance.indexDoc)
+  instance.getDoc = Port.shape.getDoc.validate(instance.getDoc)
+  instance.updateDoc = Port.shape.updateDoc.validate(instance.updateDoc)
+  instance.removeDoc = Port.shape.removeDoc.validate(instance.removeDoc)
 
-  instance.query = Port.shape.query.validate(instance.query);
+  instance.query = Port.shape.query.validate(instance.query)
 
-  return instance;
+  return instance
 }

@@ -1,4 +1,4 @@
-import { R } from '../deps.js';
+import { R } from '../deps.js'
 
 const {
   unapply,
@@ -11,14 +11,14 @@ const {
   pluck,
   pipeWith,
   reverse,
-} = R;
+} = R
 
 /**
  * @param  {...() => Promise<any>} fns - variadic args of functions
  * @returns a pipeP function that can be used to compose Promise returning functions,
  * similar to calling .then or .chain
  */
-const pipeP = unapply(pipeWith((fn, p) => Promise.resolve(p).then(fn)));
+const pipeP = unapply(pipeWith((fn, p) => Promise.resolve(p).then(fn)))
 
 /**
  * Given a list of plugins, compose the plugin.load()
@@ -27,7 +27,7 @@ const pipeP = unapply(pipeWith((fn, p) => Promise.resolve(p).then(fn)));
  * @param {[]} plugins - a list of plugins
  */
 async function loadAdapterConfig(plugins = []) {
-  return await pipeP(...filter(is(Function), pluck('load', plugins)))({});
+  return await pipeP(...filter(is(Function), pluck('load', plugins)))({})
 }
 
 /**
@@ -59,13 +59,13 @@ function linkPlugins(plugins, adapterConfig) {
     ),
     map((plugin) => plugin.link.bind(plugin)),
     filter((plugin) => is(Function, plugin.link)),
-  )(plugins);
+  )(plugins)
 }
 
 async function initAdapter(portAdapter) {
-  const { plugins } = portAdapter;
-  const env = await loadAdapterConfig(plugins || []);
-  return linkPlugins(plugins, env);
+  const { plugins } = portAdapter
+  const env = await loadAdapterConfig(plugins || [])
+  return linkPlugins(plugins, env)
 }
 
 /**
@@ -79,6 +79,6 @@ export default async function initAdapters(adapters) {
     map(async (adapterNode) => ({
       [adapterNode.port]: await initAdapter(adapterNode),
     }), adapters),
-  );
-  return mergeAll(svcs);
+  )
+  return mergeAll(svcs)
 }

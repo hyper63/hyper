@@ -1,6 +1,6 @@
 // deno-lint-ignore-file ban-ts-comment
-import { crocks, hmac, ms, R } from '../deps.deno.ts';
-import { Result } from '../types.ts';
+import { crocks, hmac, ms, R } from '../deps.deno.ts'
+import { Result } from '../types.ts'
 const {
   assoc,
   compose,
@@ -11,22 +11,22 @@ const {
   split,
   path,
   identity,
-} = R;
-const { of, Left, Right } = crocks.Either;
+} = R
+const { of, Left, Right } = crocks.Either
 
 interface Parsed {
-  time: number;
-  sig: string;
+  time: number
+  sig: string
 }
 
 interface Context {
   input: {
-    signature: string | Parsed;
-    payload: Record<string, unknown>;
-  };
-  secret: string;
-  ttl: string;
-  computed?: string;
+    signature: string | Parsed
+    payload: Record<string, unknown>
+  }
+  secret: string
+  ttl: string
+  computed?: string
 }
 
 const splitHyperSignature = over(
@@ -41,7 +41,7 @@ const splitHyperSignature = over(
     }),
     split(','),
   ),
-);
+)
 
 const createHmacSignature = (ctx: Context) => {
   try {
@@ -57,19 +57,19 @@ const createHmacSignature = (ctx: Context) => {
         ),
         ctx,
       ),
-    );
+    )
   } catch (_e) {
     return Left({
       ok: false,
       msg: 'could not create signature for verification',
-    });
+    })
   }
-};
+}
 
 const compareSignatures = (ctx: Context) =>
   ctx.computed === (ctx.input.signature as Parsed).sig
     ? Right(assoc('authorized', true, ctx))
-    : Left({ ok: false, status: 401, message: 'Unauthorized' });
+    : Left({ ok: false, status: 401, message: 'Unauthorized' })
 
 const verifyTimeGap = (delay: string) =>
   ifElse(
@@ -88,9 +88,9 @@ const verifyTimeGap = (delay: string) =>
         msg: 'Timestamp not within acceptable range',
       }),
     Right,
-  );
+  )
 
-const handleSuccess = () => ({ ok: true });
+const handleSuccess = () => ({ ok: true })
 
 /**
  * Verify a job received from a hyper queue.
@@ -110,6 +110,6 @@ export function createHyperVerify(secret: string, ttl?: string) {
       .chain(createHmacSignature)
       .chain(compareSignatures)
       .chain(verifyTimeGap(ttl as string))
-      .either(identity, handleSuccess);
-  };
+      .either(identity, handleSuccess)
+  }
 }

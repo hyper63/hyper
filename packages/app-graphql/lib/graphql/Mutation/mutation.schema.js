@@ -1,4 +1,4 @@
-import { gql } from '../../../deps.js';
+import { gql } from '../../../deps.js'
 
 /**
  * Mutations are recommended to always be top lvl, while queries
@@ -9,8 +9,8 @@ import { gql } from '../../../deps.js';
 
 const typeDefs = gql`
   type Mutation
-`;
+`
 
-const resolvers = {};
+const resolvers = {}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

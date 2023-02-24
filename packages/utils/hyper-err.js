@@ -1,4 +1,4 @@
-import * as R from 'https://cdn.skypack.dev/ramda@0.28.0';
+import * as R from 'https://cdn.skypack.dev/ramda@0.28.0'
 
 const {
   ifElse,
@@ -19,23 +19,23 @@ const {
   anyPass,
   allPass,
   isEmpty,
-} = R;
+} = R
 
-const isDefined = complement(isNil);
-const rejectNil = filter(isDefined);
+const isDefined = complement(isNil)
+const rejectNil = filter(isDefined)
 const isEmptyObject = allPass([
   complement(is(Array)), // not an array
   is(Object),
   isEmpty,
-]);
+])
 const checkIfDefined = (pred, msg) =>
   ifElse(
     isDefined,
     ifElse(pred, identity, () => {
-      throw new Error(msg);
+      throw new Error(msg)
     }),
     identity,
-  );
+  )
 
 export const isHyperErr = allPass([
   propEq('ok', false),
@@ -45,12 +45,12 @@ export const isHyperErr = allPass([
    * or cache.getDoc
    */
   complement(has('_id')),
-]);
+])
 // { ok: false } solely
 export const isBaseHyperErr = allPass([
   isHyperErr,
   (err) => Object.keys(err).length === 1,
-]);
+])
 
 /**
  * Constructs a hyper-esque error
@@ -92,9 +92,9 @@ export function HyperErr(argsOrMsg) {
       [T, () => {
         throw new Error(
           'HyperErr args must be a string or an object with msg and/or status',
-        );
+        )
       }],
     ]),
     defaultTo({}),
-  )(argsOrMsg);
+  )(argsOrMsg)
 }

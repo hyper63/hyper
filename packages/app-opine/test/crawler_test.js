@@ -1,10 +1,10 @@
 // TODO: Tyler. Probably better way to do this
-import { crocks } from '../deps.js';
-import { assert, assertEquals, superdeno } from '../dev_deps.js';
+import { crocks } from '../deps.js'
+import { assert, assertEquals, superdeno } from '../dev_deps.js'
 
-import build from '../mod.js';
+import build from '../mod.js'
 
-Deno.env.set('DENO_ENV', 'test');
+Deno.env.set('DENO_ENV', 'test')
 
 const app = build({
   crawler: {
@@ -30,44 +30,44 @@ const app = build({
     upsert: ({ app, name }) => crocks.Async.Resolved({ ok: true, bucket: app, name }),
   },
   middleware: [],
-});
+})
 
 Deno.test('crawler', async (t) => {
   await t.step('GET /crawler/:bucket/:name', async (t) => {
     await t.step('GET /crawler/test/spider', async () => {
       const res = await superdeno(app)
         .get('/crawler/test/spider')
-        .send();
+        .send()
 
-      assertEquals(res.body.id, 'test-spider');
-      assertEquals(res.body.bucket, 'test');
-      assertEquals(res.body.name, 'spider');
-    });
-  });
+      assertEquals(res.body.id, 'test-spider')
+      assertEquals(res.body.bucket, 'test')
+      assertEquals(res.body.name, 'spider')
+    })
+  })
 
   await t.step('DELETE /crawler/:bucket/:name', async (t) => {
     await t.step('should pass the correct values', async () => {
       const res = await superdeno(app)
         .delete('/crawler/test/spider')
-        .send();
+        .send()
 
-      assert(res.body.ok);
-      assertEquals(res.body.bucket, 'test');
-      assertEquals(res.body.name, 'spider');
-    });
-  });
+      assert(res.body.ok)
+      assertEquals(res.body.bucket, 'test')
+      assertEquals(res.body.name, 'spider')
+    })
+  })
 
   await t.step('POST /crawler/:bucket/:name/_start', async (t) => {
     await t.step('should pass the correct values', async () => {
       const res = await superdeno(app)
         .post('/crawler/test/spider/_start')
-        .send();
+        .send()
 
-      assert(res.body.ok);
-      assertEquals(res.body.bucket, 'test');
-      assertEquals(res.body.name, 'spider');
-    });
-  });
+      assert(res.body.ok)
+      assertEquals(res.body.bucket, 'test')
+      assertEquals(res.body.name, 'spider')
+    })
+  })
 
   await t.step('PUT /crawler/:bucket/:name', async () => {
     const res = await superdeno(app)
@@ -84,10 +84,10 @@ Deno.test('crawler', async (t) => {
           secret: 'secret',
         },
         notify: 'https://example.com',
-      });
+      })
 
-    assertEquals(res.body.ok, true);
-    assertEquals(res.body.bucket, 'test');
-    assertEquals(res.body.name, 'spider');
-  });
-});
+    assertEquals(res.body.ok, true)
+    assertEquals(res.body.bucket, 'test')
+    assertEquals(res.body.name, 'spider')
+  })
+})

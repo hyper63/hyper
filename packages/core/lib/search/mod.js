@@ -1,4 +1,4 @@
-import { apply, of, triggerEvent } from '../utils/mod.js';
+import { apply, of, triggerEvent } from '../utils/mod.js'
 
 export default function ({ search, events }) {
   return ({
@@ -44,5 +44,5 @@ export default function ({ search, events }) {
         .chain(triggerEvent('SEARCH:QUERY'))
         .runWith({ svc: search, events }),
     // batch or bulk
-  });
+  })
 }

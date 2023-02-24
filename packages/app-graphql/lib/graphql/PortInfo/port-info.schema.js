@@ -1,4 +1,4 @@
-import { gql } from '../../../deps.js';
+import { gql } from '../../../deps.js'
 
 const typeDefs = gql`
   """
@@ -9,7 +9,7 @@ const typeDefs = gql`
     version: String!
     status: String!
   }
-`;
+`
 
 const resolvers = {
   PortInfo: {
@@ -17,6 +17,6 @@ const resolvers = {
     version: () => '1.0', // ? where should this come from
     status: () => 'unstable', // ? where should this come from
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

@@ -84,9 +84,9 @@ deno run --allow-env --allow-read --allow-write=__hyper__ --allow-net --unstable
 If you'd like to programmatically start `hyper nano`, you can import `main.js` and run `main`:
 
 ```js
-import { main } from 'https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/main.js';
+import { main } from 'https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/main.js'
 
-await main();
+await main()
 ```
 
 and then run:
@@ -107,11 +107,11 @@ To consume using [`hyper-connect`](https://github.com/hyper63/hyper/tree/main/pa
 Consume with [`hyper-connect`](https://github.com/hyper63/hyper/tree/main/packages/connect):
 
 ```js
-import { connect } from 'hyper-connect';
+import { connect } from 'hyper-connect'
 
-const hyper = connect('http://localhost:6363/test');
+const hyper = connect('http://localhost:6363/test')
 
-await hyper.data.list();
+await hyper.data.list()
 ```
 
 Or consume via HTTP
@@ -179,7 +179,7 @@ Examples:
 or programmatically:
 
 ```js
-import { main } from 'https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/main.js';
+import { main } from 'https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/main.js'
 
 /**
  * - Listen on 6363
@@ -197,7 +197,7 @@ await main({
   purge: {
     data: true,
   },
-});
+})
 ```
 
 ## Contributing

@@ -20,21 +20,21 @@ export default (env) => ({
   updateDoc,
   deleteDoc,
   listDocs,
-});
+})
 ```
 
 You can create a test for your adapter with the port like so:
 
 ```js
-import { default as test } from 'tape';
-import { default as cache } from '@hyper63/ports-cache';
-import { default as redis } from '@hyper63/adapters-redis';
+import { default as test } from 'tape'
+import { default as cache } from '@hyper63/ports-cache'
+import { default as redis } from '@hyper63/adapters-redis'
 
 test('certify adapter', async (t) => {
-  t.plan(3);
-  const instance = cache(redis, { url: 'redis://redis:6379' });
-  const store = 'default';
-  t.ok((await instance.createStore('default')).ok);
+  t.plan(3)
+  const instance = cache(redis, { url: 'redis://redis:6379' })
+  const store = 'default'
+  t.ok((await instance.createStore('default')).ok)
   t.ok(
     (
       await instance.createDoc({
@@ -43,9 +43,9 @@ test('certify adapter', async (t) => {
         value: { foo: 'bar' },
       })
     ).ok,
-  );
+  )
   t.deepEqual((await instance.getDoc({ store: 'default', key: 'hello' })).doc, {
     foo: 'bar',
-  });
-});
+  })
+})
 ```

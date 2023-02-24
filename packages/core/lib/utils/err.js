@@ -1,6 +1,6 @@
-import { HyperErr, isBaseHyperErr, R, z } from '../../deps.js';
+import { HyperErr, isBaseHyperErr, R, z } from '../../deps.js'
 
-const { ZodError, ZodIssueCode } = z;
+const { ZodError, ZodIssueCode } = z
 
 const {
   compose,
@@ -27,24 +27,24 @@ const {
   apply,
   pluck,
   applySpec,
-} = R;
+} = R
 
-const isDefined = complement(isNil);
+const isDefined = complement(isNil)
 const toPropTuple = (fn) => (propName) => [
   compose(
     isDefined,
     prop(propName),
   ),
   (val) => fn(prop(propName, val)),
-];
+]
 
-const mapErrPropTuple = toPropTuple((err) => mapErr(err));
+const mapErrPropTuple = toPropTuple((err) => mapErr(err))
 
 const condElseUndefined = (tuple) =>
   cond([
     tuple,
     [T, () => undefined],
-  ]);
+  ])
 
 /**
  * Takes a value and attempts to traverse it and produce
@@ -93,9 +93,9 @@ export const mapErr = converge(
     // any non nil
     condElseUndefined([isDefined, (val) => JSON.stringify(val)]),
   ],
-);
+)
 
-const mapStatusPropTuple = toPropTuple((err) => mapStatus(err));
+const mapStatusPropTuple = toPropTuple((err) => mapStatus(err))
 
 /**
  * Takes a value and attempts to traverse it and produce
@@ -135,7 +135,7 @@ export const mapStatus = converge(
     // { statusCode }
     condElseUndefined(mapStatusPropTuple('statusCode')),
   ],
-);
+)
 
 /**
  * Take a ZodError and flatten it's issues into a single depth array
@@ -185,7 +185,7 @@ const gatherZodIssues = (zodErr, status, contextCode) =>
       )(issue.code),
     [],
     zodErr.issues,
-  );
+  )
 
 const zodErrToHyperErr = compose(
   HyperErr,
@@ -213,7 +213,7 @@ const zodErrToHyperErr = compose(
          * For now, just focus on shared props
          * See https://github.com/colinhacks/zod/blob/HEAD/ERROR_HANDLING.md#zodissue
          */
-        const { status, message, path, contextCode } = zodIssue;
+        const { status, message, path, contextCode } = zodIssue
 
         /**
          * all hyper adapter methods receive either a single string or single object
@@ -221,8 +221,8 @@ const zodErrToHyperErr = compose(
          * if object, path[1] will be the object key and path[0] '0'
          * if string, path[0] will be the string and path[1] undefined
          */
-        const _path = path[1] || path[0];
-        const _contextCode = contextCode ? `${contextCode} ` : '';
+        const _path = path[1] || path[0]
+        const _contextCode = contextCode ? `${contextCode} ` : ''
 
         // TODO: is this formatting okay?
         return concat(acc, [
@@ -230,13 +230,13 @@ const zodErrToHyperErr = compose(
             status,
             msg: `${_contextCode}'${_path}': ${message}.`,
           },
-        ]);
+        ])
       },
       [],
       zodIssues,
     ),
   (zodErr) => gatherZodIssues(zodErr, 400, ''),
-);
+)
 
 export const HyperErrFrom = (err) =>
   compose(
@@ -253,4 +253,4 @@ export const HyperErrFrom = (err) =>
       ),
     ),
     defaultTo({ msg: 'An error occurred' }),
-  )(err);
+  )(err)

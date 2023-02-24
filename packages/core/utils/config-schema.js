@@ -1,6 +1,6 @@
-import { z } from '../deps.js';
+import { z } from '../deps.js'
 
-const F = z.function().args(z.any());
+const F = z.function().args(z.any())
 
 const plugin = z.object({
   id: z.string().optional(),
@@ -15,7 +15,7 @@ const plugin = z.object({
         .args(z.any())
         .returns(z.any()),
     ).optional(),
-});
+})
 
 const Schema = z.object({
   app: F,
@@ -32,8 +32,8 @@ const Schema = z.object({
     plugins: plugin.array(),
   }).array(),
   middleware: F.array().optional(),
-});
+})
 
 export default function (data) {
-  return Schema.parse(data);
+  return Schema.parse(data)
 }

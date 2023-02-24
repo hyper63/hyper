@@ -1,6 +1,6 @@
-import { gql, R } from '../../../deps.js';
+import { gql, R } from '../../../deps.js'
 
-const { always, compose, identity, ifElse, is, omit, prop } = R;
+const { always, compose, identity, ifElse, is, omit, prop } = R
 
 const typeDefs = gql`
   """
@@ -12,7 +12,7 @@ const typeDefs = gql`
     type: String!
     data: JSON
   }
-`;
+`
 
 const resolvers = {
   CrawlerResult: {
@@ -29,6 +29,6 @@ const resolvers = {
     // Parent is the data
     data: omit(['ok']),
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

@@ -1,4 +1,4 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -27,7 +27,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 const QueueListResponse = z.union([
   // TODO: this needs to follow the hyper response format
@@ -35,34 +35,34 @@ const QueueListResponse = z.union([
   hyperResSchema(z.object({
     queues: z.string().array(),
   })),
-]);
+])
 
 const QueueCreateInput = z.object({
   name: z.string(),
   target: z.string().url(),
   secret: z.string().max(100).optional(),
-});
+})
 
-const QueueResponse = hyperResSchema();
+const QueueResponse = hyperResSchema()
 
 const QueuePostInput = z.object({
   name: z.string(),
   job: z.object({}).passthrough(),
-});
+})
 
 const QueueGetInput = z.object({
   name: z.string(),
   status: z.enum(['READY', 'ERROR']),
-});
+})
 
 const JobsResponse = hyperResSchema(z.object({
   jobs: z.array(z.object({}).passthrough()).optional(),
-}));
+}))
 
 const JobInput = z.object({
   name: z.string(),
   id: z.string(),
-});
+})
 
 const QueuePort = z.object({
   index: z.function()
@@ -86,19 +86,19 @@ const QueuePort = z.object({
   cancel: z.function()
     .args(JobInput)
     .returns(z.promise(QueueResponse)),
-});
+})
 
 export function queue(adapter) {
-  const instance = QueuePort.parse(adapter);
+  const instance = QueuePort.parse(adapter)
 
   // wrap the functions with validators
-  instance.index = QueuePort.shape.index.validate(instance.index);
-  instance.create = QueuePort.shape.create.validate(instance.create);
-  instance.post = QueuePort.shape.post.validate(instance.post);
-  instance.delete = QueuePort.shape.delete.validate(instance.delete);
-  instance.get = QueuePort.shape.get.validate(instance.get);
-  instance.retry = QueuePort.shape.retry.validate(instance.retry);
-  instance.cancel = QueuePort.shape.cancel.validate(instance.cancel);
+  instance.index = QueuePort.shape.index.validate(instance.index)
+  instance.create = QueuePort.shape.create.validate(instance.create)
+  instance.post = QueuePort.shape.post.validate(instance.post)
+  instance.delete = QueuePort.shape.delete.validate(instance.delete)
+  instance.get = QueuePort.shape.get.validate(instance.get)
+  instance.retry = QueuePort.shape.retry.validate(instance.retry)
+  instance.cancel = QueuePort.shape.cancel.validate(instance.cancel)
 
-  return instance;
+  return instance
 }

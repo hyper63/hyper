@@ -1,9 +1,9 @@
-import { assoc, compose, map } from 'ramda';
-import { $fetch } from '../lib/utils.js';
-import { assertEquals } from 'asserts';
+import { assoc, compose, map } from 'ramda'
+import { $fetch } from '../lib/utils.js'
+import { assertEquals } from 'asserts'
 
 //const { Async } = crocks;
-const test = Deno.test;
+const test = Deno.test
 
 const teams = [
   { _id: '3001', type: 'team', name: 'Falcons', region: 'Atlanta' },
@@ -12,10 +12,10 @@ const teams = [
   { _id: '3004', type: 'team', name: 'Bears', region: 'Chicago' },
   { _id: '3005', type: 'team', name: 'Eagles', region: 'Philidelphia' },
   { _id: '3006', type: 'team', name: 'Giants', region: 'New York' },
-];
+]
 
 export default function (data) {
-  const loadTeams = () => $fetch(() => data.bulk(teams));
+  const loadTeams = () => $fetch(() => data.bulk(teams))
 
   const updateTeams = () =>
     $fetch(() =>
@@ -26,16 +26,16 @@ export default function (data) {
         ),
         teams,
       ))
-    );
+    )
 
-  const tearDown = () => $fetch(() => data.bulk(map(assoc('_deleted', true), teams)));
+  const tearDown = () => $fetch(() => data.bulk(map(assoc('_deleted', true), teams)))
 
   test('POST /data/:store/_bulk - insert documents', () =>
     $fetch(() => data.bulk(teams))
       .map((r) => (assertEquals(r.ok, true), r))
       .map((r) => (assertEquals(r.results.length, 6), r))
       .chain(tearDown)
-      .toPromise());
+      .toPromise())
 
   test('POST /data/:store/_bulk - update docs', () =>
     loadTeams()
@@ -44,5 +44,5 @@ export default function (data) {
       .chain(() => $fetch(() => data.query({ type: 'team', active: true })))
       .map((r) => (assertEquals(r.docs.length, 6), r))
       .chain(tearDown)
-      .toPromise());
+      .toPromise())
 }

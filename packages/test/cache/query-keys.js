@@ -1,13 +1,13 @@
-import { $fetch } from '../lib/utils.js';
-import { assertEquals } from 'asserts';
+import { $fetch } from '../lib/utils.js'
+import { assertEquals } from 'asserts'
 
-const test = Deno.test;
+const test = Deno.test
 
 export default function (cache) {
-  const add = (key, value) => $fetch(() => cache.add(key, value));
+  const add = (key, value) => $fetch(() => cache.add(key, value))
   //const set = (key, value) => $fetch(cache.set(key, value)).chain(toJSON);
-  const remove = (key) => $fetch(() => cache.remove(key));
-  const query = (pattern) => $fetch(() => cache.query(pattern));
+  const remove = (key) => $fetch(() => cache.remove(key))
+  const query = (pattern) => $fetch(() => cache.query(pattern))
 
   test('POST /cache/:store/_query? - list all', () =>
     // setup
@@ -25,7 +25,7 @@ export default function (cache) {
       .chain(() => remove('movie-2'))
       .chain(() => remove('movie-3'))
       .chain(() => remove('album-1'))
-      .toPromise());
+      .toPromise())
 
   test('POST /cache/:store/_query?pattern=movie* - list movies', () =>
     // setup
@@ -43,7 +43,7 @@ export default function (cache) {
       .chain(() => remove('movie-2'))
       .chain(() => remove('movie-3'))
       .chain(() => remove('album-1'))
-      .toPromise());
+      .toPromise())
 
   test('POST /cache/:store/_query?pattern=*-movie - keys ends with movies', () =>
     // setup
@@ -61,5 +61,5 @@ export default function (cache) {
       .chain(() => remove('x2-movie'))
       .chain(() => remove('x3-movie'))
       .chain(() => remove('x1-album'))
-      .toPromise());
+      .toPromise())
 }

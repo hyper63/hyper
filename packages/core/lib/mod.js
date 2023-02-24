@@ -1,10 +1,10 @@
-import cacheCore from './cache/mod.js';
-import dataCore from './data/mod.js';
-import storageCore from './storage/mod.js';
-import searchCore from './search/mod.js';
-import hooksCore from './hooks/mod.js';
-import queueCore from './queue/mod.js';
-import crawlerCore from './crawler/mod.js';
+import cacheCore from './cache/mod.js'
+import dataCore from './data/mod.js'
+import storageCore from './storage/mod.js'
+import searchCore from './search/mod.js'
+import hooksCore from './hooks/mod.js'
+import queueCore from './queue/mod.js'
+import crawlerCore from './crawler/mod.js'
 
 /**
  * main core module
@@ -23,5 +23,5 @@ export default function (services) {
     hooks: hooksCore(services),
     events: services.events,
     middleware: services.middleware,
-  });
+  })
 }

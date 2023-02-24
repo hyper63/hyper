@@ -1,4 +1,4 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -27,7 +27,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 const CrawlerDoc = z.object({
   id: z.string().optional(), // unique identifier {app}-{name}
@@ -43,7 +43,7 @@ const CrawlerDoc = z.object({
     aud: z.string().optional(),
   }), // storage endpoint to store generated content
   notify: z.string().url(), // url to notify when job is complete
-});
+})
 
 // TODO: this needs to follow the hyper response format.
 const GetResponse = z.union([
@@ -51,7 +51,7 @@ const GetResponse = z.union([
   hyperResSchema(z.object({
     doc: CrawlerDoc,
   })),
-]);
+])
 
 const Port = z.object({
   get: z.function()
@@ -81,14 +81,14 @@ const Port = z.object({
         hyperResSchema(),
       ),
     ),
-});
+})
 
 export function crawler(adapter) {
-  const instance = Port.parse(adapter);
-  instance.upsert = Port.shape.upsert.validate(instance.upsert);
-  instance.get = Port.shape.get.validate(instance.get);
-  instance.start = Port.shape.start.validate(instance.start);
-  instance.delete = Port.shape.delete.validate(instance.delete);
+  const instance = Port.parse(adapter)
+  instance.upsert = Port.shape.upsert.validate(instance.upsert)
+  instance.get = Port.shape.get.validate(instance.get)
+  instance.start = Port.shape.start.validate(instance.start)
+  instance.delete = Port.shape.delete.validate(instance.delete)
 
-  return instance;
+  return instance
 }

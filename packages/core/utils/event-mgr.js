@@ -1,13 +1,13 @@
-import { crocks, R, z } from '../deps.js';
+import { crocks, R, z } from '../deps.js'
 
-const { Identity } = crocks;
-const { is, append, map } = R;
+const { Identity } = crocks
+const { is, append, map } = R
 
 const fnSpec = z.function()
   .args(z.object({
     type: z.string(),
     payload: z.any(),
-  }));
+  }))
 
 /**
  * @typedef {Object} Action
@@ -15,7 +15,7 @@ const fnSpec = z.function()
  * @property {Object} payload
  */
 export default function () {
-  let fns = Identity([]); // maybe change to Either to handle tryCatch
+  let fns = Identity([]) // maybe change to Either to handle tryCatch
   return Object.freeze({
     /**
      * @param {Function} fn
@@ -23,7 +23,7 @@ export default function () {
     subscribe(fn) {
       if (is(Function, fn)) {
         // append function
-        fns = fns.map(append(fnSpec.validate(fn)));
+        fns = fns.map(append(fnSpec.validate(fn)))
       }
     },
     /**
@@ -33,7 +33,7 @@ export default function () {
       map(
         (fn) => fn(action),
         fns.valueOf(),
-      );
+      )
     },
-  });
+  })
 }

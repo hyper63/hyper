@@ -1,10 +1,10 @@
-import { Colors, hyper } from './deps.js';
-import { create as createHyperDir, DIR } from './dir.js';
-import * as Log from './log.js';
+import { Colors, hyper } from './deps.js'
+import { create as createHyperDir, DIR } from './dir.js'
+import * as Log from './log.js'
 
-import config from './hyper.config.js';
+import config from './hyper.config.js'
 
-const rgb = (code) => (text) => Colors.rgb24(text, code);
+const rgb = (code) => (text) => Colors.rgb24(text, code)
 
 const style = {
   storage: ['🗃', rgb(0x1286F6)],
@@ -12,10 +12,10 @@ const style = {
   data: ['💿', rgb(0x2AB52E)],
   search: ['🔎', rgb(0xFE7621)],
   queue: ['🗂', rgb(0xFC4059)],
-};
+}
 
 export async function create({ domain, type, body = {} }) {
-  const port = Deno.env.get('PORT') || 6363;
+  const port = Deno.env.get('PORT') || 6363
 
   return await fetch(`http://localhost:${port}/${type}/${domain}`, {
     method: 'PUT',
@@ -24,11 +24,11 @@ export async function create({ domain, type, body = {} }) {
     res.ok || res.status === 409
       ? Promise.resolve(await res.json())
       : Promise.reject(await res.json())
-  );
+  )
 }
 
 export async function destroy({ domain, type }) {
-  const port = Deno.env.get('PORT') || 6363;
+  const port = Deno.env.get('PORT') || 6363
 
   return await fetch(`http://localhost:${port}/${type}/${domain}`, {
     method: 'DELETE',
@@ -36,7 +36,7 @@ export async function destroy({ domain, type }) {
     res.ok || res.status === 404 // cast not found to success
       ? Promise.resolve(await res.json())
       : Promise.reject(await res.json())
-  );
+  )
 }
 
 /**
@@ -67,54 +67,54 @@ export async function main(args = {}) {
     services = {},
     experimental = false,
     middleware = [],
-  } = args;
+  } = args
 
-  Log.info(`storing hyper service data in ${DIR} 🗃`);
-  await createHyperDir();
+  Log.info(`storing hyper service data in ${DIR} 🗃`)
+  await createHyperDir()
 
-  Log.info(`starting hyper nano ⚡️`);
+  Log.info(`starting hyper nano ⚡️`)
   const app = await hyper({ ...config, middleware }).then((app) =>
     new Promise((resolve) => setTimeout(() => resolve(app), 1000))
-  );
+  )
 
   const doExperimental = [
     ...Object.values(purge),
     ...Object.values(services),
-  ].reduce((acc, cur) => acc || cur, false);
+  ].reduce((acc, cur) => acc || cur, false)
 
   if (doExperimental) {
     if (!experimental) {
-      Log.error('the --experimental flag must be set');
-      return Deno.exit(1);
+      Log.error('the --experimental flag must be set')
+      return Deno.exit(1)
     }
 
     Log.warn(
       `Using experimental features. These features can change at any time.`,
-    );
+    )
 
     await Promise.all(
       Object.keys(services).map(async (type) => {
         // maybe purge
         if (purge[type]) {
-          await destroy({ domain, type });
+          await destroy({ domain, type })
           Log.info(
             `Purged ${style[type][1](type)} ${style[type][0]} service in ${
               Colors.green(domain)
             } domain ✅`,
-          );
+          )
         }
 
         if (services[type]) {
-          await create({ domain, type });
+          await create({ domain, type })
           Log.info(
             `Created ${style[type][1](type)} ${style[type][0]} service in ${
               Colors.green(domain)
             } domain ⚡️`,
-          );
+          )
         }
       }),
-    );
+    )
   }
 
-  return app;
+  return app
 }

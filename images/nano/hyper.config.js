@@ -1,6 +1,6 @@
-import { app, cache, fs, minisearch, pouchdb, queue } from './deps.js';
+import { app, cache, fs, minisearch, pouchdb, queue } from './deps.js'
 
-import { DIR } from './dir.js';
+import { DIR } from './dir.js'
 
 export default {
   app,
@@ -26,4 +26,4 @@ export default {
       plugins: [queue({ dir: DIR })],
     },
   ],
-};
+}

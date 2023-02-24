@@ -1,12 +1,12 @@
-import { R } from './deps.deno.ts';
+import { R } from './deps.deno.ts'
 
-import * as data from './services/data.ts';
-import * as cache from './services/cache.ts';
-import * as search from './services/search.ts';
-import * as info from './services/info.ts';
-import * as storage from './services/storage.ts';
-import * as queue from './services/queue.ts';
-import { hyper } from './utils/hyper-request.ts';
+import * as data from './services/data.ts'
+import * as cache from './services/cache.ts'
+import * as search from './services/search.ts'
+import * as info from './services/info.ts'
+import * as storage from './services/storage.ts'
+import * as queue from './services/queue.ts'
+import { hyper } from './utils/hyper-request.ts'
 
 import type {
   HyperCache,
@@ -16,32 +16,32 @@ import type {
   HyperRequest,
   HyperSearch,
   HyperStorage,
-} from './types.ts';
+} from './types.ts'
 
-const { assoc, includes, ifElse } = R;
+const { assoc, includes, ifElse } = R
 
 export interface Hyper {
-  data: HyperData;
-  cache: HyperCache;
-  search: HyperSearch;
-  storage: HyperStorage;
-  queue: HyperQueue;
-  info: HyperInfo;
+  data: HyperData
+  cache: HyperCache
+  search: HyperSearch
+  storage: HyperStorage
+  queue: HyperQueue
+  info: HyperInfo
 }
 
-export * from './types.ts';
+export * from './types.ts'
 
-export { createHyperVerify } from './utils/hyper-verify.ts';
+export { createHyperVerify } from './utils/hyper-verify.ts'
 
 export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
-  const config = new URL(CONNECTION_STRING);
+  const config = new URL(CONNECTION_STRING)
 
   const h = async (hyperRequest: HyperRequest) => {
-    const { url, options } = await hyper(config, domain)(hyperRequest);
+    const { url, options } = await hyper(config, domain)(hyperRequest)
     // deno-lint-ignore ban-ts-comment
     // @ts-ignore
-    return new Request(url, options);
-  };
+    return new Request(url, options)
+  }
 
   // deno-lint-ignore no-explicit-any
   const handleResponse: any = (response: Response) =>
@@ -58,7 +58,7 @@ export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
         ),
       )
       .then((r) => (response.ok ? r : assoc('status', response.status, r)))
-      .then((r) => (response.status >= 500 ? Promise.reject(r) : r));
+      .then((r) => (response.status >= 500 ? Promise.reject(r) : r))
 
   return {
     data: {
@@ -230,5 +230,5 @@ export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
           .then(fetch)
           .then(handleResponse),
     },
-  };
+  }
 }

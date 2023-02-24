@@ -1,4 +1,4 @@
-import { gql } from '../../../deps.js';
+import { gql } from '../../../deps.js'
 
 const typeDefs = gql`
   type Query {
@@ -8,7 +8,7 @@ const typeDefs = gql`
     storage (bucket: String!): Storage
     crawler (bucket: String!): Crawler
   }
-`;
+`
 
 const resolvers = {
   Query: {
@@ -18,7 +18,7 @@ const resolvers = {
     data: (_, { db }) => ({ name: db }),
     storage: (_, { bucket }) => {
       // Singular bucket
-      return { name: bucket };
+      return { name: bucket }
 
       // const { storage } = view(hyper63ServicesContextLens, context)
       // // Multiple buckets [{ name: 'foo' }]
@@ -26,6 +26,6 @@ const resolvers = {
     },
     crawler: (_, { bucket }) => ({ name: bucket }),
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

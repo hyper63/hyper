@@ -1,9 +1,9 @@
 // deno-lint-ignore-file no-unused-vars
 
-import { crawler as crawlerPort } from './mod.js';
-import { assert, equal } from './dev_deps.js';
+import { crawler as crawlerPort } from './mod.js'
+import { assert, equal } from './dev_deps.js'
 
-const test = Deno.test;
+const test = Deno.test
 const crawlerJob = {
   app: 'app',
   name: 'name',
@@ -16,7 +16,7 @@ const crawlerJob = {
     sub: 'sub',
   },
   notify: 'https://notify.com',
-};
+}
 
 const adapter = {
   upsert: (o) => Promise.resolve({ ok: true }),
@@ -27,35 +27,35 @@ const adapter = {
     }),
   start: (o) => Promise.resolve({ ok: true }),
   delete: (o) => Promise.resolve({ ok: true }),
-};
+}
 
-const a = crawlerPort(adapter);
+const a = crawlerPort(adapter)
 
 test('create crawler', async () => {
-  const result = await a.upsert(crawlerJob);
-  assert(result.ok);
-});
+  const result = await a.upsert(crawlerJob)
+  assert(result.ok)
+})
 
 test('run crawler', async () => {
   const result = await a.start({
     app: 'app',
     name: 'name',
-  });
-  assert(result.ok);
-});
+  })
+  assert(result.ok)
+})
 
 test('get crawler', async () => {
   const result = await a.get({
     app: 'app',
     name: 'name',
-  });
-  equal(result, crawlerJob);
-});
+  })
+  equal(result, crawlerJob)
+})
 
 test('delete crawler', async () => {
   const result = await a.delete({
     app: 'app',
     name: 'name',
-  });
-  assert(result.ok);
-});
+  })
+  assert(result.ok)
+})

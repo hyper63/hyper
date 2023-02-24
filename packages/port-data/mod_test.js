@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-unused-vars
 
-import { assert } from './dev_deps.js';
+import { assert } from './dev_deps.js'
 
-import { data as dataPort } from './mod.js';
+import { data as dataPort } from './mod.js'
 
 const adapter = dataPort({
   createDatabase: (name) => Promise.resolve({ ok: true }),
@@ -18,7 +18,7 @@ const adapter = dataPort({
   ) => (console.log(query), Promise.resolve({ ok: true, docs: [] })),
   indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
   bulkDocuments: ({ db, docs }) => Promise.resolve({ ok: true, results: [{ ok: true, id: '1' }] }),
-});
+})
 
 Deno.test('data port tests', async () => {
   const results = await Promise.all([
@@ -45,12 +45,12 @@ Deno.test('data port tests', async () => {
   ])
     .then((_) => ({ ok: true }))
     .catch((_) => {
-      console.log(_);
-      return ({ ok: false });
-    });
+      console.log(_)
+      return ({ ok: false })
+    })
 
-  assert(results.ok);
-});
+  assert(results.ok)
+})
 
 Deno.test('data port - only accepts ASC or DESC for queryDocuments sort', async () => {
   const { err: errFromObject } = await adapter.queryDocuments({
@@ -63,9 +63,9 @@ Deno.test('data port - only accepts ASC or DESC for queryDocuments sort', async 
       sort: [{ id: 'FOOOO' }],
       limit: 10,
     },
-  }).catch(() => ({ err: true }));
+  }).catch(() => ({ err: true }))
 
-  assert(errFromObject);
+  assert(errFromObject)
 
   const { err: errFromString } = await adapter.queryDocuments({
     db: 'foo',
@@ -77,7 +77,7 @@ Deno.test('data port - only accepts ASC or DESC for queryDocuments sort', async 
       sort: ['FOOOOO'],
       limit: 10,
     },
-  }).catch(() => ({ err: true }));
+  }).catch(() => ({ err: true }))
 
-  assert(errFromString);
-});
+  assert(errFromString)
+})

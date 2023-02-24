@@ -1,6 +1,6 @@
-import { opine, spider } from './deps.js';
+import { opine, spider } from './deps.js'
 
-const spiderUrl = Deno.env.get('SPIDER_URL');
+const spiderUrl = Deno.env.get('SPIDER_URL')
 
 export default {
   app: opine,
@@ -13,4 +13,4 @@ export default {
       })],
     },
   ],
-};
+}

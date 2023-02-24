@@ -41,43 +41,43 @@ using the provided connection string.
 ### NodeJS (TypeScript)
 
 ```ts
-import { connect } from 'hyper-connect';
+import { connect } from 'hyper-connect'
 
-const hyper = connect(process.env.HYPER as string);
+const hyper = connect(process.env.HYPER as string)
 
-await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
-await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
-await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' })
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' })
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' })
 
-const results = await hyper.data.query({ type: 'game' });
+const results = await hyper.data.query({ type: 'game' })
 ```
 
 ### NodeJS (ESM)
 
 ```js
-import { connect } from 'hyper-connect';
+import { connect } from 'hyper-connect'
 
-const hyper = connect(process.env.HYPER);
+const hyper = connect(process.env.HYPER)
 
-await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
-await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
-await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' })
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' })
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' })
 
-const results = await hyper.data.query({ type: 'game' });
+const results = await hyper.data.query({ type: 'game' })
 ```
 
 ### NodeJS (CJS)
 
 ```js
-const { connect } = require('hyper-connect');
+const { connect } = require('hyper-connect')
 
-const hyper = connect(process.env.HYPER);
+const hyper = connect(process.env.HYPER)
 
-await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
-await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
-await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' })
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' })
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' })
 
-const results = await hyper.data.query({ type: 'game' });
+const results = await hyper.data.query({ type: 'game' })
 ```
 
 ### A Note for NodeJS
@@ -90,10 +90,10 @@ below.
 If you're using `node>=17`, you can use Node's built in `fromWeb` to get a Node stream:
 
 ```js
-import { Readable } from 'node:stream';
+import { Readable } from 'node:stream'
 
-const res = await hyper.storage.download(name);
-const readableNodeStream = Readable.fromWeb(res);
+const res = await hyper.storage.download(name)
+const readableNodeStream = Readable.fromWeb(res)
 ```
 
 Otherwise, you will need to use `v0.4.0` or less of `hyper-connect`. Node `18` will be in LTS soon,
@@ -108,17 +108,17 @@ Standards centric features, like global `fetch` and `WebStreams`.
 ### Deno
 
 ```js
-import { connect } from 'https://x.nest.land/hyper-connect@VERSION/deno/mod.ts';
+import { connect } from 'https://x.nest.land/hyper-connect@VERSION/deno/mod.ts'
 
-const HYPER = Deno.env.get('HYPER'); // connect string: cloud://key:secret@cloud.hyper.io/:app
+const HYPER = Deno.env.get('HYPER') // connect string: cloud://key:secret@cloud.hyper.io/:app
 
-const hyper = connect(HYPER)();
+const hyper = connect(HYPER)()
 
-await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
-await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
-await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' })
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' })
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' })
 
-const results = await hyper.data.query({ type: 'game' });
+const results = await hyper.data.query({ type: 'game' })
 ```
 
 With hyper-connect, you can access all of the hyper services. hyper-connect uses the fetch library
@@ -134,24 +134,24 @@ const doc = {
   type: 'movie',
   title: 'Dune',
   year: '2021',
-};
+}
 
-const result = await hyper.data.add(doc);
-console.log(result); // {ok: true, id: "movie-1"}
+const result = await hyper.data.add(doc)
+console.log(result) // {ok: true, id: "movie-1"}
 ```
 
 ### How to get all the documents of type 'movie'?
 
 ```js
-const result = await hyper.data.query({ type: 'movie' });
-console.log(result); // {ok: true, docs: [...]}
+const result = await hyper.data.query({ type: 'movie' })
+console.log(result) // {ok: true, docs: [...]}
 ```
 
 ### How to add a cache key/value pair to hyper cache?
 
 ```js
-const result = await hyper.cache.add('key', { counter: 1 });
-console.log(result); // {ok: true}
+const result = await hyper.cache.add('key', { counter: 1 })
+console.log(result) // {ok: true}
 ```
 
 ## Documentation

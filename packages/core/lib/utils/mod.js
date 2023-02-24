@@ -1,25 +1,25 @@
-import { crocks, isHyperErr } from '../../deps.js';
-import { HyperErrFrom } from './err.js';
+import { crocks, isHyperErr } from '../../deps.js'
+import { HyperErrFrom } from './err.js'
 
-const { Async, compose, ReaderT, Either, eitherToAsync } = crocks;
+const { Async, compose, ReaderT, Either, eitherToAsync } = crocks
 
-const ReaderAsync = ReaderT(Async);
-const { ask, lift, liftFn } = ReaderAsync;
+const ReaderAsync = ReaderT(Async)
+const { ask, lift, liftFn } = ReaderAsync
 
-const { Left, Right } = Either;
+const { Left, Right } = Either
 
-const doValidate = (pred, msg) => (value) => pred(value) ? Right(value) : Left({ ok: false, msg });
+const doValidate = (pred, msg) => (value) => pred(value) ? Right(value) : Left({ ok: false, msg })
 
-export { liftFn };
+export { liftFn }
 
-export * from './err.js';
+export * from './err.js'
 
 /**
  * takes a predicate function and error message
  * if the predicate function fails then returns an object with an error message
  * if the predicate function passes then the value is passed down the chain
  */
-export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg));
+export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg))
 /**
  * uses the reader monad to get the environment, in this case a service
  * module and invokes a method on that module passing the data from the
@@ -42,47 +42,47 @@ export const apply = (method) => (data) =>
           if (isHyperErr(err)) {
             console.warn(
               `Rejected hyper error returned from operation ${method}. Should this have been Resolved?`,
-            );
+            )
           }
-          console.log(err);
+          console.log(err)
 
           // fuzzy map
-          const hyperErr = HyperErrFrom(err);
-          return Async.Resolved(hyperErr);
+          const hyperErr = HyperErrFrom(err)
+          return Async.Resolved(hyperErr)
         },
         (res) => {
           if (isHyperErr(res)) {
-            console.log(res);
+            console.log(res)
           }
 
-          return Async.Resolved(res);
+          return Async.Resolved(res)
         },
-      );
-  }).chain(lift);
+      )
+  }).chain(lift)
 
 export const triggerEvent = (event) => (data) =>
   ask(({ events }) => {
-    const payload = { date: new Date().toISOString() };
+    const payload = { date: new Date().toISOString() }
     if (isHyperErr(data)) {
-      payload.ok = false;
-      payload.status = data.status;
-      payload.msg = data.msg;
+      payload.ok = false
+      payload.status = data.status
+      payload.msg = data.msg
     }
-    if (data.name) payload.name = data.name;
-    if (data.id) payload.id = data.id;
-    if (data.type) payload.type = data.type;
+    if (data.name) payload.name = data.name
+    if (data.id) payload.id = data.id
+    if (data.type) payload.type = data.type
 
     events.dispatch({
       type: event,
       payload,
-    });
-    return Async.Resolved(data);
-  }).chain(lift);
+    })
+    return Async.Resolved(data)
+  }).chain(lift)
 
 /**
  * constructor for an AsyncReader monad
  */
-export const of = ReaderAsync.of;
+export const of = ReaderAsync.of
 
 /**
  * Given the result of a call into a service (data),
@@ -100,16 +100,16 @@ export const of = ReaderAsync.of;
  */
 export const legacyGet = (service) => (data) =>
   ask(({ isLegacyGetEnabled }) => {
-    if (isHyperErr(data)) return Async.Resolved(data);
+    if (isHyperErr(data)) return Async.Resolved(data)
 
     if (isLegacyGetEnabled) {
       // Can use this to monitor usage of legacy
-      console.warn(`LEGACY_GET: ${service}`);
-      return Async.Resolved(data);
+      console.warn(`LEGACY_GET: ${service}`)
+      return Async.Resolved(data)
     }
 
     /**
      * Create the hyper shape.
      */
-    return Async.Resolved({ ok: true, doc: data });
-  }).chain(lift);
+    return Async.Resolved({ ok: true, doc: data })
+  }).chain(lift)

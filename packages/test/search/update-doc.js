@@ -1,11 +1,11 @@
-import { $fetch, toJSON } from '../lib/utils.js';
-import { assert } from 'asserts';
+import { $fetch, toJSON } from '../lib/utils.js'
+import { assert } from 'asserts'
 
-const test = Deno.test;
+const test = Deno.test
 const doAssert = (prop) => (obj) => {
-  assert(obj[prop]);
-  return obj;
-};
+  assert(obj[prop])
+  return obj
+}
 
 export default function (search) {
   // const setup = () =>
@@ -55,7 +55,7 @@ export default function (search) {
       .chain(toJSON)
       .map(doAssert('ok'))
       //.chain(cleanUp('movie-4'))
-      .toPromise());
+      .toPromise())
 
   /*
     test('PUT /search/:index/:key - index does not exist', () =>

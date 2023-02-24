@@ -1,4 +1,4 @@
-import { gql } from '../../../deps.js';
+import { gql } from '../../../deps.js'
 
 const typeDefs = gql`
   """
@@ -10,7 +10,7 @@ const typeDefs = gql`
     type: String!
     data: JSON
   }
-`;
+`
 
 const resolvers = {
   CacheResult: {
@@ -20,6 +20,6 @@ const resolvers = {
     // Map both doc and docs to data in schema
     data: ({ doc, docs }) => doc || docs,
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

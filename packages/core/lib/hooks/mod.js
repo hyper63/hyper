@@ -1,6 +1,6 @@
-import { crocks } from '../../deps.js';
+import { crocks } from '../../deps.js'
 
-const { Async } = crocks;
+const { Async } = crocks
 
 export default function ({ events, hooks }) {
   events.subscribe((action) => {
@@ -9,12 +9,12 @@ export default function ({ events, hooks }) {
         .fork(
           (err) => console.log('ERROR', err.message),
           () => null,
-        );
+        )
     } else {
-      console.log(`${action.type}: ${JSON.stringify(action.payload)}`);
+      console.log(`${action.type}: ${JSON.stringify(action.payload)}`)
     }
-  });
+  })
   return ({
     status: () => ({ ok: true, msg: 'listening for events ' }),
-  });
+  })
 }

@@ -1,9 +1,9 @@
-import { gql, R, urlJoin } from '../../../deps.js';
+import { gql, R, urlJoin } from '../../../deps.js'
 
-import { STORAGE_PATH } from '../../constants.js';
-import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js';
+import { STORAGE_PATH } from '../../constants.js'
+import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js'
 
-const { view } = R;
+const { view } = R
 
 const typeDefs = gql`
   """
@@ -23,7 +23,7 @@ const typeDefs = gql`
     removeStorageBucket (bucket: String!): StorageResult!
     removeStorageObject (bucket: String!, prefix: String!, name: String!): StorageResult!
   }
-`;
+`
 
 const resolvers = {
   Storage: {
@@ -45,28 +45,28 @@ const resolvers = {
           prefix,
           objectName,
         ),
-      };
+      }
     },
     objects: ({ name }, { prefix }, context) => {
-      const { storage } = view(hyper63ServicesContextLens, context);
-      return storage.listObjects(name, prefix).toPromise();
+      const { storage } = view(hyper63ServicesContextLens, context)
+      return storage.listObjects(name, prefix).toPromise()
     },
   },
   Mutation: {
     makeStorageBucket: (_, { bucket }, context) => {
-      const { storage } = view(hyper63ServicesContextLens, context);
-      return storage.makeBucket(bucket).toPromise();
+      const { storage } = view(hyper63ServicesContextLens, context)
+      return storage.makeBucket(bucket).toPromise()
     },
     removeStorageBucket: (_, { bucket }, context) => {
-      const { storage } = view(hyper63ServicesContextLens, context);
-      return storage.removeBucket(bucket).toPromise();
+      const { storage } = view(hyper63ServicesContextLens, context)
+      return storage.removeBucket(bucket).toPromise()
     },
     removeStorageObject: (_, { bucket, prefix, name: objectName }, context) => {
-      const { storage } = view(hyper63ServicesContextLens, context);
+      const { storage } = view(hyper63ServicesContextLens, context)
       return storage.removeObject(bucket, urlJoin(prefix, objectName))
-        .toPromise();
+        .toPromise()
     },
   },
-};
+}
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs }

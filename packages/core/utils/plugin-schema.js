@@ -1,4 +1,4 @@
-import { z } from '../deps.js';
+import { z } from '../deps.js'
 
 /**
  * @param {object} plugin
@@ -18,11 +18,11 @@ export default function (plugin) {
           .args(z.any())
           .returns(z.any()),
       ),
-  });
+  })
 
-  const instance = schema.parse(plugin);
+  const instance = schema.parse(plugin)
   //instance.load = schema.shape.load.validate(plugin.load);
-  instance.link = schema.shape.link.validate(plugin.link);
+  instance.link = schema.shape.link.validate(plugin.link)
 
-  return instance;
+  return instance
 }

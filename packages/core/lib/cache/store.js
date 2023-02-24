@@ -1,13 +1,13 @@
-import { R } from '../../deps.js';
+import { R } from '../../deps.js'
 
-import { apply, is, of, triggerEvent } from '../utils/mod.js';
+import { apply, is, of, triggerEvent } from '../utils/mod.js'
 
-const { toLower } = R;
+const { toLower } = R
 
-const INVALID_NAME_MSG = 'name is not valid';
-const INVALID_RESULT_MSG = 'result is not valid';
+const INVALID_NAME_MSG = 'name is not valid'
+const INVALID_RESULT_MSG = 'result is not valid'
 
-export const index = () => apply('index')().chain(triggerEvent('CACHE:INDEX'));
+export const index = () => apply('index')().chain(triggerEvent('CACHE:INDEX'))
 
 /**
  * @param {string} name
@@ -19,7 +19,7 @@ export const create = (name) =>
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply('createStore'))
     .chain(triggerEvent('CACHE:CREATE_STORE'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 /**
  * @param {string} name
@@ -30,7 +30,7 @@ export const del = (name) =>
     .chain(is(validName, INVALID_NAME_MSG))
     .chain(apply('destroyStore'))
     .chain(triggerEvent('CACHE:DELETE_STORE'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 /**
  * @param {string} name
@@ -43,7 +43,7 @@ export const query = (name, pattern) =>
     .map((name) => ({ store: name, pattern }))
     .chain(apply('listDocs'))
     .chain(triggerEvent('CACHE:LIST'))
-    .chain(is(validResult, INVALID_RESULT_MSG));
+    .chain(is(validResult, INVALID_RESULT_MSG))
 
 // validators predicate functions
 
@@ -57,7 +57,7 @@ function validName(name) {
   // verify that the name contains URI friendly characters
   // cache names should only start with alphanumeric characters
   // should return a true or false
-  return /^[a-z0-9]+$/.test(name[0]) && /^[a-z0-9-~_]+$/.test(name);
+  return /^[a-z0-9]+$/.test(name[0]) && /^[a-z0-9-~_]+$/.test(name)
 }
 
 /**
@@ -66,5 +66,5 @@ function validName(name) {
  */
 function validResult() {
   // return Left({ ok: false, msg: 'result is invalid'})
-  return true;
+  return true
 }

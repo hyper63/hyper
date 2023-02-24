@@ -1,4 +1,4 @@
-import * as R from 'https://cdn.skypack.dev/ramda@0.28.0';
+import * as R from 'https://cdn.skypack.dev/ramda@0.28.0'
 
 const {
   curry,
@@ -15,7 +15,7 @@ const {
   map,
   reduce,
   T,
-} = R;
+} = R
 
 /**
  * @param {string} a - source key
@@ -27,17 +27,17 @@ const keySwap = curry((a, b, o) => {
     append([
       ifElse(equals(a), always(b), identity)(v[0]),
       v[1],
-    ], acc);
+    ], acc)
 
   return compose(
     fromPairs,
     reduce(_reducer, []),
     toPairs,
-  )(o);
-});
+  )(o)
+})
 
 const handleArrayProp = (a, b) => (k) =>
-  (is(String, k) || is(Number, k) || is(Boolean, k)) ? k : deepSwap(a, b, k);
+  (is(String, k) || is(Number, k) || is(Boolean, k)) ? k : deepSwap(a, b, k)
 
 /**
  * @param {string} - source key
@@ -52,14 +52,14 @@ export const deepSwap = curry(function (a, b, obj) {
       [is(Object), deepSwap(a, b)],
 
       [T, identity],
-    ])(v[1]);
+    ])(v[1])
 
-    return { [v[0]]: v[1], ...acc };
-  };
+    return { [v[0]]: v[1], ...acc }
+  }
 
   return compose(
     reduce(_reducer, {}),
     toPairs,
     keySwap(a, b),
-  )(obj);
-});
+  )(obj)
+})

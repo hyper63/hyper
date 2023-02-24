@@ -1,4 +1,4 @@
-import { z } from './deps.js';
+import { z } from './deps.js'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -27,7 +27,7 @@ const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
       msg: z.string().optional(),
       status: z.number().optional(),
     }),
-  ]);
+  ])
 
 const putObjectUploadSchemaArgs = z.object({
   bucket: z.string(),
@@ -38,7 +38,7 @@ const putObjectUploadSchemaArgs = z.object({
   ),
   // omitting is falsey, so make it optional, but MUST be false if defined
   useSignedUrl: z.literal(false).optional(),
-});
+})
 const putObjectUploadSchema = z.function()
   .args(putObjectUploadSchemaArgs)
   .returns(
@@ -47,7 +47,7 @@ const putObjectUploadSchema = z.function()
         url: z.void(),
       })),
     ),
-  );
+  )
 
 const putObjectSignedUrlSchemaArgs = z.object({
   bucket: z.string(),
@@ -55,7 +55,7 @@ const putObjectSignedUrlSchemaArgs = z.object({
   // MUST NOT be provided alongside useSignedUrl
   stream: z.void(),
   useSignedUrl: z.literal(true),
-});
+})
 const putObjectSignedUrlSchema = z.function()
   .args(putObjectSignedUrlSchemaArgs)
   .returns(
@@ -64,13 +64,13 @@ const putObjectSignedUrlSchema = z.function()
         url: z.string().url(),
       })),
     ),
-  );
+  )
 
 const getObjectSignedUrlSchemaArgs = z.object({
   bucket: z.string(),
   object: z.string(),
   useSignedUrl: z.literal(true),
-});
+})
 const getObjectSignedUrlSchema = z.function()
   .args(getObjectSignedUrlSchemaArgs)
   .returns(
@@ -79,16 +79,16 @@ const getObjectSignedUrlSchema = z.function()
         url: z.string().url(),
       })),
     ),
-  );
+  )
 
 const getObjectDownloadSchemaArgs = z.object({
   bucket: z.string(),
   object: z.string(),
   useSignedUrl: z.literal(false).optional(),
-});
+})
 const getObjectDownloadSchema = z.function()
   .args(getObjectDownloadSchemaArgs)
-  .returns(z.promise(z.any()));
+  .returns(z.promise(z.any()))
 
 /**
  * @param {function} adapter - implementation detail for this port
@@ -142,17 +142,17 @@ export function storage(adapter) {
           })),
         ]),
       )),
-  });
+  })
 
-  const instance = Port.parse(adapter);
+  const instance = Port.parse(adapter)
 
-  instance.makeBucket = Port.shape.makeBucket.validate(instance.makeBucket);
+  instance.makeBucket = Port.shape.makeBucket.validate(instance.makeBucket)
   instance.removeBucket = Port.shape.removeBucket.validate(
     instance.removeBucket,
-  );
-  instance.listBuckets = Port.shape.listBuckets.validate(instance.listBuckets);
+  )
+  instance.listBuckets = Port.shape.listBuckets.validate(instance.listBuckets)
 
-  const originalPutObject = instance.putObject;
+  const originalPutObject = instance.putObject
   instance.putObject = Port.shape.putObject.implement((params) => {
     /**
      * params are already validated against union type
@@ -161,26 +161,26 @@ export function storage(adapter) {
      */
     if (!params.useSignedUrl) {
       // upload request
-      return putObjectUploadSchema.validate(originalPutObject)(params);
+      return putObjectUploadSchema.validate(originalPutObject)(params)
     }
 
     // signed url request
-    return putObjectSignedUrlSchema.validate(originalPutObject)(params);
-  });
+    return putObjectSignedUrlSchema.validate(originalPutObject)(params)
+  })
 
-  const originalGetObject = instance.getObject;
+  const originalGetObject = instance.getObject
   instance.getObject = Port.shape.getObject.implement((params) => {
     if (!params.useSignedUrl) {
-      return getObjectDownloadSchema.validate(originalGetObject)(params);
+      return getObjectDownloadSchema.validate(originalGetObject)(params)
     }
 
-    return getObjectSignedUrlSchema.validate(originalGetObject)(params);
-  });
+    return getObjectSignedUrlSchema.validate(originalGetObject)(params)
+  })
 
   instance.removeObject = Port.shape.removeObject.validate(
     instance.removeObject,
-  );
-  instance.listObjects = Port.shape.listObjects.validate(instance.listObjects);
+  )
+  instance.listObjects = Port.shape.listObjects.validate(instance.listObjects)
 
-  return instance;
+  return instance
 }

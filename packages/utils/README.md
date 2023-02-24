@@ -19,16 +19,16 @@
 ### Usage
 
 ```js
-import { deepSwap } from 'https://x.nest.land/hyper-utils@VERSION/deep-swap.js';
+import { deepSwap } from 'https://x.nest.land/hyper-utils@VERSION/deep-swap.js'
 
 const query = {
   $or: [
     { id: '1' },
     { id: '3', type: 'cards' },
   ],
-};
+}
 
-const newQuery = deepSwap('id', '_id', query);
+const newQuery = deepSwap('id', '_id', query)
 // converts all keys of 'id' to keys of '_id'
 ```
 
@@ -41,9 +41,9 @@ const newQuery = deepSwap('id', '_id', query);
 
 ```ts
 interface HyperErr {
-  ok: false;
-  msg?: string;
-  status?: number;
+  ok: false
+  msg?: string
+  status?: number
 }
 ```
 
@@ -58,29 +58,29 @@ import {
   HyperErr,
   isBaseHyperErr,
   isHyperErr,
-} from 'https://x.nest.land/hyper-utils@VERSION/hyper-err.js';
+} from 'https://x.nest.land/hyper-utils@VERSION/hyper-err.js'
 
-let err = HyperErr(); // { ok: false }
+let err = HyperErr() // { ok: false }
 // or as a constructor which will set the prototype
-err = new HyperErr();
+err = new HyperErr()
 
 // with a string
-err = HyperErr('some msg'); // { ok: false, msg: "some msg" }
+err = HyperErr('some msg') // { ok: false, msg: "some msg" }
 // or with an object
-err = HyperErr({ msg: 'some msg' }); // { ok: false, msg: "some msg" }
+err = HyperErr({ msg: 'some msg' }) // { ok: false, msg: "some msg" }
 
 // with a status
-err = HyperErr({ status: 404 }); // { ok: false, status: 404 }
+err = HyperErr({ status: 404 }) // { ok: false, status: 404 }
 
 // with both msg and status
-err = HyperErr({ msg: 'some msg', status: 404 }); // { ok: false, msg: "some msg", status: 404 }
+err = HyperErr({ msg: 'some msg', status: 404 }) // { ok: false, msg: "some msg", status: 404 }
 
-isHyperErr(HyperErr()); // true
-isHyperErr({ ok: false, msg: 'some msg' }); // true
-isHyperErr({ msg: 'some msg' }); // false because no ok: false
+isHyperErr(HyperErr()) // true
+isHyperErr({ ok: false, msg: 'some msg' }) // true
+isHyperErr({ msg: 'some msg' }) // false because no ok: false
 
-isBaseHyperErr(HyperErr()); // true
-isBaseHyperErr(HyperErr({ msg: 'foo' })); // false because has a msg field
+isBaseHyperErr(HyperErr()) // true
+isBaseHyperErr(HyperErr({ msg: 'foo' })) // false because has a msg field
 ```
 
 ---
