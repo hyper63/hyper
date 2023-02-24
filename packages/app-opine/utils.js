@@ -1,13 +1,13 @@
-import { isHyperErr, R } from "./deps.js";
+import { isHyperErr, R } from './deps.js';
 
 const { pick } = R;
 
-const sanitizeErr = pick(["ok", "status", "msg"]);
+const sanitizeErr = pick(['ok', 'status', 'msg']);
 
 const isProduction = () => {
-  const env = Deno.env.get("DENO_ENV");
+  const env = Deno.env.get('DENO_ENV');
   // Default to production behavior if no DENO_ENV is set
-  return !env || env === "production";
+  return !env || env === 'production';
 };
 
 /**
@@ -17,9 +17,9 @@ const isProduction = () => {
 export const fork = (res, code, m) =>
   m.fork(
     (err) => {
-      console.log("fatal error received from core");
+      console.log('fatal error received from core');
       console.log(err);
-      res.setStatus(500).send(isProduction() ? "Internal Server Error" : err);
+      res.setStatus(500).send(isProduction() ? 'Internal Server Error' : err);
     },
     (result) => {
       let status = code || 200; // fallback to 200
@@ -37,17 +37,17 @@ export const fork = (res, code, m) =>
   );
 
 export const isMultipartFormData = (contentType) => {
-  contentType = contentType || "";
-  return contentType.startsWith("multipart/form-data");
+  contentType = contentType || '';
+  return contentType.startsWith('multipart/form-data');
 };
 
 export const isFile = (path) => {
-  path = path || "/";
-  return path.split("/").pop().indexOf(".") > -1;
+  path = path || '/';
+  return path.split('/').pop().indexOf('.') > -1;
 };
 
 /**
  * Add an empty string to coerce val to
  * a string, then compare to string 'true'
  */
-export const isTrue = (val) => (val + "").trim() === "true";
+export const isTrue = (val) => (val + '').trim() === 'true';

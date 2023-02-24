@@ -1,24 +1,24 @@
-import { Colors, hyper } from "./deps.js";
-import { create as createHyperDir, DIR } from "./dir.js";
-import * as Log from "./log.js";
+import { Colors, hyper } from './deps.js';
+import { create as createHyperDir, DIR } from './dir.js';
+import * as Log from './log.js';
 
-import config from "./hyper.config.js";
+import config from './hyper.config.js';
 
 const rgb = (code) => (text) => Colors.rgb24(text, code);
 
 const style = {
-  storage: ["🗃", rgb(0x1286F6)],
-  cache: ["⭐️", rgb(0xBA46DF)],
-  data: ["💿", rgb(0x2AB52E)],
-  search: ["🔎", rgb(0xFE7621)],
-  queue: ["🗂", rgb(0xFC4059)],
+  storage: ['🗃', rgb(0x1286F6)],
+  cache: ['⭐️', rgb(0xBA46DF)],
+  data: ['💿', rgb(0x2AB52E)],
+  search: ['🔎', rgb(0xFE7621)],
+  queue: ['🗂', rgb(0xFC4059)],
 };
 
 export async function create({ domain, type, body = {} }) {
-  const port = Deno.env.get("PORT") || 6363;
+  const port = Deno.env.get('PORT') || 6363;
 
   return await fetch(`http://localhost:${port}/${type}/${domain}`, {
-    method: "PUT",
+    method: 'PUT',
     body: JSON.stringify(body),
   }).then(async (res) =>
     res.ok || res.status === 409
@@ -28,10 +28,10 @@ export async function create({ domain, type, body = {} }) {
 }
 
 export async function destroy({ domain, type }) {
-  const port = Deno.env.get("PORT") || 6363;
+  const port = Deno.env.get('PORT') || 6363;
 
   return await fetch(`http://localhost:${port}/${type}/${domain}`, {
-    method: "DELETE",
+    method: 'DELETE',
   }).then(async (res) =>
     res.ok || res.status === 404 // cast not found to success
       ? Promise.resolve(await res.json())
@@ -62,7 +62,7 @@ export async function destroy({ domain, type }) {
  */
 export async function main(args = {}) {
   const {
-    domain = "test",
+    domain = 'test',
     purge = {},
     services = {},
     experimental = false,
@@ -84,7 +84,7 @@ export async function main(args = {}) {
 
   if (doExperimental) {
     if (!experimental) {
-      Log.error("the --experimental flag must be set");
+      Log.error('the --experimental flag must be set');
       return Deno.exit(1);
     }
 

@@ -1,4 +1,4 @@
-import { gql } from "../../../deps.js";
+import { gql } from '../../../deps.js';
 
 const typeDefs = gql`
   type Query {

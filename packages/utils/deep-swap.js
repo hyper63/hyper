@@ -1,4 +1,4 @@
-import * as R from "https://cdn.skypack.dev/ramda@0.28.0";
+import * as R from 'https://cdn.skypack.dev/ramda@0.28.0';
 
 const {
   curry,
@@ -36,9 +36,8 @@ const keySwap = curry((a, b, o) => {
   )(o);
 });
 
-const handleArrayProp = (a, b) =>
-  (k) =>
-    (is(String, k) || is(Number, k) || is(Boolean, k)) ? k : deepSwap(a, b, k);
+const handleArrayProp = (a, b) => (k) =>
+  (is(String, k) || is(Number, k) || is(Boolean, k)) ? k : deepSwap(a, b, k);
 
 /**
  * @param {string} - source key

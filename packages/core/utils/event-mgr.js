@@ -1,4 +1,4 @@
-import { crocks, R, z } from "../deps.js";
+import { crocks, R, z } from '../deps.js';
 
 const { Identity } = crocks;
 const { is, append, map } = R;

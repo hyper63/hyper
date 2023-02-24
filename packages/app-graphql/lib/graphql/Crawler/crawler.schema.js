@@ -1,7 +1,7 @@
-import { gql, R } from "../../../deps.js";
+import { gql, R } from '../../../deps.js';
 const { view } = R;
 
-import { hyper63ServicesContextLens } from "../../utils/hyper63-context.lens.js";
+import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js';
 
 export const typeDefs = gql`
   """
@@ -22,7 +22,7 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Crawler: {
-    info: () => ({ port: "Crawler" }),
+    info: () => ({ port: 'Crawler' }),
     name: ({ name }) => name,
     job: ({ name: bucket }, { name }, context) => {
       const { crawler } = view(hyper63ServicesContextLens, context);

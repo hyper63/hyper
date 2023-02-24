@@ -1,11 +1,11 @@
-import { Buffer, crocks, getMimeType } from "../deps.js";
-import { fork, isFile, isMultipartFormData, isTrue } from "../utils.js";
+import { Buffer, crocks, getMimeType } from '../deps.js';
+import { fork, isFile, isMultipartFormData, isTrue } from '../utils.js';
 
 const { Async } = crocks;
 
 // GET /storage
 export const index = (_req, res) =>
-  res.send({ name: "hyper63 Storage", version: "1.0", status: "unstable" });
+  res.send({ name: 'hyper63 Storage', version: '1.0', status: 'unstable' });
 
 // PUT /storage/:name - make bucket
 export const makeBucket = ({ params, storage }, res) =>
@@ -25,14 +25,14 @@ export const removeBucket = ({ params, storage }, res) =>
  * @param {*} res
  * @returns
  */
-export const putObject = (fieldName = "file") => async (req, res) => {
+export const putObject = (fieldName = 'file') => async (req, res) => {
   /**
    * Ensure reader is closed, if defined, to prevent leaks
    * in the case of a tempfile being created
    */
   const cleanup = (_p) =>
     Async.fromPromise(async (res) => {
-      if (reader && typeof reader.close === "function") {
+      if (reader && typeof reader.close === 'function') {
         await reader.close();
       }
 
@@ -44,11 +44,11 @@ export const putObject = (fieldName = "file") => async (req, res) => {
   let reader = undefined;
 
   const bucket = params.name;
-  let object = "";
+  let object = '';
   let useSignedUrl = false;
 
   // Upload
-  if (isMultipartFormData(req.get("content-type"))) {
+  if (isMultipartFormData(req.get('content-type'))) {
     const form = req.form;
     const file = form.files(fieldName)[0];
     reader = file.content
@@ -59,9 +59,7 @@ export const putObject = (fieldName = "file") => async (req, res) => {
     object = file.filename;
 
     // object can be placed in "subdirectories within the bucket"
-    let path = form.values("path")
-      ? form.values("path")[0]
-      : params[0] || undefined; // fallback to url path, if defined, if form data path is not defined
+    let path = form.values('path') ? form.values('path')[0] : params[0] || undefined; // fallback to url path, if defined, if form data path is not defined
 
     if (path) {
       /**
@@ -78,10 +76,10 @@ export const putObject = (fieldName = "file") => async (req, res) => {
        * effectively acting as POST /bucket/foo form-data: (file: actual.jpg)
        */
       if (isFile(path)) {
-        path = path.split("/").slice(0, -1).join("/");
+        path = path.split('/').slice(0, -1).join('/');
       }
 
-      if (path.endsWith("/")) {
+      if (path.endsWith('/')) {
         path = path.slice(0, -1);
       }
 
@@ -124,10 +122,10 @@ export const getObject = ({ params, query, storage }, res) =>
         /**
          * Get mime type and set response
          */
-        const mimeType = getMimeType(params[0].split(".")[1]);
+        const mimeType = getMimeType(params[0].split('.')[1]);
         res.set({
-          "Content-Type": mimeType,
-          "Transfer-Encoding": "chunked",
+          'Content-Type': mimeType,
+          'Transfer-Encoding': 'chunked',
         });
 
         return result;

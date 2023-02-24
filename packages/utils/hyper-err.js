@@ -1,4 +1,4 @@
-import * as R from "https://cdn.skypack.dev/ramda@0.28.0";
+import * as R from 'https://cdn.skypack.dev/ramda@0.28.0';
 
 const {
   ifElse,
@@ -38,13 +38,13 @@ const checkIfDefined = (pred, msg) =>
   );
 
 export const isHyperErr = allPass([
-  propEq("ok", false),
+  propEq('ok', false),
   /**
    * should not have an _id.
    * Otherwise it's a document ie data.retrieveDocument
    * or cache.getDoc
    */
-  complement(has("_id")),
+  complement(has('_id')),
 ]);
 // { ok: false } solely
 export const isBaseHyperErr = allPass([
@@ -70,28 +70,28 @@ export function HyperErr(argsOrMsg) {
     (r) => Object.assign(new.target ? this : {}, r), // enables using like a constructor and instanceof
     ({ ok, msg, status }) => rejectNil({ ok, msg, status }), // pick and filter nil
     evolve({
-      ok: checkIfDefined(is(Boolean), "ok must be a boolean"),
-      msg: checkIfDefined(is(String), "msg must be a string"),
-      status: checkIfDefined(is(Number), "status must be a number"),
+      ok: checkIfDefined(is(Boolean), 'ok must be a boolean'),
+      msg: checkIfDefined(is(String), 'msg must be a string'),
+      status: checkIfDefined(is(Number), 'status must be a number'),
     }),
-    assoc("ok", false),
+    assoc('ok', false),
     cond([
       // string
-      [is(String), assoc("msg", __, {})],
+      [is(String), assoc('msg', __, {})],
       // { msg?, status?, ok?: false }
       [
         anyPass([
           isEmptyObject,
           isBaseHyperErr,
-          has("msg"),
-          has("status"),
+          has('msg'),
+          has('status'),
         ]),
         identity,
       ],
       // Fallthrough to error
       [T, () => {
         throw new Error(
-          "HyperErr args must be a string or an object with msg and/or status",
+          'HyperErr args must be a string or an object with msg and/or status',
         );
       }],
     ]),

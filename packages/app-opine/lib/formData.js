@@ -1,20 +1,20 @@
-import { MultipartReader, R } from "../deps.js";
-import { isMultipartFormData } from "../utils.js";
+import { MultipartReader, R } from '../deps.js';
+import { isMultipartFormData } from '../utils.js';
 
 const { compose, nth, split } = R;
-const TMP_DIR = "/tmp/hyper/uploads";
+const TMP_DIR = '/tmp/hyper/uploads';
 
 const getBoundary = compose(
   nth(1),
-  split("="),
+  split('='),
   nth(1),
-  split(";"),
+  split(';'),
 );
 
 export default async (req, _res, next) => {
   let boundary;
 
-  const contentType = req.get("content-type");
+  const contentType = req.get('content-type');
   if (isMultipartFormData(contentType)) boundary = getBoundary(contentType);
 
   try {

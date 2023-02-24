@@ -1,20 +1,20 @@
-import { superdeno } from "https://deno.land/x/superdeno@4.8.0/mod.ts";
-import { main } from "./main.js";
+import { superdeno } from 'https://deno.land/x/superdeno@4.8.0/mod.ts';
+import { main } from './main.js';
 
 const test = Deno.test;
 
 test({
-  name: "GET /",
+  name: 'GET /',
   async fn() {
     const app = await main({
       middleware: [
-        (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
+        (app) => app.get('/foobar', (_req, res) => res.json({ ok: true })),
       ],
     });
 
     await superdeno(app)
-      .get("/")
-      .expect("Content-Type", /json/)
+      .get('/')
+      .expect('Content-Type', /json/)
       .expect(200);
   },
   sanitizeResources: false,
@@ -22,17 +22,17 @@ test({
 });
 
 test({
-  name: "with middleware: GET /foobar",
+  name: 'with middleware: GET /foobar',
   async fn() {
     const app = await main({
       middleware: [
-        (app) => app.get("/foobar", (_req, res) => res.json({ ok: true })),
+        (app) => app.get('/foobar', (_req, res) => res.json({ ok: true })),
       ],
     });
 
     await superdeno(app)
-      .get("/foobar")
-      .expect("Content-Type", /json/)
+      .get('/foobar')
+      .expect('Content-Type', /json/)
       .expect(200);
   },
   sanitizeResources: false,

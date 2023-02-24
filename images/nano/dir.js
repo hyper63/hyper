@@ -1,10 +1,10 @@
-import { join } from "./deps.js";
+import { join } from './deps.js';
 
-export const DIR = join(".", "__hyper__");
+export const DIR = join('.', '__hyper__');
 
 export async function reload(purge = false) {
   if (purge) {
-    console.log("destroying all hyper services in hyper nano...");
+    console.log('destroying all hyper services in hyper nano...');
     await remove();
   }
   await create();

@@ -1,5 +1,5 @@
-import { HyperRequest, Method } from "../types.ts";
-import { generateToken, R } from "../deps.deno.ts";
+import { HyperRequest, Method } from '../types.ts';
+import { generateToken, R } from '../deps.deno.ts';
 
 const { assoc } = R;
 
@@ -14,7 +14,7 @@ interface HyperRequestParams {
   options?: RequestOptions;
 }
 
-export const HYPER_LEGACY_GET_HEADER = "X-HYPER-LEGACY-GET";
+export const HYPER_LEGACY_GET_HEADER = 'X-HYPER-LEGACY-GET';
 
 export const hyper = (conn: URL, domain: string) =>
 async ({
@@ -27,18 +27,18 @@ async ({
   action,
 }: HyperRequest): Promise<HyperRequestParams> => {
   const isCloud = /^cloud/.test(conn.protocol);
-  const protocol = isCloud ? "https:" : conn.protocol;
+  const protocol = isCloud ? 'https:' : conn.protocol;
 
   let options = {
     headers: new Headers({
       ...(headers ? Object.fromEntries(headers.entries()) : {}),
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     }),
     method: method ? method : Method.GET,
   } as RequestOptions;
 
   if (body) {
-    options = assoc("body", JSON.stringify(body), options) as RequestOptions;
+    options = assoc('body', JSON.stringify(body), options) as RequestOptions;
   }
 
   if (conn.username && conn.password) {
@@ -48,12 +48,12 @@ async ({
       Authorization: `Bearer ${token}`,
     });
   }
-  const pathname = isCloud ? conn.pathname : "";
-  const appdomain = isCloud ? "/" + domain : conn.pathname;
+  const pathname = isCloud ? conn.pathname : '';
+  const appdomain = isCloud ? '/' + domain : conn.pathname;
 
   let url = `${protocol}//${conn.host}${pathname}/${service}${appdomain}`;
 
-  if (service === "info") {
+  if (service === 'info') {
     url = `${protocol}//${conn.host}`;
   }
 

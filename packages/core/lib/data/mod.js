@@ -1,28 +1,25 @@
-import * as db from "./db.js";
-import * as doc from "./doc.js";
+import * as db from './db.js';
+import * as doc from './doc.js';
 
 export default function ({ data, events }) {
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const createDatabase = (name) =>
-    db.create(name).runWith({ svc: data, events });
+  const createDatabase = (name) => db.create(name).runWith({ svc: data, events });
 
   /**
    * @param {string} name
    * @returns {Async}
    */
-  const destroyDatabase = (name) =>
-    db.remove(name).runWith({ svc: data, events });
+  const destroyDatabase = (name) => db.remove(name).runWith({ svc: data, events });
 
   /**
    * @param {string} db
    * @param {Object} doc
    * @returns {Async}
    */
-  const createDocument = (db, document) =>
-    doc.create(db, document).runWith({ svc: data, events });
+  const createDocument = (db, document) => doc.create(db, document).runWith({ svc: data, events });
 
   /**
    * @param {string} db
@@ -49,16 +46,14 @@ export default function ({ data, events }) {
    * @param {string} id
    * @returns {Async}
    */
-  const removeDocument = (db, id) =>
-    doc.remove(db, id).runWith({ svc: data, events });
+  const removeDocument = (db, id) => doc.remove(db, id).runWith({ svc: data, events });
 
   /**
    * @param {string} dbname
    * @param {object} query
    * @returns {Async}
    */
-  const query = (dbname, query) =>
-    db.query(dbname, query).runWith({ svc: data, events });
+  const query = (dbname, query) => db.query(dbname, query).runWith({ svc: data, events });
 
   /**
    * @param {string} dbname
@@ -76,8 +71,7 @@ export default function ({ data, events }) {
   const listDocuments = (dbname, options) =>
     db.list(dbname, options).runWith({ svc: data, events });
 
-  const bulkDocuments = (dbname, docs) =>
-    db.bulk(dbname, docs).runWith({ svc: data, events });
+  const bulkDocuments = (dbname, docs) => db.bulk(dbname, docs).runWith({ svc: data, events });
 
   return Object.freeze({
     createDatabase,

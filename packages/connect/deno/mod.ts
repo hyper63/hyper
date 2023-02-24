@@ -1,12 +1,12 @@
-import { R } from "./deps.deno.ts";
+import { R } from './deps.deno.ts';
 
-import * as data from "./services/data.ts";
-import * as cache from "./services/cache.ts";
-import * as search from "./services/search.ts";
-import * as info from "./services/info.ts";
-import * as storage from "./services/storage.ts";
-import * as queue from "./services/queue.ts";
-import { hyper } from "./utils/hyper-request.ts";
+import * as data from './services/data.ts';
+import * as cache from './services/cache.ts';
+import * as search from './services/search.ts';
+import * as info from './services/info.ts';
+import * as storage from './services/storage.ts';
+import * as queue from './services/queue.ts';
+import { hyper } from './utils/hyper-request.ts';
 
 import type {
   HyperCache,
@@ -16,7 +16,7 @@ import type {
   HyperRequest,
   HyperSearch,
   HyperStorage,
-} from "./types.ts";
+} from './types.ts';
 
 const { assoc, includes, ifElse } = R;
 
@@ -29,11 +29,11 @@ export interface Hyper {
   info: HyperInfo;
 }
 
-export * from "./types.ts";
+export * from './types.ts';
 
-export { createHyperVerify } from "./utils/hyper-verify.ts";
+export { createHyperVerify } from './utils/hyper-verify.ts';
 
-export function connect(CONNECTION_STRING: string, domain = "default"): Hyper {
+export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
   const config = new URL(CONNECTION_STRING);
 
   const h = async (hyperRequest: HyperRequest) => {
@@ -50,14 +50,14 @@ export function connect(CONNECTION_STRING: string, domain = "default"): Hyper {
         ifElse(
           (r: Response) =>
             includes(
-              "application/json",
-              r.headers.get("content-type") as string,
+              'application/json',
+              r.headers.get('content-type') as string,
             ),
           (r: Response) => r.json(),
           (r: Response) => r.text().then((msg: string) => ({ ok: r.ok, msg })),
         ),
       )
-      .then((r) => (response.ok ? r : assoc("status", response.status, r)))
+      .then((r) => (response.ok ? r : assoc('status', response.status, r)))
       .then((r) => (response.status >= 500 ? Promise.reject(r) : r));
 
   return {
@@ -67,8 +67,7 @@ export function connect(CONNECTION_STRING: string, domain = "default"): Hyper {
           .then(data.add(body))
           .then(fetch)
           .then(handleResponse),
-      get: (id) =>
-        Promise.resolve(h).then(data.get(id)).then(fetch).then(handleResponse),
+      get: (id) => Promise.resolve(h).then(data.get(id)).then(fetch).then(handleResponse),
       list: (options) =>
         Promise.resolve(h)
           .then(data.list(options))
@@ -99,8 +98,7 @@ export function connect(CONNECTION_STRING: string, domain = "default"): Hyper {
           .then(data.index(indexName, fields))
           .then(fetch)
           .then(handleResponse),
-      create: () =>
-        Promise.resolve(h).then(data.create()).then(fetch).then(handleResponse),
+      create: () => Promise.resolve(h).then(data.create()).then(fetch).then(handleResponse),
       destroy: (confirm) =>
         Promise.resolve(h)
           .then(data.destroy(confirm))

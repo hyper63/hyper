@@ -1,26 +1,26 @@
 // TODO: Tyler. Probably better way to do this
-import { assertEquals, superdeno } from "../dev_deps.js";
+import { assertEquals, superdeno } from '../dev_deps.js';
 
-import build from "../mod.js";
+import build from '../mod.js';
 
-Deno.env.set("DENO_ENV", "test");
+Deno.env.set('DENO_ENV', 'test');
 
 const app = build({
   middleware: [],
 });
 
-Deno.test("mod", async (t) => {
-  await t.step("GET /", async () => {
+Deno.test('mod', async (t) => {
+  await t.step('GET /', async () => {
     const res = await superdeno(app)
-      .get("/")
+      .get('/')
       .expect(200);
 
-    assertEquals(res.body.name, "hyper");
+    assertEquals(res.body.name, 'hyper');
   });
 
-  await t.step("GET /foobarbaz", async () => {
+  await t.step('GET /foobarbaz', async () => {
     await superdeno(app)
-      .get("/foobarbaz")
+      .get('/foobarbaz')
       .expect(404);
   });
 

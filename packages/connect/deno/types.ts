@@ -1,29 +1,29 @@
 export type SortOptions = typeof SortOptions[keyof typeof SortOptions];
 export const SortOptions = {
-  DESC: "DESC",
-  ASC: "ASC",
+  DESC: 'DESC',
+  ASC: 'ASC',
 } as const;
 
 export type Method = typeof Method[keyof typeof Method];
 export const Method = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
-  PATCH: "PATCH",
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+  PATCH: 'PATCH',
 } as const;
 
 export type Action = typeof Action[keyof typeof Action];
 export const Action = {
-  QUERY: "_query",
-  BULK: "_bulk",
-  INDEX: "_index",
+  QUERY: '_query',
+  BULK: '_bulk',
+  INDEX: '_index',
 } as const;
 
 export type QueueStatus = typeof QueueStatus[keyof typeof QueueStatus];
 export const QueueStatus = {
-  ERROR: "ERROR",
-  READY: "READY",
+  ERROR: 'ERROR',
+  READY: 'READY',
 } as const;
 
 export interface ListOptions {
@@ -52,7 +52,7 @@ export type IdResult = OkIdResult | NotOkResult;
 export type OkUrlResult = OkResult & { url: string };
 
 export interface StorageSignedUrlOptions {
-  type: "upload" | "download";
+  type: 'upload' | 'download';
 }
 
 export interface SearchQueryOptions {
@@ -170,7 +170,7 @@ export interface HyperQueue {
 }
 
 export interface HyperRequest {
-  service: "data" | "cache" | "storage" | "search" | "queue" | "info";
+  service: 'data' | 'cache' | 'storage' | 'search' | 'queue' | 'info';
   method: Method;
   resource?: string;
   headers?: Headers;

@@ -1,8 +1,8 @@
-import { fork } from "../utils.js";
+import { fork } from '../utils.js';
 
 // GET /search
 export const index = (_req, res) =>
-  res.send({ name: "hyper63 Search", version: "1.0", status: "unstable" });
+  res.send({ name: 'hyper63 Search', version: '1.0', status: 'unstable' });
 
 // PUT /search/:index
 export const createIndex = ({ params, search, body }, res) =>

@@ -1,4 +1,4 @@
-import { z } from "./deps.js";
+import { z } from './deps.js';
 
 export function hooks(adapter, env) {
   const Port = z.object({

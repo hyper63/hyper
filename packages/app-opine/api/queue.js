@@ -1,12 +1,12 @@
-import { fork } from "../utils.js";
+import { fork } from '../utils.js';
 
 export const index = ({ queue }, res) =>
   fork(
     res,
     200,
     queue.index().map((queues) => ({
-      name: "queue",
-      version: "0.0.4",
+      name: 'queue',
+      version: '0.0.4',
       queues,
     })),
   );
@@ -24,8 +24,7 @@ export const create = ({ params, body, queue }, res) =>
   );
 
 // DELETE /queue/:name
-export const del = ({ params, queue }, res) =>
-  fork(res, 201, queue.delete(params.name));
+export const del = ({ params, queue }, res) => fork(res, 201, queue.delete(params.name));
 
 // POST /queue/:name
 export const post = ({ params, body, queue }, res) =>

@@ -1,13 +1,13 @@
 // deno-lint-ignore-file no-unused-vars
-import { assert, assertEquals } from "../../dev_deps.js";
+import { assert, assertEquals } from '../../dev_deps.js';
 
-import * as doc from "./doc.js";
+import * as doc from './doc.js';
 
 const test = Deno.test;
 
 const mockService = {
   createDoc: ({ store, key, doc, ttl }) => Promise.resolve({ ok: true }),
-  getDoc: ({ store, key }) => Promise.resolve({ hello: "world" }),
+  getDoc: ({ store, key }) => Promise.resolve({ hello: 'world' }),
   updateDoc: ({ store, key, doc }) => Promise.resolve({ ok: true }),
   deleteDoc: ({ store, key }) => Promise.resolve({ ok: true }),
 };
@@ -26,9 +26,9 @@ const events = {
 };
 
 test(
-  "create cache doc",
+  'create cache doc',
   fork(
-    doc.create("store", "key", { hello: "world" }, "20s").runWith({
+    doc.create('store', 'key', { hello: 'world' }, '20s').runWith({
       svc: mockService,
       events,
     }),
@@ -36,9 +36,9 @@ test(
 );
 
 test(
-  "cannot create cache doc with invalid key",
+  'cannot create cache doc with invalid key',
   () => {
-    doc.create("store", "Not_Valid", { beep: "boop" })
+    doc.create('store', 'Not_Valid', { beep: 'boop' })
       .runWith({ svc: mockService, events })
       .fork(
         () => assertEquals(true, true),
@@ -48,25 +48,25 @@ test(
 );
 
 test(
-  "get cache doc",
-  fork(doc.get("store", "key-1234").runWith({ svc: mockService, events })),
+  'get cache doc',
+  fork(doc.get('store', 'key-1234').runWith({ svc: mockService, events })),
 );
 
-test("get cache doc - legacyGet", async (t) => {
-  await t.step("enabled", async (t) => {
+test('get cache doc - legacyGet', async (t) => {
+  await t.step('enabled', async (t) => {
     await t.step(
-      "should passthrough a legacyGet response",
+      'should passthrough a legacyGet response',
       fork(
-        doc.get("foo", "key").map((res) => {
+        doc.get('foo', 'key').map((res) => {
           assert(res.hello);
         }).runWith({ svc: mockService, events, isLegacyGetEnabled: true }),
       ),
     );
 
     await t.step(
-      "should passthrough a hyper error shape",
+      'should passthrough a hyper error shape',
       fork(
-        doc.get("foo", "err")
+        doc.get('foo', 'err')
           .map((res) => {
             assert(!res.ok);
           }).runWith({
@@ -74,7 +74,7 @@ test("get cache doc - legacyGet", async (t) => {
               ...mockService,
               getDoc({ store, key }) {
                 // NOT legacyGet response
-                return Promise.resolve({ ok: false, msg: "oops" });
+                return Promise.resolve({ ok: false, msg: 'oops' });
               },
             },
             events,
@@ -84,11 +84,11 @@ test("get cache doc - legacyGet", async (t) => {
     );
   });
 
-  await t.step("disabled", async (t) => {
+  await t.step('disabled', async (t) => {
     await t.step(
-      "should map to get response for forwards compatibility",
+      'should map to get response for forwards compatibility',
       fork(
-        doc.get("foo", "key").map((res) => {
+        doc.get('foo', 'key').map((res) => {
           assert(res.ok);
           assert(res.doc.hello);
         }).runWith({ svc: mockService, events, isLegacyGetEnabled: false }),
@@ -96,9 +96,9 @@ test("get cache doc - legacyGet", async (t) => {
     );
 
     await t.step(
-      "should passthrough a hyper error shape",
+      'should passthrough a hyper error shape',
       fork(
-        doc.get("foo", "err")
+        doc.get('foo', 'err')
           .map((res) => {
             assert(!res.ok);
           }).runWith({
@@ -106,7 +106,7 @@ test("get cache doc - legacyGet", async (t) => {
               ...mockService,
               getDoc({ store, key }) {
                 // NOT legacyGet response
-                return Promise.resolve({ ok: false, msg: "oops" });
+                return Promise.resolve({ ok: false, msg: 'oops' });
               },
             },
             events,
@@ -118,9 +118,9 @@ test("get cache doc - legacyGet", async (t) => {
 });
 
 test(
-  "update cache document",
+  'update cache document',
   fork(
-    doc.update("store", "key-1234", { foo: "bar" }).runWith({
+    doc.update('store', 'key-1234', { foo: 'bar' }).runWith({
       svc: mockService,
       events,
     }),
@@ -128,6 +128,6 @@ test(
 );
 
 test(
-  "delete cache document",
-  fork(doc.del("store", "key-1234").runWith({ svc: mockService, events })),
+  'delete cache document',
+  fork(doc.del('store', 'key-1234').runWith({ svc: mockService, events })),
 );

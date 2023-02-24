@@ -1,4 +1,4 @@
-import { fork } from "../utils.js";
+import { fork } from '../utils.js';
 
 // GET /cache
 export const index = ({ cache }, res) =>
@@ -6,8 +6,8 @@ export const index = ({ cache }, res) =>
     res,
     200,
     cache.index().map((stores) => ({
-      name: "cache",
-      version: "0.0.4",
+      name: 'cache',
+      version: '0.0.4',
       stores,
     })),
   );

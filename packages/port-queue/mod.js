@@ -1,4 +1,4 @@
-import { z } from "./deps.js";
+import { z } from './deps.js';
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -12,7 +12,7 @@ import { z } from "./deps.js";
  * ok: true is always parsed
  */
 const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
-  z.discriminatedUnion("ok", [
+  z.discriminatedUnion('ok', [
     // ok: true
     schema.extend({
       ok: z.literal(true),
@@ -52,7 +52,7 @@ const QueuePostInput = z.object({
 
 const QueueGetInput = z.object({
   name: z.string(),
-  status: z.enum(["READY", "ERROR"]),
+  status: z.enum(['READY', 'ERROR']),
 });
 
 const JobsResponse = hyperResSchema(z.object({

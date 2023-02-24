@@ -1,16 +1,14 @@
-import { fork } from "../utils.js";
+import { fork } from '../utils.js';
 
 // GET /data
 export const index = (_req, res) =>
-  res.send({ name: "hyper63 Data", version: "1.0.1", status: "unstable" });
+  res.send({ name: 'hyper63 Data', version: '1.0.1', status: 'unstable' });
 
 // PUT /data/:db
-export const createDb = ({ params, data }, res) =>
-  fork(res, 201, data.createDatabase(params.db));
+export const createDb = ({ params, data }, res) => fork(res, 201, data.createDatabase(params.db));
 
 // DELETE /data/:db
-export const removeDb = ({ params, data }, res) =>
-  fork(res, 200, data.destroyDatabase(params.db));
+export const removeDb = ({ params, data }, res) => fork(res, 200, data.destroyDatabase(params.db));
 
 // GET /data/:db
 export const listDocuments = ({ params, query, data }, res) =>
@@ -33,8 +31,7 @@ export const deleteDocument = ({ data, params }, res) =>
   fork(res, 200, data.removeDocument(params.db, params.id));
 
 // POST /data/:db/_query
-export const queryDb = ({ data, params, body }, res) =>
-  fork(res, 200, data.query(params.db, body));
+export const queryDb = ({ data, params, body }, res) => fork(res, 200, data.query(params.db, body));
 
 // POST /data/:db/_index
 export const indexDb = ({ data, params, body }, res) =>

@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-unused-vars
-import { assert, assertEquals } from "../../dev_deps.js";
-import * as db from "./db.js";
+import { assert, assertEquals } from '../../dev_deps.js';
+import * as db from './db.js';
 const test = Deno.test;
 
 const mockDb = {
@@ -14,23 +14,23 @@ const mockDb = {
     if (docs.length === 2) {
       return Promise.resolve({
         ok: true,
-        results: [{ ok: true, id: "1" }, { ok: true, id: "2" }],
+        results: [{ ok: true, id: '1' }, { ok: true, id: '2' }],
       });
     } else {
       return Promise.reject({ ok: false });
     }
   },
   listDocuments({ db, limit, start, end, keys, descending }) {
-    if (db === "err") {
+    if (db === 'err') {
       return Promise.resolve({ ok: false, status: 400 });
     }
-    return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
+    return Promise.resolve({ ok: true, docs: [{ _id: '1' }, { _id: '2' }] });
   },
   queryDocuments({ db, query }) {
-    if (query.selector === "err") {
+    if (query.selector === 'err') {
       return Promise.resolve({ ok: false, status: 400 });
     }
-    return Promise.resolve({ ok: true, docs: [{ _id: "1" }, { _id: "2" }] });
+    return Promise.resolve({ ok: true, docs: [{ _id: '1' }, { _id: '2' }] });
   },
 };
 
@@ -55,17 +55,17 @@ const events = {
 };
 
 test(
-  "create database",
-  fork(db.create("foo").runWith({ svc: mockDb, events })),
+  'create database',
+  fork(db.create('foo').runWith({ svc: mockDb, events })),
 );
 test(
-  "remove database",
-  fork(db.remove("foo").runWith({ svc: mockDb, events })),
+  'remove database',
+  fork(db.remove('foo').runWith({ svc: mockDb, events })),
 );
 test(
-  "bulk documents",
+  'bulk documents',
   fork(
-    db.bulk("foo", [{ _id: "1" }, { _id: "2" }])
+    db.bulk('foo', [{ _id: '1' }, { _id: '2' }])
       .map((res) => {
         res.results.forEach((r) => {
           assert(r.id);
@@ -76,14 +76,14 @@ test(
   ),
 );
 test(
-  "bulk docs - resolve failure",
-  handleFail(db.bulk("foo", []).runWith({ svc: mockDb, events })),
+  'bulk docs - resolve failure',
+  handleFail(db.bulk('foo', []).runWith({ svc: mockDb, events })),
 );
 
 test(
-  "list docs",
+  'list docs',
   fork(
-    db.list("foo", { limit: "2" })
+    db.list('foo', { limit: '2' })
       .map((res) => {
         res.docs.forEach((r) => {
           assert(r._id);
@@ -95,16 +95,16 @@ test(
 );
 
 test(
-  "list docs",
+  'list docs',
   fork(
-    db.list("foo", { descending: true }).runWith({ svc: mockDb, events }),
+    db.list('foo', { descending: true }).runWith({ svc: mockDb, events }),
   ),
 );
 
 test(
-  "list docs - err",
+  'list docs - err',
   fork(
-    db.list("err", { descending: true })
+    db.list('err', { descending: true })
       .map((res) => {
         assert(!res.ok);
         assert(!res.docs);
@@ -113,9 +113,9 @@ test(
 );
 
 test(
-  "query docs",
+  'query docs',
   fork(
-    db.query("foo", { selector: { id: "foo" } })
+    db.query('foo', { selector: { id: 'foo' } })
       .map((res) => {
         res.docs.forEach((r) => {
           assert(r._id);
@@ -127,9 +127,9 @@ test(
 );
 
 test(
-  "query docs - err",
+  'query docs - err',
   fork(
-    db.query("foo", { selector: "err" })
+    db.query('foo', { selector: 'err' })
       .map((res) => {
         assert(!res.ok);
         assert(!res.docs);

@@ -1,6 +1,6 @@
-import { HyperRequestFunction, Method, QueueStatus } from "../types.ts";
+import { HyperRequestFunction, Method, QueueStatus } from '../types.ts';
 
-const service = "queue" as const;
+const service = 'queue' as const;
 
 export const enqueue = (body: unknown) => (h: HyperRequestFunction) =>
   h({ service, method: Method.POST, body });

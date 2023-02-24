@@ -1,12 +1,11 @@
-import { $, $fetch } from "../lib/utils.js";
-import { assert } from "asserts";
+import { $, $fetch } from '../lib/utils.js';
+import { assert } from 'asserts';
 
 const test = Deno.test;
-const doAssert = (prop) =>
-  (obj) => {
-    assert(obj[prop]);
-    return obj;
-  };
+const doAssert = (prop) => (obj) => {
+  assert(obj[prop]);
+  return obj;
+};
 
 // const log = (_) => (console.log(_), _);
 const map = (fn, items) => items.map(fn);
@@ -14,33 +13,33 @@ const compose = (f, g) => (v) => f(g(v));
 const prop = (key) => (obj) => obj[key];
 
 const movies = [{
-  id: "movie-1",
-  type: "movie",
-  title: "Dune",
+  id: 'movie-1',
+  type: 'movie',
+  title: 'Dune',
 }, {
-  id: "movie-2",
-  type: "movie",
-  title: "Alien",
+  id: 'movie-2',
+  type: 'movie',
+  title: 'Alien',
 }, {
-  id: "movie-3",
-  type: "movie",
-  title: "Avatar",
+  id: 'movie-3',
+  type: 'movie',
+  title: 'Avatar',
 }, {
-  id: "movie-4",
-  type: "movie",
-  title: "Star Wars",
+  id: 'movie-4',
+  type: 'movie',
+  title: 'Star Wars',
 }, {
-  id: "movie-5",
-  type: "movie",
-  title: "Jaws",
+  id: 'movie-5',
+  type: 'movie',
+  title: 'Jaws',
 }, {
-  id: "movie-6",
-  type: "movie",
-  title: "Ironman",
+  id: 'movie-6',
+  type: 'movie',
+  title: 'Ironman',
 }, {
-  id: "movie-7",
-  type: "movie",
-  title: "Batman",
+  id: 'movie-7',
+  type: 'movie',
+  title: 'Batman',
 }];
 
 export default function (search) {
@@ -51,42 +50,40 @@ export default function (search) {
     $.all(map(
       compose(
         (id) => $fetch(() => search.remove(id)),
-        prop("id"),
+        prop('id'),
       ),
       movies,
     ));
 
   // search based on content
-  test("POST /search/:index/_query - find movie successfully using fields and filter", () =>
+  test('POST /search/:index/_query - find movie successfully using fields and filter', () =>
     setup()
       .chain(() =>
         $fetch(() =>
-          search.query("Ironman", {
-            fields: ["title"],
-            filter: { type: "movie" },
+          search.query('Ironman', {
+            fields: ['title'],
+            filter: { type: 'movie' },
           })
         )
       )
       //.map(log)
-      .map(doAssert("ok"))
+      .map(doAssert('ok'))
       .chain(cleanUp)
       .toPromise());
 
-  test("POST /search/:index/_query - find movie successfully filter", () =>
+  test('POST /search/:index/_query - find movie successfully filter', () =>
     setup()
-      .chain(() =>
-        $fetch(() => search.query("Spiderman", { filter: { type: "movie" } }))
-      )
+      .chain(() => $fetch(() => search.query('Spiderman', { filter: { type: 'movie' } })))
       //.map(log)
-      .map(doAssert("ok"))
+      .map(doAssert('ok'))
       .chain(cleanUp)
       .toPromise());
 
-  test("POST /search/:index/_query - find movie successfully", () =>
+  test('POST /search/:index/_query - find movie successfully', () =>
     setup()
-      .chain(() => $fetch(() => search.query("Jaws")))
+      .chain(() => $fetch(() => search.query('Jaws')))
       //.map(log)
-      .map(doAssert("ok"))
+      .map(doAssert('ok'))
       .chain(cleanUp)
       .toPromise());
 }

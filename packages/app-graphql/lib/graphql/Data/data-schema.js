@@ -1,7 +1,7 @@
-import { gql, R } from "../../../deps.js";
+import { gql, R } from '../../../deps.js';
 const { view } = R;
 
-import { hyper63ServicesContextLens } from "../../utils/hyper63-context.lens.js";
+import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js';
 
 const typeDefs = gql`
   """
@@ -26,7 +26,7 @@ const typeDefs = gql`
 const resolvers = {
   // TODO: check that database with this name exists
   Data: {
-    info: () => ({ port: "Data" }),
+    info: () => ({ port: 'Data' }),
     name: ({ name }) => name,
     record: ({ name }, { id }, context) => {
       const { data } = view(hyper63ServicesContextLens, context);

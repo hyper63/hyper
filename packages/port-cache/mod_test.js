@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-unused-vars
 
-import { assert } from "./dev_deps.js";
+import { assert } from './dev_deps.js';
 
-import { cache as cachePort } from "./mod.js";
+import { cache as cachePort } from './mod.js';
 
-Deno.test("port cache ok", () => {
+Deno.test('port cache ok', () => {
   const goodCache = cachePort({
     createStore(name) {
       return Promise.resolve({ ok: true });
@@ -21,7 +21,7 @@ Deno.test("port cache ok", () => {
       return Promise.resolve({ ok: true });
     },
     getDoc({ store, key }) {
-      return Promise.resolve({ ok: true, doc: { beep: "boop" } });
+      return Promise.resolve({ ok: true, doc: { beep: 'boop' } });
     },
     updateDoc({ store, key, value, ttl }) {
       return Promise.resolve({ ok: true });
@@ -37,18 +37,18 @@ Deno.test("port cache ok", () => {
     },
   });
   Promise.all([
-    goodCache.createStore("foo"),
-    goodCache.destroyStore("foo"),
+    goodCache.createStore('foo'),
+    goodCache.destroyStore('foo'),
     goodCache.createDoc({
-      store: "foo",
-      key: "hello",
-      value: { beep: "world" },
-      ttl: "2m",
+      store: 'foo',
+      key: 'hello',
+      value: { beep: 'world' },
+      ttl: '2m',
     }),
-    goodCache.getDoc({ store: "foo", key: "hello" }),
-    goodCache.updateDoc({ store: "foo", key: "hello", value: { baz: "bam" } }),
-    goodCache.deleteDoc({ store: "foo", key: "hello" }),
-    goodCache.listDocs({ store: "foo", pattern: "w*" }),
+    goodCache.getDoc({ store: 'foo', key: 'hello' }),
+    goodCache.updateDoc({ store: 'foo', key: 'hello', value: { baz: 'bam' } }),
+    goodCache.deleteDoc({ store: 'foo', key: 'hello' }),
+    goodCache.listDocs({ store: 'foo', pattern: 'w*' }),
   ])
     .then(() => {
       assert(true);
@@ -58,10 +58,10 @@ Deno.test("port cache ok", () => {
     });
 });
 
-Deno.test("port cache shape not ok", (t) => {
+Deno.test('port cache shape not ok', (t) => {
   assert(true);
 });
 
-Deno.test("port cache methods not ok", (t) => {
+Deno.test('port cache methods not ok', (t) => {
   assert(true);
 });
