@@ -1,4 +1,4 @@
-import { HyperErr, isBaseHyperErr, R, z } from "../../deps.js";
+import { HyperErr, isBaseHyperErr, R, z } from '../../deps.js';
 
 const { ZodError, ZodIssueCode } = z;
 
@@ -68,25 +68,25 @@ const condElseUndefined = (tuple) =>
  */
 export const mapErr = converge(
   compose(
-    defaultTo("An error occurred"),
+    defaultTo('An error occurred'),
     unapply(find(isDefined)),
   ),
   [
     // string
     condElseUndefined([is(String), identity]),
     // { msg } catches HyperErr, ie. it was inadvertantly thrown instead of resolved from adapter
-    condElseUndefined(mapErrPropTuple("msg")),
+    condElseUndefined(mapErrPropTuple('msg')),
     // { message } catches both Error, and Object with message prop
-    condElseUndefined(mapErrPropTuple("message")),
+    condElseUndefined(mapErrPropTuple('message')),
     // { error } subkey
-    condElseUndefined(mapErrPropTuple("error")),
+    condElseUndefined(mapErrPropTuple('error')),
     // { errors } subkey
-    condElseUndefined(mapErrPropTuple("errors")),
+    condElseUndefined(mapErrPropTuple('errors')),
     // []
     condElseUndefined([
       is(Array),
       compose(
-        join(", "),
+        join(', '),
         map((err) => mapErr(err)), // recurse
       ),
     ]),
@@ -131,9 +131,9 @@ export const mapStatus = converge(
       ),
     ]),
     // { status }
-    condElseUndefined(mapStatusPropTuple("status")),
+    condElseUndefined(mapStatusPropTuple('status')),
     // { statusCode }
-    condElseUndefined(mapStatusPropTuple("statusCode")),
+    condElseUndefined(mapStatusPropTuple('statusCode')),
   ],
 );
 
@@ -160,8 +160,7 @@ const gatherZodIssues = (zodErr, status, contextCode) =>
            */
           [
             equals(ZodIssueCode.invalid_arguments),
-            () =>
-              gatherZodIssues(issue.argumentsError, 422, "Invalid Arguments"),
+            () => gatherZodIssues(issue.argumentsError, 422, 'Invalid Arguments'),
           ],
           [
             equals(ZodIssueCode.invalid_return_type),
@@ -169,7 +168,7 @@ const gatherZodIssues = (zodErr, status, contextCode) =>
               gatherZodIssues(
                 issue.returnTypeError,
                 500,
-                "Invalid Return",
+                'Invalid Return',
               ),
           ],
           [
@@ -178,7 +177,7 @@ const gatherZodIssues = (zodErr, status, contextCode) =>
             () =>
               compose(
                 flatten,
-                map((i) => gatherZodIssues(i, 400, "Invalid Union")),
+                map((i) => gatherZodIssues(i, 400, 'Invalid Union')),
               )(issue.unionErrors),
           ],
           [T, () => [{ ...issue, status, contextCode }]],
@@ -194,12 +193,12 @@ const zodErrToHyperErr = compose(
     status: compose(
       // 500 > 422 > 400 (choose the most high priority status code)
       apply(Math.max),
-      pluck("status"),
+      pluck('status'),
     ),
     // combine all errors
     msg: compose(
-      join(" | "),
-      pluck("msg"),
+      join(' | '),
+      pluck('msg'),
     ),
   }),
   // combine all zod errors into a list of { msg, status } summaries of each error
@@ -223,7 +222,7 @@ const zodErrToHyperErr = compose(
          * if string, path[0] will be the string and path[1] undefined
          */
         const _path = path[1] || path[0];
-        const _contextCode = contextCode ? `${contextCode} ` : "";
+        const _contextCode = contextCode ? `${contextCode} ` : '';
 
         // TODO: is this formatting okay?
         return concat(acc, [
@@ -236,12 +235,12 @@ const zodErrToHyperErr = compose(
       [],
       zodIssues,
     ),
-  (zodErr) => gatherZodIssues(zodErr, 400, ""),
+  (zodErr) => gatherZodIssues(zodErr, 400, ''),
 );
 
 export const HyperErrFrom = (err) =>
   compose(
-    assoc("originalErr", err),
+    assoc('originalErr', err),
     ifElse(
       isBaseHyperErr, // simply return errors of shape { ok: false }
       identity,
@@ -253,5 +252,5 @@ export const HyperErrFrom = (err) =>
         (err) => HyperErr({ msg: mapErr(err), status: mapStatus(err) }),
       ),
     ),
-    defaultTo({ msg: "An error occurred" }),
+    defaultTo({ msg: 'An error occurred' }),
   )(err);

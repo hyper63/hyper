@@ -30,105 +30,99 @@ npm install hyper-connect
 ```
 
 `hyper-connect` constructs a
-[Request Object](https://developer.mozilla.org/en-US/docs/Web/API/Request) and
-sends it to the hyper server using `fetch`. `hyper-connect` wraps your hyper
-app's REST API, generating short-lived JWTs using the provided connection
-string.
+[Request Object](https://developer.mozilla.org/en-US/docs/Web/API/Request) and sends it to the hyper
+server using `fetch`. `hyper-connect` wraps your hyper app's REST API, generating short-lived JWTs
+using the provided connection string.
 
 ## Getting Started
 
-> New Experimental Feature: hyper Queue worker support,
-> [see below](#verify-signature)
+> New Experimental Feature: hyper Queue worker support, [see below](#verify-signature)
 
 ### NodeJS (TypeScript)
 
 ```ts
-import { connect } from "hyper-connect";
+import { connect } from 'hyper-connect';
 
 const hyper = connect(process.env.HYPER as string);
 
-await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
-await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
-await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
 
-const results = await hyper.data.query({ type: "game" });
+const results = await hyper.data.query({ type: 'game' });
 ```
 
 ### NodeJS (ESM)
 
 ```js
-import { connect } from "hyper-connect";
+import { connect } from 'hyper-connect';
 
 const hyper = connect(process.env.HYPER);
 
-await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
-await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
-await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
 
-const results = await hyper.data.query({ type: "game" });
+const results = await hyper.data.query({ type: 'game' });
 ```
 
 ### NodeJS (CJS)
 
 ```js
-const { connect } = require("hyper-connect");
+const { connect } = require('hyper-connect');
 
 const hyper = connect(process.env.HYPER);
 
-await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
-await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
-await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
 
-const results = await hyper.data.query({ type: "game" });
+const results = await hyper.data.query({ type: 'game' });
 ```
 
 ### A Note for NodeJS
 
-For Node environments, starting with `v0.5.0`, `hyper-connect`'s Storage service
-api returns a
-[`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
-instead of a `NodeJS.ReadableStream`. If you'd like a `NodeJS.ReadableStream`,
-follow one of the approaches below.
+For Node environments, starting with `v0.5.0`, `hyper-connect`'s Storage service api returns a
+[`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) instead of a
+`NodeJS.ReadableStream`. If you'd like a `NodeJS.ReadableStream`, follow one of the approaches
+below.
 
-If you're using `node>=17`, you can use Node's built in `fromWeb` to get a Node
-stream:
+If you're using `node>=17`, you can use Node's built in `fromWeb` to get a Node stream:
 
 ```js
-import { Readable } from "node:stream";
+import { Readable } from 'node:stream';
 
 const res = await hyper.storage.download(name);
 const readableNodeStream = Readable.fromWeb(res);
 ```
 
-Otherwise, you will need to use `v0.4.0` or less of `hyper-connect`. Node `18`
-will be in LTS soon, and we recommend upgrading to Node `18` LTS as soon as
-possible, to take advantage of the new Web Standards centric features, like
-global `fetch` and `WebStreams`.
+Otherwise, you will need to use `v0.4.0` or less of `hyper-connect`. Node `18` will be in LTS soon,
+and we recommend upgrading to Node `18` LTS as soon as possible, to take advantage of the new Web
+Standards centric features, like global `fetch` and `WebStreams`.
 
-> Starting with Node 17, Node has changed how it resolves `localhost`, when
-> using global `fetch` and `fetch` from libraries like `undici`. This may cause
-> requests to `localhost` not to resolve correctly and fail. To get around this,
-> you can use `127.0.0.1` or `0.0.0.0`, in lieu of `localhost`. For more info,
-> See [this issue](https://github.com/nodejs/node/pull/39987)
+> Starting with Node 17, Node has changed how it resolves `localhost`, when using global `fetch` and
+> `fetch` from libraries like `undici`. This may cause requests to `localhost` not to resolve
+> correctly and fail. To get around this, you can use `127.0.0.1` or `0.0.0.0`, in lieu of
+> `localhost`. For more info, See [this issue](https://github.com/nodejs/node/pull/39987)
 
 ### Deno
 
 ```js
-import { connect } from "https://x.nest.land/hyper-connect@VERSION/deno/mod.ts";
+import { connect } from 'https://x.nest.land/hyper-connect@VERSION/deno/mod.ts';
 
-const HYPER = Deno.env.get("HYPER"); // connect string: cloud://key:secret@cloud.hyper.io/:app
+const HYPER = Deno.env.get('HYPER'); // connect string: cloud://key:secret@cloud.hyper.io/:app
 
 const hyper = connect(HYPER)();
 
-await hyper.data.add({ id: "game-1", type: "game", name: "Donkey Kong" });
-await hyper.data.add({ id: "game-2", type: "game", name: "Pac Man" });
-await hyper.data.add({ id: "game-3", type: "game", name: "Galaga" });
+await hyper.data.add({ id: 'game-1', type: 'game', name: 'Donkey Kong' });
+await hyper.data.add({ id: 'game-2', type: 'game', name: 'Pac Man' });
+await hyper.data.add({ id: 'game-3', type: 'game', name: 'Galaga' });
 
-const results = await hyper.data.query({ type: "game" });
+const results = await hyper.data.query({ type: 'game' });
 ```
 
-With hyper-connect, you can access all of the hyper services. hyper-connect uses
-the fetch library to execute REST requests for you.
+With hyper-connect, you can access all of the hyper services. hyper-connect uses the fetch library
+to execute REST requests for you.
 
 ## Examples
 
@@ -136,10 +130,10 @@ the fetch library to execute REST requests for you.
 
 ```js
 const doc = {
-  id: "movie-1",
-  type: "movie",
-  title: "Dune",
-  year: "2021",
+  id: 'movie-1',
+  type: 'movie',
+  title: 'Dune',
+  year: '2021',
 };
 
 const result = await hyper.data.add(doc);
@@ -149,24 +143,23 @@ console.log(result); // {ok: true, id: "movie-1"}
 ### How to get all the documents of type 'movie'?
 
 ```js
-const result = await hyper.data.query({ type: "movie" });
+const result = await hyper.data.query({ type: 'movie' });
 console.log(result); // {ok: true, docs: [...]}
 ```
 
 ### How to add a cache key/value pair to hyper cache?
 
 ```js
-const result = await hyper.cache.add("key", { counter: 1 });
+const result = await hyper.cache.add('key', { counter: 1 });
 console.log(result); // {ok: true}
 ```
 
 ## Documentation
 
-hyper is a suite of service apis, with hyper connect you can specify the api you
-want to connect with and the action you want to perform.
-hyper.[service].[action] - with each service there are a different set of
-actions to call. This table breaks down the service and action with description
-of the action.
+hyper is a suite of service apis, with hyper connect you can specify the api you want to connect
+with and the action you want to perform. hyper.[service].[action] - with each service there are a
+different set of actions to call. This table breaks down the service and action with description of
+the action.
 
 ### data
 
@@ -221,12 +214,11 @@ of the action.
 
 ### Verify Signature
 
-hyper Queue allows you to create a target web hook endpoint to receive jobs, in
-order to secure that endpoint to only receive jobs from hyper, you can implement
-a secret, this secret using sha256 to encode a `nounce` timestamp and a
-signature of the job payload. We created a function on `hyper-connect` to make
-it easier to implement your own middleware to validate these incoming jobs in a
-secure way.
+hyper Queue allows you to create a target web hook endpoint to receive jobs, in order to secure that
+endpoint to only receive jobs from hyper, you can implement a secret, this secret using sha256 to
+encode a `nounce` timestamp and a signature of the job payload. We created a function on
+`hyper-connect` to make it easier to implement your own middleware to validate these incoming jobs
+in a secure way.
 
 ```js
 import { createHyperVerify } from 'hyper-connect'
@@ -245,8 +237,8 @@ export const validateSignature(req, res, next) {
 ### Contributing
 
 - `make test` to run unit tests
-- `make test-integration` to run integration tests. This ensures the Deno code
-  is properly transformed into Node code.
+- `make test-integration` to run integration tests. This ensures the Deno code is properly
+  transformed into Node code.
 
 ---
 

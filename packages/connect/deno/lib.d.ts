@@ -1,1 +1,1 @@
-declare module "crocks";
+declare module 'crocks';

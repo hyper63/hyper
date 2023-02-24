@@ -1,4 +1,4 @@
-import { gql } from "../../../deps.js";
+import { gql } from '../../../deps.js';
 
 /**
  * Mutations are recommended to always be top lvl, while queries

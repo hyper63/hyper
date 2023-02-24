@@ -1,4 +1,4 @@
-import { z } from "../deps.js";
+import { z } from '../deps.js';
 
 const F = z.function().args(z.any());
 
@@ -21,13 +21,13 @@ const Schema = z.object({
   app: F,
   adapters: z.object({
     port: z.enum([
-      "data",
-      "cache",
-      "search",
-      "storage",
-      "queue",
-      "hooks",
-      "crawler",
+      'data',
+      'cache',
+      'search',
+      'storage',
+      'queue',
+      'hooks',
+      'crawler',
     ]),
     plugins: plugin.array(),
   }).array(),

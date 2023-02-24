@@ -1,6 +1,6 @@
-import { R } from "../deps.deno.ts";
+import { R } from '../deps.deno.ts';
 
-import { QueryOptions } from "../types.ts";
+import { QueryOptions } from '../types.ts';
 
 const { assoc, compose, defaultTo, dissoc, isNil, reject } = R;
 
@@ -13,7 +13,7 @@ const swap = (old: string, cur: string) =>
 export const toDataQuery = (selector: unknown, options?: QueryOptions) =>
   compose(
     reject(isNil),
-    swap("useIndex", "use_index"),
-    assoc("selector", selector),
+    swap('useIndex', 'use_index'),
+    assoc('selector', selector),
     defaultTo({}),
   )(options);

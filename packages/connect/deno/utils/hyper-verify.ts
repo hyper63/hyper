@@ -1,6 +1,6 @@
 // deno-lint-ignore-file ban-ts-comment
-import { crocks, hmac, ms, R } from "../deps.deno.ts";
-import { Result } from "../types.ts";
+import { crocks, hmac, ms, R } from '../deps.deno.ts';
+import { Result } from '../types.ts';
 const {
   assoc,
   compose,
@@ -30,16 +30,16 @@ interface Context {
 }
 
 const splitHyperSignature = over(
-  lensPath(["input", "signature"]),
+  lensPath(['input', 'signature']),
   // @ts-ignore
   compose(
     (pair: Array<string | number>) => ({
       // @ts-ignore
-      time: compose(nth(1), split("t="))(nth(0, pair)),
+      time: compose(nth(1), split('t='))(nth(0, pair)),
       // @ts-ignore
-      sig: compose(nth(1), split("sig="))(nth(1, pair)),
+      sig: compose(nth(1), split('sig='))(nth(1, pair)),
     }),
-    split(","),
+    split(','),
   ),
 );
 
@@ -47,15 +47,13 @@ const createHmacSignature = (ctx: Context) => {
   try {
     return Right(
       assoc(
-        "computed",
+        'computed',
         hmac(
-          "sha256",
+          'sha256',
           ctx.secret,
-          `${(ctx.input.signature as Parsed).time}.${
-            JSON.stringify(ctx.input.payload, null, 0)
-          }`,
-          "utf8",
-          "hex",
+          `${(ctx.input.signature as Parsed).time}.${JSON.stringify(ctx.input.payload, null, 0)}`,
+          'utf8',
+          'hex',
         ),
         ctx,
       ),
@@ -63,15 +61,15 @@ const createHmacSignature = (ctx: Context) => {
   } catch (_e) {
     return Left({
       ok: false,
-      msg: "could not create signature for verification",
+      msg: 'could not create signature for verification',
     });
   }
 };
 
 const compareSignatures = (ctx: Context) =>
   ctx.computed === (ctx.input.signature as Parsed).sig
-    ? Right(assoc("authorized", true, ctx))
-    : Left({ ok: false, status: 401, message: "Unauthorized" });
+    ? Right(assoc('authorized', true, ctx))
+    : Left({ ok: false, status: 401, message: 'Unauthorized' });
 
 const verifyTimeGap = (delay: string) =>
   ifElse(
@@ -81,13 +79,13 @@ const verifyTimeGap = (delay: string) =>
       (time: number) =>
         new Date().getTime() -
         new Date(time).getTime(),
-      path(["input", "signature", 0]),
+      path(['input', 'signature', 0]),
     ),
     () =>
       Left({
         ok: false,
         status: 422,
-        msg: "Timestamp not within acceptable range",
+        msg: 'Timestamp not within acceptable range',
       }),
     Right,
   );

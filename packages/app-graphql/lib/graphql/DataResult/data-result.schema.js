@@ -1,4 +1,4 @@
-import { gql, R } from "../../../deps.js";
+import { gql, R } from '../../../deps.js';
 
 const { always, compose, identity, ifElse, is, omit, prop } = R;
 
@@ -16,7 +16,7 @@ const typeDefs = gql`
 
 const resolvers = {
   DataResult: {
-    type: () => "data",
+    type: () => 'data',
     msg: ({ msg }) => msg,
     ok: compose(
       ifElse(
@@ -24,10 +24,10 @@ const resolvers = {
         identity,
         always(true), // default to ok: true if not in parent
       ),
-      prop("ok"),
+      prop('ok'),
     ),
     // Parent is the data
-    data: omit(["ok"]),
+    data: omit(['ok']),
   },
 };
 

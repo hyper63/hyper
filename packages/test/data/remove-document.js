@@ -1,6 +1,6 @@
-import { $fetch } from "../lib/utils.js";
-import { assertEquals } from "asserts";
-import { prop } from "ramda";
+import { $fetch } from '../lib/utils.js';
+import { assertEquals } from 'asserts';
+import { prop } from 'ramda';
 
 const test = Deno.test;
 
@@ -22,12 +22,12 @@ export default function (data) {
       .toPromise());
   */
 
-  test("DELETE /data/:store/:id - delete document successfully", () =>
-    createDocument({ _id: "DELETE", type: "test" })
-      .chain(() => retrieveDocument("DELETE"))
-      .map((r) => (assertEquals(r._id, "DELETE"), r))
-      .map((r) => (assertEquals(r.type, "test"), r))
-      .map(prop("_id"))
+  test('DELETE /data/:store/:id - delete document successfully', () =>
+    createDocument({ _id: 'DELETE', type: 'test' })
+      .chain(() => retrieveDocument('DELETE'))
+      .map((r) => (assertEquals(r._id, 'DELETE'), r))
+      .map((r) => (assertEquals(r.type, 'test'), r))
+      .map(prop('_id'))
       .chain(removeDocument)
       .map((r) => (assertEquals(r.ok, true), r))
       .toPromise());

@@ -1,4 +1,4 @@
-import { R } from "../deps.js";
+import { R } from '../deps.js';
 
 const {
   unapply,
@@ -27,7 +27,7 @@ const pipeP = unapply(pipeWith((fn, p) => Promise.resolve(p).then(fn)));
  * @param {[]} plugins - a list of plugins
  */
 async function loadAdapterConfig(plugins = []) {
-  return await pipeP(...filter(is(Function), pluck("load", plugins)))({});
+  return await pipeP(...filter(is(Function), pluck('load', plugins)))({});
 }
 
 /**

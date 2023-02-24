@@ -1,16 +1,11 @@
-import {
-  gql,
-  GraphQLKind as Kind,
-  GraphQLPrint as print,
-  GraphQLScalarType,
-} from "../../deps.js";
+import { gql, GraphQLKind as Kind, GraphQLPrint as print, GraphQLScalarType } from '../../deps.js';
 
 function identity(value) {
   return value;
 }
 
 function ensureObject(value) {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     throw new TypeError(
       `JSONObject cannot represent non-object value: ${value}`,
     );
@@ -51,22 +46,20 @@ function parseLiteral(typeName, ast, variables) {
 }
 
 const GraphQLJSON = new GraphQLScalarType({
-  name: "JSON",
+  name: 'JSON',
   description:
-    "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
-  specifiedByUrl:
-    "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+    'The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
+  specifiedByUrl: 'http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
   serialize: identity,
   parseValue: identity,
-  parseLiteral: (ast, variables) => parseLiteral("JSON", ast, variables),
+  parseLiteral: (ast, variables) => parseLiteral('JSON', ast, variables),
 });
 
 const GraphQLJSONObject = new GraphQLScalarType({
-  name: "JSONObject",
+  name: 'JSONObject',
   description:
-    "The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
-  specifiedByUrl:
-    "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+    'The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).',
+  specifiedByUrl: 'http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf',
   serialize: ensureObject,
   parseValue: ensureObject,
   parseLiteral: (ast, variables) => {
@@ -76,7 +69,7 @@ const GraphQLJSONObject = new GraphQLScalarType({
       );
     }
 
-    return parseObject("JSONObject", ast, variables);
+    return parseObject('JSONObject', ast, variables);
   },
 });
 

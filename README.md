@@ -26,10 +26,9 @@
 
 👋 Hey 👋
 
-Welcome to ⚡hyper open source project, above is plenty of links that can give
-you the why and what of hyper, check them out! Also, if you are a hands on kind
-of developer, try out hyper using our playground and gitpod. You don't have to
-install anything to kick the tires ⚙️.
+Welcome to ⚡hyper open source project, above is plenty of links that can give you the why and what
+of hyper, check them out! Also, if you are a hands on kind of developer, try out hyper using our
+playground and gitpod. You don't have to install anything to kick the tires ⚙️.
 
 ## Status
 
@@ -53,8 +52,8 @@ curl -O https://hyperland.s3.amazonaws.com/hyper
 chmod +x hyper
 ```
 
-> This command will run a hyper service on PORT `6363` and store data in `/tmp`
-> directory and `cwd` [Ctrl/Cmd] - C will stop the service.
+> This command will run a hyper service on PORT `6363` and store data in `/tmp` directory and `cwd`
+> [Ctrl/Cmd] - C will stop the service.
 
 This `nano` version of hyper implements the following ports and adapters:
 
@@ -66,14 +65,13 @@ This `nano` version of hyper implements the following ports and adapters:
 
 ## Documentation
 
-For more information about hyper63 go to our documentation site.
-https://docs.hyper.io if you are unable to find the information you are looking
-for, post a question in our [slack](https://hyper.io/slack)
+For more information about hyper63 go to our documentation site. https://docs.hyper.io if you are
+unable to find the information you are looking for, post a question in our
+[slack](https://hyper.io/slack)
 
 ## Contributions
 
-See
-**[Contributing to hyper](https://docs.hyper.io/oss/contributing-to-hyper)**.
+See **[Contributing to hyper](https://docs.hyper.io/oss/contributing-to-hyper)**.
 
 ## Developer Setup
 

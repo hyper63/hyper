@@ -1,6 +1,6 @@
-import { z } from "./deps.js";
+import { z } from './deps.js';
 
-const SortEnum = z.enum(["ASC", "DESC"]);
+const SortEnum = z.enum(['ASC', 'DESC']);
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -14,7 +14,7 @@ const SortEnum = z.enum(["ASC", "DESC"]);
  * ok: true is always parsed
  */
 const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
-  z.discriminatedUnion("ok", [
+  z.discriminatedUnion('ok', [
     // ok: true
     schema.extend({
       ok: z.literal(true),

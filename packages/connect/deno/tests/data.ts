@@ -1,149 +1,139 @@
-import { HyperRequest } from "../types.ts";
+import { HyperRequest } from '../types.ts';
 
-import { assertEquals } from "../dev_deps.ts";
+import { assertEquals } from '../dev_deps.ts';
 
-import {
-  add,
-  bulk,
-  create,
-  destroy,
-  get,
-  index,
-  query,
-  remove,
-  update,
-} from "../services/data.ts";
-import { HYPER_LEGACY_GET_HEADER } from "../utils/hyper-request.ts";
+import { add, bulk, create, destroy, get, index, query, remove, update } from '../services/data.ts';
+import { HYPER_LEGACY_GET_HEADER } from '../utils/hyper-request.ts';
 
 const test = Deno.test;
 
-test("data.add", async () => {
+test('data.add', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "POST");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'POST');
 
     return Promise.resolve(
-      new Request("http://localhost", {
-        method: "POST",
+      new Request('http://localhost', {
+        method: 'POST',
         body: JSON.stringify(h.body),
       }),
     );
   };
-  const request = await add({ id: "game-1", type: "game" })(mockRequest);
+  const request = await add({ id: 'game-1', type: 'game' })(mockRequest);
   const body = await request.json();
-  assertEquals(body.type, "game");
+  assertEquals(body.type, 'game');
 });
 
-test("data.get", async () => {
+test('data.get', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "GET");
-    assertEquals(h.resource, "game-1");
-    assertEquals(h.headers?.get(HYPER_LEGACY_GET_HEADER), "false");
-    return Promise.resolve(new Request("http://localhost"));
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'GET');
+    assertEquals(h.resource, 'game-1');
+    assertEquals(h.headers?.get(HYPER_LEGACY_GET_HEADER), 'false');
+    return Promise.resolve(new Request('http://localhost'));
   };
 
-  await get("game-1")(mockRequest);
+  await get('game-1')(mockRequest);
 });
 
-test("data.update", async () => {
+test('data.update', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "PUT");
-    assertEquals(h.resource, "game-1");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'PUT');
+    assertEquals(h.resource, 'game-1');
     return Promise.resolve(
-      new Request("http://localhost", {
-        method: "PUT",
+      new Request('http://localhost', {
+        method: 'PUT',
         body: JSON.stringify(h.body),
       }),
     );
   };
 
-  const result = await update("game-1", { id: "game-1", type: "game" })(
+  const result = await update('game-1', { id: 'game-1', type: 'game' })(
     mockRequest,
   );
   const body = await result.json();
-  assertEquals(body.type, "game");
+  assertEquals(body.type, 'game');
 });
 
-test("data.remove", async () => {
+test('data.remove', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "DELETE");
-    assertEquals(h.resource, "game-1");
-    return Promise.resolve(new Request("http://localhost"));
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'DELETE');
+    assertEquals(h.resource, 'game-1');
+    return Promise.resolve(new Request('http://localhost'));
   };
-  await remove("game-1")(mockRequest);
+  await remove('game-1')(mockRequest);
 });
 
-test("data.query", async () => {
+test('data.query', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "POST");
-    assertEquals(h.action, "_query");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'POST');
+    assertEquals(h.action, '_query');
     return Promise.resolve(
-      new Request("http://localhost", {
-        method: "POST",
+      new Request('http://localhost', {
+        method: 'POST',
         body: JSON.stringify(h.body),
       }),
     );
   };
-  const result = await query({ type: "game" })(mockRequest);
+  const result = await query({ type: 'game' })(mockRequest);
   const body = await result.json();
-  assertEquals(body.selector.type, "game");
+  assertEquals(body.selector.type, 'game');
 });
 
-test("data.bulk", async () => {
+test('data.bulk', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "POST");
-    assertEquals(h.action, "_bulk");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'POST');
+    assertEquals(h.action, '_bulk');
     return Promise.resolve(
-      new Request("http://localhost", {
-        method: "POST",
+      new Request('http://localhost', {
+        method: 'POST',
         body: JSON.stringify(h.body),
       }),
     );
   };
-  const result = await bulk([{ id: "game-1", type: "game" }])(mockRequest);
+  const result = await bulk([{ id: 'game-1', type: 'game' }])(mockRequest);
   const body = await result.json();
-  assertEquals(body[0].id, "game-1");
+  assertEquals(body[0].id, 'game-1');
 });
 
-test("data.index", async () => {
+test('data.index', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "POST");
-    assertEquals(h.action, "_index");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'POST');
+    assertEquals(h.action, '_index');
     return Promise.resolve(
-      new Request("http://localhost", {
-        method: "POST",
+      new Request('http://localhost', {
+        method: 'POST',
         body: JSON.stringify(h.body),
       }),
     );
   };
-  const result = await index("foo", ["type"])(mockRequest);
+  const result = await index('foo', ['type'])(mockRequest);
   const body = await result.json();
-  assertEquals(body.name, "foo");
-  assertEquals(body.fields[0], "type");
+  assertEquals(body.name, 'foo');
+  assertEquals(body.fields[0], 'type');
 });
 
-test("data.create", async () => {
+test('data.create', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "PUT");
-    return Promise.resolve(new Request("http://localhost", { method: "PUT" }));
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'PUT');
+    return Promise.resolve(new Request('http://localhost', { method: 'PUT' }));
   };
 
   await create()(mockRequest);
 });
 
-test("data.destroy", async () => {
+test('data.destroy', async () => {
   const mockRequest = (h: HyperRequest) => {
-    assertEquals(h.service, "data");
-    assertEquals(h.method, "DELETE");
+    assertEquals(h.service, 'data');
+    assertEquals(h.method, 'DELETE');
     return Promise.resolve(
-      new Request("http://localhost", { method: "DELETE" }),
+      new Request('http://localhost', { method: 'DELETE' }),
     );
   };
 

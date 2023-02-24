@@ -1,4 +1,4 @@
-import { gql } from "../../../deps.js";
+import { gql } from '../../../deps.js';
 
 const typeDefs = gql`
   """
@@ -14,10 +14,10 @@ const typeDefs = gql`
 
 const resolvers = {
   PerPortInfo: {
-    cache: () => ({ port: "Cache" }),
-    storage: () => ({ port: "Storage" }),
-    data: () => ({ port: "Data" }),
-    hooks: () => ({ port: "Hooks" }),
+    cache: () => ({ port: 'Cache' }),
+    storage: () => ({ port: 'Storage' }),
+    data: () => ({ port: 'Data' }),
+    hooks: () => ({ port: 'Hooks' }),
   },
 };
 

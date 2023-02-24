@@ -1,28 +1,28 @@
-import { app, cache, fs, minisearch, pouchdb, queue } from "./deps.js";
+import { app, cache, fs, minisearch, pouchdb, queue } from './deps.js';
 
-import { DIR } from "./dir.js";
+import { DIR } from './dir.js';
 
 export default {
   app,
   adapters: [
     {
-      port: "data",
+      port: 'data',
       plugins: [pouchdb({ dir: DIR })],
     },
     {
-      port: "cache",
+      port: 'cache',
       plugins: [cache({ dir: DIR })],
     },
     {
-      port: "storage",
+      port: 'storage',
       plugins: [fs({ dir: DIR })],
     },
     {
-      port: "search",
+      port: 'search',
       plugins: [minisearch({ dir: DIR })],
     },
     {
-      port: "queue",
+      port: 'queue',
       plugins: [queue({ dir: DIR })],
     },
   ],

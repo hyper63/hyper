@@ -1,4 +1,4 @@
-import { z } from "./deps.js";
+import { z } from './deps.js';
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -12,7 +12,7 @@ import { z } from "./deps.js";
  * ok: true is always parsed
  */
 const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
-  z.discriminatedUnion("ok", [
+  z.discriminatedUnion('ok', [
     // ok: true
     schema.extend({
       ok: z.literal(true),
@@ -34,7 +34,7 @@ const putObjectUploadSchemaArgs = z.object({
   object: z.string(),
   stream: z.any().refine(
     (val) => val != null, // intentionally not "double equals" to catch undefined and null
-    { message: "stream must be defined" },
+    { message: 'stream must be defined' },
   ),
   // omitting is falsey, so make it optional, but MUST be false if defined
   useSignedUrl: z.literal(false).optional(),

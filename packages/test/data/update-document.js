@@ -1,5 +1,5 @@
-import { $fetch } from "../lib/utils.js";
-import { assertEquals } from "asserts";
+import { $fetch } from '../lib/utils.js';
+import { assertEquals } from 'asserts';
 
 const test = Deno.test;
 
@@ -15,13 +15,12 @@ export default function (data) {
       .toPromise());
   */
 
-  test("PUT /data/:store/:id - update document should be successful", () =>
-    create({ _id: "63", type: "test" })
+  test('PUT /data/:store/:id - update document should be successful', () =>
+    create({ _id: '63', type: 'test' })
       .chain(
-        () =>
-          update({ id: "63", doc: { _id: "63", type: "test", name: "foo" } }),
+        () => update({ id: '63', doc: { _id: '63', type: 'test', name: 'foo' } }),
       )
-      .map((result) => (assertEquals(result.ok, true), "63"))
+      .map((result) => (assertEquals(result.ok, true), '63'))
       .chain(remove) // cleanup
       .toPromise());
 }

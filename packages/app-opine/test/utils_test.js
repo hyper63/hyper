@@ -1,7 +1,7 @@
-import { crocks } from "../deps.js";
-import { assert, assertEquals } from "../dev_deps.js";
+import { crocks } from '../deps.js';
+import { assert, assertEquals } from '../dev_deps.js';
 
-import { fork, isFile, isMultipartFormData, isTrue } from "../utils.js";
+import { fork, isFile, isMultipartFormData, isTrue } from '../utils.js';
 
 const { Async } = crocks;
 
@@ -13,14 +13,13 @@ const res = {
   },
 };
 
-const env = Deno.env.get("DENO_ENV");
-const cleanup = () =>
-  env ? Deno.env.set("DENO_ENV", env) : Deno.env.delete("DENO_ENV");
+const env = Deno.env.get('DENO_ENV');
+const cleanup = () => env ? Deno.env.set('DENO_ENV', env) : Deno.env.delete('DENO_ENV');
 
-Deno.test("utils", async (t) => {
-  await t.step("fork", async (t) => {
-    await t.step("should sanitize errors on both branches", async () => {
-      Deno.env.set("DENO_ENV", "production");
+Deno.test('utils', async (t) => {
+  await t.step('fork', async (t) => {
+    await t.step('should sanitize errors on both branches', async () => {
+      Deno.env.set('DENO_ENV', 'production');
 
       // resolved success
       await fork(res, 200, Async.Resolved({ ok: true }));
@@ -30,7 +29,7 @@ Deno.test("utils", async (t) => {
       await fork(
         res,
         200,
-        Async.Resolved({ ok: false, originalErr: "foobar" }),
+        Async.Resolved({ ok: false, originalErr: 'foobar' }),
       );
       assertEquals(result.ok, false);
       assert(!result.originalErr);
@@ -39,15 +38,15 @@ Deno.test("utils", async (t) => {
       await fork(
         res,
         200,
-        Async.Rejected({ ok: false, originalErr: "foobar" }),
+        Async.Rejected({ ok: false, originalErr: 'foobar' }),
       );
-      assertEquals(result, "Internal Server Error");
+      assertEquals(result, 'Internal Server Error');
 
       cleanup();
     });
 
-    await t.step("should NOT sanitize errors on both branches", async () => {
-      Deno.env.set("DENO_ENV", "foo");
+    await t.step('should NOT sanitize errors on both branches', async () => {
+      Deno.env.set('DENO_ENV', 'foo');
 
       // resolved success
       await fork(res, 200, Async.Resolved({ ok: true }));
@@ -57,7 +56,7 @@ Deno.test("utils", async (t) => {
       await fork(
         res,
         200,
-        Async.Resolved({ ok: false, originalErr: "foobar" }),
+        Async.Resolved({ ok: false, originalErr: 'foobar' }),
       );
       assertEquals(result.ok, false);
       assert(result.originalErr);
@@ -66,7 +65,7 @@ Deno.test("utils", async (t) => {
       await fork(
         res,
         200,
-        Async.Rejected({ ok: false, originalErr: "foobar" }),
+        Async.Rejected({ ok: false, originalErr: 'foobar' }),
       );
       assertEquals(result.ok, false);
       assert(result.originalErr);
@@ -75,38 +74,38 @@ Deno.test("utils", async (t) => {
     });
   });
 
-  await t.step("isMultipartFormData", async (t) => {
+  await t.step('isMultipartFormData', async (t) => {
     await t.step(
-      "should return true if header indicates multipart/form-data",
+      'should return true if header indicates multipart/form-data',
       () => {
-        assert(isMultipartFormData("multipart/form-data"));
-        assert(!isMultipartFormData("application/json"));
+        assert(isMultipartFormData('multipart/form-data'));
+        assert(!isMultipartFormData('application/json'));
         assert(!isMultipartFormData());
       },
     );
   });
 
-  await t.step("isFile", async (t) => {
+  await t.step('isFile', async (t) => {
     await t.step(
-      "should return true if path points to a file",
+      'should return true if path points to a file',
       () => {
-        assert(isFile("/foo.jpg"));
-        assert(!isFile("/foo"));
+        assert(isFile('/foo.jpg'));
+        assert(!isFile('/foo'));
         assert(!isFile());
       },
     );
   });
 
-  await t.step("isTrue", async (t) => {
+  await t.step('isTrue', async (t) => {
     await t.step(
-      "should return true if value is true-like",
+      'should return true if value is true-like',
       () => {
         assert(isTrue(true));
-        assert(isTrue("true"));
-        assert(!isTrue("t"));
+        assert(isTrue('true'));
+        assert(!isTrue('t'));
         assert(!isTrue(false));
-        assert(!isTrue("false"));
-        assert(!isTrue(""));
+        assert(!isTrue('false'));
+        assert(!isTrue(''));
       },
     );
   });

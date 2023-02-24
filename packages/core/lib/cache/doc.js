@@ -1,16 +1,16 @@
-import { crocks, ms, R } from "../../deps.js";
-import { apply, is, legacyGet, of, triggerEvent } from "../utils/mod.js";
+import { crocks, ms, R } from '../../deps.js';
+import { apply, is, legacyGet, of, triggerEvent } from '../utils/mod.js';
 
 const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = R;
 const { hasProp } = crocks;
 
-const INVALID_KEY = "key is not valid";
-const INVALID_RESULT = "result is not valid";
+const INVALID_KEY = 'key is not valid';
+const INVALID_RESULT = 'result is not valid';
 const convertTTL = over(
-  lensProp("ttl"),
+  lensProp('ttl'),
   (ttl) => (ttl ? String(ms(ttl)) : null),
 );
-const removeTTL = ifElse(compose(isNil, prop("ttl")), omit(["ttl"]), identity);
+const removeTTL = ifElse(compose(isNil, prop('ttl')), omit(['ttl']), identity);
 
 /**
  * @param {string} store
@@ -24,8 +24,8 @@ export const create = (store, key, value, ttl) =>
     .map(convertTTL)
     .map(removeTTL)
     .chain(is(validKey, INVALID_KEY))
-    .chain(apply("createDoc"))
-    .chain(triggerEvent("CACHE:CREATE"))
+    .chain(apply('createDoc'))
+    .chain(triggerEvent('CACHE:CREATE'))
     .chain(is(validResult, INVALID_RESULT));
 
 /**
@@ -36,9 +36,9 @@ export const create = (store, key, value, ttl) =>
 export const get = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
-    .chain(apply("getDoc"))
-    .chain(triggerEvent("CACHE:GET"))
-    .chain(legacyGet("CACHE:GET"));
+    .chain(apply('getDoc'))
+    .chain(triggerEvent('CACHE:GET'))
+    .chain(legacyGet('CACHE:GET'));
 // .chain(is(validResult, INVALID_RESULT));
 
 /**
@@ -53,8 +53,8 @@ export const update = (store, key, value, ttl) =>
     .map(convertTTL)
     .map(removeTTL)
     .chain(is(validKey, INVALID_KEY))
-    .chain(apply("updateDoc"))
-    .chain(triggerEvent("CACHE:UPDATE"))
+    .chain(apply('updateDoc'))
+    .chain(triggerEvent('CACHE:UPDATE'))
     .chain(is(validResult, INVALID_RESULT));
 /**
  * @param {string} store
@@ -64,8 +64,8 @@ export const update = (store, key, value, ttl) =>
 export const del = (store, key) =>
   of({ store, key })
     .chain(is(validKey, INVALID_KEY))
-    .chain(apply("deleteDoc"))
-    .chain(triggerEvent("CACHE:DELETE"))
+    .chain(apply('deleteDoc'))
+    .chain(triggerEvent('CACHE:DELETE'))
     .chain(is(validResult, INVALID_RESULT));
 
 // validators predicate functions
@@ -83,7 +83,7 @@ function validKey({ key }) {
 }
 
 function validResult(result) {
-  if (result && hasProp("ok", result)) {
+  if (result && hasProp('ok', result)) {
     return true;
   }
   console.log({ result });

@@ -1,11 +1,11 @@
-import eventMgr from "./event-mgr.js";
-import { assertEquals } from "../dev_deps.js";
+import eventMgr from './event-mgr.js';
+import { assertEquals } from '../dev_deps.js';
 
 const test = Deno.test;
 
 const events = eventMgr();
 
-test("event mgr - happy path", () => {
+test('event mgr - happy path', () => {
   return new Promise(function (resolve) {
     let count = 0;
     const log = function (action) {
@@ -21,14 +21,14 @@ test("event mgr - happy path", () => {
 
     //
     events.dispatch({
-      type: "SEARCH:CREATE_DOC",
-      payload: { date: new Date().toISOString(), app: "foo", id: "1234" },
+      type: 'SEARCH:CREATE_DOC',
+      payload: { date: new Date().toISOString(), app: 'foo', id: '1234' },
     });
 
     setTimeout(() => {
       events.dispatch({
-        type: "DATA:READ_DOC",
-        payload: { date: new Date().toISOString(), app: "bar", id: "4321" },
+        type: 'DATA:READ_DOC',
+        payload: { date: new Date().toISOString(), app: 'bar', id: '4321' },
       });
     }, 500);
   });

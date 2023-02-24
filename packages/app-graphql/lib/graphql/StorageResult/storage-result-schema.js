@@ -1,4 +1,4 @@
-import { gql, R } from "../../../deps.js";
+import { gql, R } from '../../../deps.js';
 
 const {
   allPass,
@@ -14,7 +14,7 @@ const {
   prop,
 } = R;
 
-const omitOk = omit(["ok"]);
+const omitOk = omit(['ok']);
 
 const returnIf = (pred, left = identity, right = always(null)) =>
   ifElse(
@@ -39,7 +39,7 @@ const typeDefs = gql`
 
 const resolvers = {
   StorageResult: {
-    type: () => "storage",
+    type: () => 'storage',
     msg: ({ msg }) => msg,
     ok: ({ ok }) => Boolean(ok),
     object: returnIf(
@@ -47,7 +47,7 @@ const resolvers = {
         allPass([
           compose(
             not,
-            has("objects"),
+            has('objects'),
           ),
           compose(
             not,
@@ -60,7 +60,7 @@ const resolvers = {
       omitOk,
     ),
     objects: compose(
-      prop("objects"),
+      prop('objects'),
       omitOk,
       defaultTo({}),
     ),

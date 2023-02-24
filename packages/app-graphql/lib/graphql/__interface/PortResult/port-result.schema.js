@@ -1,4 +1,4 @@
-import { gql } from "../../../../deps.js";
+import { gql } from '../../../../deps.js';
 
 const typeDefs = gql`
   interface PortResult {
@@ -12,14 +12,14 @@ const resolvers = {
   PortResult: {
     __resolveType: (portResult) => {
       switch (portResult) {
-        case "cache":
-          return "CacheResult";
-        case "data":
-          return "DataResult";
-        case "storage":
-          return "StorageResult";
+        case 'cache':
+          return 'CacheResult';
+        case 'data':
+          return 'DataResult';
+        case 'storage':
+          return 'StorageResult';
         default:
-          return "UnknownResult";
+          return 'UnknownResult';
       }
     },
   },

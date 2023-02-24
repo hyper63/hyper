@@ -1,5 +1,5 @@
-import { crocks, isHyperErr } from "../../deps.js";
-import { HyperErrFrom } from "./err.js";
+import { crocks, isHyperErr } from '../../deps.js';
+import { HyperErrFrom } from './err.js';
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks;
 
@@ -8,20 +8,18 @@ const { ask, lift, liftFn } = ReaderAsync;
 
 const { Left, Right } = Either;
 
-const doValidate = (pred, msg) => (value) =>
-  pred(value) ? Right(value) : Left({ ok: false, msg });
+const doValidate = (pred, msg) => (value) => pred(value) ? Right(value) : Left({ ok: false, msg });
 
 export { liftFn };
 
-export * from "./err.js";
+export * from './err.js';
 
 /**
  * takes a predicate function and error message
  * if the predicate function fails then returns an object with an error message
  * if the predicate function passes then the value is passed down the chain
  */
-export const is = (fn, msg) =>
-  compose(lift, eitherToAsync, doValidate(fn, msg));
+export const is = (fn, msg) => compose(lift, eitherToAsync, doValidate(fn, msg));
 /**
  * uses the reader monad to get the environment, in this case a service
  * module and invokes a method on that module passing the data from the

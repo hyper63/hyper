@@ -1,9 +1,7 @@
-import { gql, R, urlJoin } from "../../../deps.js";
+import { gql, R, urlJoin } from '../../../deps.js';
 
-import { STORAGE_PATH } from "../../constants.js";
-import {
-  hyper63ServicesContextLens,
-} from "../../utils/hyper63-context.lens.js";
+import { STORAGE_PATH } from '../../constants.js';
+import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js';
 
 const { view } = R;
 
@@ -29,7 +27,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Storage: {
-    info: () => ({ port: "Storage" }),
+    info: () => ({ port: 'Storage' }),
     name: ({ name }) => name,
     /**
      * GraphQL does not serve files. We only provide metadata for file here
@@ -41,7 +39,7 @@ const resolvers = {
         ok: true,
         // Provide url to download in GraphQL response
         url: urlJoin(
-          `${req.protocol}://${req.get("host")}`,
+          `${req.protocol}://${req.get('host')}`,
           STORAGE_PATH,
           name,
           prefix,

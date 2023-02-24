@@ -1,18 +1,18 @@
-import validateConfig from "./config-schema.js";
-import { assertEquals } from "../dev_deps.js";
+import validateConfig from './config-schema.js';
+import { assertEquals } from '../dev_deps.js';
 
 const test = Deno.test;
 
 const noop = () => null;
-const plugin = () => ({ id: "foo", load: noop, link: noop });
+const plugin = () => ({ id: 'foo', load: noop, link: noop });
 
-test("validate schema", () => {
+test('validate schema', () => {
   try {
     validateConfig({
       app: noop,
       adapters: [
-        { port: "queue", plugins: [plugin()] },
-        { port: "crawler", plugins: [plugin()] },
+        { port: 'queue', plugins: [plugin()] },
+        { port: 'crawler', plugins: [plugin()] },
       ],
     });
     assertEquals(true, true);

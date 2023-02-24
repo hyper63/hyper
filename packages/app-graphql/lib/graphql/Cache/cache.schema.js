@@ -1,7 +1,7 @@
-import { gql, R } from "../../../deps.js";
+import { gql, R } from '../../../deps.js';
 const { view } = R;
 
-import { hyper63ServicesContextLens } from "../../utils/hyper63-context.lens.js";
+import { hyper63ServicesContextLens } from '../../utils/hyper63-context.lens.js';
 
 const typeDefs = gql`
   """
@@ -26,7 +26,7 @@ const typeDefs = gql`
 const resolvers = {
   // TODO: check that cache with this name exists
   Cache: {
-    info: () => ({ port: "Cache" }),
+    info: () => ({ port: 'Cache' }),
     name: ({ name }) => {
       return name;
     },

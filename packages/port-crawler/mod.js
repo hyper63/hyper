@@ -1,4 +1,4 @@
-import { z } from "./deps.js";
+import { z } from './deps.js';
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.
@@ -12,7 +12,7 @@ import { z } from "./deps.js";
  * ok: true is always parsed
  */
 const hyperResSchema = (schema = z.object({ ok: z.boolean() })) =>
-  z.discriminatedUnion("ok", [
+  z.discriminatedUnion('ok', [
     // ok: true
     schema.extend({
       ok: z.literal(true),
@@ -71,7 +71,7 @@ const Port = z.object({
     .returns(
       z.promise(hyperResSchema()),
     ),
-  "delete": z.function()
+  'delete': z.function()
     .args(z.object({
       app: z.string(),
       name: z.string(),

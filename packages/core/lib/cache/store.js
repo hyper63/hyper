@@ -1,13 +1,13 @@
-import { R } from "../../deps.js";
+import { R } from '../../deps.js';
 
-import { apply, is, of, triggerEvent } from "../utils/mod.js";
+import { apply, is, of, triggerEvent } from '../utils/mod.js';
 
 const { toLower } = R;
 
-const INVALID_NAME_MSG = "name is not valid";
-const INVALID_RESULT_MSG = "result is not valid";
+const INVALID_NAME_MSG = 'name is not valid';
+const INVALID_RESULT_MSG = 'result is not valid';
 
-export const index = () => apply("index")().chain(triggerEvent("CACHE:INDEX"));
+export const index = () => apply('index')().chain(triggerEvent('CACHE:INDEX'));
 
 /**
  * @param {string} name
@@ -17,8 +17,8 @@ export const create = (name) =>
   of(name)
     .map(toLower)
     .chain(is(validName, INVALID_NAME_MSG))
-    .chain(apply("createStore"))
-    .chain(triggerEvent("CACHE:CREATE_STORE"))
+    .chain(apply('createStore'))
+    .chain(triggerEvent('CACHE:CREATE_STORE'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 /**
@@ -28,8 +28,8 @@ export const create = (name) =>
 export const del = (name) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
-    .chain(apply("destroyStore"))
-    .chain(triggerEvent("CACHE:DELETE_STORE"))
+    .chain(apply('destroyStore'))
+    .chain(triggerEvent('CACHE:DELETE_STORE'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 /**
@@ -41,8 +41,8 @@ export const query = (name, pattern) =>
   of(name)
     .chain(is(validName, INVALID_NAME_MSG))
     .map((name) => ({ store: name, pattern }))
-    .chain(apply("listDocs"))
-    .chain(triggerEvent("CACHE:LIST"))
+    .chain(apply('listDocs'))
+    .chain(triggerEvent('CACHE:LIST'))
     .chain(is(validResult, INVALID_RESULT_MSG));
 
 // validators predicate functions

@@ -1,5 +1,5 @@
-import { R } from "../deps.js";
-import { fork } from "../utils.js";
+import { R } from '../deps.js';
+import { fork } from '../utils.js';
 
 const { mergeRight } = R;
 

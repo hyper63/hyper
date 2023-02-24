@@ -1,4 +1,4 @@
-import { gql } from "../../../deps.js";
+import { gql } from '../../../deps.js';
 
 const typeDefs = gql`
   """
@@ -14,7 +14,7 @@ const typeDefs = gql`
 
 const resolvers = {
   CacheResult: {
-    type: () => "cache",
+    type: () => 'cache',
     msg: ({ msg }) => msg,
     ok: ({ ok }) => Boolean(ok),
     // Map both doc and docs to data in schema

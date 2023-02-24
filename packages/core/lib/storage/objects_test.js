@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-unused-vars
-import { R } from "../../deps.js";
-import { assertEquals } from "../../dev_deps.js";
-import * as objects from "./objects.js";
+import { R } from '../../deps.js';
+import { assertEquals } from '../../dev_deps.js';
+import * as objects from './objects.js';
 
 const { tap } = R;
 
@@ -20,7 +20,7 @@ const mock = {
   listObjects({ bucket, prefix }) {
     return Promise.resolve({
       ok: true,
-      objects: ["one.txt", "two.txt", "three.txt"],
+      objects: ['one.txt', 'two.txt', 'three.txt'],
     });
   },
 };
@@ -37,18 +37,18 @@ const events = {
 };
 
 test(
-  "put object",
+  'put object',
   () => {
     // upload
     fork(
       objects
         .put(
-          "test",
-          "README.md",
-          "foo", // fs.createReadStream(path.resolve('../../README.md'))
+          'test',
+          'README.md',
+          'foo', // fs.createReadStream(path.resolve('../../README.md'))
         )
         .map(tap(({ stream, useSignedUrl }) => {
-          assertEquals(stream, "foo");
+          assertEquals(stream, 'foo');
           assertEquals(useSignedUrl, false);
         }))
         .runWith({ svc: mock, events }),
@@ -58,8 +58,8 @@ test(
     fork(
       objects
         .put(
-          "test",
-          "README.md",
+          'test',
+          'README.md',
           undefined,
           true,
         )
@@ -72,10 +72,10 @@ test(
   },
 );
 
-test("get object", () => {
+test('get object', () => {
   // download
   fork(
-    objects.get("test", "README.md")
+    objects.get('test', 'README.md')
       .map(tap(({ useSignedUrl }) => {
         assertEquals(useSignedUrl, undefined);
       }))
@@ -83,7 +83,7 @@ test("get object", () => {
   );
 
   fork(
-    objects.get("test", "README.md", true)
+    objects.get('test', 'README.md', true)
       .map(tap(({ useSignedUrl }) => {
         assertEquals(useSignedUrl, true);
       }))
@@ -92,7 +92,7 @@ test("get object", () => {
 });
 
 test(
-  "remove bucket",
-  fork(objects.remove("beep").runWith({ svc: mock, events })),
+  'remove bucket',
+  fork(objects.remove('beep').runWith({ svc: mock, events })),
 );
-test("list buckets", fork(objects.list().runWith({ svc: mock, events })));
+test('list buckets', fork(objects.list().runWith({ svc: mock, events })));
