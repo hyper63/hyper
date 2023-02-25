@@ -1,5 +1,5 @@
 <h1 align="center">hyper-port-cache</h1>
-<p align="center">The Cache Port for the <a href="https://hyper.io/">hyper</a>  service framework</p>
+<p align="center">The Cache Port for the <a href="https://hyper.io/">hyper</a> service framework</p>
 </p>
 <p align="center">
   <a href="https://nest.land/package/hyper-port-cache"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
