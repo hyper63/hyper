@@ -1,21 +1,15 @@
 {
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
   "name": "hyper-port-data",
-  "entry": "./mod.js",
+  "entry": "./mod.ts",
   "description": "Hyper service framework port for Data adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
   "version": "1.2.1",
   "unstable": false,
   "unlisted": false,
-  "files": [
-    "./*"
-  ],
-  "ignore": [
-    "./package.json",
-    "./scripts/*",
-    "./.git*"
-  ],
+  "files": ["./*"],
+  "ignore": ["./.git*"],
   "checkFormat": false,
   "checkTests": false,
   "checkInstallation": false,
