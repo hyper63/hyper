@@ -1,0 +1,62 @@
+name: 🏎 Test & Deploy Cache Port
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/port-cache/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/port-cache/**"
+    tags:
+      - 'hyper-port-cache@*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: ⚡ Run Tests
+        run: |
+          cd packages/port-cache
+          deno task test
+        env:
+          CI: true
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: 🥚 Setup Eggs CLI
+        run: |
+          deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.10/eggs.ts
+          export PATH="/home/runner/.deno/bin:$PATH"
+          eggs link ${{ secrets.NESTAPIKEY }}
+
+      - name: 📘 Publish to Nest
+        run: |
+          cd packages/port-cache
+          eggs publish --yes 
