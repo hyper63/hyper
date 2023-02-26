@@ -1,4 +1,5 @@
-name: test queue port
+name: 🤓 Test Queue Port
+
 on:
   pull_request:
     branches:
@@ -7,21 +8,29 @@ on:
       - "packages/port-queue/**"
   push:
     branches:
-      - "main"
+      - main
     paths:
       - "packages/port-queue/**"
+
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         deno-version: [1.x]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Deno ${{ matrix.deno-version }}
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-      - run: cd packages/port-queue && ./scripts/test.sh
+
+      - name: ⚡ Run Tests
+        run: |
+          cd packages/port-queue
+          deno task test
         env:
           CI: true
