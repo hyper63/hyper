@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "test": "deno lint && deno fmt --check && deno test -A --no-check",
+    "cache": "deno cache --lock=deno.lock --lock-write deps.js dev_deps.js"
+  },
+  "fmt": {
+    "files": {
+      "include": ["./"]
+    },
+    "options": {
+      "lineWidth": 100,
+      "singleQuote": true,
+      "semiColons": false
+    }
+  }
+}
