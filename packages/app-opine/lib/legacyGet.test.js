@@ -1,7 +1,7 @@
 import { opine } from '../deps.js'
 import { assert, superdeno } from '../dev_deps.js'
 
-import legacyGet from '../lib/legacyGet.js'
+import legacyGet from './legacyGet.js'
 
 Deno.test('legacyGet', async (t) => {
   const app = opine()

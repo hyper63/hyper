@@ -1,7 +1,7 @@
-import { crocks } from '../deps.js'
-import { assert, assertEquals } from '../dev_deps.js'
+import { crocks } from './deps.js'
+import { assert, assertEquals } from './dev_deps.js'
 
-import { fork, isFile, isMultipartFormData, isTrue } from '../utils.js'
+import { fork, isFile, isMultipartFormData, isTrue } from './utils.js'
 
 const { Async } = crocks
 
