@@ -38,7 +38,7 @@ jobs:
           CI: true
 
   publish:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/hyper-port-queue@')
     needs: [test]
     runs-on: ubuntu-latest
     steps:
