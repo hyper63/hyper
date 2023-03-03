@@ -16,8 +16,7 @@
   "ignore": [
     "./package.json",
     "./scripts/*",
-    "./.git*",
-    "./test/**/*"
+    "./.git*"
   ],
   "checkFormat": false,
   "checkTests": false,

@@ -1,7 +1,7 @@
 import { opine } from '../deps.js'
 import { assert, superdeno } from '../dev_deps.js'
 
-import formData from '../lib/formData.js'
+import formData from './formData.js'
 
 Deno.test('formData', async (t) => {
   const app = opine()
