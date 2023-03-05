@@ -8,5 +8,9 @@
       "singleQuote": true,
       "semiColons": false
     }
-  }
+  },
+  /**
+   * We don't want a lockfile at the root of the monorepo
+   */
+  "lock": false
 }
