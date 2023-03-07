@@ -1,7 +1,7 @@
 {
   "tasks": {
     "test": "deno lint && deno fmt --check && deno test -A --unstable --no-check",
-    "cache": "deno cache --lock=deno.lock --lock-write mod.test.ts"
+    "cache": "deno cache --lock=deno.lock --lock-write deps.ts dev_deps.ts"
   },
   "fmt": {
     "files": {
