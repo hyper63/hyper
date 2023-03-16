@@ -13,30 +13,48 @@ Deno.test('legacyGet', async (t) => {
   const harness = createHarness(app)
 
   await t.step('should set isLegacyGetEnabled to true', async () => {
-    await harness.start()
-    const on = await harness('/foo/bar', {
-      headers: { 'x-hyper-legacy-get': 'true' },
-    }).then((res) => res.json())
-    assert(on.isLegacyGetEnabled)
-    await harness.stop()
+    await harness
+      .start()
+      .then(() =>
+        harness('/foo/bar', {
+          headers: { 'x-hyper-legacy-get': 'true' },
+        })
+          .then((res) => res.json())
+          .then((body) => {
+            assert(body.isLegacyGetEnabled)
+          })
+      )
+      .finally(async () => await harness.stop())
   })
 
   await t.step('should set isLegacyGetEnabled to false', async () => {
-    await harness.start()
-    const off = await harness('/foo/bar', {
-      headers: { 'x-hyper-legacy-get': 'false' },
-    }).then((res) => res.json())
-    assert(!off.isLegacyGetEnabled)
-    await harness.stop()
+    await harness
+      .start()
+      .then(() =>
+        harness('/foo/bar', {
+          headers: { 'x-hyper-legacy-get': 'false' },
+        })
+          .then((res) => res.json())
+          .then((body) => {
+            assert(!body.isLegacyGetEnabled)
+          })
+      )
+      .finally(async () => await harness.stop())
   })
 
   await t.step(
     'should not set isLegacyGetEnabled if header is not provided',
     async () => {
-      await harness.start()
-      const on = await harness('/foo/bar').then((res) => res.json())
-      assert(on.isLegacyGetEnabled === undefined)
-      await harness.stop()
+      await harness
+        .start()
+        .then(() =>
+          harness('/foo/bar')
+            .then((res) => res.json())
+            .then((body) => {
+              assert(body.isLegacyGetEnabled === undefined)
+            })
+        )
+        .finally(async () => await harness.stop())
     },
   )
 })
