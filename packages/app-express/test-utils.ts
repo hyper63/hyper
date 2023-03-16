@@ -22,6 +22,19 @@ export const createHarness = (app: Server) => {
   let _port: number
 
   /**
+   * Crude way of reducing the chances of using a port that has already been used
+   */
+  const usedPorts = new Set()
+  function getUnusedPort(): number | undefined {
+    const port = getAvailablePortSync()
+    if (!port) return
+
+    // Recurse
+    if (usedPorts.has(port)) return getUnusedPort()
+    usedPorts.add(port)
+    return port
+  }
+  /**
    * We try to stop the server if there's an unhandled rejection ie.
    * an assertion error, but there are no guarantees that this will fire in time
    * (see not on stop() below)
@@ -38,7 +51,7 @@ export const createHarness = (app: Server) => {
    */
   const h = (path: string, init?: RequestInit) => fetch(`http://localhost:${_port}${path}`, init)
 
-  h.start = (port = getAvailablePortSync()) =>
+  h.start = (port = getUnusedPort()) =>
     new Promise<void>((resolve) => {
       _port = port || 3000
       server = app.listen(port, resolve)
@@ -49,7 +62,7 @@ export const createHarness = (app: Server) => {
    */
   h.stop = () => {
     return new Promise<void>((resolve) => {
-      server.close(resolve)
+      server && server.close(resolve)
       server = undefined
     })
   }
