@@ -30,6 +30,8 @@ export const createHarness = (app: Server) => {
     if (!port) return
 
     // Recurse
+    // https://github.com/denoland/deno/issues/13141#issuecomment-997398801
+    if (port === 80 || port === 443) return getUnusedPort()
     if (usedPorts.has(port)) return getUnusedPort()
     usedPorts.add(port)
     return port
