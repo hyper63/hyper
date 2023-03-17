@@ -6,7 +6,7 @@ import * as search from './services/search.ts'
 import * as info from './services/info.ts'
 import * as storage from './services/storage.ts'
 import * as queue from './services/queue.ts'
-import { hyper } from './utils/hyper-request.ts'
+import { fetchWithShim, hyper } from './utils/hyper-request.ts'
 
 import type {
   HyperCache,
@@ -60,174 +60,183 @@ export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
       .then((r) => (response.ok ? r : assoc('status', response.status, r)))
       .then((r) => (response.status >= 500 ? Promise.reject(r) : r))
 
+  /**
+   * This is a shim to support https://github.com/hyper63/hyper/issues/566
+   */
+  const $fetch = fetchWithShim(fetch)
+
   return {
     data: {
       add: (body) =>
         Promise.resolve(h)
           .then(data.add(body))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
-      get: (id) => Promise.resolve(h).then(data.get(id)).then(fetch).then(handleResponse),
+      get: (id) => Promise.resolve(h).then(data.get(id)).then($fetch).then(handleResponse),
       list: (options) =>
         Promise.resolve(h)
           .then(data.list(options))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       update: (id, doc) =>
         Promise.resolve(h)
           .then(data.update(id, doc))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       remove: (id) =>
         Promise.resolve(h)
           .then(data.remove(id))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       query: (selector, options) =>
         Promise.resolve(h)
           .then(data.query(selector, options))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       bulk: (docs) =>
         Promise.resolve(h)
           .then(data.bulk(docs))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       index: (indexName, fields) =>
         Promise.resolve(h)
           .then(data.index(indexName, fields))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
-      create: () => Promise.resolve(h).then(data.create()).then(fetch).then(handleResponse),
+      create: () =>
+        Promise.resolve(h)
+          .then(data.create())
+          .then($fetch)
+          .then(handleResponse),
       destroy: (confirm) =>
         Promise.resolve(h)
           .then(data.destroy(confirm))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
     cache: {
       add: (key, value, ttl) =>
         Promise.resolve(h)
           .then(cache.add(key, value, ttl))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       get: (key) =>
         Promise.resolve(h)
           .then(cache.get(key))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       remove: (key) =>
         Promise.resolve(h)
           .then(cache.remove(key))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       set: (key, value, ttl) =>
         Promise.resolve(h)
           .then(cache.set(key, value, ttl))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       query: (pattern) =>
         Promise.resolve(h)
           .then(cache.query(pattern))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       create: () =>
         Promise.resolve(h)
           .then(cache.create())
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       destroy: (confirm) =>
         Promise.resolve(h)
           .then(cache.destroy(confirm))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
     search: {
       add: (key, doc) =>
         Promise.resolve(h)
           .then(search.add(key, doc))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       remove: (key) =>
         Promise.resolve(h)
           .then(search.remove(key))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       get: (key) =>
         Promise.resolve(h)
           .then(search.get(key))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       update: (key, doc) =>
         Promise.resolve(h)
           .then(search.update(key, doc))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       query: (query, options) =>
         Promise.resolve(h)
           .then(search.query(query, options))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       load: (docs) =>
         Promise.resolve(h)
           .then(search.load(docs))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       create: (fields, storeFields) =>
         Promise.resolve(h)
           .then(search.create(fields, storeFields))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       destroy: (confirm) =>
         Promise.resolve(h)
           .then(search.destroy(confirm))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
     storage: {
       upload: (name, data) =>
         Promise.resolve(h)
           .then(storage.upload(name, data))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       download: (name) =>
         Promise.resolve(h)
           .then(storage.download(name))
-          .then(fetch)
+          .then($fetch)
           .then((res) => res.body as ReadableStream),
       signedUrl: (name, options) =>
         Promise.resolve(h)
           .then(storage.signedUrl(name, options))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       remove: (name) =>
         Promise.resolve(h)
           .then(storage.remove(name))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
     queue: {
       enqueue: (job) =>
         Promise.resolve(h)
           .then(queue.enqueue(job))
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       errors: () =>
         Promise.resolve(h)
           .then(queue.errors())
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
       queued: () =>
         Promise.resolve(h)
           .then(queue.queued())
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
     info: {
       services: () =>
         Promise.resolve(h)
           .then(info.services())
-          .then(fetch)
+          .then($fetch)
           .then(handleResponse),
     },
   }
