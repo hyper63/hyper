@@ -1,7 +1,7 @@
-import { assert, assertEquals } from '../dev_deps.ts'
+import { assert, assertEquals, assertObjectMatch } from '../dev_deps.ts'
 
 import { generateToken } from '../deps.deno.ts'
-import { hyper, HYPER_LEGACY_GET_HEADER } from '../utils/hyper-request.ts'
+import { fetchWithShim, hyper, HYPER_LEGACY_GET_HEADER } from '../utils/hyper-request.ts'
 import { HyperRequest } from '../types.ts'
 
 Deno.test('hyper-request', async (t) => {
@@ -15,6 +15,65 @@ Deno.test('hyper-request', async (t) => {
       } catch (error: any) {
         assert(false, error.message)
       }
+    })
+  })
+
+  await t.step('fetchWithShim', async (t) => {
+    const $fetch = fetchWithShim(
+      // deno-lint-ignore require-await
+      async (url, init) => {
+        return new Response(init?.body, {
+          headers: {
+            ...Object.fromEntries(init?.headers as Headers),
+            url: url as string,
+            method: init?.method as string,
+          },
+        })
+      },
+    )
+
+    await t.step(
+      'should make the fetch call with the parts of the providedRequest object',
+      async () => {
+        await $fetch(
+          new Request('https://foo.bar', {
+            headers: {
+              Authorization: 'Bearer foo',
+              'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({ foo: 'bar' }),
+          }),
+        )
+          .then((res) => {
+            const headers = res.headers
+            assertEquals(headers.get('content-type'), 'application/json')
+            assertEquals(headers.get('url'), 'https://foo.bar/')
+            assertEquals(headers.get('method'), 'PUT')
+            return res.json()
+          })
+          .then((body) => {
+            assertObjectMatch(body, { foo: 'bar' })
+          })
+      },
+    )
+
+    await t.step('should work with an empty body', async () => {
+      await $fetch(
+        new Request('https://foo.bar?fizz=buzz', {
+          headers: {
+            Authorization: 'Bearer foo',
+            'Content-Type': 'application/json',
+          },
+          method: 'PUT',
+        }),
+      ).then((res) => {
+        const headers = res.headers
+        assertEquals(headers.get('content-type'), 'application/json')
+        assertEquals(headers.get('url'), 'https://foo.bar/?fizz=buzz')
+        assertEquals(headers.get('method'), 'PUT')
+        assertEquals(res.body, null)
+      })
     })
   })
 

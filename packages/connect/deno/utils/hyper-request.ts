@@ -16,6 +16,23 @@ interface HyperRequestParams {
 
 export const HYPER_LEGACY_GET_HEADER = 'X-HYPER-LEGACY-GET'
 
+/**
+ * This is a shim to support https://github.com/hyper63/hyper/issues/566
+ *
+ * We take fetch, and a Request object and split the Request object into
+ * it url and RequestInit pieces to pass to Request
+ */
+export const fetchWithShim = (f: typeof fetch) =>
+/**
+ * Technically we should be able to pass the Request
+ * as the RequestInit https://github.com/whatwg/fetch/issues/1486
+ *
+ * But I am honestly worried that wouldn't work when transpiled to Node,
+ * so just manually build out the RequestInit for now.
+ */
+(req: Request): Promise<Response> =>
+  f(req.url, { headers: req.headers, method: req.method, body: req.body })
+
 export const hyper = (conn: URL, domain: string) =>
 async ({
   service,
