@@ -11,6 +11,11 @@
         "node/harness/esm/node_modules",
         "./yarn.lock"
       ]
+    },
+    "options": {
+      "lineWidth": 100,
+      "singleQuote": true,
+      "semiColons": false
     }
   },
   "lint": {
