@@ -19,18 +19,17 @@ Deno.test('hyper-request', async (t) => {
   })
 
   await t.step('fetchWithShim', async (t) => {
-    const $fetch = fetchWithShim(
-      // deno-lint-ignore require-await
-      async (url, init) => {
-        return new Response(init?.body, {
-          headers: {
-            ...Object.fromEntries(init?.headers as Headers),
-            url: url as string,
-            method: init?.method as string,
-          },
-        })
-      },
-    )
+    // deno-lint-ignore require-await
+    globalThis.fetch = async (url, init) => {
+      return new Response(init?.body, {
+        headers: {
+          ...Object.fromEntries(init?.headers as Headers),
+          url: url as string,
+          method: init?.method as string,
+        },
+      })
+    }
+    const $fetch = fetchWithShim(fetch)
 
     await t.step(
       'should make the fetch call with the parts of the providedRequest object',

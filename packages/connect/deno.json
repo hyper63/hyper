@@ -1,4 +1,10 @@
 {
+  "tasks": {
+    "test": "deno lint && deno fmt && deno test -A --no-lock --unstable deno/tests",
+    "test:integration": "make test-integration",
+    "to-node": "make clean to-node",
+    "cache": "deno cache --lock=deno.lock --lock-write deno/deps.deno.ts deno/dev_deps.ts"
+  },
   "fmt": {
     "files": {
       "exclude": [
