@@ -1,6 +1,6 @@
 {
   "name": "hyper-connect",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "license": "Apache-2.0",
   "type": "module",
   "description": "A client built on fetch to consume hyper services",

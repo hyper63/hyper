@@ -1,8 +1,25 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See
-[standard-version](https://github.com/conventional-changelog/standard-version) for commit
-guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.7.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.6.2...hyper-connect@v0.7.0) (2023-03-18)
+
+
+### Features
+
+* **app-express:** add cache routes and start of tests [#559](https://github.com/hyper63/hyper/issues/559) ([89bd924](https://github.com/hyper63/hyper/commit/89bd924577dbe4f531f7bdb20544e7d2bac03734))
+* **app-express:** add crawler routes and tests [#556](https://github.com/hyper63/hyper/issues/556) ([e5a9ee3](https://github.com/hyper63/hyper/commit/e5a9ee368ffbfa7c47fdbb15c55d3cf10a98dfdb))
+* **app-express:** add middleware and utils [#556](https://github.com/hyper63/hyper/issues/556) ([b202ff3](https://github.com/hyper63/hyper/commit/b202ff3e9ddc2676c6a3e240717eadd75a61ea30))
+* **app-express:** add queue routes and start of tests [#564](https://github.com/hyper63/hyper/issues/564) ([ba27185](https://github.com/hyper63/hyper/commit/ba27185499ac24319244a7e006547ea0e3e25e4d))
+* **app-express:** add search routes and start of test [#562](https://github.com/hyper63/hyper/issues/562) ([f576fa1](https://github.com/hyper63/hyper/commit/f576fa189f9bde681cd25116f1f681b609fd5a55))
+* **app-express:** data service routes and beginning tests [#556](https://github.com/hyper63/hyper/issues/556) ([5d56163](https://github.com/hyper63/hyper/commit/5d56163accc16b88cace437f29025f6eb4201976))
+* **app-express:** mount util for all service routes [#556](https://github.com/hyper63/hyper/issues/556) ([e202c3b](https://github.com/hyper63/hyper/commit/e202c3b7f62b209947b022b1eca9ca217bd20295))
+* **app-express:** start express driving adapter [#556](https://github.com/hyper63/hyper/issues/556) ([e135eaf](https://github.com/hyper63/hyper/commit/e135eafdb426d12e722cfcba19f30a6244a583a8))
+
+
+### Bug Fixes
+
+* **app-express:** make json middleware more flexible [#562](https://github.com/hyper63/hyper/issues/562) ([7f57d82](https://github.com/hyper63/hyper/commit/7f57d82c422eeaf76ceffbe88b93fe989051fd47))
 
 ### [0.6.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.6.1...hyper-connect@v0.6.2) (2023-02-20)
 
