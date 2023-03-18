@@ -67,6 +67,7 @@ jobs:
           deno task test:integration
         env:
           CI: true
+          HYPER: ${{ secrets.CONNECT_INTEGRATION_HYPER }}
 
   publish-egg:
     if: startsWith(github.ref, 'refs/tags/hyper-connect@')

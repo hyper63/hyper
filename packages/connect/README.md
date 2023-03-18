@@ -236,9 +236,9 @@ export const validateSignature(req, res, next) {
 
 ### Contributing
 
-- `make test` to run unit tests
-- `make test-integration` to run integration tests. This ensures the Deno code is properly
-  transformed into Node code.
+- `deno task test` to run unit tests
+- `deno task test:integration` to run integration tests. This ensures the Deno code is properly
+  transformed into Node code. See [the Node test harness for more info](./node/harness/).
 
 ---
 
