@@ -31,7 +31,15 @@ export const fetchWithShim = (f: typeof fetch) =>
  * so just manually build out the RequestInit for now.
  */
 (req: Request): Promise<Response> =>
-  f(req.url, { headers: req.headers, method: req.method, body: req.body })
+  f(req.url, {
+    headers: req.headers,
+    method: req.method,
+    /**
+     * duplex needed for node
+     * See https://github.com/nodejs/node/issues/46221
+     */
+    ...(req.body ? { body: req.body, duplex: 'half' } : {}),
+  })
 
 export const hyper = (conn: URL, domain: string) =>
 async ({
