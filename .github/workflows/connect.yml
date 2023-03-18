@@ -1,0 +1,121 @@
+name: 🔌 Test & Deploy Hyper Connect
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/connect/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/connect/**"
+    tags:
+      - 'hyper-connect@*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: ⚡ Run Tests
+        run: |
+          cd packages/connect
+          deno task test
+        env:
+          CI: true
+
+  test-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        deno-version: [1.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
+      
+      - name: ⚡ Run Tests
+        run: |
+          cd packages/connect
+          yarn
+          deno task test
+          deno task test:integration
+        env:
+          CI: true
+
+  publish-egg:
+    if: startsWith(github.ref, 'refs/tags/hyper-connect@')
+    needs: [test, test-node]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: 🥚 Setup Eggs CLI
+        run: |
+          deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.10/eggs.ts
+          export PATH="/home/runner/.deno/bin:$PATH"
+          eggs link ${{ secrets.NESTAPIKEY }}
+
+      - name: 📘 Publish to Nest
+        run: |
+          cd packages/port-cache
+          eggs publish --yes 
+
+  publish-npm:
+    if: startsWith(github.ref, 'refs/tags/hyper-connect@')
+    needs: [test, test-node]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 1.x
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version:  18.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 🦠 Publish to NPM
+        run: |
+          cd packages/connect
+          yarn
+          deno task to-node
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
