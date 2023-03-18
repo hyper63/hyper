@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.0...hyper-connect@v0.7.1) (2023-03-18)
+
+
+### Bug Fixes
+
+* **connect:** add duplex when body is present [#1566](https://github.com/hyper63/hyper/issues/1566) ([141beec](https://github.com/hyper63/hyper/commit/141beec3862ae2a19360e776fbee56b20c3abad2))
+
 ## [0.7.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.6.2...hyper-connect@v0.7.0) (2023-03-18)
 
 
