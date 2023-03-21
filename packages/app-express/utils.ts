@@ -55,8 +55,7 @@ export const fork = <R extends HyperResponse, L = any>(
     },
   )
 
-export const isMultipartFormData = (contentType: string) => {
-  contentType = contentType || ''
+export const isMultipartFormData = (contentType = '') => {
   return contentType.startsWith('multipart/form-data')
 }
 
