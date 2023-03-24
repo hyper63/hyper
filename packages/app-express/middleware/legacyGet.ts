@@ -6,3 +6,11 @@ export const legacyGet: RouteHandler = (req, _res, next) => {
   req.isLegacyGetEnabled = isTrue(req.get('X-HYPER-LEGACY-GET'))
   next()
 }
+
+declare global {
+  namespace Express {
+    export interface Request {
+      isLegacyGetEnabled?: boolean
+    }
+  }
+}
