@@ -1,4 +1,4 @@
-name: Tag and Release
+name: 🔖 Tag and Release
 
 on:
   workflow_dispatch:
@@ -21,33 +21,41 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+    
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
         with:
           # Allows for pushes from this workflow to trigger subsequent workflows 
           token: ${{ secrets.CI_GITHUB_TOKEN }}
           fetch-depth: 0
-      - uses: actions/setup-node@v2
+      
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x
-      - name: set git user
+          node-version: 18.x
+
+      - name: 🤓 Set Git User
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      - name: bump
+
+      - name: ✊ Bump
         id: bump
         uses: hyper63/hyper-ci-bump@main
         with:
-          bump-to: ${{github.event.inputs.version}}
-          package: ${{github.event.inputs.package}}
-          prefix: ${{github.event.inputs.prefix}}
-          runtime: ${{github.event.inputs.runtime}}
-      - name: push
+          bump-to: ${{ github.event.inputs.version }}
+          package: ${{ github.event.inputs.package }}
+          prefix: ${{ github.event.inputs.prefix }}
+          runtime: ${{ github.event.inputs.runtime }}
+
+      - name: ⬆️ Push
         run: |
           git push --follow-tags
-      - name: create github release
+
+      - name: 🤖 Create Github Release
         if: steps.bump.outputs.tag
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{steps.bump.outputs.tag}}
+          tag_name: ${{ steps.bump.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
