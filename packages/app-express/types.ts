@@ -25,9 +25,8 @@ export interface HyperServices {
 
 declare global {
   namespace Express {
-    export interface Request extends HyperServices {
-      isLegacyGetEnabled?: boolean
-    }
+    // deno-lint-ignore no-empty-interface
+    export interface Request extends HyperServices {}
   }
 }
 
@@ -48,3 +47,5 @@ export type ErrorRouteHandler = (
   res: HttpResponse,
   next: express.NextFunction,
 ) => void
+
+export type UploadedFile = Express.Multer.File
