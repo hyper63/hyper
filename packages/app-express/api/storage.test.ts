@@ -23,6 +23,22 @@ const services: any = {
         name,
         object,
       }),
+    getObject: (_name: any, object: any, useSignedUrl: boolean) => {
+      if (object === 'not_found') {
+        return crocks.Async.Resolved({
+          ok: false,
+          msg: 'not found',
+          status: 404,
+        })
+      }
+      if (useSignedUrl) {
+        return crocks.Async.Resolved({ ok: true, url: 'https://foo.bar' })
+      }
+
+      return crocks.Async.Resolved(
+        new Response('Some awesome object content').body,
+      )
+    },
   },
 }
 
@@ -136,6 +152,118 @@ Deno.test('storage', async (t) => {
           .finally(async () => await harness.stop())
       },
     )
+  })
+
+  await t.step('GET /storage/:name/*', async (t) => {
+    await t.step('Object', async (t) => {
+      await t.step(
+        'should set the Content-Type header according to the extension on the url',
+        async () => {
+          await harness
+            .start()
+            .then(() =>
+              harness('/storage/movies/foo/bar.txt', {
+                method: 'GET',
+              }).then((res) => {
+                assertEquals(
+                  res.headers.get('content-type'),
+                  'text/plain; charset=UTF-8',
+                )
+                return res.body?.cancel()
+              })
+            )
+            .finally(async () => await harness.stop())
+        },
+      )
+
+      await t.step(
+        'should default to application/octet-stream if no mime-type can be derived from the url',
+        async () => {
+          await harness
+            .start()
+            .then(() =>
+              harness('/storage/movies/foo/bar', {
+                method: 'GET',
+              }).then((res) => {
+                assertEquals(
+                  res.headers.get('content-type'),
+                  'application/octet-stream',
+                )
+                return res.body?.cancel()
+              })
+            )
+            .finally(async () => await harness.stop())
+        },
+      )
+
+      await t.step('should stream the data from core', async () => {
+        // no extension
+        await harness
+          .start()
+          .then(() =>
+            harness('/storage/movies/foo/bar', {
+              method: 'GET',
+            })
+              .then((res) => res.text())
+              .then((body) => {
+                assertEquals(body, 'Some awesome object content')
+              })
+          )
+          .finally(async () => await harness.stop())
+
+        // with extension
+        await harness
+          .start()
+          .then(() =>
+            harness('/storage/movies/foo/bar.txt', {
+              method: 'GET',
+            })
+              .then((res) => res.text())
+              .then((body) => {
+                assertEquals(body, 'Some awesome object content')
+              })
+          )
+          .finally(async () => await harness.stop())
+      })
+    })
+
+    await t.step('JSON', async (t) => {
+      await t.step(
+        'should return JSON if a HyperErr comes back from core',
+        async () => {
+          await harness
+            .start()
+            .then(() =>
+              harness('/storage/movies/not_found', {
+                method: 'GET',
+              }).then((res) => {
+                assertEquals(
+                  res.headers.get('content-type'),
+                  'application/json; charset=utf-8',
+                )
+                return res.body?.cancel()
+              })
+            )
+            .finally(async () => await harness.stop())
+        },
+      )
+
+      await t.step(
+        'should set the status to the status in the HyperErr that comes back from core',
+        async () =>
+          await harness
+            .start()
+            .then(() =>
+              harness('/storage/movies/not_found', {
+                method: 'GET',
+              }).then((res) => {
+                assertEquals(res.status, 404)
+                return res.body?.cancel()
+              })
+            )
+            .finally(async () => await harness.stop()),
+      )
+    })
   })
 
   // TODO: add more test coverage here

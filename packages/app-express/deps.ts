@@ -7,7 +7,8 @@ export { default as multer } from 'npm:multer@1.4.4'
 export { default as bodyParser } from 'npm:body-parser@1.20.2'
 export { default as cors } from 'npm:cors@2.8.5'
 
-export { readerFromIterable } from 'https://deno.land/std@0.181.0/streams/reader_from_iterable.ts'
+export { readableStreamFromIterable } from 'https://deno.land/std@0.182.0/streams/mod.ts'
+export { contentType as getMimeType } from 'https://deno.land/std@0.182.0/media_types/mod.ts'
 
 /**
  * We will try to use skypack over npm

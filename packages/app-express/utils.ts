@@ -32,6 +32,7 @@ export const fork = <R extends HyperResponse, L = any>(
   res: HttpResponse,
   code = 200,
   m: Forkable<R, L>,
+  isIterable = false,
 ) =>
   m.fork(
     (err) => {
@@ -39,7 +40,7 @@ export const fork = <R extends HyperResponse, L = any>(
       console.log(err)
       res.status(500).send(isProduction() ? 'Internal Server Error' : err)
     },
-    (serviceResult) => {
+    async (serviceResult) => {
       if (isHyperErr(serviceResult)) {
         /**
          * Use status in HyperError and fallback to 500
@@ -49,6 +50,28 @@ export const fork = <R extends HyperResponse, L = any>(
         return res
           .status(serviceResult.status || 500)
           .send(isProduction() ? sanitizeErr(serviceResult) : serviceResult)
+      }
+
+      /**
+       * The result is an Iterable ie. a ReadableStream
+       * and so should be written in chunks to the Response
+       * object.
+       *
+       * Once all chunks are written to Response,
+       * we call end() to instruct the server to consider
+       * this response "done"
+       */
+      if (isIterable) {
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        for await (const chunk of serviceResult) {
+          // deno-lint-ignore ban-ts-comment
+          // @ts-ignore
+          res.write(chunk)
+        }
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        return res.status(code).end()
       }
 
       res.status(code).send(serviceResult)

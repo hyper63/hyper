@@ -1,10 +1,8 @@
-import { crocks, readerFromIterable } from '../deps.ts'
-import { fork, isFile } from '../utils.ts'
+import { getMimeType, isHyperErr, readableStreamFromIterable } from '../deps.ts'
+import { fork, isFile, isTrue } from '../utils.ts'
 import type { HttpResponse, HyperServices, Server, UploadedFile } from '../types.ts'
 import { bindCore } from '../middleware/bindCore.ts'
 import { formData, objectBodyParser } from '../middleware/object.ts'
-
-const { Async } = crocks
 
 type NameParams = { name: string; 0?: string }
 
@@ -62,30 +60,12 @@ async function formDataObject({
     object = `${path}/${object}`
   }
 
-  const reader: Deno.Reader & Deno.Closer = await Deno.open(file.path, {
-    read: true,
-  })
-  /**
-   * Ensure reader is closed, if defined, to prevent leaks
-   * in the case of a tempfile being created
-   */
-  const cleanup = (
-    _p: PromiseConstructor['resolve'] | PromiseConstructor['reject'],
-  ) =>
-    Async.fromPromise(async (res: unknown) => {
-      if (reader && typeof reader.close === 'function') await reader.close()
-      return _p(res)
-    })
+  const reader = await Deno.open(file.path, { read: true })
 
   return fork(
     res,
     201,
-    storage
-      .putObject(bucket, object, reader, useSignedUrl)
-      .bichain(
-        cleanup(Promise.reject.bind(Promise)),
-        cleanup(Promise.resolve.bind(Promise)),
-      ),
+    storage.putObject(bucket, object, reader.readable, useSignedUrl),
   )
 }
 
@@ -146,7 +126,7 @@ export const storage = (services: HyperServices) => (app: Server) => {
 
       if (isBinary) {
         /**
-         * Convert the Express request into a Deno Reader.
+         * Convert the Express request into a Web ReadableStream.
          *
          * This works because Express' Request is an embellished
          * http.IncomingMessage which is an embellished stream.Readble
@@ -160,9 +140,9 @@ export const storage = (services: HyperServices) => (app: Server) => {
          * without having to first buffer the entire body into memory
          * or onto disk. Depending on the adapter implementation, this means
          * a file could be completely streamed through hyper without having to buffer
-         * the whole file on process. See
+         * the whole file on process.
          */
-        const reader = readerFromIterable(
+        const reader = readableStreamFromIterable(
           req as unknown as AsyncIterable<Uint8Array>,
         )
         return fork(
@@ -176,6 +156,44 @@ export const storage = (services: HyperServices) => (app: Server) => {
         .status(422)
         .json({ ok: false, status: 422, msg: 'Unprocessable Entity' })
     },
+  )
+
+  app.get<NameParams>(
+    '/storage/:name/*',
+    bindCore(services),
+    ({ params, query, storage }, res) =>
+      fork(
+        res,
+        200,
+        storage
+          .getObject(params.name, params[0], isTrue(query.useSignedUrl))
+          // deno-lint-ignore no-explicit-any
+          .map((result: any) => {
+            /**
+             * A hyper error is simply returned as JSON
+             */
+            if (isHyperErr(result)) return result
+            /**
+             * The useSignedUrl flow returns JSON, so simply
+             * return the result and let fork do its thing
+             */
+            if (isTrue(query.useSignedUrl)) return result
+
+            /**
+             * Get mime type based on the object file extension in the url
+             * and default to octet-stream if no extension is found
+             */
+            const extension = params[0]?.split('.')[1]
+            const mimeType = getMimeType(extension || 'application/octet-stream') ||
+              'application/octet-stream'
+
+            res.set({ 'Content-Type': mimeType })
+
+            const readableStream = result
+            return readableStream
+          }),
+        true,
+      ),
   )
 
   /**
