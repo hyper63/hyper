@@ -25,6 +25,7 @@ export const createHarness = (app: Server) => {
    * Crude way of reducing the chances of using a port that has already been used
    */
   const usedPorts = new Set()
+  // deno-lint-ignore no-unused-vars
   function getUnusedPort(): number | undefined {
     const port = getAvailablePortSync()
     if (!port) return
@@ -53,10 +54,10 @@ export const createHarness = (app: Server) => {
    */
   const h = (path: string, init?: RequestInit) => fetch(`http://localhost:${_port}${path}`, init)
 
-  h.start = (port = getUnusedPort()) =>
+  h.start = (port = 3000) =>
     new Promise<void>((resolve) => {
       _port = port || 3000
-      server = app.listen(port, resolve)
+      server = app.listen(_port, resolve)
     })
   /**
    * This HAS to be called before assertions and before the test ends
