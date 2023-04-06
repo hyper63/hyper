@@ -58,7 +58,7 @@ export const data = (services: HyperServices) => (app: Server) => {
 
   app.delete<DbParams & IdParams>(
     '/data/:db/:id',
-    bindCore,
+    bindCore(services),
     ({ data, params }, res) => fork(res, 200, data.removeDocument(params.db, params.id)),
   )
 
