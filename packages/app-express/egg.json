@@ -5,11 +5,17 @@
   "description": "Hyper service framework express RESTful app port",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "unstable": false,
   "unlisted": false,
-  "files": ["./*", "./api/**/*", "./middleware/**/*"],
-  "ignore": ["./.git*"],
+  "files": [
+    "./*",
+    "./api/**/*",
+    "./middleware/**/*"
+  ],
+  "ignore": [
+    "./.git*"
+  ],
   "checkFormat": false,
   "checkTests": false,
   "checkInstallation": false,
