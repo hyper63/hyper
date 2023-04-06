@@ -3,5 +3,5 @@
 </p>
 <p align="center">
   <a href="https://nest.land/package/hyper-port-crawler"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
-  <a href="https://github.com/hyper63/hyper63/actions/workflows/test-port-crawler.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/test-port-crawler.yml/badge.svg" alt="Test" /></a>
+  <a href="https://github.com/hyper63/hyper63/actions/workflows/port-crawler.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/port-crawler.yml/badge.svg" alt="Test" /></a>
 </p>

@@ -3,7 +3,7 @@
 </p>
 <p align="center">
   <a href="https://nest.land/package/hyper-port-search"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
-  <a href="https://github.com/hyper63/hyper63/actions/workflows/test-port-search.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/test-port-search.yml/badge.svg" alt="Test" /></a>
+  <a href="https://github.com/hyper63/hyper63/actions/workflows/port-search.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/port-search.yml/badge.svg" alt="Test" /></a>
 </p>
 
 ---
@@ -16,7 +16,7 @@ validates the schema of a search adapter.
 ## Test
 
 ```sh
-./scripts/test.sh
+deno task test
 ```
 
 ## License
