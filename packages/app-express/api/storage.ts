@@ -1,4 +1,9 @@
-import { getMimeType, isHyperErr, readableStreamFromIterable } from '../deps.ts'
+import {
+  getMimeType,
+  isHyperErr,
+  readableStreamFromIterable,
+  readableStreamFromReader,
+} from '../deps.ts'
 import { fork, isFile, isTrue } from '../utils.ts'
 import type { HttpResponse, HyperServices, Server, UploadedFile } from '../types.ts'
 import { bindCore } from '../middleware/bindCore.ts'
@@ -65,7 +70,12 @@ async function formDataObject({
   return fork(
     res,
     201,
-    storage.putObject(bucket, object, reader.readable, useSignedUrl),
+    storage.putObject(
+      bucket,
+      object,
+      readableStreamFromReader(reader),
+      useSignedUrl,
+    ),
   )
 }
 
@@ -158,6 +168,21 @@ export const storage = (services: HyperServices) => (app: Server) => {
     },
   )
 
+  /**
+   * This path is required to be multipart/form-data
+   * because otherwise the route has no way of determining the name of the file
+   * from the request
+   *
+   * So if it is NOT multipart/form-data, then we will return a 422
+   */
+  app.post<NameParams>(
+    '/storage/:name',
+    bindCore(services),
+    formData,
+    ({ params, file, body, storage }, res) =>
+      formDataObject({ params, file, path: body?.path, storage, res }),
+  )
+
   app.get<NameParams>(
     '/storage/:name/*',
     bindCore(services),
@@ -194,21 +219,6 @@ export const storage = (services: HyperServices) => (app: Server) => {
           }),
         true,
       ),
-  )
-
-  /**
-   * This path is required to be multipart/form-data
-   * because otherwise the route has no way of determining the name of the file
-   * from the request
-   *
-   * So if it is NOT multipart/form-data, then we will return a 422
-   */
-  app.post<NameParams>(
-    '/storage/:name',
-    bindCore(services),
-    formData,
-    ({ params, file, body, storage }, res) =>
-      formDataObject({ params, file, path: body?.path, storage, res }),
   )
 
   app.delete(

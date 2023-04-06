@@ -39,6 +39,25 @@ const services: any = {
         new Response('Some awesome object content').body,
       )
     },
+    putObject: (name: any, object: any, reader: any, useSignedUrl: boolean) => {
+      if (useSignedUrl) {
+        return crocks.Async.Resolved({ ok: true, url: 'https://foo.bar' })
+      }
+
+      return crocks.Async.from(reader)
+        .chain(
+          crocks.Async.fromPromise(async (reader: any) => {
+            const chunks = []
+            for await (const chunk of reader) {
+              console.log('chunk')
+              chunks.push(chunk)
+            }
+            console.log(chunks)
+            return chunks
+          }),
+        )
+        .map((chunks: any) => ({ ok: true, name, object, chunks }))
+    },
   },
 }
 
@@ -266,5 +285,37 @@ Deno.test('storage', async (t) => {
     })
   })
 
-  // TODO: add more test coverage here
+  // await t.step('POST /storage/:name', async (t) => {
+  //   await t.step({
+  //     name: 'should set the Content-Type header',
+  //     fn: async () => {
+  //       const formData = new FormData()
+  //       formData.append(
+  //         'file',
+  //         new Blob([JSON.stringify({ foo: 'bar' }, null, 2)], {
+  //           type: 'application/json',
+  //         }),
+  //         'foobar.json',
+  //       )
+
+  //       await harness
+  //         .start()
+  //         .then(() =>
+  //           harness('/storage/movies', {
+  //             method: 'POST',
+  //             body: formData,
+  //           }).then((res) => {
+  //             assertEquals(
+  //               res.headers.get('content-type'),
+  //               'application/json; charset=utf-8',
+  //             )
+  //             return res.body?.cancel()
+  //           })
+  //         )
+  //         .finally(async () => await harness.stop())
+  //     },
+  //     sanitizeResources: false,
+  //     sanitizeOps: false,
+  //   })
+  // })
 })
