@@ -5,11 +5,16 @@
   "description": "Hyper service framework port for Crawler adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "unstable": true,
   "unlisted": false,
-  "files": ["./*"],
-  "ignore": ["./package.json", "./.git*"],
+  "files": [
+    "./*"
+  ],
+  "ignore": [
+    "./package.json",
+    "./.git*"
+  ],
   "checkFormat": false,
   "checkTests": false,
   "checkInstallation": false,
