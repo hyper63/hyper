@@ -1,4 +1,4 @@
-import { assert, assertEquals, base64Encode } from '../../dev_deps.js'
+import { assert, assertEquals, base64Encode } from '../../dev_deps.ts'
 import crawler from './mod.js'
 
 const test = Deno.test

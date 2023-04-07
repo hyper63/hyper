@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import { assertEquals } from '../../dev_deps.js'
+import { assertEquals } from '../../dev_deps.ts'
 
 import * as store from './store.js'
 

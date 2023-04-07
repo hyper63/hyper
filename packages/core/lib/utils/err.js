@@ -1,4 +1,4 @@
-import { HyperErr, isBaseHyperErr, R, z } from '../../deps.js'
+import { HyperErr, isBaseHyperErr, R, z } from '../../deps.ts'
 
 const { ZodError, ZodIssueCode } = z
 

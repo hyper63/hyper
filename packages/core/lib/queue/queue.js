@@ -1,4 +1,4 @@
-import { R } from '../../deps.js'
+import { R } from '../../deps.ts'
 
 import { apply, is, of, triggerEvent } from '../utils/mod.js'
 

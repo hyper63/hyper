@@ -1,5 +1,5 @@
-import { assert, assertEquals } from '../../dev_deps.js'
-import { R, z } from '../../deps.js'
+import { assert, assertEquals } from '../../dev_deps.ts'
+import { R, z } from '../../deps.ts'
 
 import { HyperErrFrom, mapErr, mapStatus } from './err.js'
 

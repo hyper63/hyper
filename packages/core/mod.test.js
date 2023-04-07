@@ -6,7 +6,7 @@ import {
 import memory from 'https://x.nest.land/hyper-adapter-memory@1.2.6/mod.js'
 import { superdeno } from 'https://deno.land/x/superdeno@4.7.2/mod.ts'
 
-import { assertEquals } from './dev_deps.js'
+import { assertEquals } from './dev_deps.ts'
 
 import core from './mod.js'
 

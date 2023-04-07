@@ -1,4 +1,4 @@
-import { cuid, R } from '../../deps.js'
+import { cuid, R } from '../../deps.ts'
 import { apply, legacyGet, of, triggerEvent } from '../utils/mod.js'
 
 const { defaultTo } = R

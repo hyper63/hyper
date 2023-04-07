@@ -1,4 +1,4 @@
-import { crocks, isHyperErr } from '../../deps.js'
+import { crocks, isHyperErr } from '../../deps.ts'
 import { HyperErrFrom } from './err.js'
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks
