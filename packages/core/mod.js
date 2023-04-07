@@ -3,7 +3,7 @@ import wrapCore from './lib/mod.js'
 import validateConfig from './utils/config-schema.js'
 import initAdapters from './utils/plugins.js'
 import eventMgr from './utils/event-mgr.js'
-import { exists, join, R } from './deps.js'
+import { exists, join, R } from './deps.ts'
 
 const { compose, prop, assoc, propOr } = R
 

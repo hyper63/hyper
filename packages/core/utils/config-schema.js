@@ -1,4 +1,4 @@
-import { z } from '../deps.js'
+import { z } from '../deps.ts'
 
 const F = z.function().args(z.any())
 

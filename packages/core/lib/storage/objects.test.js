@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-unused-vars
-import { R } from '../../deps.js'
-import { assertEquals } from '../../dev_deps.js'
+import { R } from '../../deps.ts'
+import { assertEquals } from '../../dev_deps.ts'
 import * as objects from './objects.js'
 
 const { tap } = R

@@ -1,4 +1,4 @@
-import { crocks } from '../../deps.js'
+import { crocks } from '../../deps.ts'
 
 const { Async } = crocks
 

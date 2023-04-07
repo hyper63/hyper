@@ -1,4 +1,4 @@
-import { crocks, ms, R } from '../../deps.js'
+import { crocks, ms, R } from '../../deps.ts'
 import { apply, is, legacyGet, of, triggerEvent } from '../utils/mod.js'
 
 const { compose, identity, ifElse, isNil, lensProp, prop, over, omit } = R

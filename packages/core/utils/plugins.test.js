@@ -1,6 +1,6 @@
 import initAdapters from './plugins.js'
 import validate from './plugin-schema.js'
-import { assertEquals, assertObjectMatch } from '../dev_deps.js'
+import { assertEquals, assertObjectMatch } from '../dev_deps.ts'
 
 const test = Deno.test
 

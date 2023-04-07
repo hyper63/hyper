@@ -1,5 +1,5 @@
 import eventMgr from './event-mgr.js'
-import { assertEquals } from '../dev_deps.js'
+import { assertEquals } from '../dev_deps.ts'
 
 const test = Deno.test
 

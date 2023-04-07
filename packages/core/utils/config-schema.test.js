@@ -1,5 +1,5 @@
 import validateConfig from './config-schema.js'
-import { assertEquals } from '../dev_deps.js'
+import { assertEquals } from '../dev_deps.ts'
 
 const test = Deno.test
 

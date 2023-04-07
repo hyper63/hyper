@@ -1,4 +1,4 @@
-import { R } from '../deps.js'
+import { R } from '../deps.ts'
 
 const {
   unapply,
