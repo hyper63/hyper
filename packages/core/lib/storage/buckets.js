@@ -1,4 +1,4 @@
-import { apply, of, triggerEvent } from '../utils/mod.js'
+import { apply, of, triggerEvent } from '../utils/mod.ts'
 
 // const INVALID_BUCKET_MSG = 'bucket name is not valid'
 // const INVALID_RESPONSE = 'response is not valid'

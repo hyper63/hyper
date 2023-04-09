@@ -1,4 +1,4 @@
-import { apply, of, triggerEvent } from '../utils/mod.js'
+import { apply, of, triggerEvent } from '../utils/mod.ts'
 
 export const put = (bucket, object, stream, useSignedUrl) =>
   of({

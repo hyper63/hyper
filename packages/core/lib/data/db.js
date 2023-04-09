@@ -1,6 +1,6 @@
 import { R } from '../../deps.ts'
 
-import { apply, is, of, triggerEvent } from '../utils/mod.js'
+import { apply, is, of, triggerEvent } from '../utils/mod.ts'
 
 const { lensProp, over } = R
 
