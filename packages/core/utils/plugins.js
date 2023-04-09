@@ -72,7 +72,7 @@ async function initAdapter(portAdapter) {
  * Given a list of port nodes, generate a port for each node, keyed
  * off of the port field on each node
  *
- * @param {[]} adapters - a list of port nodes from a hyper63 config
+ * @param {import('../model.ts').Config['adapters']} adapters - a list of port nodes from a hyper63 config
  */
 export default async function initAdapters(adapters) {
   const svcs = await Promise.all(

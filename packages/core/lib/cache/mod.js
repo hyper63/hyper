@@ -1,5 +1,5 @@
 import * as store from './store.js'
-import * as doc from './doc.js'
+import * as doc from './doc.ts'
 
 export default function ({ cache, events }) {
   const index = () => store.index().runWith({ svc: cache, events })

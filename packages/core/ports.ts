@@ -1,8 +1,9 @@
 // deno-lint-ignore-file no-unused-vars
 import { cache, crawler, data, hooks, queue, search, storage } from './deps.ts'
 
-export default function (adapters) {
-  return ({
+// deno-lint-ignore no-explicit-any
+export function parseHyperServices(adapters: any) {
+  return {
     cache: adapters.cache ? cache(adapters.cache) : null,
     data: adapters.data ? data(adapters.data) : null,
     storage: adapters.storage ? storage(adapters.storage) : null,
@@ -10,5 +11,5 @@ export default function (adapters) {
     queue: adapters.queue ? queue(adapters.queue) : null,
     crawler: adapters.crawler ? crawler(adapters.crawler) : null,
     hooks: adapters.hooks,
-  })
+  }
 }
