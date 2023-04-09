@@ -1,4 +1,4 @@
-import cacheCore from './cache/mod.js'
+import cacheCore from './cache/mod.ts'
 import dataCore from './data/mod.js'
 import storageCore from './storage/mod.js'
 import searchCore from './search/mod.js'

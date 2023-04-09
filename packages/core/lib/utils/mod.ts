@@ -1,6 +1,6 @@
 import { crocks, HyperErr, isHyperErr } from '../../deps.ts'
 import { Event } from '../../model.ts'
-import type { HyperService, ReaderEnvironment } from '../../types.ts'
+import type { AwaitedFn, HyperService, ReaderEnvironment } from '../../types.ts'
 import { HyperErrFrom } from './err.js'
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks
@@ -37,9 +37,23 @@ export const is = <V = unknown>(
  * uses the reader monad to get the environment, in this case a service
  * module and invokes a method on that module passing the data from the
  * pipeline as the arguments
+ *
+ * Abandon all hope, ye who strongly type, here.
+ *
+ * TODO:
+ * I could not figure out how to infer the return type based on calling
+ * 'method' on 'svc' without duping the string. I'm sure there is a TS way of doing this,
+ * but my TS-fu is just not up to snuff
+ *
+ * For now, this get's us what we need
  */
-export const apply = <Service extends HyperService>(method: keyof Service) => (input: unknown) =>
-  ask<ReaderEnvironment<Service>, unknown>(({ svc }) => {
+export const apply = <Service extends HyperService, K extends keyof Service = keyof Service>(
+  method: K,
+) =>
+(input: unknown) =>
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  ask<ReaderEnvironment<Service>, AwaitedFn<Service[K]>>(({ svc }) => {
     return Async.of(input)
       .chain(
         // deno-lint-ignore ban-ts-comment
@@ -71,18 +85,26 @@ export const apply = <Service extends HyperService>(method: keyof Service) => (i
       )
   }).chain(lift)
 
-export const triggerEvent = (type: string) =>
-// deno-lint-ignore no-explicit-any
-(result: any) =>
-  ask<ReaderEnvironment, typeof result>(({ events }) => {
+export const triggerEvent = (type: string) => <R>(result: R): crocks.AsyncReader<R> =>
+  ask<ReaderEnvironment, R>(({ events }) => {
     const payload: Event['payload'] = { date: new Date().toISOString() }
     if (isHyperErr(result)) {
       payload.ok = false
+      // deno-lint-ignore ban-ts-comment
+      // @ts-ignore
       payload.status = result.status
+      // deno-lint-ignore ban-ts-comment
+      // @ts-ignore
       payload.msg = result.msg
     }
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     if (result.name) payload.name = result.name
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     if (result.id) payload.id = result.id
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     if (result.type) payload.type = result.type
 
     events.dispatch({ type: type, payload })
