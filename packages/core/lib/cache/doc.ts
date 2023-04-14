@@ -1,25 +1,43 @@
 import { type CachePort, ms, R } from '../../deps.ts'
-import { apply, is, legacyGet, of, triggerEvent } from '../utils/mod.ts'
+import type { ReaderEnvironment } from '../../types.ts'
 
-const { compose, identity, ifElse, isNil, prop, omit } = R
+import {
+  $logHyperErr,
+  $resolveHyperErr,
+  Async,
+  AsyncReader,
+  is,
+  legacyGet,
+  triggerEvent,
+} from '../utils/mod.ts'
 
-const convertTTL = (arg: { ttl?: string } = {}) => ({
+const { ask, of, lift } = AsyncReader
+const { isNil, omit } = R
+
+const convertTTL = <T extends { ttl?: string }>(arg: T) => ({
   ...arg,
   ttl: arg.ttl ? String(ms(arg.ttl)) : null,
 })
-const removeTTL = ifElse(compose(isNil, prop('ttl')), omit(['ttl']), identity)
+const removeTTL = <T extends { ttl?: string }>(arg: T) => {
+  if (isNil(arg.ttl)) {
+    return omit(['ttl'], arg)
+  }
+  return arg
+}
 
-const checkKeyIsValid = is(({ key }: { key: string }) => {
-  /**
-   * rules:
-   * must begin with lowercase letter
-   * rest of the name must be a combination of:
-   * lowercase letters
-   * digits 0-9
-   * or any of these characters - _ $ +
-   */
-  return /^[a-z]+$/.test(key[0]) && /^[a-z0-9-~_/$/+]+$/.test(key)
-}, 'key is not valid')
+function checkKeyIsValid<T extends { key: string }>(input: T) {
+  return is<T>(({ key }) => {
+    /**
+     * rules:
+     * must begin with lowercase letter
+     * rest of the name must be a combination of:
+     * lowercase letters
+     * digits 0-9
+     * or any of these characters - _ $ +
+     */
+    return /^[a-z]+$/.test(key[0]) && /^[a-z0-9-~_/$/+]+$/.test(key)
+  }, 'key is not valid')(input)
+}
 
 /**
  * @param {string} store
@@ -37,7 +55,13 @@ export const create = (
     .map(convertTTL)
     .map(removeTTL)
     .chain(checkKeyIsValid)
-    .chain(apply<CachePort, 'createDoc'>('createDoc'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.createDoc(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:CREATE'))
 
 /**
@@ -47,7 +71,13 @@ export const create = (
 export const get = (store: string, key: string) =>
   of({ store, key })
     .chain(checkKeyIsValid)
-    .chain(apply<CachePort, 'getDoc'>('getDoc'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.getDoc(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:GET'))
     .chain(legacyGet('CACHE:GET'))
 
@@ -67,7 +97,13 @@ export const update = (
     .map(convertTTL)
     .map(removeTTL)
     .chain(checkKeyIsValid)
-    .chain(apply<CachePort, 'updateDoc'>('updateDoc'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.updateDoc(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:UPDATE'))
 
 /**
@@ -77,5 +113,11 @@ export const update = (
 export const del = (store: string, key: string) =>
   of({ store, key })
     .chain(checkKeyIsValid)
-    .chain(apply<CachePort, 'deleteDoc'>('deleteDoc'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.deleteDoc(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:DELETE'))
