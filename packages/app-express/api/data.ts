@@ -30,7 +30,7 @@ export const data = (services: HyperServices) => (app: Server) => {
   app.get<DbParams>(
     '/data/:db',
     bindCore(services),
-    ({ params, query, data }, res) => fork(res, 200, data.listDocuments(params.db, query)),
+    ({ params, query, data }, res) => fork(res, 200, data.listDocuments(params.db, query || {})),
   )
 
   app.post<DbParams>(
@@ -66,7 +66,7 @@ export const data = (services: HyperServices) => (app: Server) => {
     '/data/:db/_query',
     json(),
     bindCore(services),
-    ({ data, params, body }, res) => fork(res, 200, data.query(params.db, body)),
+    ({ data, params, body }, res) => fork(res, 200, data.query(params.db, body || {})),
   )
 
   app.post<DbParams>(

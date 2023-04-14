@@ -25,6 +25,7 @@ const services: any = {
       }),
     index: (db: any, name: any, fields: any) =>
       crocks.Async.Resolved({ ok: true, db, name, fields }),
+    query: (db: any, query: any) => crocks.Async.Resolved({ ok: true, db, query }),
     bulkDocuments: (db: any, body: any) => crocks.Async.Resolved({ ok: true, db, results: body }),
     listDocuments: (db: any, query: any) => {
       return crocks.Async.Resolved({ ok: true, db, query, docs: [] })
@@ -131,6 +132,24 @@ Deno.test('data', async (t) => {
                  * The app just translates from a format ie. http request
                  */
                 assertEquals(body.query, { limit: '2', foo: 'bar' })
+              })
+          )
+          .finally(() => harness.stop())
+      },
+    )
+
+    await t.step(
+      'should pass the db route param and empty query params to core',
+      async () => {
+        await harness
+          .start()
+          .then(() =>
+            harness('/data/movies')
+              .then((res) => res.json())
+              .then((body) => {
+                assert(body.ok)
+                assertEquals(body.db, 'movies')
+                assertEquals(body.query, {})
               })
           )
           .finally(() => harness.stop())
@@ -378,6 +397,67 @@ Deno.test('data', async (t) => {
           .finally(async () => await harness.stop())
       },
     )
+  })
+
+  await t.step('POST /data/:db/_query', async (t) => {
+    await t.step('should set the content-type header', async () => {
+      await harness
+        .start()
+        .then(() =>
+          harness('/data/movies/_query', {
+            method: 'POST',
+            body: JSON.stringify({
+              type: 'movie',
+            }),
+          }).then((res) => {
+            assertEquals(
+              res.headers.get('content-type'),
+              'application/json; charset=utf-8',
+            )
+            return res.body?.cancel()
+          })
+        )
+        .finally(async () => await harness.stop())
+    })
+
+    await t.step(
+      'should pass db and empty object when there is no body to core',
+      async () => {
+        await harness
+          .start()
+          .then(() =>
+            harness('/data/movies/_query', {
+              method: 'POST',
+              body: JSON.stringify({
+                type: 'movie',
+              }),
+            })
+              .then((res) => res.json())
+              .then((body) => {
+                assertEquals(body.db, 'movies')
+                assertEquals(body.query, { type: 'movie' })
+              })
+          )
+          .finally(async () => await harness.stop())
+      },
+    )
+
+    await t.step('should pass db and empty object to core', async () => {
+      await harness
+        .start()
+        .then(() =>
+          harness('/data/movies/_query', {
+            method: 'POST',
+            // no body
+          })
+            .then((res) => res.json())
+            .then((body) => {
+              assertEquals(body.db, 'movies')
+              assertEquals(body.query, {})
+            })
+        )
+        .finally(async () => await harness.stop())
+    })
   })
 
   await t.step('POST /data/movies/_bulk', async (t) => {
