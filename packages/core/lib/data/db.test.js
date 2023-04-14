@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-unused-vars
 import { assert, assertEquals } from '../../dev_deps.ts'
-import * as db from './db.js'
+import * as db from './db.ts'
 const test = Deno.test
 
 const mockDb = {
