@@ -8,7 +8,7 @@ The core package validates the config schema and plugin schemas
 ## Testing
 
 ```
-./scripts/test.sh
+deno task test
 ```
 
 ## License
