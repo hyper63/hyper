@@ -420,6 +420,25 @@ Deno.test('data', async (t) => {
         .finally(async () => await harness.stop())
     })
 
+    await t.step('should pass db and body to core', async () => {
+      await harness
+        .start()
+        .then(() =>
+          harness('/data/movies/_query', {
+            method: 'POST',
+            body: JSON.stringify({
+              type: 'movie',
+            }),
+          })
+            .then((res) => res.json())
+            .then((body) => {
+              assertEquals(body.db, 'movies')
+              assertEquals(body.query, { type: 'movie' })
+            })
+        )
+        .finally(async () => await harness.stop())
+    })
+
     await t.step(
       'should pass db and empty object when there is no body to core',
       async () => {
@@ -428,36 +447,17 @@ Deno.test('data', async (t) => {
           .then(() =>
             harness('/data/movies/_query', {
               method: 'POST',
-              body: JSON.stringify({
-                type: 'movie',
-              }),
+              // no body
             })
               .then((res) => res.json())
               .then((body) => {
                 assertEquals(body.db, 'movies')
-                assertEquals(body.query, { type: 'movie' })
+                assertEquals(body.query, {})
               })
           )
           .finally(async () => await harness.stop())
       },
     )
-
-    await t.step('should pass db and empty object to core', async () => {
-      await harness
-        .start()
-        .then(() =>
-          harness('/data/movies/_query', {
-            method: 'POST',
-            // no body
-          })
-            .then((res) => res.json())
-            .then((body) => {
-              assertEquals(body.db, 'movies')
-              assertEquals(body.query, {})
-            })
-        )
-        .finally(async () => await harness.stop())
-    })
   })
 
   await t.step('POST /data/movies/_bulk', async (t) => {
