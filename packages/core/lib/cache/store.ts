@@ -1,7 +1,16 @@
 import { type CachePort, R } from '../../deps.ts'
+import type { ReaderEnvironment } from '../../types.ts'
 
-import { apply, is, of, triggerEvent } from '../utils/mod.ts'
+import {
+  $logHyperErr,
+  $resolveHyperErr,
+  Async,
+  AsyncReader,
+  is,
+  triggerEvent,
+} from '../utils/mod.ts'
 
+const { ask, of, lift } = AsyncReader
 const { toLower } = R
 
 const checkNameIsValid = is((name: string) => {
@@ -14,12 +23,13 @@ const checkNameIsValid = is((name: string) => {
 }, 'name is not valid')
 
 export const index = () =>
-  /**
-   * Type is wrong. No argument is needed
-   */
-  // deno-lint-ignore ban-ts-comment
-  // @ts-ignore
-  apply<CachePort, 'index'>('index')().chain(triggerEvent('CACHE:INDEX'))
+  ask(({ svc }: ReaderEnvironment<CachePort>) => {
+    return Async.of(undefined)
+      .chain(Async.fromPromise((input) => svc.index(input)))
+      .bichain($resolveHyperErr, $logHyperErr)
+  })
+    .chain(lift)
+    .chain(triggerEvent('CACHE:INDEX'))
 
 /**
  * @param {string} name
@@ -28,7 +38,13 @@ export const create = (name: string) =>
   of(name)
     .map(toLower)
     .chain(checkNameIsValid)
-    .chain(apply<CachePort, 'createStore'>('createStore'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.createStore(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:CREATE_STORE'))
 
 /**
@@ -37,7 +53,13 @@ export const create = (name: string) =>
 export const del = (name: string) =>
   of(name)
     .chain(checkNameIsValid)
-    .chain(apply<CachePort, 'destroyStore'>('destroyStore'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.destroyStore(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:DELETE_STORE'))
 
 /**
@@ -48,5 +70,11 @@ export const query = (name: string, pattern: string) =>
   of(name)
     .chain(checkNameIsValid)
     .map((name) => ({ store: name, pattern }))
-    .chain(apply<CachePort, 'listDocs'>('listDocs'))
+    .chain((input) =>
+      ask(({ svc }: ReaderEnvironment<CachePort>) => {
+        return Async.of(input)
+          .chain(Async.fromPromise((input) => svc.listDocs(input)))
+          .bichain($resolveHyperErr, $logHyperErr)
+      }).chain(lift)
+    )
     .chain(triggerEvent('CACHE:LIST'))

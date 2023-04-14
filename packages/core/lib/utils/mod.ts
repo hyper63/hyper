@@ -5,16 +5,17 @@ import { HyperErrFrom } from './err.js'
 
 const { Async, compose, ReaderT, Either, eitherToAsync } = crocks
 
-const AsyncReader = ReaderT(Async)
-const { fromPromise } = Async
-const { ask, lift } = AsyncReader
+export const AsyncReader = ReaderT(Async)
+export const { fromPromise } = Async
 const { Left, Right } = Either
 
-const doValidate = <V = unknown>(pred: (val: V) => boolean, msg: string) => (value: V) =>
-  pred(value) ? Right(value) : Left(HyperErr(msg))
+export { Async }
+export const { ask, of, lift } = AsyncReader
 
 export * from './err.js'
 
+const doValidate = <V = unknown>(pred: (val: V) => boolean, msg: string) => (value: V) =>
+  pred(value) ? Right(value) : Left(HyperErr(msg))
 /**
  * Given a predicate function and error message,
  * return a Resolved AsyncReader or Rejected AsyncReader.
@@ -25,13 +26,33 @@ export * from './err.js'
  * If the predicate function returns false, then an Rejected AsyncReader containing
  * a HyperErr with the message
  */
-export const is = <V = unknown>(
-  pred: (val: V) => boolean,
-  msg: string,
-): () => crocks.AsyncReader<V> =>
+export const is = <V>(pred: (val: V) => boolean, msg: string) =>
   // deno-lint-ignore ban-ts-comment
   // @ts-ignore
-  compose(lift, eitherToAsync, doValidate(pred, msg))
+  compose<V, crocks.AsyncReader<V>>(lift, eitherToAsync, doValidate(pred, msg))
+
+export const $logHyperErr = <V>(res: V) => {
+  if (isHyperErr(res)) console.log(res)
+  return Async.Resolved(res)
+}
+
+export const $resolveHyperErr = (err: unknown) => {
+  /**
+   * A hyper error should be returned in a resolved Promise, but
+   * in the case that is returned in a rejected Promise,
+   * we log it as a concern, as it probably indicates incorrect handling
+   * in the adapter
+   */
+  if (isHyperErr(err)) {
+    console.warn(
+      'Rejected hyper error returned. Should this have been Resolved',
+    )
+  }
+  console.log(err)
+  // fuzzy map
+  const hyperErr = HyperErrFrom(err)
+  return Async.Resolved(hyperErr)
+}
 
 /**
  * uses the reader monad to get the environment, in this case a service
@@ -111,11 +132,6 @@ export const triggerEvent = (type: string) => <R>(result: R): crocks.AsyncReader
 
     return Async.Resolved(result)
   }).chain(lift)
-
-/**
- * constructor for an AsyncReader monad
- */
-export const of = AsyncReader.of
 
 /**
  * Given the result of a call into a service (data),

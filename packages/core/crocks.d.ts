@@ -19,14 +19,14 @@ interface Monad<RootV> {
 
 interface Sum<RootLeft, RootRight> extends Monad<RootRight> {
   bimap<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Left>,
-    fn2: UnaryFunction<RootRight, Right>,
-  ): Sum<RootLeft | Left, RootRight | Right>
+    l: UnaryFunction<RootLeft, Left>,
+    r: UnaryFunction<RootRight, Right>,
+  ): Sum<Left, Right>
 
-  bichain<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Sum<Left, Right>>,
-    fn2: UnaryFunction<RootRight, Sum<Left, Right>>,
-  ): Sum<RootLeft | Left, RootRight | Right>
+  bichain<LeftR, LeftL, RightR, RightL>(
+    l: UnaryFunction<RootLeft, Sum<LeftL, RightL>>,
+    r: UnaryFunction<RootRight, Sum<LeftR, RightR>>,
+  ): Sum<LeftL | LeftR, RightL | RightR>
 }
 
 export function Identity<V>(v: V): Identity<V>
@@ -50,18 +50,18 @@ export class Async<RootLeft, RootRight> implements Sum<RootLeft, RootRight> {
   map<Right>(fn: UnaryFunction<RootRight, Right>): Async<RootLeft, Right>
 
   bimap<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Left>,
-    fn2: UnaryFunction<RootRight, Right>,
-  ): Async<RootLeft | Left, RootRight | Right>
+    l: UnaryFunction<RootLeft, Left>,
+    r: UnaryFunction<RootRight, Right>,
+  ): Async<Left, Right>
 
   chain<Left, Right>(
     fn: UnaryFunction<RootRight, Async<Left, Right>>,
   ): Async<Left, Right>
 
-  bichain<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Async<Left, Right>>,
-    fn2: UnaryFunction<RootRight, Async<Left, Right>>,
-  ): Async<RootLeft | Left, RootRight | Right>
+  bichain<LeftR, LeftL, RightR, RightL>(
+    l: UnaryFunction<RootLeft, Sum<LeftL, RightL>>,
+    r: UnaryFunction<RootRight, Sum<LeftR, RightR>>,
+  ): Async<LeftL | LeftR, RightL | RightR>
 
   fork(
     reject: UnaryFunction<RootLeft, unknown>,
@@ -118,18 +118,18 @@ export class Either<RootLeft, RootRight> implements Sum<RootLeft, RootRight> {
   map<Right>(fn: UnaryFunction<RootRight, Right>): Either<RootLeft, Right>
 
   bimap<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Left>,
-    fn2: UnaryFunction<RootRight, Right>,
-  ): Either<RootLeft | Left, RootRight | Right>
+    l: UnaryFunction<RootLeft, Left>,
+    r: UnaryFunction<RootRight, Right>,
+  ): Either<Left, Right>
 
   chain<Left, Right>(
     fn: UnaryFunction<RootRight, Async<Left, Right>>,
   ): Either<Left, Right>
 
-  bichain<Left, Right>(
-    fn1: UnaryFunction<RootLeft, Either<Left, Right>>,
-    fn2: UnaryFunction<RootRight, Either<Left, Right>>,
-  ): Either<RootLeft | Left, RootRight | Right>
+  bichain<LeftR, LeftL, RightR, RightL>(
+    l: UnaryFunction<RootLeft, Sum<LeftL, RightL>>,
+    r: UnaryFunction<RootRight, Sum<LeftR, RightR>>,
+  ): Either<LeftL | LeftR, RightL | RightR>
 
   static Left<V>(val: V): Either<V, void>
   static Right<V>(val: V): Either<void, V>
