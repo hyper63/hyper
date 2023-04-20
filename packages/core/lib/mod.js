@@ -3,7 +3,7 @@ import dataCore from './data/mod.ts'
 import storageCore from './storage/mod.js'
 import searchCore from './search/mod.ts'
 import hooksCore from './hooks/mod.js'
-import queueCore from './queue/mod.js'
+import queueCore from './queue/mod.ts'
 import crawlerCore from './crawler/mod.js'
 
 /**
