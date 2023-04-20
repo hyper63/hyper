@@ -53,7 +53,10 @@ export const remove = (name: string) =>
  * @param {string} db
  * @param {object} query
  */
-export const query = (db: string, query: Record<string, unknown>) =>
+export const query = (
+  db: string,
+  query: Parameters<DataPort['queryDocuments']>[0]['query'],
+) =>
   of({ db, query })
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<DataPort>) => {

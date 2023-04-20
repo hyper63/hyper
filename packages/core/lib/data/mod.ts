@@ -60,8 +60,10 @@ export default function ({
    * @param {string} dbname
    * @param {object} query
    */
-  const query = (dbname: string, query: Record<string, unknown>) =>
-    db.query(dbname, query).runWith({ svc: data, events })
+  const query = (
+    dbname: string,
+    query: Parameters<DataPort['queryDocuments']>[0]['query'],
+  ) => db.query(dbname, query).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname
@@ -75,8 +77,10 @@ export default function ({
    * @param {string} dbname,
    * @param {object} options
    */
-  const listDocuments = (dbname: string, options: Record<string, unknown>) =>
-    db.list(dbname, options).runWith({ svc: data, events })
+  const listDocuments = (
+    dbname: string,
+    options: Omit<Parameters<DataPort['listDocuments']>[0], 'db'>,
+  ) => db.list(dbname, options).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname,
