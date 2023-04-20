@@ -124,6 +124,7 @@ Deno.test('cache', async (t) => {
     await t.step('should set the content-type header', async () => {
       await harness
         .start()
+        // POST
         .then(() =>
           harness('/cache/movies/_query?pattern=foo*', { method: 'POST' }).then(
             (res) => {
@@ -135,10 +136,7 @@ Deno.test('cache', async (t) => {
             },
           )
         )
-        .finally(async () => await harness.stop())
-
-      await harness
-        .start()
+        // GET
         .then(() =>
           harness('/cache/movies/_query?pattern=foo*', { method: 'GET' }).then(
             (res) => {
@@ -158,20 +156,18 @@ Deno.test('cache', async (t) => {
       async () => {
         await harness
           .start()
+          // POST
           .then(() =>
-            harness('/cache/movies/_query?pattern=foo*', { method: 'GET' })
+            harness('/cache/movies/_query?pattern=foo*', { method: 'POST' })
               .then((res) => res.json())
               .then((body) => {
                 assertEquals(body.name, 'movies')
                 assertEquals(body.pattern, 'foo*')
               })
           )
-          .finally(async () => await harness.stop())
-
-        await harness
-          .start()
+          // GET
           .then(() =>
-            harness('/cache/movies/_query?pattern=foo*', { method: 'POST' })
+            harness('/cache/movies/_query?pattern=foo*', { method: 'GET' })
               .then((res) => res.json())
               .then((body) => {
                 assertEquals(body.name, 'movies')

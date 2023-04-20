@@ -1,4 +1,3 @@
-import { getAvailablePortSync } from './dev_deps.ts'
 import type { Server } from './types.ts'
 
 /**
@@ -20,30 +19,13 @@ export const createHarness = (app: Server) => {
   // deno-lint-ignore no-explicit-any
   let server: any
   let _port: number
-
-  /**
-   * Crude way of reducing the chances of using a port that has already been used
-   */
-  const usedPorts = new Set()
-  // deno-lint-ignore no-unused-vars
-  function getUnusedPort(): number | undefined {
-    const port = getAvailablePortSync()
-    if (!port) return
-
-    // Recurse
-    // https://github.com/denoland/deno/issues/17474#issuecomment-1398198358
-    if (port <= 1024) return getUnusedPort()
-    if (usedPorts.has(port)) return getUnusedPort()
-    usedPorts.add(port)
-    return port
-  }
   /**
    * We try to stop the server if there's an unhandled rejection ie.
    * an assertion error, but there are no guarantees that this will fire in time
    * (see not on stop() below)
    */
-  globalThis.addEventListener('unhandledrejection', () => {
-    if (server) server.close()
+  globalThis.addEventListener('unhandledrejection', async () => {
+    if (server) await server.close()
   })
 
   /**
@@ -59,33 +41,22 @@ export const createHarness = (app: Server) => {
       _port = port || 3000
       server = app.listen(_port, resolve)
     })
+
   /**
    * This HAS to be called before assertions and before the test ends
    * otherwise, Deno just outputs "FAILED" with no context as to why
    */
-  h.stop = () => {
-    return new Promise<void>((resolve) => {
+  h.stop = () =>
+    new Promise<void>((resolve) => {
       server && server.close(resolve)
+    }).then(() => {
       server = undefined
     })
-  }
+
   h.root = () => {
     if (!server) throw new Error(`server not started`)
     return `http://localhost:${_port}`
   }
 
   return h
-}
-
-export const withTestHarness = (app: Server) =>
-(
-  testFn: (
-    t: Deno.TestContext,
-    harness: ReturnType<typeof createHarness>,
-  ) => Promise<void>,
-) =>
-async (t: Deno.TestContext) => {
-  const harness = createHarness(app)
-  await harness.start()
-  await testFn(t, harness).finally(() => harness.stop())
 }

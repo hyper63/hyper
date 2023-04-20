@@ -216,10 +216,10 @@ Deno.test('storage', async (t) => {
       )
 
       await t.step('should stream the data from core', async () => {
-        // no extension
         await harness
           .start()
           .then(() =>
+            // no extension
             harness('/storage/movies/foo/bar', {
               method: 'GET',
             })
@@ -228,12 +228,8 @@ Deno.test('storage', async (t) => {
                 assertEquals(body, 'Some awesome object content')
               })
           )
-          .finally(async () => await harness.stop())
-
-        // with extension
-        await harness
-          .start()
           .then(() =>
+            // with extension
             harness('/storage/movies/foo/bar.txt', {
               method: 'GET',
             })
