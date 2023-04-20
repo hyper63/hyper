@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any ban-ts-comment
 import { assert, assertEquals } from '../../dev_deps.ts'
 
-import * as queue from './queue.ts'
+import builder from './mod.ts'
 
 const mockService = {
   index: () => Promise.resolve({ ok: true }),
@@ -14,19 +14,29 @@ const mockService = {
   get({ name, status }: any) {
     return Promise.resolve({ ok: true, name, status })
   },
+  post({ name, job }: any) {
+    return Promise.resolve({ ok: true, name, job })
+  },
+  cancel({ name, id }: any) {
+    return Promise.resolve({ ok: true, name, id })
+  },
 }
 
 const mockEvents = {
   dispatch: () => null,
 }
 
-Deno.test('queue - queue', async (t) => {
+Deno.test('queue', async (t) => {
+  const queue = builder({
+    queue: mockService,
+    events: mockEvents,
+  } as unknown as any)
+
   await t.step('index', async (t) => {
     await t.step('should pass the values to the adapter', async () => {
       await queue
         .index()
         .map(() => assert(true))
-        .runWith({ svc: mockService, events: mockEvents })
         .toPromise()
     })
   })
@@ -47,7 +57,6 @@ Deno.test('queue - queue', async (t) => {
           // @ts-expect-error
           assertEquals(res.target, 'https://foo.bar')
         })
-        .runWith({ svc: mockService, events: mockEvents })
         .toPromise()
     })
 
@@ -64,7 +73,6 @@ Deno.test('queue - queue', async (t) => {
             // @ts-expect-error
             assertEquals(res.name, 'foobar')
           })
-          .runWith({ svc: mockService, events: mockEvents })
           .toPromise()
       },
     )
@@ -77,7 +85,6 @@ Deno.test('queue - queue', async (t) => {
             secret: 'shhh',
             target: 'https://foo.bar',
           })
-          .runWith({ svc: mockService, events: mockEvents })
           .toPromise()
           .then(() => assert(false))
           .catch(() => assert(true))
@@ -90,7 +97,6 @@ Deno.test('queue - queue', async (t) => {
             secret: 'shhh',
             target: 'https://foo.bar',
           })
-          .runWith({ svc: mockService, events: mockEvents })
           .toPromise()
           .then(() => assert(false))
           .catch(() => assert(true))
@@ -103,7 +109,6 @@ Deno.test('queue - queue', async (t) => {
             secret: 'shhh',
             target: 'https://foo.bar',
           })
-          .runWith({ svc: mockService, events: mockEvents })
           .toPromise()
           .then(() => assert(false))
           .catch(() => assert(true))
@@ -111,15 +116,14 @@ Deno.test('queue - queue', async (t) => {
     })
   })
 
-  await t.step('del', async (t) => {
+  await t.step('delete', async (t) => {
     await t.step('should pass the values to the adapter', async () => {
       await queue
-        .del('foobar')
+        .delete('foobar')
         .map((res) => {
           // @ts-expect-error
           assertEquals(res.name, 'foobar')
         })
-        .runWith({ svc: mockService, events: mockEvents })
         .toPromise()
     })
   })
@@ -133,7 +137,34 @@ Deno.test('queue - queue', async (t) => {
           assertEquals(res.name, 'foobar')
           assertEquals(res.status, 'READY')
         })
-        .runWith({ svc: mockService, events: mockEvents })
+        .toPromise()
+    })
+  })
+
+  await t.step('post', async (t) => {
+    await t.step('should pass the values to the adapter', async () => {
+      await queue
+        .post({ name: 'foobar', job: { type: 'FOO_JOB' } })
+        .map((res) => {
+          // @ts-expect-error
+          assertEquals(res.name, 'foobar')
+          // @ts-expect-error
+          assertEquals(res.job, { type: 'FOO_JOB' })
+        })
+        .toPromise()
+    })
+  })
+
+  await t.step('cancel', async (t) => {
+    await t.step('should pass the values to the adapter', async () => {
+      await queue
+        .cancel({ name: 'foobar', id: '1234' })
+        .map((res) => {
+          // @ts-expect-error
+          assertEquals(res.name, 'foobar')
+          // @ts-expect-error
+          assertEquals(res.id, '1234')
+        })
         .toPromise()
     })
   })
