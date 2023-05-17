@@ -134,7 +134,7 @@ export const port = z.object({
                * intentionally not "double equals" to also coerce undefined to null
                */
               (val) => val != null,
-              { message: 'stream must be defined' },
+              { message: 'object must be defined' },
             ),
           ),
         }),
