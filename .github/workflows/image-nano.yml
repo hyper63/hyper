@@ -1,0 +1,101 @@
+name: 🐞 Test & Deploy hyper {nano}
+
+on:
+  pull_request:
+      branches:
+        - main
+      paths:
+        - "images/nano/**"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "images/nano/**"
+    tags:
+      - 'image-nano@*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: ⚡ Run Tests
+        run: |
+          cd images/nano
+          deno task test
+        env:
+          CI: true
+
+  compile:
+    if: startsWith(github.ref, 'refs/tags/image-nano@')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [1.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
+
+      - name: 🛠 Build Executables
+        run: |
+         cd images/nano
+         make clean compile-linux compile-apple compile-arch-apple compile-windows
+        env:
+          CI: true
+
+      - name: 🤫 Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: 🗄 Upload Executables to S3
+        run: |
+          cd images/nano
+          echo "aliasing linux binary to 'hyper'"
+          cp ./build/hyper-x86_64-unknown-linux-gnu ./build/hyper
+          echo "copying binaries to hyperland s3 ⚡️"
+          aws s3 cp --acl public-read --recursive ./build s3://hyperland
+
+  publish-npm:
+    if: startsWith(github.ref, 'refs/tags/image-nano@')
+    needs: [compile]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 🦠 Publish to NPM
+        run: |
+          cd images/nano
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
