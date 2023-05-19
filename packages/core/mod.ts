@@ -4,7 +4,7 @@ import validateConfig from './utils/config-schema.ts'
 import initAdapters from './utils/plugins.js'
 import { parseHyperServices } from './ports.ts'
 import { eventMgr } from './utils/event-mgr.ts'
-import wrapCore from './lib/mod.js'
+import wrapCore from './lib/mod.ts'
 
 import { Config } from './model.ts'
 
@@ -38,6 +38,8 @@ export default async function main(config: Config) {
 
   const adapters = await initAdapters(config.adapters)
 
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
   const services = compose(
     wrapCore,
     assoc('middleware', propOr([], 'middleware', config)),

@@ -2,6 +2,7 @@ import type {
   CachePort,
   CrawlerPort,
   DataPort,
+  HooksPort,
   QueuePort,
   SearchPort,
   StoragePort,
@@ -24,6 +25,7 @@ export type HyperService =
   | SearchPort
   | QueuePort
   | CrawlerPort
+  | HooksPort
 
 export type ReaderEnvironment<Service extends HyperService = HyperService> = {
   svc: Service
