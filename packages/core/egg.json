@@ -5,11 +5,17 @@
   "description": "Hyper core module for parsing hyper config, and composing hyper adapters",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "3.4.2",
+  "version": "4.0.0",
   "unstable": false,
   "unlisted": false,
-  "files": ["./*", "./lib/**/*", "./utils/**/*"],
-  "ignore": ["./.git*"],
+  "files": [
+    "./*",
+    "./lib/**/*",
+    "./utils/**/*"
+  ],
+  "ignore": [
+    "./.git*"
+  ],
   "checkFormat": false,
   "checkTests": false,
   "checkInstallation": false,
