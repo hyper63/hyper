@@ -23,5 +23,21 @@ export { cache, type CachePort } from 'https://x.nest.land/hyper-port-cache@2.0.
 export { data, type DataPort } from 'https://x.nest.land/hyper-port-data@2.0.0/mod.ts'
 export { storage, type StoragePort } from 'https://x.nest.land/hyper-port-storage@2.0.0/mod.ts'
 export { search, type SearchPort } from 'https://x.nest.land/hyper-port-search@2.0.0/mod.ts'
-export { hooks } from 'https://x.nest.land/hyper-port-hooks@2.0.0/mod.ts'
 export { crawler, type CrawlerPort } from 'https://x.nest.land/hyper-port-crawler@0.1.0/mod.ts'
+
+import { hooks } from 'https://x.nest.land/hyper-port-hooks@2.0.0/mod.ts'
+export { hooks }
+
+/**
+ * This type isn't defined in the hooks port,
+ * and it's not really being used right now,
+ *
+ * So we will stub it here for now, until the hooks port
+ * defines and exports it
+ */
+export type HooksPort = ReturnType<typeof hooks> & {
+  call: (action: {
+    type: string
+    payload: Record<string, unknown>
+  }) => Promise<void>
+}
