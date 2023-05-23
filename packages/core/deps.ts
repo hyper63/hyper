@@ -16,16 +16,34 @@ export {
   HyperErr,
   isBaseHyperErr,
   isHyperErr,
-} from 'https://x.nest.land/hyper-utils@0.1.0/hyper-err.js'
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.0/packages/utils/hyper-err.js'
 
-export { queue, type QueuePort } from 'https://x.nest.land/hyper-port-queue@0.3.0/mod.ts'
-export { cache, type CachePort } from 'https://x.nest.land/hyper-port-cache@2.0.0/mod.ts'
-export { data, type DataPort } from 'https://x.nest.land/hyper-port-data@2.0.0/mod.ts'
-export { storage, type StoragePort } from 'https://x.nest.land/hyper-port-storage@2.0.0/mod.ts'
-export { search, type SearchPort } from 'https://x.nest.land/hyper-port-search@2.0.0/mod.ts'
-export { crawler, type CrawlerPort } from 'https://x.nest.land/hyper-port-crawler@0.1.0/mod.ts'
+export {
+  queue,
+  type QueuePort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-queue%40v0.3.0/packages/port-queue/mod.ts'
+export {
+  cache,
+  type CachePort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-cache%40v2.0.0/packages/port-cache/mod.ts'
+export {
+  data,
+  type DataPort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-data%40v2.0.0/packages/port-data/mod.ts'
+export {
+  storage,
+  type StoragePort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-storage%40v2.0.1/packages/port-storage/mod.ts'
+export {
+  search,
+  type SearchPort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-search%40v2.0.0/packages/port-search/mod.ts'
+export {
+  crawler,
+  type CrawlerPort,
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-crawler%40v0.1.0/packages/port-crawler/mod.ts'
 
-import { hooks } from 'https://x.nest.land/hyper-port-hooks@2.0.0/mod.ts'
+import { hooks } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-hooks%40v2.0.0/packages/port-hooks/mod.ts'
 export { hooks }
 
 /**
