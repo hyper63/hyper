@@ -5,7 +5,7 @@
   "description": "Hyper service framework express RESTful app port",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "unstable": false,
   "unlisted": false,
   "files": [
