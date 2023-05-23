@@ -29,7 +29,7 @@ export function main(services: HyperServices): Server {
   if (services.middleware?.length) {
     // deno-lint-ignore ban-ts-comment
     // @ts-ignore
-    app = compose(...services.middleware)(app)
+    app = compose(...services.middleware)(app, services)
   }
 
   app = mountServices(app)
