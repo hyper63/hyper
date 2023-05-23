@@ -50,13 +50,13 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: 🥚 Setup Eggs CLI
-        run: |
-          deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.10/eggs.ts
-          export PATH="/home/runner/.deno/bin:$PATH"
-          eggs link ${{ secrets.NESTAPIKEY }}
+      # - name: 🥚 Setup Eggs CLI
+      #   run: |
+      #     deno install -A -f --unstable --no-check https://x.nest.land/eggs@0.3.10/eggs.ts
+      #     export PATH="/home/runner/.deno/bin:$PATH"
+      #     eggs link ${{ secrets.NESTAPIKEY }}
 
-      - name: 📘 Publish to Nest
-        run: |
-          cd packages/port-data
-          eggs publish --yes 
+      # - name: 📘 Publish to Nest
+      #   run: |
+      #     cd packages/port-data
+      #     eggs publish --yes 
