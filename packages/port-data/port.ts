@@ -42,6 +42,25 @@ const SortEnum = z.enum(['ASC', 'DESC'])
 
 const doc = z.record(z.any())
 
+const maybeNumber = z.preprocess(
+  (val) => {
+    if (typeof val === 'number') return val
+    /**
+     * Let zod do its job and reject the value
+     */
+    if (typeof val !== 'string') return val
+
+    const parsed = parseFloat(val)
+    /**
+     * The string could not be parsed into a number
+     * so let zod do its job and reject the value
+     */
+    if (isNaN(parsed)) return val
+    return parsed
+  },
+  z.number(),
+)
+
 export const port = z.object({
   createDatabase: z
     .function()
@@ -73,7 +92,7 @@ export const port = z.object({
     .args(
       z.object({
         db: z.string(),
-        limit: z.number().optional(),
+        limit: maybeNumber.optional(),
         startkey: z.string().optional(),
         endkey: z.string().optional(),
         // TODO: should we just make this an array?
@@ -92,7 +111,7 @@ export const port = z.object({
           selector: z.record(z.any()).optional(),
           fields: z.array(z.string()).optional(),
           sort: z.array(z.union([SortEnum, z.record(SortEnum)])).optional(),
-          limit: z.number().optional(),
+          limit: maybeNumber.optional(),
           use_index: z.string().optional(),
         }),
       }),
