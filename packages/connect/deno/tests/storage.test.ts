@@ -70,6 +70,7 @@ test('storage.signedUrl(upload)', async () => {
     assertEquals(h.service, 'storage')
     assertEquals(h.method, 'POST')
     assertEquals(h.body, undefined)
+    assertEquals(h.params, { useSignedUrl: true })
 
     return Promise.resolve(
       new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {

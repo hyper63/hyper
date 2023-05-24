@@ -4,10 +4,11 @@ Some tests for verifying `hyper-connect` works in Node
 
 ## Getting Started
 
-First, you will need to set the `HYPER` environment variable to a valid Hyper Cloud connection string
+First, you will need to set the `HYPER` environment variable to a valid Hyper Cloud connection
+string
 
-`deno task test:integration` from the root will transform the Deno code into Node code, and then run the
-unit tests and integration tests for node.
+`deno task test:integration` from the root will transform the Deno code into Node code, and then run
+the unit tests and integration tests for node.
 
 You can run `yarn && yarn test` here as well, but you must first transform the Deno code into Node
 code using `deno task to-node`
