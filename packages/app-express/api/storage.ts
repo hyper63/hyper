@@ -186,8 +186,15 @@ export const storage = (services: HyperServices) => (app: Server) => {
   app.get<NameParams>(
     '/storage/:name/*',
     bindCore(services),
-    ({ params, query, storage }, res) =>
-      fork(
+    ({ params, query, storage }, res) => {
+      /**
+       * If the request is wanting a signedUrl
+       * Then we know the request will be JSON containing the signedUrl
+       * not an iterable
+       */
+      const isIterable = !isTrue(query.useSignedUrl)
+
+      return fork(
         res,
         200,
         storage
@@ -217,8 +224,9 @@ export const storage = (services: HyperServices) => (app: Server) => {
             const readableStream = result
             return readableStream
           }),
-        true,
-      ),
+        isIterable,
+      )
+    },
   )
 
   app.delete(
