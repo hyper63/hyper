@@ -5,7 +5,7 @@
   "description": "hyper test suite",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "unstable": false,
   "unlisted": false,
   "files": [
