@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [0.7.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.1...hyper-connect@v0.7.2) (2023-05-24)
+
+
+### Bug Fixes
+
+* **connect:** always send useSignedUrl query param on storage.signedUrl ([ae71eae](https://github.com/hyper63/hyper/commit/ae71eaefadc85e81191f48bc26d3fe9e3dd9a1df))
 
 ### [0.7.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.0...hyper-connect@v0.7.1) (2023-03-18)
 
