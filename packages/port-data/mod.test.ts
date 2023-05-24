@@ -240,7 +240,7 @@ Deno.test('data', async (t) => {
   })
 
   await t.step('listDocuments', async (t) => {
-    await t.step('should validate the inputs', async () => {
+    await t.step('should validate the inputs', async (t) => {
       assert(
         await adapter.listDocuments({
           db: '123',
@@ -264,17 +264,79 @@ Deno.test('data', async (t) => {
         })
       )
 
-      await assertRejects(() =>
-        adapter.listDocuments({
-          db: 'foo',
-          // @ts-ignore
-          limit: 'bar',
-          startkey: '123',
-          endkey: '456',
-          keys: '123,456',
-          descending: false,
+      await t.step('limit', async (t) => {
+        await t.step('should parse to a number, if provided', async () => {
+          assert(
+            await adapter.listDocuments({
+              db: '123',
+              limit: 1000,
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            }),
+          )
+
+          assert(
+            await adapter.listDocuments({
+              db: '123',
+              limit: '456',
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            }),
+          )
+
+          assert(
+            await adapter.listDocuments({
+              db: '123',
+              limit: ' 456 ',
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            }),
+          )
+
+          assert(
+            await adapter.listDocuments({
+              db: '123',
+              limit: undefined,
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            }),
+          )
         })
-      )
+
+        await t.step('should reject the unparseable value', async () => {
+          await assertRejects(() =>
+            adapter.listDocuments({
+              db: 'foo',
+              // @ts-ignore
+              limit: 'not parseable',
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            })
+          )
+
+          await assertRejects(() =>
+            adapter.listDocuments({
+              db: 'foo',
+              // @ts-ignore
+              limit: [],
+              startkey: '123',
+              endkey: '456',
+              keys: '123,456',
+              descending: false,
+            })
+          )
+        })
+      })
 
       await assertRejects(() =>
         adapter.listDocuments({
@@ -339,7 +401,7 @@ Deno.test('data', async (t) => {
   })
 
   await t.step('queryDocuments', async (t) => {
-    await t.step('should validate the inputs', async () => {
+    await t.step('should validate the inputs', async (t) => {
       assert(
         await adapter.queryDocuments({
           db: 'foo',
@@ -418,19 +480,91 @@ Deno.test('data', async (t) => {
         })
       )
 
-      await assertRejects(() =>
-        adapter.queryDocuments({
-          db: '123',
-          query: {
-            selector: { name: { $gt: 'mike' } },
-            fields: ['name'],
-            sort: ['ASC' as const],
-            // @ts-ignore
-            limit: 'wut',
-            use_index: 'idx-name',
-          },
+      await t.step('limit', async (t) => {
+        await t.step('should parse to a number, if provided', async () => {
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                limit: 1000,
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                limit: '1000',
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                limit: ' 1000  ',
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                limit: undefined,
+                use_index: 'idx-name',
+              },
+            }),
+          )
         })
-      )
+
+        await t.step('should reject the unparseable value', async () => {
+          await assertRejects(() =>
+            adapter.queryDocuments({
+              db: '123',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                // @ts-ignore
+                limit: 'wut',
+                use_index: 'idx-name',
+              },
+            })
+          )
+
+          await assertRejects(() =>
+            adapter.queryDocuments({
+              db: '123',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                // @ts-ignore
+                limit: [],
+                use_index: 'idx-name',
+              },
+            })
+          )
+        })
+      })
 
       await assertRejects(() =>
         adapter.queryDocuments({
