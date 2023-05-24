@@ -7,6 +7,6 @@
     "sha256": "https://deno.land/std@0.137.0/hash/sha256.ts",
     "crocks": "https://cdn.skypack.dev/crocks@0.12.4",
     "ramda": "https://cdn.skypack.dev/ramda@0.28.0",
-    "hyper-connect": "https://x.nest.land/hyper-connect@0.1.20/deno/mod.ts"
+    "hyper-connect": "https://raw.githubusercontent.com/hyper63/hyper/hyper-connect%40v0.1.20/packages/connect/deno/mod.ts"
   }
 }
