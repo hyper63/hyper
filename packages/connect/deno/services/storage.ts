@@ -58,7 +58,7 @@ export const signedUrl =
       service,
       resource: name,
       method: options.type === 'download' ? Method.GET : Method.POST,
-      ...(options.type === 'download' ? { params: { useSignedUrl: true } } : {}),
+      params: { useSignedUrl: true },
     })
 
 export const remove = (name: string) => (h: HyperRequestFunction) =>
