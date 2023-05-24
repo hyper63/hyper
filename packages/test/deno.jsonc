@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "cache": "deno cache --import-map=import_map.json --lock=deno.lock --lock-write mod.js",
+    "test": "deno lint && deno fmt --check"
+  },
+  "fmt": {
+    "include": ["./"],
+    "exclude": ["./CHANGELOG.md"],
+    "lineWidth": 100,
+    "singleQuote": true,
+    "semiColons": false
+  }
+}
