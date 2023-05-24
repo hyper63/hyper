@@ -1,4 +1,4 @@
-import { app, cache, fs, minisearch, pouchdb, queue } from './deps.js'
+import { app, fs, hooks as _hooks, minisearch, pouchdb, queue, sqlite } from './deps.js'
 
 import { DIR } from './dir.js'
 
@@ -11,7 +11,7 @@ export default {
     },
     {
       port: 'cache',
-      plugins: [cache({ dir: DIR })],
+      plugins: [sqlite({ dir: DIR })],
     },
     {
       port: 'storage',
