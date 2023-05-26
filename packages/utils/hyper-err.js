@@ -1,4 +1,4 @@
-import * as R from 'https://cdn.skypack.dev/ramda@0.28.0'
+import * as R from 'https://cdn.skypack.dev/ramda@0.29.0'
 
 const {
   ifElse,
@@ -38,7 +38,7 @@ const checkIfDefined = (pred, msg) =>
   )
 
 export const isHyperErr = allPass([
-  propEq('ok', false),
+  propEq(false, 'ok'),
   /**
    * should not have an _id.
    * Otherwise it's a document ie data.retrieveDocument
