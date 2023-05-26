@@ -1,5 +1,5 @@
 export { default as hyper } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper%40v4.0.2/packages/core/mod.ts'
-export { default as app } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-app-express%40v1.0.3/packages/app-express/mod.ts'
+export { default as app } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-app-express%40v1.1.0/packages/app-express/mod.ts'
 
 // adapters
 export { default as sqlite } from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-sqlite/v2.0.11/mod.js'

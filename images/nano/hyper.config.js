@@ -1,9 +1,11 @@
 import { app, fs, hooks as _hooks, minisearch, pouchdb, queue, sqlite } from './deps.js'
 
 import { DIR } from './dir.js'
+import { serve } from './middleware/serve.middleware.js'
 
 export default {
   app,
+  middleware: [serve(['app'])],
   adapters: [
     {
       port: 'data',

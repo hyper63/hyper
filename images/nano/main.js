@@ -66,14 +66,14 @@ export async function main(args = {}) {
     purge = {},
     services = {},
     experimental = false,
-    middleware = [],
+    // middleware = [],
   } = args
 
   Log.info(`storing hyper service data in ${DIR} 🗃`)
   await createHyperDir()
 
   Log.info(`starting hyper nano ⚡️`)
-  const app = await hyper({ ...config, middleware }).then((app) =>
+  const app = await hyper({ ...config }).then((app) =>
     new Promise((resolve) => setTimeout(() => resolve(app), 1000))
   )
 
