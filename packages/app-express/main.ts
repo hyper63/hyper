@@ -1,8 +1,6 @@
 import { mountServicesWith } from './api/mod.ts'
-import { cors, express, helmet, R } from './deps.ts'
+import { cors, express, helmet } from './deps.ts'
 import type { ErrorRouteHandler, HyperServices, Server } from './types.ts'
-
-const { compose } = R
 
 // All of these args need to be specified, or it won't be invoked on error
 const errorHandler: ErrorRouteHandler = (err, _req, res, _next) => {
@@ -27,9 +25,12 @@ export function main(services: HyperServices): Server {
   app.use(cors({ credentials: true }))
 
   if (services.middleware?.length) {
-    // deno-lint-ignore ban-ts-comment
-    // @ts-ignore
-    app = compose(...services.middleware)(app, services)
+    app = services.middleware
+      .reverse()
+      .reduce(
+        (app, middleware) => middleware(app, services),
+        app,
+      )
   }
 
   app = mountServices(app)
