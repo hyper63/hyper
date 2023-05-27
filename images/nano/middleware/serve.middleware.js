@@ -37,12 +37,12 @@ export function serve(buckets = []) {
       info(`Adding route to serve contents of bucket '${Colors.blue(bucket)}'`)
 
       /**
-       * Root internally forwards to index.html
+       * Root redirects to a trailing slash so that
+       * relative uris load correctly
+       * 
+       * https://stackoverflow.com/questions/10867052/cannot-serve-static-files-with-express-routing-and-no-trailing-slash
        */
-      app.get(`/${bucket}`, (req, res, next) => {
-        req.url = `/${bucket}/index.html`
-        app._router.handle(req, res, next)
-      })
+      app.get(new RegExp(`^\/${bucket}$`), (_req, res) => res.redirect(`/${bucket}/`))
       app.get(`/${bucket}/*`, ({ params }, res) => {
         /**
          * If no path, assume fetching index.html
