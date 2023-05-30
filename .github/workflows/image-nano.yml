@@ -56,6 +56,9 @@ jobs:
       - name: 🛠 Build Executables
         run: |
          cd images/nano
+
+         export VER=$(node -e "console.log(require('./package.json').version)")
+         echo "binary version: $VER"
          make clean compile-linux compile-apple compile-arch-apple compile-windows
         env:
           CI: true
@@ -70,8 +73,10 @@ jobs:
       - name: 🗄 Upload Executables to S3
         run: |
           cd images/nano
-          echo "aliasing linux binary to 'hyper'"
-          cp ./build/hyper-x86_64-unknown-linux-gnu ./build/hyper
+          echo "aliasing latest linux binary to 'hyper'"
+          export VER=$(node -e "console.log(require('./package.json').version)")
+          echo "binary version: $VER"
+          cp ./build/hyper-x86_64-unknown-linux-gnu-$VER ./build/hyper
           echo "copying binaries to hyperland s3 ⚡️"
           aws s3 cp --acl public-read --recursive ./build s3://hyperland
 
