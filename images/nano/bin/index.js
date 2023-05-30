@@ -8,15 +8,17 @@ const { dirname, join } = require('path')
 const chalk = require('chalk')
 const ora = require('ora')
 
+const { version } = require('../package.json')
+
 const destDir = join(dirname('.'))
 const binaryDest = join(destDir, 'hyper-nano')
 
 function getBinary() {
   const binaries = {
-    linux: 'hyper-x86_64-unknown-linux-gnu',
-    win32: 'hyper-x86_64-pc-windows-msvc.exe',
-    darwinx86_64: 'hyper-x86_64-apple-darwin',
-    darwinarm64: 'hyper-aarch64-apple-darwin',
+    linux: `hyper-x86_64-unknown-linux-gnu-${version}`,
+    win32: `hyper-x86_64-pc-windows-msvc-${version}.exe`,
+    darwinx86_64: `hyper-x86_64-apple-darwin-${version}`,
+    darwinarm64: `hyper-aarch64-apple-darwin-${version}`,
   }
 
   const os = platform()
