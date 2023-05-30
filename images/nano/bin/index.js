@@ -8,7 +8,7 @@ const { dirname, join } = require('path')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const destDir = join(dirname(__filename))
+const destDir = join(dirname('.'))
 const binaryDest = join(destDir, 'hyper-nano')
 
 function getBinary() {
