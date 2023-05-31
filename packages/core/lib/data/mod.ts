@@ -70,8 +70,11 @@ export default function ({
    * @param {string} name
    * @param {string[]} fields
    */
-  const index = (dbname: string, name: string, fields: string[]) =>
-    db.index(dbname, name, fields).runWith({ svc: data, events })
+  const index = (
+    dbname: string,
+    name: string,
+    fields: Parameters<DataPort['indexDocuments']>[0]['fields'],
+  ) => db.index(dbname, name, fields).runWith({ svc: data, events })
 
   /**
    * @param {string} dbname,

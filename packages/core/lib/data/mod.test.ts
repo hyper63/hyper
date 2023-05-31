@@ -120,6 +120,18 @@ Deno.test('data', async (t) => {
           assertEquals(res.fields, ['type'])
         })
         .toPromise()
+
+      await data
+        .index('foobar', 'fizz', [{ type: 'ASC' }])
+        .map((res) => {
+          // @ts-expect-error
+          assertEquals(res.db, 'foobar')
+          // @ts-expect-error
+          assertEquals(res.name, 'fizz')
+          // @ts-expect-error
+          assertEquals(res.fields, [{ type: 'ASC' }])
+        })
+        .toPromise()
     })
   })
 
