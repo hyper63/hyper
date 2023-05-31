@@ -42,24 +42,21 @@ const SortEnum = z.enum(['ASC', 'DESC'])
 
 const doc = z.record(z.any())
 
-const maybeNumber = z.preprocess(
-  (val) => {
-    if (typeof val === 'number') return val
-    /**
-     * Let zod do its job and reject the value
-     */
-    if (typeof val !== 'string') return val
+const maybeNumber = z.preprocess((val) => {
+  if (typeof val === 'number') return val
+  /**
+   * Let zod do its job and reject the value
+   */
+  if (typeof val !== 'string') return val
 
-    const parsed = parseFloat(val)
-    /**
-     * The string could not be parsed into a number
-     * so let zod do its job and reject the value
-     */
-    if (isNaN(parsed)) return val
-    return parsed
-  },
-  z.number(),
-)
+  const parsed = parseFloat(val)
+  /**
+   * The string could not be parsed into a number
+   * so let zod do its job and reject the value
+   */
+  if (isNaN(parsed)) return val
+  return parsed
+}, z.number())
 
 export const port = z.object({
   createDatabase: z
@@ -110,7 +107,9 @@ export const port = z.object({
           // TODO: enforce selector api
           selector: z.record(z.any()).optional(),
           fields: z.array(z.string()).optional(),
-          sort: z.array(z.union([SortEnum, z.record(SortEnum)])).optional(),
+          sort: z
+            .union([z.array(z.string()), z.array(z.record(SortEnum))])
+            .optional(),
           limit: maybeNumber.optional(),
           use_index: z.string().optional(),
         }),
@@ -123,7 +122,7 @@ export const port = z.object({
       z.object({
         db: z.string(),
         name: z.string(),
-        fields: z.array(z.string()),
+        fields: z.union([z.array(z.string()), z.array(z.record(SortEnum))]),
       }),
     )
     .returns(z.promise(hyperResponse({}))),

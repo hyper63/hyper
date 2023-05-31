@@ -12,9 +12,7 @@ const impl: DataPort = {
   removeDocument: ({ db, id }) => Promise.resolve({ ok: true, id }),
   listDocuments: ({ db, limit, startkey, endkey, keys, descending }) =>
     Promise.resolve({ ok: true, docs: [] }),
-  queryDocuments: ({ db, query }) => (
-    console.log(query), Promise.resolve({ ok: true, docs: [] })
-  ),
+  queryDocuments: ({ db, query }) => Promise.resolve({ ok: true, docs: [] }),
   indexDocuments: ({ db, name, fields }) => Promise.resolve({ ok: true }),
   bulkDocuments: ({ db, docs }) => Promise.resolve({ ok: true, results: [{ ok: true, id: '1' }] }),
 }
@@ -408,7 +406,20 @@ Deno.test('data', async (t) => {
           query: {
             selector: { name: { $gt: 'mike' } },
             fields: ['name'],
-            sort: ['ASC' as const],
+            sort: ['name'],
+            limit: 1000,
+            use_index: 'idx-name',
+          },
+        }),
+      )
+
+      assert(
+        await adapter.queryDocuments({
+          db: 'foo',
+          query: {
+            selector: { name: { $gt: 'mike' } },
+            fields: ['name'],
+            sort: [{ name: 'ASC' }],
             limit: 1000,
             use_index: 'idx-name',
           },
@@ -431,7 +442,7 @@ Deno.test('data', async (t) => {
           query: {
             selector: { name: { $gt: 'mike' } },
             fields: ['name'],
-            sort: ['ASC' as const],
+            sort: ['name'],
             limit: 1000,
             use_index: 'idx-name',
           },
@@ -445,7 +456,7 @@ Deno.test('data', async (t) => {
             // @ts-ignore
             selector: 123,
             fields: ['name'],
-            sort: ['ASC' as const],
+            sort: ['name'],
             limit: 1000,
             use_index: 'idx-name',
           },
@@ -459,7 +470,7 @@ Deno.test('data', async (t) => {
             selector: { name: { $gt: 'mike' } },
             // @ts-ignore
             fields: [123],
-            sort: ['ASC' as const],
+            sort: ['name'],
             limit: 1000,
             use_index: 'idx-name',
           },
@@ -473,7 +484,7 @@ Deno.test('data', async (t) => {
             selector: { name: { $gt: 'mike' } },
             fields: ['name'],
             // @ts-ignore
-            sort: ['FOO' as const],
+            sort: ['name', { foo: 'ASC' }],
             limit: 1000,
             use_index: 'idx-name',
           },
@@ -623,6 +634,23 @@ Deno.test('data', async (t) => {
           fields: ['name'],
           name: 'idx-name',
         }),
+      )
+
+      assert(
+        await adapter.indexDocuments({
+          db: 'foo',
+          fields: [{ name: 'ASC' }, { foo: 'ASC' }],
+          name: 'idx-name',
+        }),
+      )
+
+      await assertRejects(() =>
+        adapter.indexDocuments({
+          db: 'foo',
+          // @ts-ignore
+          fields: ['name', { foo: 'ASC' }],
+          name: 'idx-name',
+        })
       )
 
       await assertRejects(() =>
