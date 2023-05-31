@@ -72,7 +72,11 @@ export const query = (
  * @param {string} name
  * @param {string[]} fields
  */
-export const index = (db: string, name: string, fields: string[]) =>
+export const index = (
+  db: string,
+  name: string,
+  fields: Parameters<DataPort['indexDocuments']>[0]['fields'],
+) =>
   of({ db, name, fields })
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<DataPort>) => {
