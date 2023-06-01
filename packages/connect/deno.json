@@ -1,28 +1,24 @@
 {
   "tasks": {
+    "cache": "deno cache --lock=deno.lock --lock-write deno/deps.deno.ts deno/dev_deps.ts",
     "test": "deno lint && deno fmt && deno test -A --no-lock --unstable deno/tests",
     "test:integration": "make test-integration",
-    "to-node": "make clean to-node",
-    "cache": "deno cache --lock=deno.lock --lock-write deno/deps.deno.ts deno/dev_deps.ts"
+    "to-node": "make clean to-node"
   },
   "fmt": {
-    "files": {
-      "exclude": [
-        "./CHANGELOG.md",
-        "./dist",
-        "./to-node",
-        "node_modules/",
-        "node/node_modules",
-        "node/harness/cjs/node_modules",
-        "node/harness/esm/node_modules",
-        "./yarn.lock"
-      ]
-    },
-    "options": {
-      "lineWidth": 100,
-      "singleQuote": true,
-      "semiColons": false
-    }
+    "exclude": [
+      "./CHANGELOG.md",
+      "./dist",
+      "./to-node",
+      "node_modules/",
+      "node/node_modules",
+      "node/harness/cjs/node_modules",
+      "node/harness/esm/node_modules",
+      "./yarn.lock"
+    ],
+    "lineWidth": 100,
+    "singleQuote": true,
+    "semiColons": false
   },
   "lint": {
     "files": {
