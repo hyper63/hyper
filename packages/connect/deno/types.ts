@@ -4,6 +4,9 @@ export const SortOptions = {
   ASC: 'ASC',
 } as const
 
+export type IndexFieldOptions = SortOptions
+export const IndexFieldOptions = SortOptions
+
 export type Method = typeof Method[keyof typeof Method]
 export const Method = {
   GET: 'GET',
