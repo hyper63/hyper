@@ -116,6 +116,12 @@ test('data.index', async () => {
   const body = await result.json()
   assertEquals(body.name, 'foo')
   assertEquals(body.fields[0], 'type')
+
+  const withSort = await index('foo', [{ type: 'ASC' }, { bar: 'ASC' }])(mockRequest)
+  const bodyWithSort = await withSort.json()
+  assertEquals(bodyWithSort.name, 'foo')
+  assertEquals(bodyWithSort.fields[0], { type: 'ASC' })
+  assertEquals(bodyWithSort.fields[1], { bar: 'ASC' })
 })
 
 test('data.create', async () => {

@@ -1,6 +1,13 @@
 import { toDataQuery } from '../utils/hyper-query.ts'
 
-import { Action, HyperRequestFunction, ListOptions, Method, QueryOptions } from '../types.ts'
+import {
+  Action,
+  HyperRequestFunction,
+  IndexFieldOptions,
+  ListOptions,
+  Method,
+  QueryOptions,
+} from '../types.ts'
 import { HYPER_LEGACY_GET_HEADER } from '../utils/hyper-request.ts'
 
 const service = 'data' as const
@@ -38,17 +45,19 @@ export const query = (selector: unknown, options?: QueryOptions) => (hyper: Hype
   })
 export const bulk = (docs: unknown[]) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.POST, action: Action.BULK, body: docs })
-export const index = (indexName: string, fields: string[]) => (hyper: HyperRequestFunction) =>
-  hyper({
-    service,
-    method: Method.POST,
-    action: Action.INDEX,
-    body: {
-      fields,
-      name: indexName,
-      type: 'JSON',
-    },
-  })
+export const index =
+  (indexName: string, fields: string[] | { [k: string]: IndexFieldOptions }[]) =>
+  (hyper: HyperRequestFunction) =>
+    hyper({
+      service,
+      method: Method.POST,
+      action: Action.INDEX,
+      body: {
+        fields,
+        name: indexName,
+        type: 'JSON',
+      },
+    })
 
 export const create = () => (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT })
 
