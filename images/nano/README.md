@@ -34,7 +34,7 @@ offerings:
 - cache (powered by [Sqlite](https://github.com/hyper63/hyper-adapter-sqlite))
 - storage (powered by your local [file system](https://github.com/hyper63/hyper-adapter-fs))
 - search (powered by [Sqlite and Minisearch](https://github.com/hyper63/hyper-adapter-minisearch))
-- queue (powered by [DnDB and an in-memory queue](https://github.com/hyper63/hyper-adapter-queue))
+- queue (powered by [Sqlite and an in-memory queue](https://github.com/hyper63/hyper-adapter-queue))
 
 This allows running a hyper instance locally, great for development, or for sandboxed short-lived
 environments ie. GitHub Workspaces or GitPod.

@@ -9,13 +9,11 @@
 </h1>
 
 <p align="center">
-  One API, many services...
+  Use Clean Cloud Architecture to Scale on your Terms
 </p>
 
 <p align="center">
   <a href="https://docs.hyper.io/">Docs</a>
-  <span> · </span>
-  <a href="https://github.com/hyper63/hyper/discussions">Discussions</a>
   <span> · </span>
   <a href="https://github.com/hyper63/hyper/issues">Issues</a>
   <span> · </span>
@@ -26,9 +24,19 @@
 
 👋 Hey 👋
 
-Welcome to ⚡hyper open source project, above is plenty of links that can give you the why and what
-of hyper, check them out! Also, if you are a hands on kind of developer, try out hyper using our
-playground and gitpod. You don't have to install anything to kick the tires ⚙️.
+Welcome to the hyper Service Framework project ⚡️!
+
+Hyper is a multi-cloud, multi-language, service framework that enables best-of-breed cloud service
+utilization, from any cloud provider. By providing a simple and extensible context-bound API for the
+Cloud, the hyper Service Framework decouples application services from the infrastructure that
+powers them, positioning application software for growth and long term stability.
+
+As a result, the hyper Service Framework helps software organizations build "optimally-scaled"
+software and software teams.
+
+Hyper organizations tame `technical debt`, by using
+[Clean Cloud Architecture](https://blog.hyper.io/clean-architecture-at-hyper/) to sensibly scale
+their software and software teams, only when the complexity is needed, and not all up-front.
 
 ## Status
 
@@ -37,31 +45,33 @@ playground and gitpod. You don't have to install anything to kick the tires ⚙�
 - [x] Beta
 - [ ] v1.0
 
-## 🧪 Try hyper
-
-You can take a 🎫 tour of the api starting here https://github.com/hyper63/tour
-
-or watch a video here https://youtu.be/J75hYi6Gqgc
-
 ## Running Locally
 
-To run hyper on your local machine in your terminal type:
+You can run a hyper server locally, with 5 locally running hyper services, using
+[`hyper-nano`](./images/nano), a precompiled executable binary of the hyper service framework.
 
-```
-curl -O https://hyperland.s3.amazonaws.com/hyper
-chmod +x hyper
+```sh
+curl https://hyperland.s3.amazonaws.com/hyper -o hyper-nano
+chmod +x hyper-nano
+./hyper-nano
 ```
 
-> This command will run a hyper service on PORT `6363` and store data in `/tmp` directory and `cwd`
-> [Ctrl/Cmd] - C will stop the service.
+Alternatively, if you're using `node`, you can run `npx hyper-nano`
+
+> This command will run a hyper server on PORT `6363` and store data for each hyper service in a
+> directory named `__hyper__` placed in the `cwd` [Ctrl/Cmd] - C will stop the service.
 
 This `nano` version of hyper implements the following ports and adapters:
 
-- DATA - hyper-adapter-pouchdb
-- CACHE - hyper-adapter-sqlite
-- STORAGE - hyper-adapter-fs
-- SEARCH - hyper-adapter-minisearch
-- QUEUE - hyper-adapter-queue
+- `data` (powered by [PouchDB](https://github.com/hyper63/hyper-adapter-pouchdb))
+- `cache` (powered by [Sqlite](https://github.com/hyper63/hyper-adapter-sqlite))
+- `storage` (powered by your local [file system](https://github.com/hyper63/hyper-adapter-fs))
+- `search` (powered by [Sqlite and Minisearch](https://github.com/hyper63/hyper-adapter-minisearch))
+- `queue` (powered by
+  [Sqlite and an in-memory queue](https://github.com/hyper63/hyper-adapter-queue))
+
+Learn more about [`hyper-nano`](./images/nano) and read our
+[blog post](https://blog.hyper.io/introducing-hyper-nano-hyper-cloud-in-a-bottle/)
 
 ## Documentation
 
