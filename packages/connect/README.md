@@ -4,7 +4,7 @@ hyper-connect is a client for <a href="https://docs.hyper.io">hyper</a>
 </p>
 <p align="center">
 <a href="https://nest.land/package/hyper-connect"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
-  <a href="https://github.com/hyper63/hyper63/actions/workflows/test-connect.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/test-connect.yml/badge.svg" alt="Test" /></a>
+  <a href="https://github.com/hyper63/hyper63/actions/workflows/connect.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/connect.yml/badge.svg" alt="Test" /></a>
 </p>
 
 ---
