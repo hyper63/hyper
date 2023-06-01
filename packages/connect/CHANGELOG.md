@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.8.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.2...hyper-connect@v0.8.0) (2023-06-01)
+
+
+### Features
+
+* **connect:** add support for sort syntax on data.index [#485](https://github.com/hyper63/hyper/issues/485) ([7abbf98](https://github.com/hyper63/hyper/commit/7abbf984455cb8e21555ec565f615238e39ead23))
+
 ## [0.7.2](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.1...hyper-connect@v0.7.2) (2023-05-24)
 
 
