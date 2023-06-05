@@ -13,4 +13,4 @@ import { express } from '../deps.ts'
  * that don't provide the header explictly
  */
 export const json = (options: Parameters<typeof express.json>[0] = {}) =>
-  express.json({ type: '*/*', ...options })
+  express.json({ type: '*/*', limit: '10mb', ...options })
