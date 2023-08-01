@@ -23,8 +23,8 @@ const services: any = {
         db,
         id,
       }),
-    index: (db: any, name: any, fields: any) =>
-      crocks.Async.Resolved({ ok: true, db, name, fields }),
+    index: (db: any, name: any, fields: any, partialFilter: any) =>
+      crocks.Async.Resolved({ ok: true, db, name, fields, partialFilter }),
     query: (db: any, query: any) => crocks.Async.Resolved({ ok: true, db, query }),
     bulkDocuments: (db: any, body: any) => crocks.Async.Resolved({ ok: true, db, results: body }),
     listDocuments: (db: any, query: any) => {
@@ -374,7 +374,7 @@ Deno.test('data', async (t) => {
     })
 
     await t.step(
-      'should pass db and body name and fields to core',
+      'should pass db and body name fields and partialFilter to core',
       async () => {
         await harness
           .start()
@@ -384,6 +384,7 @@ Deno.test('data', async (t) => {
               body: JSON.stringify({
                 name: 'idx_foo',
                 fields: ['name'],
+                partialFilter: { type: 'bar' },
               }),
             })
               .then((res) => res.json())
@@ -392,6 +393,7 @@ Deno.test('data', async (t) => {
                 assertEquals(body.name, 'idx_foo')
                 assertEquals(body.fields.length, 1)
                 assertEquals(body.fields[0], 'name')
+                assertEquals(body.partialFilter, { type: 'bar' })
               })
           )
           .finally(async () => await harness.stop())
