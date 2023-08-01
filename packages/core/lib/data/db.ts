@@ -76,8 +76,9 @@ export const index = (
   db: string,
   name: string,
   fields: Parameters<DataPort['indexDocuments']>[0]['fields'],
+  partialFilter: Parameters<DataPort['indexDocuments']>[0]['partialFilter'],
 ) =>
-  of({ db, name, fields })
+  of({ db, name, fields, partialFilter })
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<DataPort>) => {
         return Async.of(input)

@@ -74,7 +74,11 @@ export default function ({
     dbname: string,
     name: string,
     fields: Parameters<DataPort['indexDocuments']>[0]['fields'],
-  ) => db.index(dbname, name, fields).runWith({ svc: data, events })
+    partialFilter: Parameters<DataPort['indexDocuments']>[0]['partialFilter'],
+  ) =>
+    db
+      .index(dbname, name, fields, partialFilter)
+      .runWith({ svc: data, events })
 
   /**
    * @param {string} dbname,

@@ -13,8 +13,8 @@ const mockService = {
   queryDocuments({ db, query }: any) {
     return Promise.resolve({ ok: true, db, query })
   },
-  indexDocuments({ db, name, fields }: any) {
-    return Promise.resolve({ ok: true, db, name, fields })
+  indexDocuments({ db, name, fields, partialFilter }: any) {
+    return Promise.resolve({ ok: true, db, name, fields, partialFilter })
   },
   listDocuments({ db, limit, startkey, endkey, keys, descending }: any) {
     return Promise.resolve({
@@ -110,7 +110,7 @@ Deno.test('data', async (t) => {
   await t.step('index', async (t) => {
     await t.step('should pass the values to the adapter', async () => {
       await data
-        .index('foobar', 'fizz', ['type'])
+        .index('foobar', 'fizz', ['type'], undefined)
         .map((res) => {
           // @ts-expect-error
           assertEquals(res.db, 'foobar')
@@ -118,10 +118,13 @@ Deno.test('data', async (t) => {
           assertEquals(res.name, 'fizz')
           // @ts-expect-error
           assertEquals(res.fields, ['type'])
+          // @ts-expect-error
+          assertEquals(res.partialFilter, undefined)
         })
         .toPromise()
 
       await data
+        // @ts-expect-error
         .index('foobar', 'fizz', [{ type: 'ASC' }])
         .map((res) => {
           // @ts-expect-error
@@ -130,6 +133,22 @@ Deno.test('data', async (t) => {
           assertEquals(res.name, 'fizz')
           // @ts-expect-error
           assertEquals(res.fields, [{ type: 'ASC' }])
+          // @ts-expect-error
+          assertEquals(res.partialFilter, undefined)
+        })
+        .toPromise()
+
+      await data
+        .index('foobar', 'fizz', [{ type: 'ASC' }], { type: 'user' })
+        .map((res) => {
+          // @ts-expect-error
+          assertEquals(res.db, 'foobar')
+          // @ts-expect-error
+          assertEquals(res.name, 'fizz')
+          // @ts-expect-error
+          assertEquals(res.fields, [{ type: 'ASC' }])
+          // @ts-expect-error
+          assertEquals(res.partialFilter, { type: 'user' })
         })
         .toPromise()
     })
