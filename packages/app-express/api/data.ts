@@ -73,7 +73,12 @@ export const data = (services: HyperServices) => (app: Server) => {
     '/data/:db/_index',
     json(),
     bindCore(services),
-    ({ data, params, body }, res) => fork(res, 201, data.index(params.db, body.name, body.fields)),
+    ({ data, params, body }, res) =>
+      fork(
+        res,
+        201,
+        data.index(params.db, body.name, body.fields, body.partialFilter),
+      ),
   )
 
   app.post<DbParams>(
