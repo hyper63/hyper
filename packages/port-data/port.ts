@@ -123,6 +123,7 @@ export const port = z.object({
         db: z.string(),
         name: z.string(),
         fields: z.union([z.array(z.string()), z.array(z.record(SortEnum))]),
+        partialFilter: z.record(z.any()).optional(),
       }),
     )
     .returns(z.promise(hyperResponse({}))),

@@ -644,6 +644,17 @@ Deno.test('data', async (t) => {
         }),
       )
 
+      assert(
+        await adapter.indexDocuments({
+          db: 'foo',
+          fields: [{ name: 'ASC' }, { foo: 'ASC' }],
+          name: 'idx-name',
+          partialFilter: {
+            type: 'user',
+          },
+        }),
+      )
+
       await assertRejects(() =>
         adapter.indexDocuments({
           db: 'foo',
@@ -666,6 +677,16 @@ Deno.test('data', async (t) => {
       await assertRejects(() =>
         // @ts-ignore
         adapter.indexDocuments({ db: 'foo', fields: ['name'], name: 123 })
+      )
+
+      await assertRejects(() =>
+        // @ts-ignore
+        adapter.indexDocuments({
+          db: 'foo',
+          fields: ['name'],
+          name: 'idx-name',
+          partialFilter: 123,
+        })
       )
     })
 
