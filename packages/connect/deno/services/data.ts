@@ -45,19 +45,23 @@ export const query = (selector: unknown, options?: QueryOptions) => (hyper: Hype
   })
 export const bulk = (docs: unknown[]) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.POST, action: Action.BULK, body: docs })
-export const index =
-  (indexName: string, fields: string[] | { [k: string]: IndexFieldOptions }[]) =>
-  (hyper: HyperRequestFunction) =>
-    hyper({
-      service,
-      method: Method.POST,
-      action: Action.INDEX,
-      body: {
-        fields,
-        name: indexName,
-        type: 'JSON',
-      },
-    })
+export const index = (
+  indexName: string,
+  fields: string[] | { [k: string]: IndexFieldOptions }[],
+  partialFilter?: unknown,
+) =>
+(hyper: HyperRequestFunction) =>
+  hyper({
+    service,
+    method: Method.POST,
+    action: Action.INDEX,
+    body: {
+      fields,
+      partialFilter,
+      name: indexName,
+      type: 'JSON',
+    },
+  })
 
 export const create = () => (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT })
 
