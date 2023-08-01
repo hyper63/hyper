@@ -117,11 +117,21 @@ test('data.index', async () => {
   assertEquals(body.name, 'foo')
   assertEquals(body.fields[0], 'type')
 
-  const withSort = await index('foo', [{ type: 'ASC' }, { bar: 'ASC' }])(mockRequest)
+  const withSort = await index('foo', [{ type: 'ASC' }, { bar: 'ASC' }])(
+    mockRequest,
+  )
   const bodyWithSort = await withSort.json()
   assertEquals(bodyWithSort.name, 'foo')
   assertEquals(bodyWithSort.fields[0], { type: 'ASC' })
   assertEquals(bodyWithSort.fields[1], { bar: 'ASC' })
+
+  const withPartialFilter = await index('foo', ['type'], { type: 'user' })(
+    mockRequest,
+  )
+  const bodyWithPartialFilter = await withPartialFilter.json()
+  assertEquals(bodyWithPartialFilter.name, 'foo')
+  assertEquals(bodyWithPartialFilter.fields[0], 'type')
+  assertEquals(bodyWithPartialFilter.partialFilter, { type: 'user' })
 })
 
 test('data.create', async () => {
