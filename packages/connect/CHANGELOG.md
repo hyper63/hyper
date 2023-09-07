@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.8.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.8.0...hyper-connect@v0.8.1) (2023-09-07)
+
+
+### Features
+
+* **connect:** add create and destroy to storage apis ([f0fd512](https://github.com/hyper63/hyper/commit/f0fd51244b96524ab47d8d3a61776145c9c0995e))
+* **connect:** add optional partialFilter to data.index ([b328254](https://github.com/hyper63/hyper/commit/b328254c77ff8f582dcd8de321b90e9cba0e55f8))
+
+
+### Bug Fixes
+
+* **connect:** require confirmation on destroy apis ([05e444d](https://github.com/hyper63/hyper/commit/05e444d38d07836fb42aa20c906f0e1ea4d857e3))
+
 ## [0.8.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.7.2...hyper-connect@v0.8.0) (2023-06-01)
 
 
