@@ -63,3 +63,10 @@ export const signedUrl =
 
 export const remove = (name: string) => (h: HyperRequestFunction) =>
   h({ service, method: Method.DELETE, resource: name })
+
+export const create = () => (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT })
+
+export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
+  confirm
+    ? hyper({ service, method: Method.DELETE })
+    : Promise.reject({ ok: false, msg: 'request not confirmed!' })

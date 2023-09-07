@@ -214,6 +214,16 @@ export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
           .then(storage.remove(name))
           .then($fetch)
           .then(handleResponse),
+      create: () =>
+        Promise.resolve(h)
+          .then(storage.create())
+          .then($fetch)
+          .then(handleResponse),
+      destroy: (confirm) =>
+        Promise.resolve(h)
+          .then(storage.destroy(confirm))
+          .then($fetch)
+          .then(handleResponse),
     },
     queue: {
       enqueue: (job) =>

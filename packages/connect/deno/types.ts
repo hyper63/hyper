@@ -164,6 +164,8 @@ export interface HyperStorage {
     options: StorageSignedUrlOptions,
   ) => Promise<OkUrlResult | NotOkResult>
   remove: (name: string) => Promise<Result>
+  create: () => Promise<IdResult>
+  destroy: (confirm: boolean) => Promise<Result>
 }
 
 export interface HyperQueue {
