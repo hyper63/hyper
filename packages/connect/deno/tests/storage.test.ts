@@ -1,7 +1,7 @@
 import { HyperRequest } from '../types.ts'
-import { assertEquals } from '../dev_deps.ts'
+import { assert, assertEquals } from '../dev_deps.ts'
 
-import { download, remove, signedUrl, upload } from '../services/storage.ts'
+import { create, destroy, download, remove, signedUrl, upload } from '../services/storage.ts'
 
 const test = Deno.test
 
@@ -98,4 +98,32 @@ test('storage.remove', async () => {
   }
   const req = await remove('avatar.png')(mockRequest)
   assertEquals(req.url, 'http://localhost/storage/bucket/avatar.png')
+})
+
+test('storage.create', async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, 'storage')
+    assertEquals(h.method, 'PUT')
+    return Promise.resolve(new Request('http://localhost', { method: 'PUT' }))
+  }
+
+  await create()(mockRequest)
+})
+
+test('storage.destroy', async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, 'storage')
+    assertEquals(h.method, 'DELETE')
+    return Promise.resolve(
+      new Request('http://localhost', { method: 'DELETE' }),
+    )
+  }
+
+  await destroy(true)(mockRequest)
+
+  const noConfirmRequest = (_h: HyperRequest) => {
+    assert(false, 'unreachable')
+  }
+
+  await destroy()(noConfirmRequest).catch(assert)
 })
