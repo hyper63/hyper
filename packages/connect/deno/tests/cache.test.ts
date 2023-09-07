@@ -1,5 +1,5 @@
 import { HyperRequest } from '../types.ts'
-import { assertEquals } from '../dev_deps.ts'
+import { assert, assertEquals } from '../dev_deps.ts'
 
 import { add, create, destroy, get, query, remove, set } from '../services/cache.ts'
 import { HYPER_LEGACY_GET_HEADER } from '../utils/hyper-request.ts'
@@ -96,4 +96,10 @@ test('cache.destroy', async () => {
   }
 
   await destroy(true)(mockRequest)
+
+  const noConfirmRequest = (_h: HyperRequest) => {
+    assert(false, 'unreachable')
+  }
+
+  await destroy()(noConfirmRequest).catch(assert)
 })

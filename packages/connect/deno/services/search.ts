@@ -36,7 +36,7 @@ export const load = (docs: unknown[]) => (hyper: HyperRequestFunction) =>
 export const create = (fields: string[], storeFields?: string[]) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.PUT, body: { fields, storeFields } })
 
-export const destroy = (confirm = true) => (hyper: HyperRequestFunction) =>
+export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
   confirm
     ? hyper({ service, method: Method.DELETE })
     : Promise.reject({ ok: false, msg: 'request not confirmed!' })
