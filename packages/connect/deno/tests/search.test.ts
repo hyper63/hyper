@@ -1,6 +1,6 @@
 import { HyperRequest } from '../types.ts'
 
-import { assertEquals } from '../dev_deps.ts'
+import { assert, assertEquals } from '../dev_deps.ts'
 
 import { add, create, destroy, get, load, query, remove, update } from '../services/search.ts'
 
@@ -127,4 +127,10 @@ test('search.destroy', async () => {
   }
 
   await destroy(true)(mockRequest)
+
+  const noConfirmRequest = (_h: HyperRequest) => {
+    assert(false, 'unreachable')
+  }
+
+  await destroy()(noConfirmRequest).catch(assert)
 })

@@ -46,7 +46,7 @@ export const query = (pattern = '*') => (h: HyperRequestFunction) =>
 
 export const create = () => (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT })
 
-export const destroy = (confirm = true) => (hyper: HyperRequestFunction) =>
+export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
   confirm
     ? hyper({ service, method: Method.DELETE })
     : Promise.reject({ ok: false, msg: 'request not confirmed!' })
