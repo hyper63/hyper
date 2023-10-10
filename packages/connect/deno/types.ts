@@ -67,6 +67,7 @@ export interface QueryOptions {
   fields?: string[]
   sort?: { [k: string]: SortOptions }[]
   limit?: number
+  skip?: number
   useIndex?: string
 }
 
