@@ -29,7 +29,7 @@ export {
 export {
   data,
   type DataPort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-data%40v2.2.0/packages/port-data/mod.ts'
+} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-data%40v2.3.0/packages/port-data/mod.ts'
 export {
   storage,
   type StoragePort,
