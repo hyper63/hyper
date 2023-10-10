@@ -111,6 +111,7 @@ export const port = z.object({
             .union([z.array(z.string()), z.array(z.record(SortEnum))])
             .optional(),
           limit: maybeNumber.optional(),
+          skip: maybeNumber.optional(),
           use_index: z.string().optional(),
         }),
       }),

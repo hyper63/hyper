@@ -408,6 +408,7 @@ Deno.test('data', async (t) => {
             fields: ['name'],
             sort: ['name'],
             limit: 1000,
+            skip: 2,
             use_index: 'idx-name',
           },
         }),
@@ -577,6 +578,92 @@ Deno.test('data', async (t) => {
         })
       })
 
+      await t.step('skip', async (t) => {
+        await t.step('should parse to a number, if provided', async () => {
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                skip: 1000,
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                limit: '1000',
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                skip: ' 1000  ',
+                use_index: 'idx-name',
+              },
+            }),
+          )
+
+          assert(
+            await adapter.queryDocuments({
+              db: 'foo',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                skip: undefined,
+                use_index: 'idx-name',
+              },
+            }),
+          )
+        })
+
+        await t.step('should reject the unparseable value', async () => {
+          await assertRejects(() =>
+            adapter.queryDocuments({
+              db: '123',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                // @ts-ignore
+                skip: 'wut',
+                use_index: 'idx-name',
+              },
+            })
+          )
+
+          await assertRejects(() =>
+            adapter.queryDocuments({
+              db: '123',
+              query: {
+                selector: { name: { $gt: 'mike' } },
+                fields: ['name'],
+                sort: ['ASC' as const],
+                // @ts-ignore
+                skip: [],
+                use_index: 'idx-name',
+              },
+            })
+          )
+        })
+      })
+
       await assertRejects(() =>
         adapter.queryDocuments({
           db: '123',
@@ -680,11 +767,11 @@ Deno.test('data', async (t) => {
       )
 
       await assertRejects(() =>
-        // @ts-ignore
         adapter.indexDocuments({
           db: 'foo',
           fields: ['name'],
           name: 'idx-name',
+          // @ts-ignore
           partialFilter: 123,
         })
       )
