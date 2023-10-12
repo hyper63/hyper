@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.9.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.8.1...hyper-connect@v0.9.0) (2023-10-12)
+
+
+### Features
+
+* **connect:** add skip to QueryOptions [#609](https://github.com/hyper63/hyper/issues/609) ([fa78184](https://github.com/hyper63/hyper/commit/fa78184014a7e938d2ced2323b9179405d281933))
+
 ## [0.8.1](https://github.com/hyper63/hyper/compare/hyper-connect@v0.8.0...hyper-connect@v0.8.1) (2023-09-07)
 
 
