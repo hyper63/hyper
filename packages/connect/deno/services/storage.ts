@@ -1,44 +1,29 @@
+import { getMimeType } from '../deps.deno.ts'
 import { HyperRequestFunction, Method, StorageSignedUrlOptions } from '../types.ts'
 
 const service = 'storage' as const
 
-interface Form {
-  name: string
-  data: Uint8Array
-}
+export const upload = (name: string, data: ReadableStream) => async (h: HyperRequestFunction) => {
+  const req = await h({ service, method: Method.POST, resource: name })
+  /**
+   * remove the  "Content-Type": "application/json" header,
+   * but keep the Authorization header
+   */
+  const headers = new Headers()
+  headers.set('Authorization', req.headers.get('authorization') as string)
+  headers.set('Content-Type', getMimeType(name) || 'application/octet-stream')
 
-const createFormData = ({ name, data }: Form) => {
-  const fd = new FormData()
-  // deno-lint-ignore ban-ts-comment
-  // @ts-ignore
-  fd.append('file', new File([data.buffer as ArrayBuffer], name))
-  return fd
+  return new Request(req.url, {
+    method: req.method,
+    headers,
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
+    body: data
+  })
 }
-
-export const upload = (name: string, data: Uint8Array) => (h: HyperRequestFunction) =>
-  Promise.resolve({ name, data })
-    .then(createFormData)
-    // need to override header to send content-type: multipart/form-data
-    .then(async (fd) => {
-      const req = await h({ service, method: Method.POST, body: fd })
-      const headers = new Headers()
-      headers.set(
-        'Authorization',
-        req.headers.get('authorization') as string,
-      )
-      return new Request(req.url, {
-        method: Method.POST,
-        body: fd,
-        headers,
-      })
-    })
 
 export const download = (name: string) => async (hyper: HyperRequestFunction) => {
-  const req = await hyper({
-    service,
-    method: Method.GET,
-    resource: name,
-  })
+  const req = await hyper({ service, method: Method.GET, resource: name })
   /**
    * remove the  "Content-Type": "application/json" header,
    * but keep the Authorization header
@@ -47,7 +32,7 @@ export const download = (name: string) => async (hyper: HyperRequestFunction) =>
   headers.set('Authorization', req.headers.get('authorization') as string)
 
   return new Request(req.url, {
-    method: Method.GET,
+    method: req.method,
     headers,
   })
 }

@@ -82,7 +82,7 @@ const results = await hyper.data.query({ type: 'game' })
 
 ### A Note for NodeJS
 
-For Node environments, starting with `v0.5.0`, `hyper-connect`'s Storage service api returns a
+For Node environments, starting with `v0.5.0`, `hyper-connect`'s Storage service api returns a Web
 [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) instead of a
 `NodeJS.ReadableStream`. If you'd like a `NodeJS.ReadableStream`, follow one of the approaches
 below.
@@ -90,20 +90,25 @@ below.
 If you're using `node>=17`, you can use Node's built in `fromWeb` to get a Node stream:
 
 ```js
+import { createReadStream } from 'node:fs'
 import { Readable } from 'node:stream'
 
-const res = await hyper.storage.download(name)
-const readableNodeStream = Readable.fromWeb(res)
+// Convert the ReadableStream to a NodeJS.ReadableStream
+await hyper.storage.download(name).then(res => Readble.fromWeb(res))
+// Or convert to a ReadbleStream from a NodeJS.ReadableStream
+await hyper.storage.upload('foo.png', Readable.toWeb(createReadStream('foo.png')))
 ```
 
 Otherwise, you will need to use `v0.4.0` or less of `hyper-connect`. Node `18` will be in LTS soon,
 and we recommend upgrading to Node `18` LTS as soon as possible, to take advantage of the new Web
 Standards centric features, like global `fetch` and `WebStreams`.
 
-> Starting with Node 17, Node has changed how it resolves `localhost`, when using global `fetch` and
-> `fetch` from libraries like `undici`. This may cause requests to `localhost` not to resolve
-> correctly and fail. To get around this, you can use `127.0.0.1` or `0.0.0.0`, in lieu of
-> `localhost`. For more info, See [this issue](https://github.com/nodejs/node/pull/39987)
+#### Node 18 and `localhost`
+
+Starting with Node 17, Node has changed how it resolves `localhost`, when using global `fetch` and
+`fetch` from libraries like `undici`. This may cause requests to `localhost` not to resolve
+correctly and fail. To get around this, you can use `127.0.0.1` or `0.0.0.0`, in lieu of
+`localhost`. For more info, See [this issue](https://github.com/nodejs/node/pull/39987)
 
 ### Deno
 

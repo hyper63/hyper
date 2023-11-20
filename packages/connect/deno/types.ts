@@ -158,8 +158,10 @@ export interface HyperInfo {
 }
 
 export interface HyperStorage {
-  upload: (name: string, data: Uint8Array) => Promise<Result>
-  download: (name: string) => Promise<ReadableStream>
+  upload: (name: string, data: ReadableStream) => Promise<Result>
+  download: (
+    name: string,
+  ) => Promise<NotOkResult | (OkResult & { object: ReadableStream })>
   signedUrl: (
     name: string,
     options: StorageSignedUrlOptions,
