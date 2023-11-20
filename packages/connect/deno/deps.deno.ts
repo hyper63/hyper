@@ -1,10 +1,12 @@
 import { create as signJWT } from 'https://deno.land/x/djwt@v2.1/mod.ts'
 import { contentType } from 'https://deno.land/std@0.207.0/media_types/mod.ts'
 import { extname } from 'https://deno.land/std@0.207.0/path/mod.ts'
-
-export * as R from 'https://cdn.skypack.dev/ramda@0.28.0'
-export { default as crocks } from 'https://cdn.skypack.dev/crocks@0.12.4'
 export { ms } from 'https://deno.land/x/ms@v0.1.0/ms.ts'
+
+// @deno-types="npm:@types/ramda@^0.28.23"
+export * as R from 'npm:ramda@0.28.0'
+
+export { default as crocks } from 'npm:crocks@0.12.4'
 
 /**
  * See deps.node.ts for shims of below

@@ -6,11 +6,9 @@ import { create, destroy, download, remove, signedUrl, upload } from '../service
 const test = Deno.test
 
 test('storage.upload', async () => {
-  const mockRequest = async (h: HyperRequest) => {
+  const mockRequest = (h: HyperRequest) => {
     assertEquals(h.service, 'storage')
     assertEquals(h.method, 'POST')
-    const body = await new Response(h.body as ReadableStream).text()
-    assertEquals(body, 'woop woop')
     return Promise.resolve(
       new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {
         method: 'POST',
@@ -21,6 +19,8 @@ test('storage.upload', async () => {
     mockRequest,
   )
   assertEquals(req.url, 'http://localhost/storage/bucket/bar/foo.txt')
+  const body = await new Response(req.body as ReadableStream).text()
+  assertEquals(body, 'woop woop')
 })
 
 test('storage.download', async () => {

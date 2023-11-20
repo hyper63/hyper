@@ -21,17 +21,15 @@
     "semiColons": false
   },
   "lint": {
-    "files": {
-      "exclude": [
-        "./CHANGELOG.md",
-        "./dist",
-        "./to-node",
-        "node_modules/",
-        "node/node_modules",
-        "node/harness/cjs/node_modules",
-        "node/harness/esm/node_modules",
-        "./yarn.lock"
-      ]
-    }
+    "exclude": [
+      "./CHANGELOG.md",
+      "./dist",
+      "./to-node",
+      "node_modules/",
+      "node/node_modules",
+      "node/harness/cjs/node_modules",
+      "node/harness/esm/node_modules",
+      "./yarn.lock"
+    ]
   }
 }
