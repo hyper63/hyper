@@ -203,7 +203,13 @@ export function connect(CONNECTION_STRING: string, domain = 'default'): Hyper {
         Promise.resolve(h)
           .then(storage.download(name))
           .then($fetch)
-          .then((res) => res.body as ReadableStream),
+          .then((res) => {
+            if (res.status >= 400) return handleResponse(res)
+            /**
+             * Return a Hyper Response shape
+             */
+            return { ok: true, object: res.body as ReadableStream }
+          }),
       signedUrl: (name, options) =>
         Promise.resolve(h)
           .then(storage.signedUrl(name, options))

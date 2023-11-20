@@ -1,4 +1,6 @@
 import { create as signJWT } from 'https://deno.land/x/djwt@v2.1/mod.ts'
+import { contentType } from 'https://deno.land/std@0.207.0/media_types/mod.ts'
+import { extname } from 'https://deno.land/std@0.207.0/path/mod.ts'
 
 export * as R from 'https://cdn.skypack.dev/ramda@0.28.0'
 export { default as crocks } from 'https://cdn.skypack.dev/crocks@0.12.4'
@@ -14,3 +16,5 @@ export const generateToken = (sub: string, secret: string) => {
   const exp = Math.floor(Date.now() / 1000) + (60 * 5)
   return signJWT({ alg: 'HS256', type: 'JWT' }, { sub: sub, exp }, secret)
 }
+
+export const getMimeType = (name: string) => contentType(extname(name))

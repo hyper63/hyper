@@ -5,6 +5,8 @@
  * deno deps from deps.ts
  */
 
+// deno-lint-ignore ban-ts-comment
+// @ts-ignore
 export * as R from 'ramda'
 export { default as ms } from 'ms'
 // deno-lint-ignore ban-ts-comment
@@ -13,6 +15,7 @@ export { default as crocks } from 'crocks'
 
 import { SignJWT } from 'jose'
 import { BinaryToTextEncoding, createHmac, createSecretKey } from 'crypto'
+import { lookup } from 'mime-types'
 
 /**
  * Shim for https://deno.land/x/hmac@v2.0.1/mod.ts
@@ -40,3 +43,5 @@ export const generateToken = async (sub: string, secret: string) => {
     .sign(key)
   return token
 }
+
+export const getMimeType = (name: string) => lookup(name)

@@ -6,20 +6,21 @@ import { create, destroy, download, remove, signedUrl, upload } from '../service
 const test = Deno.test
 
 test('storage.upload', async () => {
-  const mockRequest = (h: HyperRequest) => {
+  const mockRequest = async (h: HyperRequest) => {
     assertEquals(h.service, 'storage')
     assertEquals(h.method, 'POST')
+    const body = await new Response(h.body as ReadableStream).text()
+    assertEquals(body, 'woop woop')
     return Promise.resolve(
-      new Request(`http://localhost/${h.service}/bucket`, {
+      new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {
         method: 'POST',
-        //body: h.body,
       }),
     )
   }
-  const req = await upload('avatar.png', new Uint8Array())(mockRequest)
-  assertEquals(req.url, 'http://localhost/storage/bucket')
-  //const body = await req.json()
-  //assertEquals(body.get('name'), 'avatar.png')
+  const req = await upload('bar/foo.txt', new Response('woop woop').body as ReadableStream)(
+    mockRequest,
+  )
+  assertEquals(req.url, 'http://localhost/storage/bucket/bar/foo.txt')
 })
 
 test('storage.download', async () => {
@@ -29,7 +30,6 @@ test('storage.download', async () => {
     return Promise.resolve(
       new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {
         method: h.method,
-        //body: new ReadableStream()
       }),
     )
   }
