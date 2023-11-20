@@ -18,7 +18,7 @@ export const upload = (name: string, data: ReadableStream) => async (h: HyperReq
     headers,
     // deno-lint-ignore ban-ts-comment
     // @ts-ignore
-    body: data
+    body: data,
   })
 }
 

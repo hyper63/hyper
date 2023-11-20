@@ -94,7 +94,7 @@ import { createReadStream } from 'node:fs'
 import { Readable } from 'node:stream'
 
 // Convert the ReadableStream to a NodeJS.ReadableStream
-await hyper.storage.download(name).then(res => Readble.fromWeb(res))
+await hyper.storage.download(name).then((res) => Readble.fromWeb(res))
 // Or convert to a ReadbleStream from a NodeJS.ReadableStream
 await hyper.storage.upload('foo.png', Readable.toWeb(createReadStream('foo.png')))
 ```
