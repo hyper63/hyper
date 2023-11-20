@@ -19,6 +19,13 @@ export const upload = (name: string, data: ReadableStream) => async (h: HyperReq
     // deno-lint-ignore ban-ts-comment
     // @ts-ignore
     body: data,
+    /**
+     * duplex needed for node
+     * See https://github.com/nodejs/node/issues/46221
+     */
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
+    duplex: 'half'
   })
 }
 
