@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.10.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.9.0...hyper-connect@v0.10.0) (2023-11-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **connect:** drop support for node 14 and 16
+* **connect:** storage.upload and storage.download accept and return a ReadableStream for data
+
+* **connect:** drop support for node 14 and 16 ([d9bd8b3](https://github.com/hyper63/hyper/commit/d9bd8b3b764e5eab41d2c5a7fdc81408dcb8f07a))
+
+
+### Features
+
+* **connect:** storage.upload and storage.download accept and return a ReadableStream for data ([f920ec4](https://github.com/hyper63/hyper/commit/f920ec4587fb71f82467221ecaf33efc9c50563c))
+
+
+### Bug Fixes
+
+* **connect:** add duplex on storage.upload for node compat ([7e0958c](https://github.com/hyper63/hyper/commit/7e0958cef672f25c29783cf9c909eac096296950))
+
 ## [0.9.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.8.1...hyper-connect@v0.9.0) (2023-10-12)
 
 
