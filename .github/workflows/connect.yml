@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.X]
+        node-version: [18.x, 20.x]
         deno-version: [1.x]
 
     steps:
