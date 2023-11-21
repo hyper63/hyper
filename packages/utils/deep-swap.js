@@ -1,4 +1,5 @@
-import * as R from 'https://cdn.skypack.dev/ramda@0.29.0'
+// @deno-types="npm:@types/ramda@^0.29.9"
+import * as R from 'npm:ramda@0.29.1'
 
 const {
   curry,
