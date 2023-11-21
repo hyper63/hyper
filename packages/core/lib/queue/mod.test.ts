@@ -135,6 +135,7 @@ Deno.test('queue', async (t) => {
         .map((res) => {
           // @ts-expect-error
           assertEquals(res.name, 'foobar')
+          // @ts-expect-error
           assertEquals(res.status, 'READY')
         })
         .toPromise()

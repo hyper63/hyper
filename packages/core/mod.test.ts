@@ -3,7 +3,7 @@
 import {
   default as pouchdb,
   PouchDbAdapterTypes,
-} from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.1.7/mod.js'
+} from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.0/mod.js'
 import memory from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-memory/v2.0.0/mod.js'
 
 import { R } from './deps.ts'

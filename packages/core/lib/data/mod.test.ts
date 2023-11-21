@@ -282,6 +282,7 @@ Deno.test('data', async (t) => {
         await dataWithErr
           .getDocument('foobar', 'err', true)
           .map((res) => {
+            // @ts-expect-error
             assert(res.ok === false)
           })
           .toPromise()
@@ -294,6 +295,7 @@ Deno.test('data', async (t) => {
         await data
           .getDocument('foo', 'key', false)
           .map((res) => {
+            // @ts-expect-error
             assert(res.ok)
             // @ts-expect-error
             assert(res.doc.db)
@@ -320,6 +322,7 @@ Deno.test('data', async (t) => {
         await dataWithErr
           .getDocument('foobar', 'err', false)
           .map((res) => {
+            // @ts-expect-error
             assert(res.ok === false)
           })
           .toPromise()
