@@ -1,4 +1,3 @@
-// See https://deno.land/manual@v1.31.1/advanced/typescript/types#providing-types-when-importing
 // @deno-types="npm:@types/express@^4.17"
 export { default as express } from 'npm:express@4.18.2'
 // @deno-types="npm:@types/multer@^1.4.7"
@@ -6,25 +5,15 @@ export { default as multer } from 'npm:multer@1.4.4'
 // @deno-types="npm:@types/body-parser@^1.19.2"
 export { default as bodyParser } from 'npm:body-parser@1.20.2'
 export { default as cors } from 'npm:cors@2.8.5'
+export { default as helmet } from 'npm:helmet@7.1.0'
+// @deno-types="npm:@types/ramda@^0.29.9"
+export * as R from 'npm:ramda@0.29.1'
+export { default as crocks } from 'npm:crocks@0.12.4'
 
 export {
   readableStreamFromIterable,
   readableStreamFromReader,
 } from 'https://deno.land/std@0.182.0/streams/mod.ts'
-export { contentType as getMimeType } from 'https://deno.land/std@0.182.0/media_types/mod.ts'
+export { contentType as getMimeType } from 'https://deno.land/std@0.207.0/media_types/mod.ts'
 
-/**
- * We will try to use skypack over npm
- * to avoid the npm/node compat layer
- *
- * and let Skypack do the heavy lifting of that compat
- * beforehand
- *
- * TODO: revisit whether this is still working for us
- */
-export { default as helmet } from 'https://cdn.skypack.dev/helmet@6.0.1?dts'
-export * as R from 'https://cdn.skypack.dev/ramda@0.28.0?dts'
-
-export { default as crocks } from 'https://cdn.skypack.dev/crocks@0.12.4?dts'
-
-export { isHyperErr } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.0/packages/utils/mod.js'
+export { isHyperErr } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.2/packages/utils/mod.js'
