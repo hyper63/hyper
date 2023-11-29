@@ -3,8 +3,7 @@
 import {
   default as pouchdb,
   PouchDbAdapterTypes,
-} from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.0/mod.js'
-import memory from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-memory/v2.0.0/mod.js'
+} from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/mod.js'
 
 import { R } from './deps.ts'
 import { assert, assertEquals } from './dev_deps.ts'
@@ -41,7 +40,6 @@ const config: Config = {
       // @ts-ignore
       plugins: [pouchdb({ storage: PouchDbAdapterTypes.memory })],
     },
-    { port: 'cache', plugins: [memory()] },
   ],
   middleware: [
     (app) => ({
@@ -62,7 +60,6 @@ Deno.test('mod', async (t) => {
       const server = await core(config)
       assert(server.app)
       assert(server.services.data)
-      assert(server.services.cache)
     },
   )
 
