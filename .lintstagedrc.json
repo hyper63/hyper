@@ -1,0 +1,7 @@
+{
+  "**/*.{md,json,js,ts}": ["deno fmt"],
+  "**/README.md": [
+    "deno run -A --no-lock npm:markdown-toc-gen@1 insert",
+    "deno fmt"
+  ]
+}

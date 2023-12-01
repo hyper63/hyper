@@ -1,4 +1,8 @@
 {
+  "tasks": {
+    "prepare": "deno run -A --no-lock npm:husky@^8 install",
+    "staged": "deno run -A --no-lock npm:lint-staged@^15"
+  },
   "fmt": {
     "include": ["./"],
     "exclude": ["./**/CHANGELOG.md"],
