@@ -20,6 +20,18 @@
   <a href="https://docs.hyper.io/whats-new">What's New</a>
 </p>
 
+<!-- toc -->
+
+- [Introduction](#introduction)
+- [Status](#status)
+- [Running Locally](#running-locally)
+- [Documentation](#documentation)
+- [Contributions](#contributions)
+- [Developer Setup](#developer-setup)
+- [Thank you](#thank-you)
+
+<!-- tocstop -->
+
 ## Introduction
 
 👋 Hey 👋
@@ -63,7 +75,7 @@ Alternatively, if you're using `node`, you can run `npx hyper-nano`
 
 This `nano` version of hyper implements the following ports and adapters:
 
-- `data` (powered by [PouchDB](https://github.com/hyper63/hyper-adapter-pouchdb))
+- `data` (powered by [In-Memory MongoDB](https://github.com/hyper63/hyper-adapter-mongodb))
 - `cache` (powered by [Sqlite](https://github.com/hyper63/hyper-adapter-sqlite))
 - `storage` (powered by your local [file system](https://github.com/hyper63/hyper-adapter-fs))
 - `search` (powered by [Sqlite and Minisearch](https://github.com/hyper63/hyper-adapter-minisearch))
