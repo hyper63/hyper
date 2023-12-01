@@ -30,7 +30,7 @@ logic. `hyper-nano` is an embodiment of this approach.
 [`adapters`](https://docs.hyper.io/oss/building-your-own-adapter) for all of the hyper service
 offerings:
 
-- data (powered by [PouchDB](https://github.com/hyper63/hyper-adapter-pouchdb))
+- data (powered by [In-Memory MongoDB](https://github.com/hyper63/hyper-adapter-mongodb))
 - cache (powered by [Sqlite](https://github.com/hyper63/hyper-adapter-sqlite))
 - storage (powered by your local [file system](https://github.com/hyper63/hyper-adapter-fs))
 - search (powered by [Sqlite and Minisearch](https://github.com/hyper63/hyper-adapter-minisearch))
@@ -78,7 +78,7 @@ npx hyper-nano --domain=foobar --experimental --data --cache ...
 Alternatively, if you use `Deno` you may run `hyper nano` directly from the source:
 
 ```sh
-deno run --allow-env --allow-read --allow-write=__hyper__ --allow-net --unstable --no-check=remote https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/mod.js
+deno run --allow-run --allow-env --allow-read --allow-write=__hyper__ --allow-net --unstable --no-check=remote https://raw.githubusercontent.com/hyper63/hyper/main/images/nano/mod.js
 ```
 
 If you'd like to programmatically start `hyper nano`, you can import `main.js` and run `main`:
@@ -101,7 +101,7 @@ then consume your hyper instance
 using `HTTP`.
 
 To consume using [`hyper-connect`](https://github.com/hyper63/hyper/tree/main/packages/connect) pass
-`http://localhost:[port]/[domain]` to `hyper-connect` as your
+`http://127.0.0.1:[port]/[domain]` to `hyper-connect` as your
 [`connection string`](https://docs.hyper.io/app-keys#nq-connection-string)
 
 Consume with [`hyper-connect`](https://github.com/hyper63/hyper/tree/main/packages/connect):
@@ -109,7 +109,7 @@ Consume with [`hyper-connect`](https://github.com/hyper63/hyper/tree/main/packag
 ```js
 import { connect } from 'hyper-connect'
 
-const hyper = connect('http://localhost:6363/test')
+const hyper = connect('http://127.0.0.1:6363/test')
 
 await hyper.data.list()
 ```
@@ -117,7 +117,7 @@ await hyper.data.list()
 Or consume via HTTP
 
 ```sh
-curl http://localhost:6363/data/test
+curl http://127.0.0.1:6363/data/test
 ```
 
 > Starting with Node 17, Node has changed how it resolves `localhost`, when using global `fetch` and
@@ -205,24 +205,20 @@ await main({
 ### cache
 
 ```
-./scripts/cache.sh
+deno task cache
 ```
 
 ### test
 
 ```
-./scripts/test.sh
+deno task test
 ```
 
 ### compile
 
 ```
-./scripts/compile.sh
+make clean compile-{target}
 ```
-
-### actions
-
-Github actions deploy hyper to https://hyperland.s3.amazonaws.com/hyper
 
 ## LICENSE
 
