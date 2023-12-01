@@ -1,4 +1,4 @@
-import { app, fs, hooks as _hooks, minisearch, pouchdb, queue, sqlite } from './deps.js'
+import { app, fs, hooks as _hooks, minisearch, mongodb, queue, sqlite } from './deps.js'
 
 import { DIR } from './dir.js'
 
@@ -7,7 +7,7 @@ export default {
   adapters: [
     {
       port: 'data',
-      plugins: [pouchdb({ dir: DIR })],
+      plugins: [mongodb({ dir: DIR, dirVersion: '7.0.4' })],
     },
     {
       port: 'cache',
