@@ -1,6 +1,6 @@
 {
   "name": "hyper-nano",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "license": "Apache-2.0",
   "description": "In-Memory hyper http server using in-memory adapters",
   "homepage": "https://github.com/hyper63/hyper/tree/main/images/nano",
