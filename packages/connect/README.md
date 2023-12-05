@@ -9,6 +9,34 @@ hyper-connect is a client for <a href="https://docs.hyper.io">hyper</a>
 
 ---
 
+<!-- toc -->
+
+- [Table of Contents](#table-of-contents)
+- [Install](#install)
+  - [NodeJS](#nodejs)
+- [Getting Started](#getting-started)
+  - [NodeJS (TypeScript)](#nodejs-typescript)
+  - [NodeJS (ESM)](#nodejs-esm)
+  - [NodeJS (CJS)](#nodejs-cjs)
+  - [A Note for NodeJS](#a-note-for-nodejs)
+    - [Node 18 and `localhost`](#node-18-and-localhost)
+  - [Deno](#deno)
+- [Examples](#examples)
+  - [How to add a document to hyper data?](#how-to-add-a-document-to-hyper-data)
+  - [How to get all the documents of type 'movie'?](#how-to-get-all-the-documents-of-type-movie)
+  - [How to add a cache key/value pair to hyper cache?](#how-to-add-a-cache-keyvalue-pair-to-hyper-cache)
+- [Documentation](#documentation)
+  - [data](#data)
+  - [cache](#cache)
+  - [search](#search)
+  - [storage](#storage)
+  - [queue](#queue)
+  - [Verify Signature](#verify-signature)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+<!-- tocstop -->
+
 ## Table of Contents
 
 - [Install](#install)
@@ -95,10 +123,10 @@ import { Readable } from 'node:stream'
 
 // Convert the ReadableStream to a NodeJS.ReadableStream
 await hyper.storage.download('foo.png')
-    .then((res) => {
-      if (!res.ok) throw res
-      return Readable.fromWeb(res.object)
-    })
+  .then((res) => {
+    if (!res.ok) throw res
+    return Readable.fromWeb(res.object)
+  })
 
 // Or convert to a ReadbleStream from a NodeJS.ReadableStream
 await hyper.storage.upload('foo.png', Readable.toWeb(createReadStream('foo.png')))
