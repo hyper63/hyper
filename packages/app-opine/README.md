@@ -1,7 +1,7 @@
 > :warning: This driving App adapter is deprecated and will no longer receive updates. If you're
 > looking for an http driving App adapter, then consider using the
 > [hyper express App Adapter](https://github.com/hyper63/hyper/tree/main/packages/app-express),
-> which is update to date, and uses the popular web server [express](https://expressjs.com/) to
+> which is up to date, and uses the popular web server [express](https://expressjs.com/) to
 > implement an http driving App adapter for the hyper Service Framework.
 
 <h1 align="center">⚡️ hyper-app-opine ⚡️</h1>
