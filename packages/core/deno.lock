@@ -71,7 +71,7 @@
     "https://cdn.skypack.dev/-/spark-md5@v3.0.2-31IazxoH2otDpq6Lubie/dist=es2020,mode=imports/optimized/spark-md5.js": "ac666d651e859b06a3b252cb250066834bb42952042ce19b9912008b912580dd",
     "https://cdn.skypack.dev/-/uuid@v8.3.2-XAQ9X05vJqvKpZccxFGc/dist=es2020,mode=imports/optimized/uuid.js": "2269db8209b0d0e0430b48430585ef0dfe4388c020b7d371643f318a3b795164",
     "https://cdn.skypack.dev/-/vuvuzela@v1.0.3-Fudn0YxONVgYHwntZdNF/dist=es2020,mode=imports/optimized/vuvuzela.js": "71c6d000d344162f3ec11eee7d404ed11be9c8d09252ddc1c42741a22913bad0",
-    "https://cdn.skypack.dev/pin/indexeddbshim@v9.0.0-QVaW8rBIOGlJegwkWTsK/mode=imports/unoptimized/dist/indexeddbshim-noninvasive.js": "881433d797d9ad1145f05cbbb25fa1374c2eac3f26e159ced515fbab8c8a3197",
+    "https://cdn.skypack.dev/pin/indexeddbshim@v9.0.0-QVaW8rBIOGlJegwkWTsK/mode=imports/unoptimized/dist/indexeddbshim-noninvasive.js": "978a698ccf50ce19735b1da6cad00277cc8fc790610df183c61c2f9cc1df9c9b",
     "https://cdn.skypack.dev/pin/pouchdb-adapter-http@v7.3.0-wNzBHi1B5WLNzMPlTnWb/mode=imports/optimized/pouchdb-adapter-http.js": "023e92d130094b0e43638ee849b5b4f539fd987034104452c933fcd505a96242",
     "https://cdn.skypack.dev/pin/pouchdb-adapter-idb@v7.3.0-zIdGq675NuTdgkAjGFSh/mode=imports/optimized/pouchdb-adapter-idb.js": "76bd6a4758f5c20caa03cba2b52a7345d5d724393bda93b82131342461d300d4",
     "https://cdn.skypack.dev/pin/pouchdb-core@v7.3.0-89HuCNEcWBT7jv1msAf2/mode=imports/optimized/pouchdb-core.js": "66ab654df46ef713bc9822010e2a9be5caa974ece65a88f72e10951836da3b99",
