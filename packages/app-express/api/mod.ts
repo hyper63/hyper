@@ -10,7 +10,7 @@ import { crawler } from './crawler.ts'
 
 const { when, compose } = R
 
-export const mountServicesWith = (services: HyperServices) => (app: Server) => {
+export const withCoreServicesRoutes = (services: HyperServices) => (app: Server) => {
   const hasService = (service: keyof HyperServices) => !!services[service]
 
   return compose(

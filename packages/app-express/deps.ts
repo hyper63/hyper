@@ -14,6 +14,6 @@ export {
   readableStreamFromIterable,
   readableStreamFromReader,
 } from 'https://deno.land/std@0.182.0/streams/mod.ts'
-export { contentType as getMimeType } from 'https://deno.land/std@0.207.0/media_types/mod.ts'
+export { contentType as getMimeType } from 'https://deno.land/std@0.208.0/media_types/mod.ts'
 
 export { isHyperErr } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.2/packages/utils/mod.js'

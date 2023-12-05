@@ -1,6 +1,8 @@
-import { mountServicesWith } from './api/mod.ts'
-import { cors, express, helmet } from './deps.ts'
+import { withCoreServicesRoutes } from './api/mod.ts'
+import { cors, express, helmet, R } from './deps.ts'
 import type { ErrorRouteHandler, HyperServices, Server } from './types.ts'
+
+const { pipe } = R
 
 // All of these args need to be specified, or it won't be invoked on error
 const errorHandler: ErrorRouteHandler = (err, _req, res, _next) => {
@@ -17,43 +19,51 @@ const errorHandler: ErrorRouteHandler = (err, _req, res, _next) => {
 }
 
 export function main(services: HyperServices): Server {
-  const mountServices = mountServicesWith(services)
+  return pipe(
+    /**
+     * Apply base layer middleware
+     */
+    (app) => app.use(helmet()),
+    (app) => app.use(cors({ credentials: true })),
+    /**
+     * Apply middleware to the app
+     */
+    (app) => {
+      if (!services.middleware?.length) return app
 
-  let app = express()
+      return services.middleware
+        .reverse()
+        .reduce(
+          (app, middleware) => middleware(app, services),
+          app,
+        )
+    },
+    /**
+     * Apply hyper core services routes
+     */
+    withCoreServicesRoutes(services),
+    /**
+     * Apply root route
+     */
+    (app) => {
+      app.get('/', (_req, res) => {
+        res.json({
+          name: 'hyper',
+          version: '1.0-beta',
+          services: Object.keys(services)
+            .filter((k) => k !== 'events')
+            .filter((k) => k !== 'middleware')
+            .filter((k) => k !== 'hooks')
+            .filter((k) => services[k as keyof HyperServices] !== null),
+        })
+      })
 
-  app.use(helmet())
-  app.use(cors({ credentials: true }))
-
-  if (services.middleware?.length) {
-    app = services.middleware
-      .reverse()
-      .reduce(
-        (app, middleware) => middleware(app, services),
-        app,
-      )
-  }
-
-  app = mountServices(app)
-
-  app.get('/', (_req, res) => {
-    res.json({
-      name: 'hyper',
-      version: '1.0-beta',
-      services: Object.keys(services)
-        .filter((k) => k !== 'events')
-        .filter((k) => k !== 'middleware')
-        .filter((k) => k !== 'hooks')
-        .filter((k) => services[k as keyof HyperServices] !== null),
-    })
-  })
-
-  // Error Handler
-  app.use(errorHandler)
-
-  // Handle fall through case, if not handled above then return 404
-  app.use((_req, res) => {
-    res.status(404).json({ ok: false, msg: 'not found!' })
-  })
-
-  return app
+      return app
+    },
+    (app) => app.use(errorHandler),
+    (app) =>
+      app.use((_req, res) => {
+        res.status(404).json({ ok: false, msg: 'not found!' })
+      }),
+  )(express())
 }
