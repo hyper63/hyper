@@ -10,8 +10,8 @@ export { z } from 'https://deno.land/x/zod@v3.20.5/mod.ts'
 export { ms } from 'https://deno.land/x/ms@v0.1.0/ms.ts'
 
 export { cuid } from 'https://deno.land/x/cuid@v1.0.0/index.js'
-export { join } from 'https://deno.land/std@0.207.0/path/mod.ts'
-export { exists } from 'https://deno.land/std@0.207.0/fs/mod.ts'
+export { join } from 'https://deno.land/std@0.208.0/path/mod.ts'
+export { exists } from 'https://deno.land/std@0.208.0/fs/mod.ts'
 
 import {
   HyperErr,
