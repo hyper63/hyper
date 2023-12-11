@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.11.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.10.0...hyper-connect@v0.11.0) (2023-12-11)
+
 ## [0.10.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.9.0...hyper-connect@v0.10.0) (2023-11-20)
 
 
