@@ -38,7 +38,9 @@ export const fetchWithShim = (f: typeof fetch) =>
      * duplex needed for node
      * See https://github.com/nodejs/node/issues/46221
      */
-    ...(req.body ? { body: req.body, duplex: 'half' } : {}),
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
+    ...(req.body ? { body: req.body, duplex: true } : {}),
   })
 
 export const hyper = (conn: URL, domain: string) =>
