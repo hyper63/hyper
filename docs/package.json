@@ -1,0 +1,20 @@
+{
+  "name": "docs",
+  "version": "0.0.1",
+  "description": "Tame technical debt with The hyper Service Framework",
+  "authors": {
+    "name": "Tyler Hall",
+    "email": "tyler@hyper.io"
+  },
+  "repository": "https://github.com/hyper63/hyper/docs",
+  "scripts": {
+    "dev": "vitepress dev src",
+    "build": "vitepress build src",
+    "preview": "vitepress preview src"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "vitepress": "1.0.0-rc.34",
+    "vue": "^3.4.3"
+  }
+}
