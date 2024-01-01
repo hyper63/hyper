@@ -2,6 +2,10 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  /**
+   * Needed since we host the docs on GitHub pages
+   */
+  base: '/hyper',
   title: "hyper",
   description: "Tame technical debt with The hyper Service Framework",
   head: [
