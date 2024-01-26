@@ -18,7 +18,7 @@ Deno.test('Verify: Compare Secret Signatures Successfully', () => {
   assertEquals(result.ok, true)
 })
 
-Deno.test('Verify: Compare Signatures that don\'t match ', () => {
+Deno.test("Verify: Compare Signatures that don't match ", () => {
   const time = new Date()
   const s = hmac(
     'sha256',
