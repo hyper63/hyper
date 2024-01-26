@@ -10,3 +10,11 @@ export const errors = () => (h: HyperRequestFunction) =>
 
 export const queued = () => (h: HyperRequestFunction) =>
   h({ service, method: Method.GET, params: { status: QueueStatus.READY } })
+
+export const create = (target: string, secret?: string) => (hyper: HyperRequestFunction) =>
+  hyper({ service, method: Method.PUT, body: { target, secret } })
+
+export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
+  confirm
+    ? hyper({ service, method: Method.DELETE })
+    : Promise.reject({ ok: false, msg: 'request not confirmed!' })

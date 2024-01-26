@@ -175,6 +175,11 @@ export interface HyperQueue {
   enqueue: <Job>(job: Job) => Promise<Result>
   errors: <Job>() => Promise<Job[]>
   queued: <Job>() => Promise<Job[]>
+  create: (
+    target: string,
+    secret?: string,
+  ) => Promise<Result>
+  destroy: (confirm: boolean) => Promise<Result>
 }
 
 export interface HyperRequest {

@@ -1,7 +1,9 @@
 import { HyperRequest } from '../types.ts'
-import { assertEquals } from '../dev_deps.ts'
+import { assert, assertEquals } from '../dev_deps.ts'
 
 import { enqueue, errors, queued } from '../services/queue.ts'
+import { create } from '../services/queue.ts'
+import { destroy } from '../services/queue.ts'
 
 const test = Deno.test
 
@@ -56,4 +58,46 @@ test('queue.queued', async () => {
   }
   const request = await queued()(mockRequest)
   assertEquals(request.url, 'http://localhost/?status=READY')
+})
+
+test('queue.create', async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, 'queue')
+    assertEquals(h.method, 'PUT')
+    return Promise.resolve(
+      new Request('http://localhost', {
+        method: 'PUT',
+        body: JSON.stringify(h.body),
+      }),
+    )
+  }
+
+  const result = await create('https://foo.bar', 'shhhh')(mockRequest)
+  const body = await result.json()
+  assertEquals(body, { target: 'https://foo.bar', secret: 'shhhh' })
+
+  const noSecret = await create('https://foo.bar')(mockRequest)
+  const noSecertBody = await noSecret.json()
+  assertEquals(noSecertBody, { target: 'https://foo.bar' })
+})
+
+test('queue.destroy', async () => {
+  const mockRequest = (h: HyperRequest) => {
+    assertEquals(h.service, 'queue')
+    assertEquals(h.method, 'DELETE')
+    return Promise.resolve(
+      new Request('http://localhost', { method: 'DELETE' }),
+    )
+  }
+
+  await destroy(true)(mockRequest)
+
+  const noConfirmRequest = (_h: HyperRequest) => {
+    assert(false, 'unreachable')
+    return Promise.resolve(
+      new Request('http://localhost', { method: 'DELETE' }),
+    )
+  }
+
+  await destroy()(noConfirmRequest).catch(assert)
 })
