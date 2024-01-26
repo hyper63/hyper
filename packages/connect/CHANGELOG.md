@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.12.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.11.0...hyper-connect@v0.12.0) (2024-01-26)
+
+
+### Features
+
+* **connect:** add queue.create and queue.destroy [#619](https://github.com/hyper63/hyper/issues/619) ([a8603b8](https://github.com/hyper63/hyper/commit/a8603b81f609e7c880a75d04666993a0f0d8c64a))
+
 ## [0.11.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.10.0...hyper-connect@v0.11.0) (2023-12-11)
 
 ## [0.10.0](https://github.com/hyper63/hyper/compare/hyper-connect@v0.9.0...hyper-connect@v0.10.0) (2023-11-20)
