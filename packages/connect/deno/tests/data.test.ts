@@ -157,6 +157,9 @@ test('data.destroy', async () => {
 
   const noConfirmRequest = (_h: HyperRequest) => {
     assert(false, 'unreachable')
+    return Promise.resolve(
+      new Request('http://localhost', { method: 'DELETE' }),
+    )
   }
 
   await destroy()(noConfirmRequest).catch(assert)

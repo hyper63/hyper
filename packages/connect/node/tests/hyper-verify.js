@@ -19,7 +19,7 @@ test('Verify: Compare Secret Signatures Successfully', () => {
   assert.equal(result.ok, true)
 })
 
-test('Verify: Compare Signatures that don\'t match ', () => {
+test("Verify: Compare Signatures that don't match ", () => {
   const time = new Date()
   const s = hmac(
     'sha256',
