@@ -25,7 +25,6 @@ export interface HyperServices {
 
 declare global {
   namespace Express {
-    // deno-lint-ignore no-empty-interface
     export interface Request extends HyperServices {}
   }
 }

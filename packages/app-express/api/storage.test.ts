@@ -82,7 +82,8 @@ Deno.test('storage', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param to core', async () => {
@@ -97,7 +98,8 @@ Deno.test('storage', async (t) => {
               assertEquals(body.name, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -116,7 +118,8 @@ Deno.test('storage', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param to core', async () => {
@@ -131,7 +134,8 @@ Deno.test('storage', async (t) => {
               assertEquals(body.name, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -150,7 +154,8 @@ Deno.test('storage', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -168,7 +173,8 @@ Deno.test('storage', async (t) => {
                 assertEquals(body.object, 'foo/bar.png')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -191,7 +197,8 @@ Deno.test('storage', async (t) => {
                 return res.body?.cancel()
               })
             )
-            .finally(async () => await harness.stop())
+            .then(() => harness.stop())
+            .catch(() => harness.stop())
         },
       )
 
@@ -211,7 +218,8 @@ Deno.test('storage', async (t) => {
                 return res.body?.cancel()
               })
             )
-            .finally(async () => await harness.stop())
+            .then(() => harness.stop())
+            .catch(() => harness.stop())
         },
       )
 
@@ -238,7 +246,8 @@ Deno.test('storage', async (t) => {
                 assertEquals(body, 'Some awesome object content')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       })
     })
 
@@ -259,7 +268,8 @@ Deno.test('storage', async (t) => {
                 return res.body?.cancel()
               })
             )
-            .finally(async () => await harness.stop())
+            .then(() => harness.stop())
+            .catch(() => harness.stop())
         },
       )
 
@@ -276,39 +286,40 @@ Deno.test('storage', async (t) => {
                 return res.body?.cancel()
               })
             )
-            .finally(async () => await harness.stop()),
+            .then(() => harness.stop())
+            .catch(() => harness.stop()),
       )
     })
   })
+    // await t.step('POST /storage/:name', async (t) => {
+    //   await t.step({
+    //     name: 'should set the Content-Type header',
+    //     fn: async () => {
+    //       const formData = new FormData()
+    //       formData.append(
+    //         'file',
+    //         new Blob([JSON.stringify({ foo: 'bar' }, null, 2)], {
+    //           type: 'application/json',
+    //         }),
+    //         'foobar.json',
+    //       )
 
-  // await t.step('POST /storage/:name', async (t) => {
-  //   await t.step({
-  //     name: 'should set the Content-Type header',
-  //     fn: async () => {
-  //       const formData = new FormData()
-  //       formData.append(
-  //         'file',
-  //         new Blob([JSON.stringify({ foo: 'bar' }, null, 2)], {
-  //           type: 'application/json',
-  //         }),
-  //         'foobar.json',
-  //       )
-
-  //       await harness
-  //         .start()
-  //         .then(() =>
-  //           harness('/storage/movies', {
-  //             method: 'POST',
-  //             body: formData,
-  //           }).then((res) => {
-  //             assertEquals(
-  //               res.headers.get('content-type'),
-  //               'application/json; charset=utf-8',
-  //             )
-  //             return res.body?.cancel()
-  //           })
-  //         )
-  //         .finally(async () => await harness.stop())
+    //       await harness
+    //         .start()
+    //         .then(() =>
+    //           harness('/storage/movies', {
+    //             method: 'POST',
+    //             body: formData,
+    //           }).then((res) => {
+    //             assertEquals(
+    //               res.headers.get('content-type'),
+    //               'application/json; charset=utf-8',
+    //             )
+    //             return res.body?.cancel()
+    //           })
+    //         )
+    //         .then(() => harness.stop())
+    .catch(() => harness.stop())
   //     },
   //     sanitizeResources: false,
   //     sanitizeOps: false,

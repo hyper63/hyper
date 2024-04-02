@@ -26,7 +26,8 @@ Deno.test('json', async (t) => {
             assertObjectMatch(body, { id: '1', type: 'movie' })
           })
       )
-      .finally(async () => await harness.stop())
+      .then(() => harness.stop())
+      .catch(() => harness.stop())
   })
 
   await t.step(
@@ -44,7 +45,8 @@ Deno.test('json', async (t) => {
               assertObjectMatch(body, { id: '1', type: 'movie' })
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     },
   )
 
@@ -69,7 +71,8 @@ Deno.test('json', async (t) => {
               assertObjectMatch(body, { id: '1', type: 'movie' })
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should parse as json', async () => {
@@ -85,7 +88,8 @@ Deno.test('json', async (t) => {
               assertObjectMatch({}, body)
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 })

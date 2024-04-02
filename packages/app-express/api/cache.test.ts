@@ -73,7 +73,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param to core', async () => {
@@ -86,7 +87,8 @@ Deno.test('cache', async (t) => {
               assertEquals(body.name, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -103,7 +105,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param to core', async () => {
@@ -116,7 +119,8 @@ Deno.test('cache', async (t) => {
               assertEquals(body.name, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -148,7 +152,8 @@ Deno.test('cache', async (t) => {
             },
           )
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -174,7 +179,8 @@ Deno.test('cache', async (t) => {
                 assertEquals(body.pattern, 'foo*')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -199,7 +205,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param and body to core', async () => {
@@ -222,7 +229,8 @@ Deno.test('cache', async (t) => {
               assertEquals(body.ttl, '1m')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -239,7 +247,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name and key route params to core', async () => {
@@ -253,7 +262,8 @@ Deno.test('cache', async (t) => {
               assertEquals(body.doc.name, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass isLegacyGetEnabled to core', async () => {
@@ -270,7 +280,8 @@ Deno.test('cache', async (t) => {
               assertEquals(withLegacy.doc.isLegacyGetEnabled, true)
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -290,7 +301,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -311,7 +323,8 @@ Deno.test('cache', async (t) => {
                 assertEquals(body.ttl, '1m')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -329,7 +342,8 @@ Deno.test('cache', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name and key route params to core', async () => {
@@ -343,7 +357,8 @@ Deno.test('cache', async (t) => {
               assertEquals(body.key, 'key')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 })

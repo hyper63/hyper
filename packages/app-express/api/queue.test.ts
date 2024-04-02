@@ -60,7 +60,8 @@ Deno.test('queue', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route params and body to core', async () => {
@@ -83,7 +84,8 @@ Deno.test('queue', async (t) => {
               })
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -102,7 +104,8 @@ Deno.test('queue', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route param to core', async () => {
@@ -117,7 +120,8 @@ Deno.test('queue', async (t) => {
               assertEquals(body.arg, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -140,7 +144,8 @@ Deno.test('queue', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass name route params and body to core', async () => {
@@ -165,7 +170,8 @@ Deno.test('queue', async (t) => {
               })
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -182,7 +188,8 @@ Deno.test('queue', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -200,7 +207,8 @@ Deno.test('queue', async (t) => {
                 })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -218,7 +226,8 @@ Deno.test('queue', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -236,7 +245,8 @@ Deno.test('queue', async (t) => {
                 })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })

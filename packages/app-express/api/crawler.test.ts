@@ -52,7 +52,8 @@ Deno.test('crawler', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -88,7 +89,8 @@ Deno.test('crawler', async (t) => {
                 assertObjectMatch(body.def, crawlerDefinition)
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -106,7 +108,8 @@ Deno.test('crawler', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -120,7 +123,8 @@ Deno.test('crawler', async (t) => {
             assertEquals(body.bucket, 'test')
             assertEquals(body.name, 'spider')
           })
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -140,7 +144,8 @@ Deno.test('crawler', async (t) => {
             },
           )
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -154,7 +159,8 @@ Deno.test('crawler', async (t) => {
             assertEquals(body.bucket, 'test')
             assertEquals(body.name, 'spider')
           })
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -172,7 +178,8 @@ Deno.test('crawler', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -186,7 +193,8 @@ Deno.test('crawler', async (t) => {
             assertEquals(body.bucket, 'test')
             assertEquals(body.name, 'spider')
           })
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
