@@ -89,7 +89,7 @@ test('HyperErrFrom - should map ZodError to HyperErr', async () => {
 
   assertEquals(err.ok, false)
   assertEquals(err.status, 500)
-  assertEquals(err.msg, 'Invalid Return \'ok\': Required.')
+  assertEquals(err.msg, "Invalid Return 'ok': Required.")
 
   const errWrongArgs = await fn({ name: 123 }).catch(HyperErrFrom)
 
@@ -97,7 +97,7 @@ test('HyperErrFrom - should map ZodError to HyperErr', async () => {
   assertEquals(errWrongArgs.status, 422)
   assertEquals(
     errWrongArgs.msg,
-    'Invalid Arguments \'name\': Expected string, received number.',
+    "Invalid Arguments 'name': Expected string, received number.",
   )
 })
 

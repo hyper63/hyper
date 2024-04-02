@@ -62,37 +62,41 @@ Deno.test('cache', async (t) => {
       },
     )
 
-    await t.step('should reject if the name is invalid', async (t) => {
+    await t.step('should resolve HyperErr if the name is invalid', async (t) => {
       await t.step('does not start with alphanumeric', async () => {
         await cache
           .createStore('_foo')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a space', async () => {
         await cache
           .createStore('foo bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a slash', async () => {
         await cache
           .createStore('foo/bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains non URI friendly character', async () => {
         await cache
           .createStore('foo?bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
     })
   })
@@ -108,37 +112,41 @@ Deno.test('cache', async (t) => {
         .toPromise()
     })
 
-    await t.step('should reject if the name is invalid', async (t) => {
+    await t.step('should resolve HyperErr if the name is invalid', async (t) => {
       await t.step('does not start with alphanumeric', async () => {
         await cache
           .deleteStore('_foo')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a space', async () => {
         await cache
           .deleteStore('foo bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a slash', async () => {
         await cache
           .deleteStore('foo/bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains non URI friendly character', async () => {
         await cache
           .deleteStore('foo?bar')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
     })
   })
@@ -156,37 +164,41 @@ Deno.test('cache', async (t) => {
         .toPromise()
     })
 
-    await t.step('should reject if the name is invalid', async (t) => {
+    await t.step('should resolve HyperErr if the name is invalid', async (t) => {
       await t.step('does not start with alphanumeric', async () => {
         await cache
           .queryStore('_foo', 'foo*')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a space', async () => {
         await cache
           .queryStore('foo bar', 'foo*')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a slash', async () => {
         await cache
           .queryStore('foo/bar', 'foo*')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains non URI friendly character', async () => {
         await cache
           .queryStore('foo?bar', 'foo*')
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
     })
   })
@@ -228,12 +240,13 @@ Deno.test('cache', async (t) => {
         .toPromise()
     })
 
-    await t.step('should reject if cache doc has an invalid key', async () => {
+    await t.step('should resolve HyperErr if cache doc has an invalid key', async () => {
       await cache
         .createDoc('store', 'Not_Valid', { beep: 'boop' })
         .toPromise()
-        .then(() => assert(false))
-        .catch(() => assert(true))
+        .then((err: any) => {
+          assertEquals(err.status, 422)
+        })
     })
   })
 
@@ -363,12 +376,13 @@ Deno.test('cache', async (t) => {
         .toPromise()
     })
 
-    await t.step('should reject if cache doc has an invalid key', async () => {
+    await t.step('should resolve HyperErr if cache doc has an invalid key', async () => {
       await cache
         .updateDoc('store', 'Not_Valid', { beep: 'boop' })
         .toPromise()
-        .then(() => assert(false))
-        .catch(() => assert(true))
+        .then((err: any) => {
+          assertEquals(err.status, 422)
+        })
     })
   })
 
@@ -385,12 +399,13 @@ Deno.test('cache', async (t) => {
         .toPromise()
     })
 
-    await t.step('should reject if cache doc has an invalid key', async () => {
+    await t.step('should resolve HyperErr if cache doc has an invalid key', async () => {
       await cache
         .deleteDoc('store', 'Not_Valid')
         .toPromise()
-        .then(() => assert(false))
-        .catch(() => assert(true))
+        .then((err: any) => {
+          assertEquals(err.status, 422)
+        })
     })
   })
 })

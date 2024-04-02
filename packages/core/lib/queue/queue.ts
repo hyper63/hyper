@@ -24,7 +24,7 @@ function checkNameIsValid<T extends { name: string }>(input: T) {
      * or any of these characters - _ ~
      */
     return /^[a-z0-9-~_]+$/.test(name)
-  }, 'queue name is not valid!')(input)
+  }, { status: 422, msg: 'queue name is not valid!' })(input)
 }
 
 export const index = () =>
@@ -39,10 +39,10 @@ export const index = () =>
 export const create = (input: Parameters<QueuePort['create']>[0]) =>
   of(input)
     .map(over(lensProp('name'), toLower))
-    .chain(checkNameIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<QueuePort>) => {
         return Async.of(input)
+          .chain(checkNameIsValid)
           .chain(Async.fromPromise((input) => svc.create(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)

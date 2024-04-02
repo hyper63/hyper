@@ -20,7 +20,7 @@ const checkNameIsValid = is((name: string) => {
   // cache names should only start with alphanumeric characters
   // should return a true or false
   return /^[a-z0-9]+$/.test(name[0]) && /^[a-z0-9-~_]+$/.test(name)
-}, 'name is not valid')
+}, { status: 422, msg: 'name is not valid' })
 
 export const index = () =>
   ask(({ svc }: ReaderEnvironment<CachePort>) => {
@@ -37,10 +37,10 @@ export const index = () =>
 export const create = (name: string) =>
   of(name)
     .map(toLower)
-    .chain(checkNameIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .chain(checkNameIsValid)
           .chain(Async.fromPromise((input) => svc.createStore(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -52,10 +52,10 @@ export const create = (name: string) =>
  */
 export const del = (name: string) =>
   of(name)
-    .chain(checkNameIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .chain(checkNameIsValid)
           .chain(Async.fromPromise((input) => svc.destroyStore(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -67,12 +67,12 @@ export const del = (name: string) =>
  * @param {string} pattern
  */
 export const query = (name: string, pattern: string) =>
-  of(name)
-    .chain(checkNameIsValid)
-    .map((name) => ({ store: name, pattern }))
+  of({ store: name, pattern })
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .chain(({ store }) => checkNameIsValid(store))
+          .map(() => input)
           .chain(Async.fromPromise((input) => svc.listDocs(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)

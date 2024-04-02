@@ -17,17 +17,17 @@ const setDescending = <T extends { descending?: boolean }>(arg: T) => ({
   descending: Boolean(arg.descending),
 })
 
-const checkNameIsValid = is<string>(() => true, 'database name is not valid')
+const checkNameIsValid = is<string>(() => true, { status: 422, msg: 'database name is not valid' })
 
 /**
  * @param {string} name
  */
 export const create = (name: string) =>
   of(name)
-    .chain(checkNameIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<DataPort>) => {
         return Async.of(input)
+          .chain(checkNameIsValid)
           .chain(Async.fromPromise((input) => svc.createDatabase(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -39,10 +39,10 @@ export const create = (name: string) =>
  */
 export const remove = (name: string) =>
   of(name)
-    .chain(checkNameIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<DataPort>) => {
         return Async.of(input)
+          .chain(checkNameIsValid)
           .chain(Async.fromPromise((input) => svc.removeDatabase(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
