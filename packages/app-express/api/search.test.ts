@@ -84,7 +84,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -109,7 +110,8 @@ Deno.test('search', async (t) => {
                 })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -129,7 +131,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass index route params to core', async () => {
@@ -144,7 +147,8 @@ Deno.test('search', async (t) => {
               assertEquals(body.index, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -167,7 +171,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -190,7 +195,8 @@ Deno.test('search', async (t) => {
                 assertEquals(body.doc, { foo: 'bar' })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -208,7 +214,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass index and key route params to core', async () => {
@@ -222,7 +229,8 @@ Deno.test('search', async (t) => {
               assertEquals(body.key, '1')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -242,7 +250,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -262,7 +271,8 @@ Deno.test('search', async (t) => {
                 assertEquals(body.doc, { foo: 'bar' })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -280,7 +290,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass index and key route params to core', async () => {
@@ -294,7 +305,8 @@ Deno.test('search', async (t) => {
               assertEquals(body.key, '1')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -316,7 +328,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -337,7 +350,8 @@ Deno.test('search', async (t) => {
                 assertEquals(body.query, { query: 'foobar' })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -358,7 +372,8 @@ Deno.test('search', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -378,7 +393,8 @@ Deno.test('search', async (t) => {
                 assertEquals(body.docs[1], { fizz: 'buzz' })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })

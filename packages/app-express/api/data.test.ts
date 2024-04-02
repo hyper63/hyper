@@ -52,7 +52,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass db route param to core', async () => {
@@ -65,7 +66,8 @@ Deno.test('data', async (t) => {
               assertEquals(body.db, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -82,7 +84,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass db route param to core', async () => {
@@ -95,7 +98,8 @@ Deno.test('data', async (t) => {
               assertEquals(body.db, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -112,7 +116,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -134,7 +139,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.query, { limit: '2', foo: 'bar' })
               })
           )
-          .finally(() => harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
 
@@ -152,7 +158,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.query, {})
               })
           )
-          .finally(() => harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
 
@@ -170,7 +177,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.query, {})
               })
           )
-          .finally(() => harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -194,7 +202,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass db route param and body to core', async () => {
@@ -214,7 +223,8 @@ Deno.test('data', async (t) => {
               assertEquals(body.db, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -231,7 +241,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass db and id route params to core', async () => {
@@ -245,7 +256,8 @@ Deno.test('data', async (t) => {
               assertEquals(body.doc.db, 'movies')
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass isLegacyGetEnabled to core', async () => {
@@ -262,7 +274,8 @@ Deno.test('data', async (t) => {
               assertEquals(withLegacy.doc.isLegacyGetEnabled, true)
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
   })
 
@@ -285,7 +298,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -308,7 +322,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.db, 'movies')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -328,7 +343,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -346,7 +362,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.db, 'movies')
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -370,7 +387,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -396,7 +414,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.partialFilter, { type: 'bar' })
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -419,7 +438,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step('should pass db and body to core', async () => {
@@ -438,7 +458,8 @@ Deno.test('data', async (t) => {
               assertEquals(body.query, { type: 'movie' })
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -457,7 +478,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.query, {})
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })
@@ -478,7 +500,8 @@ Deno.test('data', async (t) => {
             return res.body?.cancel()
           })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     })
 
     await t.step(
@@ -498,7 +521,8 @@ Deno.test('data', async (t) => {
                 assertEquals(body.results, [{ id: '1', type: 'movie' }])
               })
           )
-          .finally(async () => await harness.stop())
+          .then(() => harness.stop())
+          .catch(() => harness.stop())
       },
     )
   })

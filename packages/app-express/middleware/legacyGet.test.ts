@@ -24,7 +24,8 @@ Deno.test('legacyGet', async (t) => {
             assert(body.isLegacyGetEnabled)
           })
       )
-      .finally(async () => await harness.stop())
+      .then(() => harness.stop())
+      .catch(() => harness.stop())
   })
 
   await t.step('should set isLegacyGetEnabled to false', async () => {
@@ -39,7 +40,8 @@ Deno.test('legacyGet', async (t) => {
             assert(!body.isLegacyGetEnabled)
           })
       )
-      .finally(async () => await harness.stop())
+      .then(() => harness.stop())
+      .catch(() => harness.stop())
   })
 
   await t.step(
@@ -54,7 +56,8 @@ Deno.test('legacyGet', async (t) => {
               assert(body.isLegacyGetEnabled === undefined)
             })
         )
-        .finally(async () => await harness.stop())
+        .then(() => harness.stop())
+        .catch(() => harness.stop())
     },
   )
 })
