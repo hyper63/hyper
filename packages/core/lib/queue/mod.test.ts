@@ -77,7 +77,7 @@ Deno.test('queue', async (t) => {
       },
     )
 
-    await t.step('should reject if the name is invalid', async (t) => {
+    await t.step('should resolve HyperErr if the name is invalid', async (t) => {
       await t.step('contains a space', async () => {
         await queue
           .create({
@@ -86,8 +86,9 @@ Deno.test('queue', async (t) => {
             target: 'https://foo.bar',
           })
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains a slash', async () => {
@@ -98,8 +99,9 @@ Deno.test('queue', async (t) => {
             target: 'https://foo.bar',
           })
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
 
       await t.step('contains non URI friendly character', async () => {
@@ -110,8 +112,9 @@ Deno.test('queue', async (t) => {
             target: 'https://foo.bar',
           })
           .toPromise()
-          .then(() => assert(false))
-          .catch(() => assert(true))
+          .then((err: any) => {
+            assertEquals(err.status, 422)
+          })
       })
     })
   })

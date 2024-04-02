@@ -3,31 +3,319 @@
   "packages": {
     "specifiers": {
       "npm:@types/ramda@^0.29.9": "npm:@types/ramda@0.29.9",
+      "npm:bson@6.2.0": "npm:bson@6.2.0",
       "npm:crocks@0.12.4": "npm:crocks@0.12.4",
-      "npm:ramda@0.28.0": "npm:ramda@0.28.0",
+      "npm:cuid@3.0.0": "npm:cuid@3.0.0",
+      "npm:mongodb-memory-server-core@9.1.1": "npm:mongodb-memory-server-core@9.1.1",
+      "npm:mongodb@6.3.0": "npm:mongodb@6.3.0",
       "npm:ramda@0.29.1": "npm:ramda@0.29.1"
     },
     "npm": {
+      "@mongodb-js/saslprep@1.1.1": {
+        "integrity": "sha512-t7c5K033joZZMspnHg/gWPE4kandgc2OxE74aYOtGKfgB9VPuVJPix0H6fhmm2erj5PBJ21mqcx34lpIGtUCsQ==",
+        "dependencies": {
+          "sparse-bitfield": "sparse-bitfield@3.0.3"
+        }
+      },
+      "@types/node@18.16.19": {
+        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
+        "dependencies": {}
+      },
       "@types/ramda@0.29.9": {
         "integrity": "sha512-X3yEG6tQCWBcUAql+RPC/O1Hm9BSU+MXu2wJnCETuAgUlrEDwTA1kIOdEEE4YXDtf0zfQLHa9CCE7WYp9kqPIQ==",
         "dependencies": {
           "types-ramda": "types-ramda@0.29.6"
         }
       },
+      "@types/webidl-conversions@7.0.3": {
+        "integrity": "sha512-CiJJvcRtIgzadHCYXw7dqEnMNRjhGZlYK05Mj9OyktqV8uVT8fD2BFOB7S1uwBE3Kj2Z+4UyPmFw/Ixgw/LAlA==",
+        "dependencies": {}
+      },
+      "@types/whatwg-url@11.0.3": {
+        "integrity": "sha512-z1ELvMijRL1QmU7QuzDkeYXSF2+dXI0ITKoQsIoVKcNBOiK5RMmWy+pYYxJTHFt8vkpZe7UsvRErQwcxZkjoUw==",
+        "dependencies": {
+          "@types/webidl-conversions": "@types/webidl-conversions@7.0.3"
+        }
+      },
+      "@types/whatwg-url@8.2.2": {
+        "integrity": "sha512-FtQu10RWgn3D9U4aazdwIE2yzphmTJREDqNdODHrbrZmmMqI0vMheC/6NE/J1Yveaj8H+ela+YwWTjq5PGmuhA==",
+        "dependencies": {
+          "@types/node": "@types/node@18.16.19",
+          "@types/webidl-conversions": "@types/webidl-conversions@7.0.3"
+        }
+      },
+      "agent-base@7.1.0": {
+        "integrity": "sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==",
+        "dependencies": {
+          "debug": "debug@4.3.4"
+        }
+      },
+      "async-mutex@0.4.0": {
+        "integrity": "sha512-eJFZ1YhRR8UN8eBLoNzcDPcy/jqjsg6I1AP+KvWQX80BqOSW1oJPJXDylPUEeMr2ZQvHgnQ//Lp6f3RQ1zI7HA==",
+        "dependencies": {
+          "tslib": "tslib@2.6.2"
+        }
+      },
+      "b4a@1.6.4": {
+        "integrity": "sha512-fpWrvyVHEKyeEvbKZTVOeZF3VSKKWtJxFIxX/jaVPf+cLbGUSitjb49pHLqPV2BUNNZ0LcoeEGfE/YCpyDYHIw==",
+        "dependencies": {}
+      },
+      "bson@5.5.1": {
+        "integrity": "sha512-ix0EwukN2EpC0SRWIj/7B5+A6uQMQy6KMREI9qQqvgpkV2frH63T0UDVd1SYedL6dNCmDBYB3QtXi4ISk9YT+g==",
+        "dependencies": {}
+      },
+      "bson@6.2.0": {
+        "integrity": "sha512-ID1cI+7bazPDyL9wYy9GaQ8gEEohWvcUl/Yf0dIdutJxnmInEEyCsb4awy/OiBfall7zBA179Pahi3vCdFze3Q==",
+        "dependencies": {}
+      },
+      "buffer-crc32@0.2.13": {
+        "integrity": "sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==",
+        "dependencies": {}
+      },
+      "camelcase@6.3.0": {
+        "integrity": "sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==",
+        "dependencies": {}
+      },
+      "commondir@1.0.1": {
+        "integrity": "sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==",
+        "dependencies": {}
+      },
       "crocks@0.12.4": {
         "integrity": "sha512-paln6xJUrR9e/OWMFsyTi4dLyr+q99C5f7PQbGgSDHtwsfW0sCNZvnpHzvniI2dAE0uoBgeIP1Ukmme8Z0HxxA==",
         "dependencies": {}
       },
-      "ramda@0.28.0": {
-        "integrity": "sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==",
+      "cuid@3.0.0": {
+        "integrity": "sha512-WZYYkHdIDnaxdeP8Misq3Lah5vFjJwGuItJuV+tvMafosMzw0nF297T7mrm8IOWiPJkV6gc7sa8pzx27+w25Zg==",
+        "dependencies": {}
+      },
+      "debug@4.3.4": {
+        "integrity": "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==",
+        "dependencies": {
+          "ms": "ms@2.1.2"
+        }
+      },
+      "fast-fifo@1.3.2": {
+        "integrity": "sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==",
+        "dependencies": {}
+      },
+      "fd-slicer@1.1.0": {
+        "integrity": "sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==",
+        "dependencies": {
+          "pend": "pend@1.2.0"
+        }
+      },
+      "find-cache-dir@3.3.2": {
+        "integrity": "sha512-wXZV5emFEjrridIgED11OoUKLxiYjAcqot/NJdAkOhlJ+vGzwhOAfcG5OX1jP+S0PcjEn8bdMJv+g2jwQ3Onig==",
+        "dependencies": {
+          "commondir": "commondir@1.0.1",
+          "make-dir": "make-dir@3.1.0",
+          "pkg-dir": "pkg-dir@4.2.0"
+        }
+      },
+      "find-up@4.1.0": {
+        "integrity": "sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==",
+        "dependencies": {
+          "locate-path": "locate-path@5.0.0",
+          "path-exists": "path-exists@4.0.0"
+        }
+      },
+      "follow-redirects@1.15.3": {
+        "integrity": "sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==",
+        "dependencies": {}
+      },
+      "https-proxy-agent@7.0.2": {
+        "integrity": "sha512-NmLNjm6ucYwtcUmL7JQC1ZQ57LmHP4lT15FQ8D61nak1rO6DH+fz5qNK2Ap5UN4ZapYICE3/0KodcLYSPsPbaA==",
+        "dependencies": {
+          "agent-base": "agent-base@7.1.0",
+          "debug": "debug@4.3.4"
+        }
+      },
+      "ip@2.0.0": {
+        "integrity": "sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==",
+        "dependencies": {}
+      },
+      "locate-path@5.0.0": {
+        "integrity": "sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==",
+        "dependencies": {
+          "p-locate": "p-locate@4.1.0"
+        }
+      },
+      "lru-cache@6.0.0": {
+        "integrity": "sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==",
+        "dependencies": {
+          "yallist": "yallist@4.0.0"
+        }
+      },
+      "make-dir@3.1.0": {
+        "integrity": "sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==",
+        "dependencies": {
+          "semver": "semver@6.3.1"
+        }
+      },
+      "memory-pager@1.5.0": {
+        "integrity": "sha512-ZS4Bp4r/Zoeq6+NLJpP+0Zzm0pR8whtGPf1XExKLJBAczGMnSi3It14OiNCStjQjM6NU1okjQGSxgEZN8eBYKg==",
+        "dependencies": {}
+      },
+      "mongodb-connection-string-url@2.6.0": {
+        "integrity": "sha512-WvTZlI9ab0QYtTYnuMLgobULWhokRjtC7db9LtcVfJ+Hsnyr5eo6ZtNAt3Ly24XZScGMelOcGtm7lSn0332tPQ==",
+        "dependencies": {
+          "@types/whatwg-url": "@types/whatwg-url@8.2.2",
+          "whatwg-url": "whatwg-url@11.0.0"
+        }
+      },
+      "mongodb-connection-string-url@3.0.0": {
+        "integrity": "sha512-t1Vf+m1I5hC2M5RJx/7AtxgABy1cZmIPQRMXw+gEIPn/cZNF3Oiy+l0UIypUwVB5trcWHq3crg2g3uAR9aAwsQ==",
+        "dependencies": {
+          "@types/whatwg-url": "@types/whatwg-url@11.0.3",
+          "whatwg-url": "whatwg-url@13.0.0"
+        }
+      },
+      "mongodb-memory-server-core@9.1.1": {
+        "integrity": "sha512-5toYR4A7DfV5k+Qf6L9FG86baID2rPP/JYwp8TPrdm8ZzfTfyHTwQwa2BzVpSwmLoVW5gXN0znYmXiE68mImMg==",
+        "dependencies": {
+          "async-mutex": "async-mutex@0.4.0",
+          "camelcase": "camelcase@6.3.0",
+          "debug": "debug@4.3.4",
+          "find-cache-dir": "find-cache-dir@3.3.2",
+          "follow-redirects": "follow-redirects@1.15.3",
+          "https-proxy-agent": "https-proxy-agent@7.0.2",
+          "mongodb": "mongodb@5.9.1",
+          "new-find-package-json": "new-find-package-json@2.0.0",
+          "semver": "semver@7.5.4",
+          "tar-stream": "tar-stream@3.1.6",
+          "tslib": "tslib@2.6.2",
+          "yauzl": "yauzl@2.10.0"
+        }
+      },
+      "mongodb@5.9.1": {
+        "integrity": "sha512-NBGA8AfJxGPeB12F73xXwozt8ZpeIPmCUeWRwl9xejozTXFes/3zaep9zhzs1B/nKKsw4P3I4iPfXl3K7s6g+Q==",
+        "dependencies": {
+          "@mongodb-js/saslprep": "@mongodb-js/saslprep@1.1.1",
+          "bson": "bson@5.5.1",
+          "mongodb-connection-string-url": "mongodb-connection-string-url@2.6.0",
+          "socks": "socks@2.7.1"
+        }
+      },
+      "mongodb@6.3.0": {
+        "integrity": "sha512-tt0KuGjGtLUhLoU263+xvQmPHEGTw5LbcNC73EoFRYgSHwZt5tsoJC110hDyO1kjQzpgNrpdcSza9PknWN4LrA==",
+        "dependencies": {
+          "@mongodb-js/saslprep": "@mongodb-js/saslprep@1.1.1",
+          "bson": "bson@6.2.0",
+          "mongodb-connection-string-url": "mongodb-connection-string-url@3.0.0"
+        }
+      },
+      "ms@2.1.2": {
+        "integrity": "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==",
+        "dependencies": {}
+      },
+      "new-find-package-json@2.0.0": {
+        "integrity": "sha512-lDcBsjBSMlj3LXH2v/FW3txlh2pYTjmbOXPYJD93HI5EwuLzI11tdHSIpUMmfq/IOsldj4Ps8M8flhm+pCK4Ew==",
+        "dependencies": {
+          "debug": "debug@4.3.4"
+        }
+      },
+      "p-limit@2.3.0": {
+        "integrity": "sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==",
+        "dependencies": {
+          "p-try": "p-try@2.2.0"
+        }
+      },
+      "p-locate@4.1.0": {
+        "integrity": "sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==",
+        "dependencies": {
+          "p-limit": "p-limit@2.3.0"
+        }
+      },
+      "p-try@2.2.0": {
+        "integrity": "sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==",
+        "dependencies": {}
+      },
+      "path-exists@4.0.0": {
+        "integrity": "sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==",
+        "dependencies": {}
+      },
+      "pend@1.2.0": {
+        "integrity": "sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==",
+        "dependencies": {}
+      },
+      "pkg-dir@4.2.0": {
+        "integrity": "sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==",
+        "dependencies": {
+          "find-up": "find-up@4.1.0"
+        }
+      },
+      "punycode@2.3.1": {
+        "integrity": "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==",
+        "dependencies": {}
+      },
+      "queue-tick@1.0.1": {
+        "integrity": "sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==",
         "dependencies": {}
       },
       "ramda@0.29.1": {
         "integrity": "sha512-OfxIeWzd4xdUNxlWhgFazxsA/nl3mS4/jGZI5n00uWOoSSFRhC1b6gl6xvmzUamgmqELraWp0J/qqVlXYPDPyA==",
         "dependencies": {}
       },
+      "semver@6.3.1": {
+        "integrity": "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==",
+        "dependencies": {}
+      },
+      "semver@7.5.4": {
+        "integrity": "sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==",
+        "dependencies": {
+          "lru-cache": "lru-cache@6.0.0"
+        }
+      },
+      "smart-buffer@4.2.0": {
+        "integrity": "sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==",
+        "dependencies": {}
+      },
+      "socks@2.7.1": {
+        "integrity": "sha512-7maUZy1N7uo6+WVEX6psASxtNlKaNVMlGQKkG/63nEDdLOWNbiUMoLK7X4uYoLhQstau72mLgfEWcXcwsaHbYQ==",
+        "dependencies": {
+          "ip": "ip@2.0.0",
+          "smart-buffer": "smart-buffer@4.2.0"
+        }
+      },
+      "sparse-bitfield@3.0.3": {
+        "integrity": "sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==",
+        "dependencies": {
+          "memory-pager": "memory-pager@1.5.0"
+        }
+      },
+      "streamx@2.15.5": {
+        "integrity": "sha512-9thPGMkKC2GctCzyCUjME3yR03x2xNo0GPKGkRw2UMYN+gqWa9uqpyNWhmsNCutU5zHmkUum0LsCRQTXUgUCAg==",
+        "dependencies": {
+          "fast-fifo": "fast-fifo@1.3.2",
+          "queue-tick": "queue-tick@1.0.1"
+        }
+      },
+      "tar-stream@3.1.6": {
+        "integrity": "sha512-B/UyjYwPpMBv+PaFSWAmtYjwdrlEaZQEhMIBFNC5oEG8lpiW8XjcSdmEaClj28ArfKScKHs2nshz3k2le6crsg==",
+        "dependencies": {
+          "b4a": "b4a@1.6.4",
+          "fast-fifo": "fast-fifo@1.3.2",
+          "streamx": "streamx@2.15.5"
+        }
+      },
+      "tr46@3.0.0": {
+        "integrity": "sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==",
+        "dependencies": {
+          "punycode": "punycode@2.3.1"
+        }
+      },
+      "tr46@4.1.1": {
+        "integrity": "sha512-2lv/66T7e5yNyhAAC4NaKe5nVavzuGJQVVtRYLyQ2OI8tsJ61PMLlelehb0wi2Hx6+hT/OJUWZcw8MjlSRnxvw==",
+        "dependencies": {
+          "punycode": "punycode@2.3.1"
+        }
+      },
       "ts-toolbelt@9.6.0": {
         "integrity": "sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==",
+        "dependencies": {}
+      },
+      "tslib@2.6.2": {
+        "integrity": "sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==",
         "dependencies": {}
       },
       "types-ramda@0.29.6": {
@@ -35,63 +323,39 @@
         "dependencies": {
           "ts-toolbelt": "ts-toolbelt@9.6.0"
         }
+      },
+      "webidl-conversions@7.0.0": {
+        "integrity": "sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==",
+        "dependencies": {}
+      },
+      "whatwg-url@11.0.0": {
+        "integrity": "sha512-RKT8HExMpoYx4igMiVMY83lN6UeITKJlBQ+vR/8ZJ8OCdSiN3RwCq+9gH0+Xzj0+5IrM6i4j/6LuvzbZIQgEcQ==",
+        "dependencies": {
+          "tr46": "tr46@3.0.0",
+          "webidl-conversions": "webidl-conversions@7.0.0"
+        }
+      },
+      "whatwg-url@13.0.0": {
+        "integrity": "sha512-9WWbymnqj57+XEuqADHrCJ2eSXzn8WXIW/YSGaZtb2WKAInQ6CHfaUUcTyyver0p8BDg5StLQq8h1vtZuwmOig==",
+        "dependencies": {
+          "tr46": "tr46@4.1.1",
+          "webidl-conversions": "webidl-conversions@7.0.0"
+        }
+      },
+      "yallist@4.0.0": {
+        "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
+        "dependencies": {}
+      },
+      "yauzl@2.10.0": {
+        "integrity": "sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==",
+        "dependencies": {
+          "buffer-crc32": "buffer-crc32@0.2.13",
+          "fd-slicer": "fd-slicer@1.1.0"
+        }
       }
     }
   },
   "remote": {
-    "https://cdn.skypack.dev/-/argsarray@v0.0.1-Re4xFllK2yOPV1bB2lHM/dist=es2020,mode=imports/optimized/argsarray.js": "bb4106096b2ac9b3bdfe941564050fb4766d39a75a8c22f5f61356f63fd2b8fe",
-    "https://cdn.skypack.dev/-/immediate@v3.3.0-eUEi0sql9WWEFvjSWGFg/dist=es2020,mode=imports/optimized/immediate.js": "88fcd56a4979b00c084943654b81dbf9d9d8f8d4dc003ad6dc4bbe33334d0f8d",
-    "https://cdn.skypack.dev/-/indexeddbshim@v9.0.0-QVaW8rBIOGlJegwkWTsK/dist=es2020,mode=imports/unoptimized/dist/indexeddbshim-noninvasive.js": "036e9191db93ef296b84a8a59192d4851f231e3b76a638543491cf81fe08b666",
-    "https://cdn.skypack.dev/-/inherits@v2.0.4-KMaJYACWZTuZGLpDmPB5/dist=es2020,mode=imports/optimized/inherits.js": "7dcafb2d3af9496f5ac53efdcfdb0badd089b592c117476dd5989065f4c33a49",
-    "https://cdn.skypack.dev/-/pouchdb-abstract-mapreduce@v7.3.0-fMORG4ocVW5OgreqkBuR/dist=es2020,mode=imports/optimized/pouchdb-abstract-mapreduce.js": "b5126de011968498d5a4c002aae6f261732e474d01d71a3367d0bff4d797c74c",
-    "https://cdn.skypack.dev/-/pouchdb-adapter-http@v7.3.0-wNzBHi1B5WLNzMPlTnWb/dist=es2020,mode=imports/optimized/pouchdb-adapter-http.js": "e6bf2933c4e87f39a30995bfd29d141e8912ab2068e1beaf2ddca6a7606d12a0",
-    "https://cdn.skypack.dev/-/pouchdb-adapter-idb@v7.3.0-zIdGq675NuTdgkAjGFSh/dist=es2020,mode=imports/optimized/pouchdb-adapter-idb.js": "d610fbaaab7014a70cb752c44792f14941f04a62ae6dd0a6f15aedfa08db498c",
-    "https://cdn.skypack.dev/-/pouchdb-adapter-utils@v7.3.0-HAuHaBCKqnQCWVHSh0CE/dist=es2020,mode=imports/optimized/pouchdb-adapter-utils.js": "0cf6e4a64bab3c7fb190e6f620916b23182e4789ec164c2686a83c6e6d629cf6",
-    "https://cdn.skypack.dev/-/pouchdb-binary-utils@v7.3.0-nbM9O3PTtER73MW08VHL/dist=es2020,mode=imports/optimized/pouchdb-binary-utils.js": "259d51f59c5fe21c8622c3b9ee31322f1aad777325d6763246d1088ca025014d",
-    "https://cdn.skypack.dev/-/pouchdb-changes-filter@v7.3.0-i2nCRKrVO4SVheQqH1VH/dist=es2020,mode=imports/optimized/pouchdb-changes-filter.js": "2d2581347ab363285d0cf67a06249895a6580fcf38f4bf9fd34910a6a349500e",
-    "https://cdn.skypack.dev/-/pouchdb-checkpointer@v7.3.0-FgVgNyKQoYg7STKScPyW/dist=es2020,mode=imports/optimized/pouchdb-checkpointer.js": "8482f659ca54bd1161ab2f5fe996eaac443cb80a55ad5248e8670d7609fe09d5",
-    "https://cdn.skypack.dev/-/pouchdb-collate@v7.3.0-uISbLVYNp6Ary8ZnWDk6/dist=es2020,mode=imports/optimized/pouchdb-collate.js": "c26d78ed7ba8b13c04525f920fcc7389807ccb9a53aa00e76559f4ce5e1d0822",
-    "https://cdn.skypack.dev/-/pouchdb-collections@v7.3.0-KI6SvylZjJ3eNzTohFa8/dist=es2020,mode=imports/optimized/pouchdb-collections.js": "39839b991a36d9cfe2f5d48349b388718376cb4c4e4604d71827a0a3cc354b3e",
-    "https://cdn.skypack.dev/-/pouchdb-core@v7.3.0-89HuCNEcWBT7jv1msAf2/dist=es2020,mode=imports/optimized/pouchdb-core.js": "79c76ce4ff837d22497b937f8fc38753231c88b9e6909b8ad5ea84b1592d5cc7",
-    "https://cdn.skypack.dev/-/pouchdb-errors@v7.3.0-b2kOuuJlfogCqGmKJ3cE/dist=es2020,mode=imports/optimized/pouchdb-errors.js": "1929c3baa144a4e695b13b0619730f926a47d2fc75db23797080630f6e10d446",
-    "https://cdn.skypack.dev/-/pouchdb-fetch@v7.3.0-l6TNSgCRVLaoNt6NIhoj/dist=es2020,mode=imports/optimized/pouchdb-fetch.js": "f86a93cdde25a99f2a367bf37c59f3868e5849bbf86fade930934fd009164ae2",
-    "https://cdn.skypack.dev/-/pouchdb-generate-replication-id@v7.3.0-92wIMCAEIhWHlL6vvzqO/dist=es2020,mode=imports/optimized/pouchdb-generate-replication-id.js": "204a6af729435d6ef8ae964ab580f43465857f396a723ba24496df1644ba1195",
-    "https://cdn.skypack.dev/-/pouchdb-json@v7.3.0-QrCWWu9xBqDiiAjgY3qI/dist=es2020,mode=imports/optimized/pouchdb-json.js": "a94720f3fa6bd1e2d29b809dd3535f86d089b42a6562649daf4873af7214898d",
-    "https://cdn.skypack.dev/-/pouchdb-mapreduce-utils@v7.3.0-uk0yBIwcmUN7Ynh9k0mR/dist=es2020,mode=imports/optimized/pouchdb-mapreduce-utils.js": "37c6bd3ca695e4d56568849f4ae1f8f3f8825efcc7208de6e8bbf822b37df09b",
-    "https://cdn.skypack.dev/-/pouchdb-mapreduce@v7.3.0-IEG2Gq1jfS0hW8QXVXqd/dist=es2020,mode=imports/optimized/pouchdb-mapreduce.js": "e3ed446100872faa2d2ed25fa05b82a833b5d4d96e20006334484377438d6d8d",
-    "https://cdn.skypack.dev/-/pouchdb-md5@v7.3.0-0HU1827yDgECvXSzkhzH/dist=es2020,mode=imports/optimized/pouchdb-md5.js": "99b13350416e213a9c02ee3e4da24f8d0489365f52c93b6230d1a6638dc43c5a",
-    "https://cdn.skypack.dev/-/pouchdb-merge@v7.3.0-vvgzG4W7pg25SW1phNqO/dist=es2020,mode=imports/optimized/pouchdb-merge.js": "aa659cd592e7f0db62244de2db64d966a23f3314fa083c4034626fc300eae9e5",
-    "https://cdn.skypack.dev/-/pouchdb-replication@v7.3.0-1sg1NWcwDf6gKFeXsMmq/dist=es2020,mode=imports/optimized/pouchdb-replication.js": "50a23799d9672b7c35811962aa353ab219429dc24e7817fa553ee4d3cb7e9b48",
-    "https://cdn.skypack.dev/-/pouchdb-selector-core@v7.3.0-HnJHYQOVROLoDb3C4d0W/dist=es2020,mode=imports/optimized/pouchdb-selector-core.js": "ff34b9d2a1ae288a0d41877b6b690f70a6b03b03646a4ebbd1b4e1d5ceba91e3",
-    "https://cdn.skypack.dev/-/pouchdb-utils@v7.3.0-lHJj9wXpdEf2oG8XiJXZ/dist=es2020,mode=imports/optimized/pouchdb-utils.js": "37b766c97103f10093a727687f098a28ca8cbeae268d70bcd901d0e9b49e2fce",
-    "https://cdn.skypack.dev/-/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/dist=es2020,mode=imports/unoptimized/dist/pouchdb.find.js": "d4119c6abf1784f696516fae1f877afb966dd4cfd24d5cfd1af67acf94d4bb93",
-    "https://cdn.skypack.dev/-/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/dist=es2020,mode=imports/unoptimized/dist/pouchdb.indexeddb.js": "6a3702543f111203bf7aa6ce2e46e4d43ee5a8af3e3bc62b2450b5eeab98440d",
-    "https://cdn.skypack.dev/-/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/dist=es2020,mode=imports/unoptimized/dist/pouchdb.memory.js": "320f1d95baafc704ebace29422a81e4e9590d05126b8b452eac7a9d73a98d168",
-    "https://cdn.skypack.dev/-/regenerator-runtime@v0.13.9-4Dxus9nU31cBsHxnWq2H/dist=es2020,mode=imports/optimized/regenerator-runtime.js": "9d5c28ca64c45a9e606d5f3b35aec61568ed451495968171c8cc3ef1923cb7fe",
-    "https://cdn.skypack.dev/-/spark-md5@v3.0.2-31IazxoH2otDpq6Lubie/dist=es2020,mode=imports/optimized/spark-md5.js": "ac666d651e859b06a3b252cb250066834bb42952042ce19b9912008b912580dd",
-    "https://cdn.skypack.dev/-/uuid@v8.3.2-XAQ9X05vJqvKpZccxFGc/dist=es2020,mode=imports/optimized/uuid.js": "2269db8209b0d0e0430b48430585ef0dfe4388c020b7d371643f318a3b795164",
-    "https://cdn.skypack.dev/-/vuvuzela@v1.0.3-Fudn0YxONVgYHwntZdNF/dist=es2020,mode=imports/optimized/vuvuzela.js": "71c6d000d344162f3ec11eee7d404ed11be9c8d09252ddc1c42741a22913bad0",
-    "https://cdn.skypack.dev/pin/indexeddbshim@v9.0.0-QVaW8rBIOGlJegwkWTsK/mode=imports/unoptimized/dist/indexeddbshim-noninvasive.js": "978a698ccf50ce19735b1da6cad00277cc8fc790610df183c61c2f9cc1df9c9b",
-    "https://cdn.skypack.dev/pin/pouchdb-adapter-http@v7.3.0-wNzBHi1B5WLNzMPlTnWb/mode=imports/optimized/pouchdb-adapter-http.js": "023e92d130094b0e43638ee849b5b4f539fd987034104452c933fcd505a96242",
-    "https://cdn.skypack.dev/pin/pouchdb-adapter-idb@v7.3.0-zIdGq675NuTdgkAjGFSh/mode=imports/optimized/pouchdb-adapter-idb.js": "76bd6a4758f5c20caa03cba2b52a7345d5d724393bda93b82131342461d300d4",
-    "https://cdn.skypack.dev/pin/pouchdb-core@v7.3.0-89HuCNEcWBT7jv1msAf2/mode=imports/optimized/pouchdb-core.js": "66ab654df46ef713bc9822010e2a9be5caa974ece65a88f72e10951836da3b99",
-    "https://cdn.skypack.dev/pin/pouchdb-mapreduce@v7.3.0-IEG2Gq1jfS0hW8QXVXqd/mode=imports/optimized/pouchdb-mapreduce.js": "a3de4068dc28370f051741c4eeec69ee2872c21d32ad3d0fe410b94e97846b38",
-    "https://cdn.skypack.dev/pin/pouchdb-replication@v7.3.0-1sg1NWcwDf6gKFeXsMmq/mode=imports/optimized/pouchdb-replication.js": "474a0861108abb668cba6d1897a6ad947eb3573a7ee75875e501d6988ec0dfa6",
-    "https://cdn.skypack.dev/pin/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/mode=imports/unoptimized/dist/pouchdb.find.js": "4f5bd824948b2f07970da663ac2a07231595bef8ce8ecf66856094d222c03945",
-    "https://cdn.skypack.dev/pin/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/mode=imports/unoptimized/dist/pouchdb.indexeddb.js": "1a9824ca9abdaa3e1bae6fb2922d9c67d66f255cdb2d26b094f882875e734c3d",
-    "https://cdn.skypack.dev/pin/pouchdb@v7.3.0-bcA2ZAvx5a5vy7YRYZRz/mode=imports/unoptimized/dist/pouchdb.memory.js": "70224a97fd91fa337915585734d170758bcad711ce4cc04e7621489d3333d775",
-    "https://cdn.skypack.dev/pin/regenerator-runtime@v0.13.9-4Dxus9nU31cBsHxnWq2H/mode=imports/optimized/regenerator-runtime.js": "091dd6c5266025b80081cdd5bbadd9f6e03cad950c8a16c7454b58d77b422253",
-    "https://deno.land/std@0.136.0/_util/assert.ts": "e94f2eb37cebd7f199952e242c77654e43333c1ac4c5c700e929ea3aa5489f74",
-    "https://deno.land/std@0.136.0/_util/os.ts": "49b92edea1e82ba295ec946de8ffd956ed123e2948d9bd1d3e901b04e4307617",
-    "https://deno.land/std@0.136.0/path/_constants.ts": "df1db3ffa6dd6d1252cc9617e5d72165cd2483df90e93833e13580687b6083c3",
-    "https://deno.land/std@0.136.0/path/_interface.ts": "ee3b431a336b80cf445441109d089b70d87d5e248f4f90ff906820889ecf8d09",
-    "https://deno.land/std@0.136.0/path/_util.ts": "c1e9686d0164e29f7d880b2158971d805b6e0efc3110d0b3e24e4b8af2190d2b",
-    "https://deno.land/std@0.136.0/path/common.ts": "bee563630abd2d97f99d83c96c2fa0cca7cee103e8cb4e7699ec4d5db7bd2633",
-    "https://deno.land/std@0.136.0/path/glob.ts": "cb5255638de1048973c3e69e420c77dc04f75755524cb3b2e160fe9277d939ee",
-    "https://deno.land/std@0.136.0/path/mod.ts": "4275129bb766f0e475ecc5246aa35689eeade419d72a48355203f31802640be7",
-    "https://deno.land/std@0.136.0/path/posix.ts": "293cdaec3ecccec0a9cc2b534302dfe308adb6f10861fa183275d6695faace44",
-    "https://deno.land/std@0.136.0/path/separator.ts": "fe1816cb765a8068afb3e8f13ad272351c85cbc739af56dacfc7d93d710fe0f9",
-    "https://deno.land/std@0.136.0/path/win32.ts": "31811536855e19ba37a999cd8d1b62078235548d67902ece4aa6b814596dd757",
     "https://deno.land/std@0.208.0/assert/_constants.ts": "8a9da298c26750b28b326b297316cdde860bc237533b07e1337c021379e6b2a9",
     "https://deno.land/std@0.208.0/assert/_diff.ts": "58e1461cc61d8eb1eacbf2a010932bf6a05b79344b02ca38095f9b805795dc48",
     "https://deno.land/std@0.208.0/assert/_format.ts": "a69126e8a469009adf4cf2a50af889aca364c349797e63174884a52ff75cf4c7",
@@ -221,34 +485,7 @@
     "https://deno.land/x/cuid@v1.0.0/getRandomValue.js": "52545634d1e62836ed44aeea057caa2d054ea979090049ea8facb2ececa23385",
     "https://deno.land/x/cuid@v1.0.0/index.js": "7313248002e361977e2801d0cbfd6b7d20926dd59c880f1698672a4fdefe999e",
     "https://deno.land/x/cuid@v1.0.0/pad.js": "11c84744f110744659e8a61f991a1223b917786aaddc928970f85027e1fe1a12",
-    "https://deno.land/x/indexeddb@1.3.4/lib/indexeddb.ts": "6d8eeec0c4074ed2e3ed5ae3c99e3b66703f772c791279d052680fe3b334de2d",
-    "https://deno.land/x/indexeddb@1.3.4/lib/indexeddb_global.ts": "88269f2c9c97dbcb5641706bb17d14500eddb209da0fc8822ee4bbb5e57359f8",
-    "https://deno.land/x/indexeddb@1.3.4/lib/shim.ts": "8b98a9395134220ac9dfe7314c3e27f37feffec0cab37dbf557f06f118b6eaad",
-    "https://deno.land/x/indexeddb@1.3.4/polyfill.ts": "6a95a487f94d89f36f0d9255ee4ad916afc0fada8edb695f258f975c525ced22",
     "https://deno.land/x/ms@v0.1.0/ms.ts": "13014fdf12808df48f6e557cc3be22d24db5b8e29b687d710f9012df3428d2c8",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb/mod.ts": "b4e222fc2bd757a612681b042942ab439c29d3fc209f7c64174017d96821b149",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_adapter_idb/mod.ts": "695e275de73379958cbad18a16ead7574fd145027437fbbbd0e9c093d1ee7791",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_adapter_indexeddb/mod.ts": "6ea5731b36637d7e4bcb8bd1fb8424648def9298c0fd112cf07f9c927259a8f3",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_adapter_memory/mod.ts": "3bf6d589e9e26111b9fc426fa5dd95653d6ee1a5e72bd8f690611e8d8bc6940a",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_deno_utils/capture_plugin.ts": "1e3c1fb0cb7406c8424affaa43ba4cd00378f2aa9b907ec62931fe6eb2e9112d",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_plugin_find/mod.ts": "cba575e0648b2f14b91e8df36961ecc55a7fb0822732ae11d911682b783215ca",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_plugin_upsert/mod.ts": "ba4f42ef9570e63bdf1cf7d760688e2003e7acfd8c9a9e137ac9d6e885ef00f7",
-    "https://deno.land/x/pouchdb_deno@2.1.3-PouchDB+7.3.0/modules/pouchdb_types/pouchdb.ts": "a0bbe475adbd1d80dca17884f65b56c29861d578a49baac927834ce51ecfc739",
-    "https://deno.land/x/sqlite@v3.3.0/build/sqlite.js": "0b74712a5db206aa399f9833c40fd08eb24dfaff5dee77749e4bcadb333ec676",
-    "https://deno.land/x/sqlite@v3.3.0/build/vfs.js": "baff72655c0916c906327fe6703c6a47daa1346e55c2eaa2629bcd879a673c8d",
-    "https://deno.land/x/sqlite@v3.3.0/mod.ts": "eb55ff3e103826ee735fa1a8ec2db6e96c8fec826faf198239c66a0fe635c4b6",
-    "https://deno.land/x/sqlite@v3.3.0/src/constants.ts": "b967237b460fafa03ca03aeddb33953bed41c7cbdc309a934e2329a5c84079ac",
-    "https://deno.land/x/sqlite@v3.3.0/src/db.ts": "59b9c4fbe733da0e512dcd6b1f1f6a5ac8b165b565505670e9b81a73803dd36a",
-    "https://deno.land/x/sqlite@v3.3.0/src/error.ts": "abf9df169951faf8c21a68d99ef9efd257c788c19784f27dd147507fbdfe5fe7",
-    "https://deno.land/x/sqlite@v3.3.0/src/query.ts": "df4d3d6b23d52b36243dd47c07ed6ed7cd23f7834a0f6a2f2c6dbffba63d4c28",
-    "https://deno.land/x/sqlite@v3.3.0/src/wasm.ts": "e79d0baa6e42423257fb3c7cc98091c54399254867e0f34a09b5bdef37bd9487",
-    "https://deno.land/x/websql@1.3.2/deps.ts": "2bda07c0ee0eae5f23b5dde415c983c59fb945256f5a9026402eb9118945c025",
-    "https://deno.land/x/websql@1.3.2/mod.ts": "e7a44b9f376761e5592facd30ed27acae47633275a32eed57cd64f16a461222f",
-    "https://deno.land/x/websql@1.3.2/src/Database.ts": "ed5f8ae33165d2dd9c3ea1be0b427377628f9437bfe49bfabc32efb3908dc1d5",
-    "https://deno.land/x/websql@1.3.2/src/SQLResultSet.ts": "fcd83582439c0032794fa26bbbe9e47790467fa5ef1cba1c8a9fddb334f23bf1",
-    "https://deno.land/x/websql@1.3.2/src/SQLResultSetRowList.ts": "d13bda459cc73bc7e4d596a0411f1e4647d1204a8fddfd42a51720a20d4bf562",
-    "https://deno.land/x/websql@1.3.2/src/SQLTransaction.ts": "bda17665d54793976957af94a300834e5f07ee546d67e919f14da2a7f77fc797",
-    "https://deno.land/x/websql@1.3.2/src/SQLiteDBCache.ts": "0c5a67598e39e54c317b40fff3ffc9945e5a9ed0b0c91b5d8a2b379d59c4f4a4",
     "https://deno.land/x/zod@v3.20.5/ZodError.ts": "10bb0d014b0ece532c3bc395c50ae25996315a5897c0216517d9174c2fb570b5",
     "https://deno.land/x/zod@v3.20.5/errors.ts": "5285922d2be9700cc0c70c95e4858952b07ae193aa0224be3cbd5cd5567eabef",
     "https://deno.land/x/zod@v3.20.5/external.ts": "a6cfbd61e9e097d5f42f8a7ed6f92f93f51ff927d29c9fbaec04f03cbce130fe",
@@ -262,13 +499,16 @@
     "https://deno.land/x/zod@v3.20.5/locales/en.ts": "ac7210faad6e67ec4f6dbe7062886f04db79ce91ae5ee6c9f64cbdf6221bc80e",
     "https://deno.land/x/zod@v3.20.5/mod.ts": "64e55237cb4410e17d968cd08975566059f27638ebb0b86048031b987ba251c4",
     "https://deno.land/x/zod@v3.20.5/types.ts": "6ddc4608e70d75f2e06f9cc14aa406df4d80f420c0eef64f2f02d429853c0c38",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/adapter.js": "32ec4d263cb8890319f0258f6df77051a466cf907eb88616176dd3d1e6df2caf",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/bulk.js": "d44d163be8b1032ff3ae8610ed20c60e435b1bdef8ba2d1c3b644e36311707a7",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/deps.js": "e8aa3860cb36f73811f0a69bae58f8bea7fe4fab136c7d0faf07313437705b5f",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/meta.js": "7a6f69f08376ac55343f1e95d874170f64cf20ae1c5151af9210c0cac0fa99d9",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/mod.js": "30ab30ff18f4cfdab9cd5735c3b888f4204d22eb06e6fd1dc1667f64dbf9c5c9",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/port_name.js": "a44824a66b9f2045d493b7794989e164df690fd73039b61b65e03a7ec72e6ffc",
-    "https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/utils.js": "fd7d738e3762aec228bbe31360f01b9f152648263386b4a3bc1e21d93a1a6351",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/adapter.ts": "868201dd52a7cbe0ee5f30abe633cf4b1e39e7b6e573b55be2e948094179dae7",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/clients/atlas-data.ts": "952cdff93cb495f10acb1047039d319bb7d73d7e539f27d894e30bf53dba8d75",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/clients/native.ts": "ed5610b391aa117b1989da032bb39b62de9d814f9cbaa498155aa32817c5d311",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/clients/types.ts": "f0ce513a5502feb4734a69b8631f16c1ba37a7cc307e1a90fc2a2aeccbde24cc",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/deps.ts": "82723e787109cb643a4b06362598ea821ffcdc387687485ed057eb3014739c0b",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/meta.ts": "3e1df4411f0989e4e861b3025d8ca7958b0b4f6df0e7be65d94ca57635ee1fa5",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/mod.ts": "9941bf288ffc8f2d2fad17ec51626020ac06069fcc59689f0a700530eb9c1434",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/port_name.ts": "c3d942befa57560c8268ff251e637a3566b9f9b9209f7783702574b5fd8c5b9d",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/types.ts": "8c83af015be3f4a3c522fe0bd123264b627b0b60a1c025c820b8b3665c84b3d4",
+    "https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/utils.ts": "1693444f08a6fac525c4911dfc27a925c188b0990b824ea7431c286a1a3159a8",
     "https://raw.githubusercontent.com/hyper63/hyper/hyper-port-cache%40v2.0.0/packages/port-cache/deps.ts": "a76d4fdba3f1437e839aebb1f9c4b678491022abbd6caedf6378b4bc701e7988",
     "https://raw.githubusercontent.com/hyper63/hyper/hyper-port-cache%40v2.0.0/packages/port-cache/mod.ts": "6d027197c55f972a716539425f522c88eb0057b69a9a2623fc5d89ef4b9aad11",
     "https://raw.githubusercontent.com/hyper63/hyper/hyper-port-cache%40v2.0.0/packages/port-cache/port.ts": "f374de5cdd8c93ef0cc9956eb7651e80d7bce549277066b4aa620b42e3ec0c71",

@@ -36,7 +36,7 @@ function checkKeyIsValid<T extends { key: string }>(input: T) {
      * or any of these characters - _ $ +
      */
     return /^[a-z]+$/.test(key[0]) && /^[a-z0-9-~_/$/+]+$/.test(key)
-  }, 'key is not valid')(input)
+  }, { status: 422, msg: 'key is not valid' })(input)
 }
 
 /**
@@ -52,12 +52,12 @@ export const create = (
   ttl?: string,
 ) =>
   of({ store, key, value, ttl })
-    .map(convertTTL)
-    .map(removeTTL)
-    .chain(checkKeyIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .map(convertTTL)
+          .map(removeTTL)
+          .chain(checkKeyIsValid)
           .chain(Async.fromPromise((input) => svc.createDoc(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -70,10 +70,10 @@ export const create = (
  */
 export const get = (store: string, key: string) =>
   of({ store, key })
-    .chain(checkKeyIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .chain(checkKeyIsValid)
           .chain(Async.fromPromise((input) => svc.getDoc(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -94,12 +94,12 @@ export const update = (
   ttl?: string,
 ) =>
   of({ store, key, value, ttl })
-    .map(convertTTL)
-    .map(removeTTL)
-    .chain(checkKeyIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .map(convertTTL)
+          .map(removeTTL)
+          .chain(checkKeyIsValid)
           .chain(Async.fromPromise((input) => svc.updateDoc(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)
@@ -112,10 +112,10 @@ export const update = (
  */
 export const del = (store: string, key: string) =>
   of({ store, key })
-    .chain(checkKeyIsValid)
     .chain((input) =>
       ask(({ svc }: ReaderEnvironment<CachePort>) => {
         return Async.of(input)
+          .chain(checkKeyIsValid)
           .chain(Async.fromPromise((input) => svc.deleteDoc(input)))
           .bichain($resolveHyperErr, $logHyperErr)
       }).chain(lift)

@@ -14,22 +14,23 @@ export const { ask, of, lift } = AsyncReader
 
 export * from './err.js'
 
-const doValidate = <V = unknown>(pred: (val: V) => boolean, msg: string) => (value: V) =>
-  pred(value) ? Right(value) : Left(HyperErr(msg))
+const doValidate =
+  <V = unknown>(pred: (val: V) => boolean, msg: Parameters<typeof HyperErr>[0]) => (value: V) =>
+    pred(value) ? Right(value) : Left(HyperErr(msg))
 /**
  * Given a predicate function and error message,
- * return a Resolved AsyncReader or Rejected AsyncReader.
+ * return a Resolved Async or Rejected Async.
  *
- * If the predicate function returns true, then an Resolved AsyncReader
+ * If the predicate function returns true, then return an Resolved Async
  * containing the value
  *
- * If the predicate function returns false, then an Rejected AsyncReader containing
+ * If the predicate function returns false, then return an Rejected AsyncReader containing
  * a HyperErr with the message
  */
-export const is = <V>(pred: (val: V) => boolean, msg: string) =>
+export const is = <V>(pred: (val: V) => boolean, msg: Parameters<typeof HyperErr>[0]) =>
   // deno-lint-ignore ban-ts-comment
   // @ts-ignore
-  compose<V, crocks.AsyncReader<V>>(lift, eitherToAsync, doValidate(pred, msg))
+  compose<V, crocks.Async<V, V>>(eitherToAsync, doValidate(pred, msg))
 
 export const $logHyperErr = <V>(res: V) => {
   if (isHyperErr(res)) console.log(res)

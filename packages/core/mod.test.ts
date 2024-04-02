@@ -1,9 +1,6 @@
 // deno-lint-ignore-file ban-ts-comment
 
-import {
-  default as pouchdb,
-  PouchDbAdapterTypes,
-} from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-pouchdb/v0.2.1/mod.js'
+import { default as mongodb } from 'https://raw.githubusercontent.com/hyper63/hyper-adapter-mongodb/v3.3.0/mod.ts'
 
 import { R } from './deps.ts'
 import { assert, assertEquals } from './dev_deps.ts'
@@ -33,12 +30,7 @@ const config: Config = {
   adapters: [
     {
       port: 'data',
-      /**
-       * types are inaccurate in the adatper, so once that is
-       * addressed, this should no longer be needed
-       */
-      // @ts-ignore
-      plugins: [pouchdb({ storage: PouchDbAdapterTypes.memory })],
+      plugins: [mongodb({ dir: '__hyper__', dirVersion: '7.0.4' })],
     },
   ],
   middleware: [
@@ -53,30 +45,38 @@ const config: Config = {
   ],
 }
 
-Deno.test('mod', async (t) => {
-  await t.step(
-    'should compose the driving adapter with the driven adapters',
-    async () => {
-      const server = await core(config)
-      assert(server.app)
-      assert(server.services.data)
-    },
-  )
+Deno.test({
+  name: 'mod',
+  fn: async (t) => {
+    // deno-lint-ignore no-explicit-any
+    let server: any
+    await t.step('init hyper Server', async () => {
+      server = await core(config)
+    })
 
-  await t.step(
-    'should pass the middleware to the driving adapter',
-    async () => {
-      const server = await core(config)
-      assertEquals(server.foo, 'bar')
-      assertEquals(server.fizz, 'buzz')
-    },
-  )
+    await t.step(
+      'should compose the driving adapter with the driven adapters',
+      () => {
+        assert(server.app)
+        assert(server.services.data)
+      },
+    )
 
-  await t.step(
-    'should pass the eventMgr to the driving adapter as a service',
-    async () => {
-      const server = await core(config)
-      assert(server.services.events)
-    },
-  )
+    await t.step(
+      'should pass the middleware to the driving adapter',
+      () => {
+        assertEquals(server.foo, 'bar')
+        assertEquals(server.fizz, 'buzz')
+      },
+    )
+
+    await t.step(
+      'should pass the eventMgr to the driving adapter as a service',
+      () => {
+        assert(server.services.events)
+      },
+    )
+  },
+  sanitizeOps: false,
+  sanitizeResources: false,
 })
