@@ -7,7 +7,7 @@ export default {
   adapters: [
     {
       port: 'data',
-      plugins: [mongodb({ dir: DIR, dirVersion: '7.0.4' })],
+      plugins: [mongodb({ dir: DIR, dirVersion: '7.0.11' })],
     },
     {
       port: 'cache',
