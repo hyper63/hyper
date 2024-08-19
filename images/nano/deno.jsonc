@@ -2,7 +2,7 @@
   "tasks": {
     "run": "deno run -A --unstable mod.js",
     "test": "deno lint && deno fmt --check && deno test -A",
-    "cache": "deno cache --lock=deno.lock --lock-write deps.js main.test.js"
+    "cache": "deno cache --lock=deno.lock deps.js main.test.js"
   },
   "fmt": {
     "include": ["./"],
