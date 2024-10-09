@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "prepare": "deno run -A --no-lock npm:husky@^9",
+    "staged": "deno run -A --no-lock npm:lint-staged@^15"
+  },
+  "fmt": {
+    "exclude": [
+      "CHANGELOG.md"
+    ],
+    "lineWidth": 100,
+    "singleQuote": true,
+    "semiColons": false
+  },
+  "exclude": [
+    ".git",
+    "coverage"
+  ]
+}
