@@ -1,28 +1,29 @@
-# README
+<h1 align="center">hyper-port-queue</h1>
+<p align="center">Port for the Queue Service in the <a href="https://hyper.io/">hyper</a> Service Framework</p>
+</p>
+<p align="center">
+  <a href="https://nest.land/package/hyper-port-queue"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
+  <a href="https://jsr.io/@hyper63/port-queue"><img src="https://jsr.io/badges/@hyper63/port-queue" alt="" /></a>
+  <a href="https://github.com/hyper63/hyper63/actions/workflows/port-queue.yml"><img src="https://github.com/hyper63/hyper63/actions/workflows/port-queue.yml/badge.svg" alt="Test" /></a>
+</p>
 
 Queue Port
 
 - Create a Queue
 - Delete a Queue
-- Post a JOB to a Queue
-- Get Jobs from a queue
+- Post a Job to a Queue
+- Get Jobs from a Queue
 - Cancel a Job
 - Retry a Job
 
-## Documentation
+<!-- toc -->
 
-https://docs.hyper63.com
+- [Test](#test)
 
-## Dev Environment
+<!-- tocstop -->
 
-### Build
-
-```
-yarn build
-```
-
-### Test
+## Test
 
 ```
-yarn test
+deno task test
 ```

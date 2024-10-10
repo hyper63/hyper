@@ -19,20 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        deno-version: [1.x]
+        deno-version: [2.x]
 
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🦕 Setup Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ matrix.deno-version }}
 
       - name: ⚡ Run Tests
+        working-directory: packages/port-queue
         run: |
-          cd packages/port-queue
           deno task test
         env:
           CI: true
@@ -43,12 +43,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🦕 Setup Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
+      
+      - name: ✨ Publish to JSR
+        working-directory: packages/port-queue
+        run: |
+          deno publish --allow-slow-types
 
       # - name: 🥚 Setup Eggs CLI
       #   run: |

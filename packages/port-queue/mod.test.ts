@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars ban-ts-comment
-import { assert, assertRejects } from './dev_deps.ts'
+import { assert, assertRejects } from '@std/assert'
 
 import { queue, type QueuePort } from './mod.ts'
 
