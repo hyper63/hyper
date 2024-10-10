@@ -5,7 +5,7 @@
   "description": "Port for the Cache Service in the hyper Service Framework",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "unstable": false,
   "unlisted": false,
   "files": [
