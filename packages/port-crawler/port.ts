@@ -1,4 +1,4 @@
-import { z, ZodRawShape } from './deps.ts'
+import { z, type ZodRawShape } from 'zod'
 
 /**
  * The hyper response schema. MOST adapter methods return this shape.

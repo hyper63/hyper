@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-unused-vars ban-ts-comment
 
+import { assert, assertRejects } from '@std/assert'
 import { crawler, type CrawlerPort } from './mod.ts'
-import { assert, assertRejects } from './dev_deps.ts'
 
 const crawlerJob = {
   app: 'app',
