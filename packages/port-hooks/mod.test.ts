@@ -1,4 +1,4 @@
-import { assert } from './dev_deps.ts'
+import { assert } from '@std/assert'
 
 Deno.test('hooks', async () => {
   await assert(true)
