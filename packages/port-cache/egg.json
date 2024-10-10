@@ -2,7 +2,7 @@
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
   "name": "hyper-port-cache",
   "entry": "./mod.ts",
-  "description": "Hyper service framework port for Cache adapters",
+  "description": "Port for the Cache Service in the hyper Service Framework",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
   "version": "2.0.0",
