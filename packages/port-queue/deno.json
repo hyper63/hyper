@@ -1,6 +1,6 @@
 {
   "name": "@hyper63/port-queue",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "exports": "./mod.ts",
   "tasks": {
     "test": "deno lint && deno fmt --check && deno test --no-check",
@@ -11,7 +11,9 @@
     "@std/assert": "jsr:@std/assert@1"
   },
   "fmt": {
-    "include": ["./"],
+    "include": [
+      "./"
+    ],
     "lineWidth": 100,
     "singleQuote": true,
     "semiColons": false
