@@ -2,7 +2,7 @@
   "$schema": "https://x.nest.land/eggs@0.3.8/src/schema.json",
   "name": "hyper-port-data",
   "entry": "./mod.ts",
-  "description": "Hyper service framework port for Data adapters",
+  "description": "Port for the Data Service in the hyper Service Framework",
   "homepage": "https://github.com/hyper63/hyper",
   "repo": "https://github.com/hyper63/hyper",
   "version": "2.3.0",
