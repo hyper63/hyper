@@ -1,5 +1,5 @@
 import { assertEquals } from '../dev_deps.ts'
-import { EventSubscription } from '../model.ts'
+import type { EventSubscription } from '../model.ts'
 
 import { eventMgr } from './event-mgr.ts'
 

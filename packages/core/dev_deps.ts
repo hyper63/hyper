@@ -1,8 +1,3 @@
-export {
-  assert,
-  assertEquals,
-  assertObjectMatch,
-  assertThrows,
-} from 'https://deno.land/std@0.208.0/assert/mod.ts'
+export { assert, assertEquals, assertObjectMatch, assertThrows } from '@std/assert'
 
-export { encode as base64Encode } from 'https://deno.land/std@0.208.0/encoding/base64.ts'
+export { encodeBase64 as base64Encode } from '@std/encoding/base64'

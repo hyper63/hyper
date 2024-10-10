@@ -6,15 +6,13 @@ import { parseHyperServices } from './ports.ts'
 import { eventMgr } from './utils/event-mgr.ts'
 import wrapCore from './lib/mod.ts'
 
-import { Config } from './model.ts'
+import type { Config } from './model.ts'
 
 const { compose, assoc, propOr } = R
 
 async function getConfig(name: string) {
   const path = join(Deno.cwd(), name)
-  if (!(await exists(path))) {
-    return
-  }
+  if (!(await exists(path))) return
 
   const config = (await import(path)).default
   return config

@@ -1,5 +1,5 @@
 import { crocks, HyperErr, isHyperErr } from '../../deps.ts'
-import { Event } from '../../model.ts'
+import type { Event } from '../../model.ts'
 import type { AwaitedFn, HyperService, ReaderEnvironment } from '../../types.ts'
 import { HyperErrFrom } from './err.js'
 

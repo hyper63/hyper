@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import { cache, crawler, data, hooks, queue, search, storage } from './deps.ts'
+import { cache, crawler, data, type hooks, queue, search, storage } from './deps.ts'
 
 // deno-lint-ignore no-explicit-any
 export function parseHyperServices(adapters: any) {

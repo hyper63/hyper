@@ -1,4 +1,4 @@
-import { type QueuePort } from '../../deps.ts'
+import type { QueuePort } from '../../deps.ts'
 import type { ReaderEnvironment } from '../../types.ts'
 
 import { $logHyperErr, $resolveHyperErr, Async, AsyncReader, triggerEvent } from '../utils/mod.ts'

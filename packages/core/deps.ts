@@ -1,23 +1,18 @@
 // @deno-types="npm:@types/ramda@^0.29.9"
-export * as R from 'npm:ramda@0.29.1'
+export * as R from 'ramda'
 
 /**
  * Shim hand-rolled crocks types
  */
 // @deno-types="./crocks.d.ts"
-export { default as crocks } from 'npm:crocks@0.12.4'
-export { z } from 'https://deno.land/x/zod@v3.20.5/mod.ts'
-export { ms } from 'https://deno.land/x/ms@v0.1.0/ms.ts'
+export { default as crocks } from 'crocks'
+export { z } from 'zod'
+export { default as ms } from 'ms'
+export { default as cuid } from 'cuid'
+export { join } from '@std/path'
+export { exists } from '@std/fs'
 
-export { cuid } from 'https://deno.land/x/cuid@v1.0.0/index.js'
-export { join } from 'https://deno.land/std@0.208.0/path/mod.ts'
-export { exists } from 'https://deno.land/std@0.208.0/fs/mod.ts'
-
-import {
-  HyperErr,
-  isBaseHyperErr,
-  isHyperErr as isHyperErrBase,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.2/packages/utils/hyper-err.js'
+import { HyperErr, isBaseHyperErr, isHyperErr as isHyperErrBase } from '@hyper63/utils'
 
 export { HyperErr, isBaseHyperErr }
 
@@ -28,32 +23,14 @@ export { HyperErr, isBaseHyperErr }
 // deno-lint-ignore no-explicit-any
 export const isHyperErr = (v: any) => isHyperErrBase(v)
 
-export {
-  queue,
-  type QueuePort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-queue%40v0.3.0/packages/port-queue/mod.ts'
-export {
-  cache,
-  type CachePort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-cache%40v2.0.0/packages/port-cache/mod.ts'
-export {
-  data,
-  type DataPort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-data%40v2.3.0/packages/port-data/mod.ts'
-export {
-  storage,
-  type StoragePort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-storage%40v2.0.1/packages/port-storage/mod.ts'
-export {
-  search,
-  type SearchPort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-search%40v2.0.0/packages/port-search/mod.ts'
-export {
-  crawler,
-  type CrawlerPort,
-} from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-crawler%40v0.1.0/packages/port-crawler/mod.ts'
+export { queue, type QueuePort } from '@hyper63/port-queue'
+export { cache, type CachePort } from '@hyper63/port-cache'
+export { data, type DataPort } from '@hyper63/port-data'
+export { storage, type StoragePort } from '@hyper63/port-storage'
+export { search, type SearchPort } from '@hyper63/port-search'
+export { crawler, type CrawlerPort } from '@hyper63/port-crawler'
 
-import { hooks } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-port-hooks%40v2.0.0/packages/port-hooks/mod.ts'
+import { hooks } from '@hyper63/port-hooks'
 export { hooks }
 
 /**

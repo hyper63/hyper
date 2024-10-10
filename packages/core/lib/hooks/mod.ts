@@ -1,5 +1,5 @@
 import { crocks, type HooksPort } from '../../deps.ts'
-import { EventsManager } from '../../types.ts'
+import type { EventsManager } from '../../types.ts'
 
 const { Async } = crocks
 

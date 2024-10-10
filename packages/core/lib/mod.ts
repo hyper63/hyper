@@ -7,7 +7,7 @@ import type {
   SearchPort,
   StoragePort,
 } from '../deps.ts'
-import { HyperServices } from '../types.ts'
+import type { HyperServices } from '../types.ts'
 
 import cacheCore from './cache/mod.ts'
 import dataCore from './data/mod.ts'

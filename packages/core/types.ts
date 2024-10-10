@@ -8,8 +8,8 @@ import type {
   StoragePort,
 } from './deps.ts'
 
-import { parseHyperServices } from './ports.ts'
-import { eventMgr } from './utils/event-mgr.ts'
+import type { parseHyperServices } from './ports.ts'
+import type { eventMgr } from './utils/event-mgr.ts'
 
 export type EventsManager = ReturnType<typeof eventMgr>
 
