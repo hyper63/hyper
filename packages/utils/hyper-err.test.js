@@ -1,5 +1,5 @@
+import { assert, assertEquals, assertThrows } from '@std/assert'
 import { HyperErr, isHyperErr } from './hyper-err.js'
-import { assert, assertEquals, assertThrows } from './dev_deps.js'
 
 const { test } = Deno
 

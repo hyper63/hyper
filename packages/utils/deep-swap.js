@@ -1,5 +1,4 @@
-// @deno-types="npm:@types/ramda@^0.29.9"
-import * as R from 'npm:ramda@0.29.1'
+import * as R from 'ramda'
 
 const {
   curry,

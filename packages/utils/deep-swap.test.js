@@ -1,5 +1,5 @@
+import { assertEquals } from '@std/assert'
 import { deepSwap } from './deep-swap.js'
-import { assertEquals } from './dev_deps.js'
 
 const test = Deno.test
 
