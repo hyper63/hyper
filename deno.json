@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "prepare": "deno run -A --no-lock npm:husky@^9",
-    "staged": "deno run -A --no-lock npm:lint-staged@^15"
+    "prepare": "deno run -A  npm:husky@^9",
+    "staged": "deno run -A npm:lint-staged@^15"
   },
   "fmt": {
     "exclude": [
