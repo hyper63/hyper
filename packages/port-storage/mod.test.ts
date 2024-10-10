@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-unused-vars ban-ts-comment
-import { assert, assertRejects, Buffer } from './dev_deps.ts'
+import { assert, assertRejects } from '@std/assert'
+import { Buffer } from '@std/io/buffer'
 
 import { storage, type StoragePort } from './mod.ts'
 
@@ -70,7 +71,7 @@ Deno.test('storage', async (t) => {
   })
 
   await t.step('putObject', async (t) => {
-    await t.step('always validate \'bucket\' and \'object\' params', async () => {
+    await t.step("always validate 'bucket' and 'object' params", async () => {
       let err = await adapter
         .putObject({
           bucket: 'foo',
@@ -278,7 +279,7 @@ Deno.test('storage', async (t) => {
   })
 
   await t.step('getObject', async (t) => {
-    await t.step('always validate \'bucket\' and \'object\' params', async () => {
+    await t.step("always validate 'bucket' and 'object' params", async () => {
       let err = await adapter
         .getObject({
           bucket: 'foo',

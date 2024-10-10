@@ -1,5 +1,5 @@
 <h1 align="center">hyper-port-data</h1>
-<p align="center">The Data Port for the <a href="https://hyper.io/">hyper</a>  service framework</p>
+<p align="center">Port for the Data Service in the <a href="https://hyper.io/">hyper</a> Service Framework</p>
 </p>
 <p align="center">
   <a href="https://nest.land/package/hyper-port-data"><img src="https://nest.land/badge.svg" alt="Nest Badge" /></a>
