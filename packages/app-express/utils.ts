@@ -49,7 +49,7 @@ export const fork = <R extends HyperResponse, L = any>(
          */
         return res
           .status(serviceResult.status || 500)
-          .send(isProduction() ? sanitizeErr(serviceResult) : serviceResult)
+          .send(isProduction() ? sanitizeErr(serviceResult as any) : serviceResult)
       }
 
       /**

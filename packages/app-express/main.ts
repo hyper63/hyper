@@ -1,5 +1,5 @@
-import { withCoreServicesRoutes } from './api/mod.ts'
 import { cors, express, helmet, R } from './deps.ts'
+import { withCoreServicesRoutes } from './api/mod.ts'
 import type { ErrorRouteHandler, HyperServices, Server } from './types.ts'
 
 const { pipe } = R

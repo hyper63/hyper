@@ -1,19 +1,15 @@
 // @deno-types="npm:@types/express@^4.17"
-export { default as express } from 'npm:express@4.18.2'
+export { default as express } from 'express'
 // @deno-types="npm:@types/multer@^1.4.7"
-export { default as multer } from 'npm:multer@1.4.4'
+export { default as multer } from 'multer'
 // @deno-types="npm:@types/body-parser@^1.19.2"
-export { default as bodyParser } from 'npm:body-parser@1.20.2'
-export { default as cors } from 'npm:cors@2.8.5'
-export { default as helmet } from 'npm:helmet@7.1.0'
+export { default as bodyParser } from 'body-parser'
+export { default as cors } from 'cors'
+export { default as helmet } from 'helmet'
 // @deno-types="npm:@types/ramda@^0.29.9"
-export * as R from 'npm:ramda@0.29.1'
-export { default as crocks } from 'npm:crocks@0.12.4'
+export * as R from 'ramda'
+export { default as crocks } from 'crocks'
 
-export {
-  readableStreamFromIterable,
-  readableStreamFromReader,
-} from 'https://deno.land/std@0.182.0/streams/mod.ts'
-export { contentType as getMimeType } from 'https://deno.land/std@0.208.0/media_types/mod.ts'
+export { contentType as getMimeType } from '@std/media-types'
 
-export { isHyperErr } from 'https://raw.githubusercontent.com/hyper63/hyper/hyper-utils%40v0.1.2/packages/utils/mod.js'
+export { isHyperErr } from '@hyper63/utils'

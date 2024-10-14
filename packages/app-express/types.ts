@@ -5,7 +5,7 @@
  * be referenced anywhere outside of this types file, deps.ts
  * and mod.ts
  */
-import { type express } from './deps.ts'
+import type { express } from 'express'
 
 /**
  * TODO: fill out with types implemented by core
@@ -47,4 +47,4 @@ export type ErrorRouteHandler = (
   next: express.NextFunction,
 ) => void
 
-export type UploadedFile = Express.Multer.File
+export type UploadedFile = express.Express.Multer.File

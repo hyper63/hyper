@@ -1,5 +1,5 @@
 import { R } from '../deps.ts'
-import { HyperServices, Server } from '../types.ts'
+import type { HyperServices, Server } from '../types.ts'
 
 import { data } from './data.ts'
 import { cache } from './cache.ts'

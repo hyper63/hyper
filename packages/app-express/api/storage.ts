@@ -1,9 +1,5 @@
-import {
-  getMimeType,
-  isHyperErr,
-  readableStreamFromIterable,
-  readableStreamFromReader,
-} from '../deps.ts'
+import { getMimeType, isHyperErr } from '../deps.ts'
+
 import { fork, isFile, isTrue } from '../utils.ts'
 import type { HttpResponse, HyperServices, Server, UploadedFile } from '../types.ts'
 import { bindCore } from '../middleware/bindCore.ts'
@@ -73,7 +69,7 @@ async function formDataObject({
     storage.putObject(
       bucket,
       object,
-      readableStreamFromReader(reader),
+      reader.readable,
       useSignedUrl,
     ),
   )
@@ -152,7 +148,7 @@ export const storage = (services: HyperServices) => (app: Server) => {
          * a file could be completely streamed through hyper without having to buffer
          * the whole file on process.
          */
-        const reader = readableStreamFromIterable(
+        const reader = ReadableStream.from(
           req as unknown as AsyncIterable<Uint8Array>,
         )
         return fork(
