@@ -9,13 +9,15 @@
 // @ts-ignore
 export * as R from 'ramda'
 export { default as ms } from 'ms'
-// deno-lint-ignore ban-ts-comment
-// @ts-ignore
+
+// @ts-nocheck crocks types are not up to date, and we don't use them anyway
 export { default as crocks } from 'crocks'
 
 import { SignJWT } from 'jose'
 import { BinaryToTextEncoding, createHmac, createSecretKey } from 'crypto'
 import { lookup } from 'mime-types'
+
+import { Buffer } from 'node:buffer'
 
 /**
  * Shim for https://deno.land/x/hmac@v2.0.1/mod.ts

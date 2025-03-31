@@ -8,6 +8,6 @@
     "test:esm": "cd ./harness/esm && yarn && yarn start"
   },
   "devDependencies": {
-    "uvu": "^0.5.3"
+    "uvu": "^0.5.6"
   }
 }
