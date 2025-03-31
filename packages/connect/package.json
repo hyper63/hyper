@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "microbundle --tsconfig tsconfig.ci.jsonc"
+    "build": "microbundle --target=node --tsconfig tsconfig.ci.jsonc"
   },
   "dependencies": {
     "jose": "^5.1.3",

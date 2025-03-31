@@ -11,7 +11,7 @@ export * as R from 'ramda'
 export { default as ms } from 'ms'
 
 import { SignJWT } from 'jose'
-import { BinaryToTextEncoding, createHmac, createSecretKey } from 'crypto'
+import { BinaryToTextEncoding, createHmac, createSecretKey } from 'node:crypto'
 import { lookup } from 'mime-types'
 
 import { Buffer } from 'node:buffer'
