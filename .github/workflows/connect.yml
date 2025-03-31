@@ -33,6 +33,7 @@ jobs:
       - name: ⚡ Run Tests
         run: |
           cd packages/connect
+          deno install
           deno task test
         env:
           CI: true

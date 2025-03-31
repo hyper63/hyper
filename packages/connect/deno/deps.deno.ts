@@ -5,9 +5,6 @@ export { default as ms } from 'npm:ms@^2'
 
 // @deno-types="npm:@types/ramda@^0.28.23"
 export * as R from 'npm:ramda@0.28.0'
-// deno-lint-ignore ban-ts-comment
-// @ts-ignore
-export { default as crocks } from 'npm:crocks@0.12.4'
 
 /**
  * See deps.node.ts for shims of below

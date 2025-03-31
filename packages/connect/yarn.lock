@@ -1481,11 +1481,6 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-crocks@^0.12.4:
-  version "0.12.4"
-  resolved "https://registry.npmjs.org/crocks/-/crocks-0.12.4.tgz"
-  integrity sha512-paln6xJUrR9e/OWMFsyTi4dLyr+q99C5f7PQbGgSDHtwsfW0sCNZvnpHzvniI2dAE0uoBgeIP1Ukmme8Z0HxxA==
-
 css-declaration-sorter@^6.2.2:
   version "6.2.2"
   resolved "https://registry.npmjs.org/css-declaration-sorter/-/css-declaration-sorter-6.2.2.tgz"

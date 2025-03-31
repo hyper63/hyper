@@ -6,7 +6,7 @@ clean:
 # to copy the types from the output of deno2node into the microbundle output folder in order to get types working
 # a total hack to get the types working
 to-node:
-	@deno run --no-check --allow-read --allow-write \
+	@deno run --no-check --allow-read --allow-write --allow-env --allow-import \
   		https://deno.land/x/deno2node@v1.7.2/src/cli.ts ./tsconfig.to-node.jsonc && \
 	yarn build && \
 	echo "copying types..." && find ./to-node -mindepth 1 -depth -name '*.d.ts' -exec cp --parents \{\} ./dist \; && \

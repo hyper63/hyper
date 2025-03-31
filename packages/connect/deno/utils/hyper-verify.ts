@@ -1,6 +1,7 @@
 // deno-lint-ignore-file ban-ts-comment
-import { crocks, hmac, ms, R } from '../deps.deno.ts'
+import { hmac, ms, R } from '../deps.deno.ts'
 import { Result } from '../types.ts'
+import { Left, Right } from './either.js'
 const {
   assoc,
   compose,
@@ -12,7 +13,6 @@ const {
   path,
   identity,
 } = R
-const { of, Left, Right } = crocks.Either
 
 interface Parsed {
   time: number
@@ -105,7 +105,7 @@ const handleSuccess = () => ({ ok: true })
  */
 export function createHyperVerify(secret: string, ttl?: string) {
   return function (signature: string, payload: unknown): Result {
-    return of({ input: { signature, payload }, secret, ttl })
+    return Right({ input: { signature, payload }, secret, ttl })
       .map(splitHyperSignature)
       .chain(createHmacSignature)
       .chain(compareSignatures)

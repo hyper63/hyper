@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "cache": "deno cache --lock=deno.lock --lock-write deno/deps.deno.ts deno/dev_deps.ts",
+    "cache": "deno cache --lock=deno.lock -A deno/deps.deno.ts deno/dev_deps.ts",
     "test": "deno lint && deno fmt && deno test -A --no-lock --no-check deno/tests",
     "test:integration": "make test-integration",
     "to-node": "make clean to-node"

@@ -10,9 +10,6 @@
 export * as R from 'ramda'
 export { default as ms } from 'ms'
 
-// @ts-nocheck crocks types are not up to date, and we don't use them anyway
-export { default as crocks } from 'crocks'
-
 import { SignJWT } from 'jose'
 import { BinaryToTextEncoding, createHmac, createSecretKey } from 'crypto'
 import { lookup } from 'mime-types'
