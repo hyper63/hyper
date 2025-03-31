@@ -37,6 +37,6 @@ export const create = (fields: string[], storeFields?: string[]) => (hyper: Hype
   hyper({ service, method: Method.PUT, body: { fields, storeFields } })
 
 export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
-  confirm
+  confirm === true
     ? hyper({ service, method: Method.DELETE })
     : Promise.reject({ ok: false, msg: 'request not confirmed!' })

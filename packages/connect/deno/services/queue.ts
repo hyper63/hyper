@@ -15,6 +15,6 @@ export const create = (target: string, secret?: string) => (hyper: HyperRequestF
   hyper({ service, method: Method.PUT, body: { target, secret } })
 
 export const destroy = (confirm?: boolean) => (hyper: HyperRequestFunction) =>
-  confirm
+  confirm === true
     ? hyper({ service, method: Method.DELETE })
     : Promise.reject({ ok: false, msg: 'request not confirmed!' })

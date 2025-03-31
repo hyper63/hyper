@@ -164,4 +164,6 @@ test('data.destroy', async () => {
   }
 
   await destroy()(noConfirmRequest).catch(assert)
+  // @ts-expect-error testing runtime checks
+  await destroy('no-bool')(noConfirmRequest).catch(assert)
 })
