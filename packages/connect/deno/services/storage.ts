@@ -54,7 +54,7 @@ export const signedUrl =
     })
 
 export const remove = (name: string) => (h: HyperRequestFunction) =>
-  h({ service, method: Method.DELETE, resource: name })
+  h({ service, method: Method.DELETE, resource: name, strictResource: true })
 
 export const create = () => (hyper: HyperRequestFunction) => hyper({ service, method: Method.PUT })
 

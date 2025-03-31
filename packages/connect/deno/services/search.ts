@@ -10,7 +10,7 @@ export const add = (key: string, doc: unknown) => (hyper: HyperRequestFunction) 
   hyper({ service, method: Method.POST, body: { key, doc } })
 
 export const remove = (key: string) => (hyper: HyperRequestFunction) =>
-  hyper({ service, method: Method.DELETE, resource: key })
+  hyper({ service, method: Method.DELETE, resource: key, strictResource: true })
 
 export const get = (key: string) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.GET, resource: key })

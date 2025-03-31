@@ -27,7 +27,7 @@ export const get = (key: string) => (h: HyperRequestFunction) => {
 }
 
 export const remove = (key: string) => (h: HyperRequestFunction) =>
-  h({ service, method: Method.DELETE, resource: key })
+  h({ service, method: Method.DELETE, resource: key, strictResource: true })
 
 export const set = (key: string, value: unknown, ttl?: string) => (h: HyperRequestFunction) =>
   h(

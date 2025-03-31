@@ -191,6 +191,7 @@ export interface HyperRequest {
   // deno-lint-ignore no-explicit-any
   params?: undefined | Record<string, any>
   action?: Action
+  strictResource?: boolean
 }
 
 export type HyperRequestFunction = (request: HyperRequest) => Promise<Request>

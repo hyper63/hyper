@@ -61,6 +61,7 @@ test('data.remove', async () => {
     assertEquals(h.service, 'data')
     assertEquals(h.method, 'DELETE')
     assertEquals(h.resource, 'game-1')
+    assert(h.strictResource)
     return Promise.resolve(new Request('http://localhost'))
   }
   await remove('game-1')(mockRequest)

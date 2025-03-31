@@ -50,6 +50,7 @@ async ({
   body,
   params,
   action,
+  strictResource,
 }: HyperRequest): Promise<HyperRequestParams> => {
   const isCloud = /^cloud/.test(conn.protocol)
   const protocol = isCloud ? 'https:' : conn.protocol
@@ -80,6 +81,10 @@ async ({
 
   if (service === 'info') {
     url = `${protocol}//${conn.host}`
+  }
+
+  if (strictResource && resource == null) {
+    throw new Error(`Resource portion of URL required, but got ${resource}`)
   }
 
   if (resource) url += `/${resource}`

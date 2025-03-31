@@ -35,7 +35,7 @@ export const list = (options: ListOptions = {}) => (hyper: HyperRequestFunction)
 export const update = (id: string, doc: unknown) => (hyper: HyperRequestFunction) =>
   hyper({ service, method: Method.PUT, resource: id, body: doc })
 export const remove = (id: string) => (hyper: HyperRequestFunction) =>
-  hyper({ service, method: Method.DELETE, resource: id })
+  hyper({ service, method: Method.DELETE, resource: id, strictResource: true })
 export const query = (selector: unknown, options?: QueryOptions) => (hyper: HyperRequestFunction) =>
   hyper({
     service,

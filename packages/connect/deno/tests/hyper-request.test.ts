@@ -130,6 +130,15 @@ Deno.test('hyper-request', async (t) => {
           assertEquals(resource.url, 'http://localhost:6363/data/foobar')
         })
 
+        await t.step('should throw if strictResource and resource is nullish', async () => {
+          await hyper(new URL(notCloud), 'default')({
+            ...req,
+            strictResource: true,
+            // @ts-expect-error asserting runtime checks
+            resource: null,
+          }).then().catch(assert)
+        })
+
         await t.step('should build the action url correctly', async () => {
           const action = await hyper(
             new URL(notCloud),

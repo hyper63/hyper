@@ -60,6 +60,7 @@ test('search.remove', async () => {
     assertEquals(h.service, 'search')
     assertEquals(h.method, 'DELETE')
     assertEquals(h.resource, 'game-1')
+    assert(h.strictResource)
     return Promise.resolve(new Request('http://localhost'))
   }
   await remove('game-1')(mockRequest)

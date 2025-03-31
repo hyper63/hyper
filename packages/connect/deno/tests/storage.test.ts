@@ -90,6 +90,7 @@ test('storage.remove', async () => {
   const mockRequest = (h: HyperRequest) => {
     assertEquals(h.service, 'storage')
     assertEquals(h.method, 'DELETE')
+    assert(h.strictResource)
     return Promise.resolve(
       new Request(`http://localhost/${h.service}/bucket/${h.resource}`, {
         method: h.method,
